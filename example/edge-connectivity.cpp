@@ -12,6 +12,7 @@
 #include <boost/graph/push_relabel_max_flow.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graphviz.hpp>
+#include "range_pair.hpp"
 
 namespace boost
 {
@@ -20,15 +21,14 @@ namespace boost
     typename graph_traits<Graph >::degree_size_type>
     min_degree_vertex(Graph & g)
   {
-    typename graph_traits < Graph >::vertex_descriptor p;
-    using size_type = typename graph_traits < Graph >::degree_size_type;
-    auto delta = (std::numeric_limits < size_type >::max)();
-    typename graph_traits < Graph >::vertex_iterator i, iend;
-    for (boost::tie(i, iend) = vertices(g); i != iend; ++i)
-      if (degree(*i, g) < delta)
+    typename graph_traits<Graph>::vertex_descriptor p;
+    using size_type = typename graph_traits<Graph>::degree_size_type;
+    auto delta = (std::numeric_limits<size_type>::max)();
+    for(const auto& vertex : make_range_pair(vertices(g)))
+      if (degree(vertex, g) < delta)
       {
-        delta = degree(*i, g);
-        p = *i;
+        delta = degree(vertex, g);
+        p = vertex;
       }
     return std::make_pair(p, delta);
   }
@@ -84,8 +84,8 @@ namespace boost
     auto rev_edge = get(edge_reverse, flow_g);
 
     typename graph_traits<VertexListGraph>::edge_iterator ei, ei_end;
-    for (boost::tie(ei, ei_end) = edges(g); ei != ei_end; ++ei) {
-      u = source(*ei, g), v = target(*ei, g);
+    for (const auto& edge : make_range_pair(edges(g))) {
+      u = source(edge, g), v = target(edge, g);
       boost::tie(e1, inserted) = add_edge(u, v, flow_g);
       cap[e1] = 1;
       boost::tie(e2, inserted) = add_edge(v, u, flow_g);
@@ -131,9 +131,9 @@ namespace boost
     degree_size_type c = 0;
     for (const auto& vertex : S_star.begin()) {
       typename graph_traits<VertexListGraph>::out_edge_iterator ei, ei_end;
-      for (boost::tie(ei, ei_end) = out_edges(vertex, g); ei != ei_end; ++ei)
-        if (!in_S_star[target(*ei, g)]) {
-          *disconnecting_set++ = *ei;
+      for (const auto& edge : make_range_pair(out_edges(vertex, g)))
+        if (!in_S_star[target(edge, g)]) {
+          *disconnecting_set++ = edge;
           ++c;
         }
     }

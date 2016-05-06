@@ -11,6 +11,7 @@
 #include <string>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graph_utility.hpp>
+#include "range_pair.hpp"
 
 using namespace boost;
 
@@ -41,15 +42,14 @@ dfs_v1(const file_dep_graph & g, vertex_t u, default_color_type * color,
 {
   color[u] = gray_color;
   vis.discover_vertex(u, g);
-  graph_traits<file_dep_graph>::out_edge_iterator ei, ei_end;
-  for (boost::tie(ei, ei_end) = out_edges(u, g); ei != ei_end; ++ei) {
-    if (color[target(*ei, g)] == white_color) {
-      vis.tree_edge(*ei, g);
-      dfs_v1(g, target(*ei, g), color, vis);
-    } else if (color[target(*ei, g)] == gray_color)
-      vis.back_edge(*ei, g);
+  for (const auto& edge : make_range_pair(out_edges(u, g))) {
+    if (color[target(edge, g)] == white_color) {
+      vis.tree_edge(edge, g);
+      dfs_v1(g, target(edge, g), color, vis);
+    } else if (color[target(edge, g)] == gray_color)
+      vis.back_edge(edge, g);
     else
-      vis.forward_or_cross_edge(*ei, g);
+      vis.forward_or_cross_edge(edge, g);
   }
   color[u] = black_color;
   vis.finish_vertex(u, g);

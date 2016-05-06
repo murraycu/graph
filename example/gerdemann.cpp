@@ -11,6 +11,7 @@
 #include <iostream>
 
 #include <boost/graph/adjacency_list.hpp>
+#include "range_pair.hpp"
 
 /*
   Thanks to Dale Gerdemann for this example, which inspired some
@@ -124,13 +125,10 @@ main()
   auto id = get(vertex_index, g);
   auto name = get(edge_name, g);
 
-  graph_traits<graph_type>::vertex_iterator i, end;
-  graph_traits<graph_type>::out_edge_iterator ei, edge_end;
-
-  for (boost::tie(i, end) = vertices(g); i != end; ++i) {
-    std::cout << id[*i] << " ";
-    for (boost::tie(ei, edge_end) = out_edges(*i, g); ei != edge_end; ++ei)
-      std::cout << " --" << name[*ei] << "--> " << id[target(*ei, g)] << "  ";
+  for (const auto& vertex : make_range_pair(vertices(g))) {
+    std::cout << id[vertex] << " ";
+    for (const auto& edge : make_range_pair(out_edges(vertex, g)))
+      std::cout << " --" << name[edge] << "--> " << id[target(edge, g)] << "  ";
     std::cout << std::endl;
   }
   std::cout << std::endl;
@@ -138,10 +136,10 @@ main()
   std::cout << "merging vertex 1 into vertex 0" << std::endl << std::endl;
   merge_vertex(0, 1, g, get_edge_name<graph_type>(g));
   
-  for (boost::tie(i, end) = vertices(g); i != end; ++i) {
-    std::cout << id[*i] << " ";
-    for (boost::tie(ei, edge_end) = out_edges(*i, g); ei != edge_end; ++ei)
-      std::cout << " --" << name[*ei] << "--> " << id[target(*ei, g)] << "  ";
+  for (const auto& vertex : make_range_pair(vertices(g))) {
+    std::cout << id[vertex] << " ";
+    for (const auto& edge : make_range_pair(out_edges(vertex, g)))
+      std::cout << " --" << name[edge] << "--> " << id[target(edge, g)] << "  ";
     std::cout << std::endl;
   }
   std::cout << std::endl;

@@ -13,6 +13,7 @@
 #include <boost/graph/floyd_warshall_shortest.hpp>
 #include <boost/graph/geodesic_distance.hpp>
 #include "helper.hpp"
+#include "range_pair.hpp"
 
 using namespace std;
 using namespace boost;
@@ -120,12 +121,11 @@ main(int argc, char *argv[])
     cout << setw(12) << setiosflags(ios::left) << "vertex";
     cout << setw(12) << setiosflags(ios::left) << "excluding";
     cout << setw(12) << setiosflags(ios::left) << "including" << endl;
-    graph_traits<Graph>::vertex_iterator i, end;
-    for(boost::tie(i, end) = vertices(g); i != end; ++i) {
+    for(const auto& vertex : make_range_pair(vertices(g))) {
         cout << setw(12) << setiosflags(ios::left)
-             << g[*i].name
-             << setw(12) << get(exmap, *i)
-             << setw(12) << get(inmap, *i) << endl;
+             << g[vertex].name
+             << setw(12) << get(exmap, vertex)
+             << setw(12) << get(inmap, vertex) << endl;
     }
     cout << "small world (excluding self-loops): " << ex << endl;
     cout << "small world (including self-loops): " << in << endl;

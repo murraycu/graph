@@ -12,6 +12,7 @@
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/dijkstra_shortest_paths.hpp>
+#include "range_pair.hpp"
 
 using namespace boost;
 
@@ -56,10 +57,9 @@ main(int, char *[])
   dijkstra_shortest_paths(g, s, predecessor_map(p).distance_map(d));
 
   std::cout << "distances and parents:" << std::endl;
-  graph_traits<graph_t>::vertex_iterator vi, vend;
-  for (boost::tie(vi, vend) = vertices(g); vi != vend; ++vi) {
-    std::cout << "distance(" << name[*vi] << ") = " << d[*vi] << ", ";
-    std::cout << "parent(" << name[*vi] << ") = " << name[p[*vi]] << std::
+  for(const auto& vertex : make_range_pair(vertices(g))) {
+    std::cout << "distance(" << name[vertex] << ") = " << d[vertex] << ", ";
+    std::cout << "parent(" << name[vertex] << ") = " << name[p[vertex]] << std::
       endl;
   }
   std::cout << std::endl;
@@ -72,8 +72,7 @@ main(int, char *[])
     << "  edge[style=\"bold\"]\n" << "  node[shape=\"circle\"]\n";
 
   graph_traits<graph_t>::edge_iterator ei, ei_end;
-  for (boost::tie(ei, ei_end) = edges(g); ei != ei_end; ++ei) {
-    auto e = *ei;
+  for (const auto& e : make_range_pair(edges(g))) {
     auto u = source(e, g), v = target(e, g);
     dot_file << name[u] << " -> " << name[v]
       << "[label=\"" << get(weightmap, e) << "\"";

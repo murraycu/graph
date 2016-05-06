@@ -11,6 +11,7 @@
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/random.hpp>
 #include <boost/graph/howard_cycle_ratio.hpp>
+#include "range_pair.hpp"
 
 /**
  * @author Dmitry Bufistov
@@ -59,9 +60,8 @@ int main(int argc, char* argv[])
     cout << "Vertices number: " << num_vertices(tgr) << endl;
     cout << "Edges number: " << num_edges(tgr) << endl;
     int i = 0;
-    graph_traits<grap_real_t>::vertex_iterator vi, vi_end;
-    for (boost::tie(vi, vi_end) = vertices(tgr); vi != vi_end; vi++) {
-        vim[*vi] = i++; ///Initialize vertex index property
+    for(const auto& vertex : make_range_pair(vertices(tgr))) {
+        vim[vertex] = i++; ///Initialize vertex index property
     }
     max_cr = maximum_cycle_ratio(tgr, vim, ew1, ew2);
     cout << "Maximum cycle ratio is " << max_cr << endl;

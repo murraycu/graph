@@ -10,6 +10,7 @@
 #include <boost/graph/transpose_graph.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graph_utility.hpp>
+#include "range_pair.hpp"
 
 int
 main()
@@ -41,8 +42,7 @@ main()
 
   print_graph(G_T, name_map);
 
-  graph_traits<graph_t>::edge_iterator ei, ei_end;
-  for (boost::tie(ei, ei_end) = edges(G); ei != ei_end; ++ei)
-    assert(edge(target(*ei, G), source(*ei, G), G_T).second == true);
+  for (const auto& e : make_range_pair(edges(G)))
+    assert(edge(target(e, G), source(e, G), G_T).second == true);
   return 0;
 }

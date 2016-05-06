@@ -12,6 +12,7 @@
 #include <boost/graph/depth_first_search.hpp>
 #include <boost/graph/graphviz.hpp>
 #include <boost/graph/copy.hpp>
+#include "range_pair.hpp"
 
 int
 main(int argc, char *argv[])
@@ -63,10 +64,9 @@ main(int argc, char *argv[])
   }
   property_map<GraphvizDigraph, edge_attribute_t>::type
     eattr_map = get(edge_attribute, g);
-  graph_traits<GraphvizDigraph>::edge_iterator ei, ei_end;
-  for (boost::tie(ei, ei_end) = edges(g); ei != ei_end; ++ei) {
-    loops_out << source(*ei, g) << " -> " << target(*ei, g) << "[";
-    std::map<std::string,std::string>& attr_map = eattr_map[*ei];
+  for (const auto& edge : make_range_pair(edges(g))) {
+    loops_out << source(edge, g) << " -> " << target(edge, g) << "[";
+    std::map<std::string,std::string>& attr_map = eattr_map[edge];
     for (auto eai = attr_map.begin();
          eai != attr_map.end(); ++eai) {
       loops_out << eai->first << "=" << eai->second;

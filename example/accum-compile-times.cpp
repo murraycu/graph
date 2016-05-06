@@ -13,6 +13,7 @@
 #include <string>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/property_iter_range.hpp>
+#include "range_pair.hpp"
 
 namespace std
 {
@@ -75,10 +76,9 @@ main()
 
   std::ifstream name_in("makefile-target-names.dat");
   std::ifstream compile_cost_in("target-compile-costs.dat");
-  graph_traits<file_dep_graph2>::vertex_iterator vi, vi_end;
-  for (boost::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi) {
-    name_in >> name_map[*vi];
-    compile_cost_in >> compile_cost_map[*vi];
+  for(const auto& vertex : make_range_pair(vertices(g))) {
+    name_in >> name_map[vertex];
+    compile_cost_in >> compile_cost_map[vertex];
   }
 
   graph_property_iter_range < file_dep_graph2,

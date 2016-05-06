@@ -13,6 +13,7 @@
 #include <boost/graph/floyd_warshall_shortest.hpp>
 #include <boost/graph/geodesic_distance.hpp>
 #include "helper.hpp"
+#include "range_pair.hpp"
 
 using namespace std;
 using namespace boost;
@@ -76,10 +77,9 @@ main(int argc, char *argv[])
 
     // Print the mean geodesic distance of each vertex and finally,
     // the graph itself.
-    graph_traits<Graph>::vertex_iterator i, end;
-    for(boost::tie(i, end) = vertices(g); i != end; ++i) {
+    for(const auto& vertex : make_range_pair(vertices(g))) {
         cout << setw(12) << setiosflags(ios::left)
-             << g[*i].name << get(gm, *i) << endl;
+             << g[vertex].name << get(gm, vertex) << endl;
     }
     cout << "small world distance: " << sw << endl;
 

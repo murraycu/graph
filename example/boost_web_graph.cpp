@@ -18,6 +18,7 @@
 #include <boost/graph/visitors.hpp>
 #include <boost/graph/breadth_first_search.hpp>
 #include <boost/graph/depth_first_search.hpp>
+#include "range_pair.hpp"
 
 
 template <class Distance>
@@ -177,8 +178,8 @@ main()
 
   // Create storage for a mapping from vertices to their parents
   std::vector<Traits::vertex_descriptor> parent(num_vertices(g));
-  for (boost::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
-    parent[*vi] = *vi;
+  for (const auto& vertex : make_range_pair(vertices(g)))
+    parent[vertex] = vertex;
 
   // Do a BFS starting at the home page, recording the parent of each
   // vertex (where parent is with respect to the search tree).
@@ -205,8 +206,8 @@ main()
   using NameMap = property_map<Graph, vertex_name_t>::type;
   print_tree_visitor<NameMap, size_type*>
     tree_printer(node_name, &dfs_distances[0]);
-  for (boost::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
-    get(vertex_color, g)[*vi] = white_color;
+  for(const auto& vertex : make_range_pair(vertices(g)))
+    get(vertex_color, g)[vertex] = white_color;
   depth_first_visit(search_tree, src, tree_printer, get(vertex_color, g));
   
   return EXIT_SUCCESS;

@@ -13,6 +13,7 @@
 #include <algorithm>
 
 #include <boost/graph/adjacency_list.hpp>
+#include "range_pair.hpp"
 
 using namespace boost;
 using namespace std;
@@ -28,12 +29,10 @@ using Graph = adjacency_list<vecS, vecS, bidirectionalS,
 
 template <class Graph>
 void print(Graph& g) {
-  typename Graph::vertex_iterator i, end;
-  typename Graph::out_edge_iterator ei, edge_end;
-  for(boost::tie(i,end) = vertices(g); i != end; ++i) {
-    cout << *i << " --> ";
-    for (boost::tie(ei,edge_end) = out_edges(*i, g); ei != edge_end; ++ei)
-      cout << target(*ei, g) << "  ";
+  for (const auto& vertex : make_range_pair(boost::vertices(g))) {
+    cout << vertex << " --> ";
+    for (const auto& edge : make_range_pair(out_edges(vertex, g)))
+      cout << target(edge, g) << "  ";
     cout << endl;
   }
 }

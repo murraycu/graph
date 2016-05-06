@@ -9,6 +9,7 @@
 #include <boost/graph/graphviz.hpp>     // for read/write_graphviz()
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 #include <boost/lexical_cast.hpp>
+#include "range_pair.hpp"
 
 namespace boost {
   enum graph_color_t { graph_color = 5556 };
@@ -42,10 +43,10 @@ main()
   using vertex_descriptor = graph_traits<Graph>::vertex_descriptor;
   Graph g(num_vertices(g_dot));
   graph_traits<g_dot_type>::edge_iterator ei, ei_end;
-  for (boost::tie(ei, ei_end) = edges(g_dot); ei != ei_end; ++ei) {
-    auto weight = get(edge_weight, g_dot, *ei);
+  for (const auto& edge : make_range_pair(edges(g_dot))) {
+    auto weight = get(edge_weight, g_dot, edge);
     property<edge_weight_t, int> edge_property(weight);
-    add_edge(source(*ei, g_dot), target(*ei, g_dot), edge_property, g);
+    add_edge(source(edge, g_dot), target(edge, g_dot), edge_property, g);
   }
 
   vertex_descriptor router_six;

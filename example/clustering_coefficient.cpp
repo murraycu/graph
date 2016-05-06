@@ -13,6 +13,7 @@
 #include <boost/graph/exterior_property.hpp>
 #include <boost/graph/clustering_coefficient.hpp>
 #include "helper.hpp"
+#include "range_pair.hpp"
 
 using namespace std;
 using namespace boost;
@@ -57,10 +58,9 @@ main(int argc, char *argv[])
     auto cc = all_clustering_coefficients(g, cm);
 
     // Print the clustering coefficient of each vertex.
-    graph_traits<Graph>::vertex_iterator i, end;
-    for(boost::tie(i, end) = vertices(g); i != end; ++i) {
+    for(const auto& vertex : make_range_pair(vertices(g))) {
         cout << setw(12) << setiosflags(ios::left)
-                << g[*i].name << get(cm, *i) << endl;
+                << g[vertex].name << get(cm, vertex) << endl;
     }
     cout << "mean clustering coefficient: " << cc << endl;
 

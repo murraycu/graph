@@ -14,6 +14,7 @@
 #include <boost/graph/floyd_warshall_shortest.hpp>
 #include <boost/graph/eccentricity.hpp>
 #include "helper.hpp"
+#include "range_pair.hpp"
 
 using namespace std;
 using namespace boost;
@@ -76,10 +77,9 @@ main(int argc, char *argv[])
     boost::tie(r, d) = all_eccentricities(g, dm, em);
 
     // Print the closeness centrality of each vertex.
-    graph_traits<Graph>::vertex_iterator i, end;
-    for(boost::tie(i, end) = vertices(g); i != end; ++i) {
+    for(const auto& vertex : make_range_pair(vertices(g))) {
         cout << setw(12) << setiosflags(ios::left)
-                << g[*i].name << get(em, *i) << endl;
+                << g[vertex].name << get(em, vertex) << endl;
     }
     cout << "radius: " << r << endl;
     cout << "diamter: " << d << endl;

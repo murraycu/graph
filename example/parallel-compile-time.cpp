@@ -14,6 +14,7 @@
 #include <boost/graph/graph_utility.hpp>
 #include <boost/graph/property_iter_range.hpp>
 #include <boost/graph/depth_first_search.hpp>   // for default_dfs_visitor
+#include "range_pair.hpp"
 
 namespace std
 {
@@ -58,14 +59,14 @@ dfs_v2(const Graph & g,
   color[u] = ColorT::gray();
   vis.discover_vertex(u, g);
   typename graph_traits<Graph>::out_edge_iterator ei, ei_end;
-  for (boost::tie(ei, ei_end) = out_edges(u, g); ei != ei_end; ++ei)
-    if (color[target(*ei, g)] == ColorT::white()) {
-      vis.tree_edge(*ei, g);
-      dfs_v2(g, target(*ei, g), color, vis);
-    } else if (color[target(*ei, g)] == ColorT::gray())
-      vis.back_edge(*ei, g);
+  for (const auto& edge : make_range_pair(out_edges(u, g)))
+    if (color[target(edge, g)] == ColorT::white()) {
+      vis.tree_edge(edge, g);
+      dfs_v2(g, target(edge, g), color, vis);
+    } else if (color[target(edge, g)] == ColorT::gray())
+      vis.back_edge(edge, g);
     else
-      vis.forward_or_cross_edge(*ei, g);
+      vis.forward_or_cross_edge(edge, g);
   color[u] = ColorT::black();
   vis.finish_vertex(u, g);
 }

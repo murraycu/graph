@@ -14,6 +14,7 @@
 #include <boost/utility.hpp>                // for boost::tie
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graphviz.hpp>
+#include "range_pair.hpp"
 
 using namespace boost;
 
@@ -113,10 +114,9 @@ int main(int,char*[])
   std::cout << std::endl;
 
   std::cout << "edges(g) = ";
-  graph_traits<Graph>::edge_iterator ei, ei_end;
-  for (boost::tie(ei,ei_end) = edges(g); ei != ei_end; ++ei)
-    std::cout << "(" << name[get(vertex_id, source(*ei, g))]
-              << "," << name[get(vertex_id, target(*ei, g))] << ") ";
+  for (const auto& edge : make_range_pair(edges(g)))
+    std::cout << "(" << name[get(vertex_id, source(edge, g))]
+              << "," << name[get(vertex_id, target(edge, g))] << ") ";
   std::cout << std::endl;
 
   std::for_each(vertices(g).first, vertices(g).second,

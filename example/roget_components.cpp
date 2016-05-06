@@ -11,6 +11,7 @@
 #include <iostream>
 #include <boost/graph/stanford_graph.hpp>
 #include <boost/graph/strong_components.hpp>
+#include "range_pair.hpp"
 
 #define specs(v) \
  (filename ? index_map[v] : v->cat_no) << " " << v->name
@@ -114,9 +115,8 @@ int main(int argc, char* argv[])
     vertex_t u = strong_comp[c][0];
     for (i = 0; i < strong_comp[c].size(); ++i) {
       vertex_t v = strong_comp[c][i];
-      graph_traits<Graph*>::out_edge_iterator ei, ei_end;
-      for (boost::tie(ei, ei_end) = out_edges(v, g); ei != ei_end; ++ei) {
-        auto x = target(*ei, g);
+      for (const auto& edge : make_range_pair(out_edges(v, g))) {
+        auto x = target(edge, g);
         auto comp_x = comp[index_map[x]];
         if (comp_x != c && mark[comp_x] != c) {
           mark[comp_x] = c;

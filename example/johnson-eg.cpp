@@ -14,6 +14,7 @@
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graphviz.hpp>
 #include <boost/graph/johnson_all_pairs_shortest.hpp>
+#include "range_pair.hpp"
 
 int
 main()
@@ -73,9 +74,9 @@ main()
     << "edge[style=\"bold\"]\n" << "node[shape=\"circle\"]\n";
 
   graph_traits<Graph>::edge_iterator ei, ei_end;
-  for (boost::tie(ei, ei_end) = edges(g); ei != ei_end; ++ei)
-    fout << source(*ei, g) << " -> " << target(*ei, g)
-      << "[label=" << get(edge_weight, g)[*ei] << "]\n";
+  for (const auto& edge : make_range_pair(edges(g)))
+    fout << source(edge, g) << " -> " << target(edge, g)
+      << "[label=" << get(edge_weight, g)[edge] << "]\n";
 
   fout << "}\n";
   return 0;
