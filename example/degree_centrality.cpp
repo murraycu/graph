@@ -16,13 +16,12 @@
 #include "helper.hpp"
 #include "range_pair.hpp"
 
-using namespace std;
 using namespace boost;
 
 // The Actor type stores the name of each vertex in the graph.
 struct Actor
 {
-    string name;
+    std::string name;
 };
 
 // Declare the graph type and its vertex and edge types.
@@ -32,7 +31,7 @@ using Edge = graph_traits<Graph>::edge_descriptor;
 
 // The name map provides an abstract accessor for the names of
 // each vertex. This is used during graph creation.
-using NameMap = property_map<Graph, string Actor::*>::type;
+using NameMap = property_map<Graph, std::string Actor::*>::type;
 
 // Declare a container type for degree centralities and its
 // corresponding property map.
@@ -49,7 +48,7 @@ main(int argc, char *argv[])
     NameMap nm(get(&Actor::name, g));
 
     // Read the graph from standard input.
-    read_graph(g, nm, cin);
+    read_graph(g, nm, std::cin);
 
     // Compute the degree centrality for graph.
     CentralityContainer cents(num_vertices(g));
@@ -58,8 +57,8 @@ main(int argc, char *argv[])
 
     // Print the degree centrality of each vertex.
     for(const auto& vertex : make_range_pair(vertices(g))) {
-        cout << setiosflags(ios::left) << setw(12)
-             << g[vertex].name << cm[vertex] << endl;
+        std::cout << std::setiosflags(std::ios::left) << std::setw(12)
+             << g[vertex].name << cm[vertex] << std::endl;
     }
 
     return 0;

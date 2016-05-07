@@ -15,7 +15,6 @@
 #include "helper.hpp"
 #include "range_pair.hpp"
 
-using namespace std;
 using namespace boost;
 
 // This template struct provides a generic version of a "scaling"
@@ -27,7 +26,7 @@ using namespace boost;
 template <typename Graph,
           typename Distance,
           typename Result,
-          typename Divide = divides<Result>>
+          typename Divide = std::divides<Result>>
 struct scaled_closeness_measure
 {
     using distance_type = Distance;
@@ -58,7 +57,7 @@ using Edge = graph_traits<Graph>::edge_descriptor;
 
 // The name map provides an abstract accessor for the names of
 // each vertex. This is used during graph creation.
-using NameMap = property_map<Graph, string Actor::*>::type;
+using NameMap = property_map<Graph, std::string Actor::*>::type;
 
 // Declare a matrix type and its corresponding property map that
 // will contain the distances between each pair of vertices.
@@ -85,7 +84,7 @@ main(int argc, char *argv[])
     NameMap nm(get(&Actor::name, g));
 
     // Read the graph from standard input.
-    read_graph(g, nm, cin);
+    read_graph(g, nm, std::cin);
 
     // Compute the distances between all pairs of vertices using
     // the Floyd-Warshall algorithm. Note that the weight map is
@@ -105,8 +104,8 @@ main(int argc, char *argv[])
 
     // Print the scaled closeness centrality of each vertex.
     for(const auto& vertex : make_range_pair(vertices(g))) {
-        cout << setw(12) << setiosflags(ios::left)
-             << g[vertex].name << get(cm, vertex) << endl;
+        std::cout << std::setw(12) << std::setiosflags(std::ios::left)
+             << g[vertex].name << get(cm, vertex) << std::endl;
     }
 
     return 0;

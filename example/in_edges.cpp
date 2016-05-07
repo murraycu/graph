@@ -28,8 +28,6 @@
 int main(int , char* [])
 {
   using namespace boost;
-  using namespace std;
-  using namespace boost;
 
   using Graph = adjacency_list<listS,vecS,bidirectionalS>;
   const int num_vertices = 5;
@@ -42,10 +40,10 @@ int main(int , char* [])
   add_edge(3, 4, g);
 
   for(const auto& vertex : make_range_pair(vertices(g))) {
-    cout << vertex << " <-- ";
+    std::cout << vertex << " <-- ";
     for (const auto& edge : make_range_pair(in_edges(vertex, g)))
-      cout << source(edge, g) << "  ";
-    cout << endl;
+      std::cout << source(edge, g) << "  ";
+    std::cout << std::endl;
   }
   return 0;
 }

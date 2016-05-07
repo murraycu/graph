@@ -58,7 +58,6 @@
 
 
 using namespace boost;
-using namespace std;
 
 
 enum edge_myflow_t { edge_myflow };
@@ -77,18 +76,18 @@ void print_network(const Graph& G)
   auto flow = get(edge_myflow, G);
 
   for (const auto& vertex : make_range_pair(vertices(G))) {
-    cout << vertex << "\t";
+    std::cout << vertex << "\t";
 
     for (const auto& edge : make_range_pair(out_edges(vertex, G)))
-      cout << "--(" << capacity[edge] << ", " << flow[edge] << ")--> "
+      std::cout << "--(" << capacity[edge] << ", " << flow[edge] << ")--> "
            << target(edge,G) << "\t";
 
-    cout << endl << "\t";
+    std::cout << std::endl << "\t";
     for (const auto& edge : make_range_pair(in_edges(vertex, G)))
-      cout << "<--(" << capacity[edge] << "," << flow[edge] << ")-- "
+      std::cout << "<--(" << capacity[edge] << "," << flow[edge] << ")-- "
            << source(edge, G) << "\t";
 
-    cout << endl;
+    std::cout << std::endl;
   }
 }
 
@@ -138,7 +137,7 @@ int main(int , char* [])
   for (const auto& vertex : make_range_pair(vertices(G)))
     for (const auto& edge : make_range_pair(out_edges(vertex, G)))
       flow[edge] = ++f;
-  cout << endl << endl;
+  std::cout << std::endl << std::endl;
 
   remove_edge(6, 8, G);
 

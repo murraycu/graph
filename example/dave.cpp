@@ -22,7 +22,6 @@
 #include <boost/graph/graph_utility.hpp>
 #include "range_pair.hpp"
 
-using namespace std;
 using namespace boost;
 /*
   This example does a best-first-search (using dijkstra's) and
@@ -144,10 +143,10 @@ template <class Graph, class Name>
 void print(Graph& G, Name name)
 {
   for(const auto& u : make_range_pair(vertices(G))) {
-    cout << name[u] << " --> ";
+    std::cout << name[u] << " --> ";
     for(const auto& v : make_range_pair(adjacent_vertices(u, G)))
-      cout << name[v] << " ";
-    cout << endl;
+      std::cout << name[v] << " ";
+    std::cout << std::endl;
   }
     
 }
@@ -163,7 +162,7 @@ main(int , char* [])
   Graph G(N);
   auto vertex_id = get(vertex_index, G);
 
-  std::vector<weight_t> distance(N, (numeric_limits<weight_t>::max)());
+  std::vector<weight_t> distance(N, (std::numeric_limits<weight_t>::max)());
   using Vertex = boost::graph_traits<Graph>::vertex_descriptor;
   std::vector<Vertex> parent(N);
 
@@ -191,7 +190,7 @@ main(int , char* [])
   adjacency_list<listS, vecS, directedS, 
     property<vertex_color_t, default_color_type>> G_copy(N);
 
-  cout << "Starting graph:" << endl;
+  std::cout << "Starting graph:" << std::endl;
 
   std::ostream_iterator<int> cout_int(std::cout, " ");
   std::ostream_iterator<char> cout_char(std::cout, " ");
@@ -225,8 +224,8 @@ main(int , char* [])
                                                 parent[0])).
      visitor(make_dijkstra_visitor(copy_graph(G_copy, on_examine_edge()))));
 
-  cout << endl;
-  cout << "Result:" << endl;
+  std::cout << std::endl;
+  std::cout << "Result:" << std::endl;
   boost::breadth_first_search
     (G, vertex(a, G), 
      visitor(make_bfs_visitor(

@@ -51,7 +51,6 @@ struct VertexProperties {
 int main(int , char* [])
 {
   using namespace boost;
-  using namespace std;
 
   using Graph = adjacency_list<vecS, listS, undirectedS, 
     VertexProperties, EdgeProperties>;
@@ -73,26 +72,26 @@ int main(int , char* [])
   add_edge(vertex(3, g), vertex(4, g), EdgeProperties("harry"), g);
 
   for(const auto& vertex : make_range_pair(vertices(g))) {
-    cout << id[vertex] << " ";
+    std::cout << id[vertex] << " ";
     for (const auto out_edge : make_range_pair(out_edges(vertex, g)))
-      cout << " --" << name[out_edge] << "--> " << id[target(out_edge, g)] << "  ";
-    cout << endl;
+      std::cout << " --" << name[out_edge] << "--> " << id[target(out_edge, g)] << "  ";
+    std::cout << std::endl;
   }
   print_edges(g, id);
 
-  cout << endl << "removing edge (1,3): " << endl;  
+  std::cout << std::endl << "removing edge (1,3): " << std::endl;  
   remove_edge(vertex(1, g), vertex(3, g), g);
 
   auto ei = out_edges(vertex(1, g), g).first;
-  cout << "removing edge (" << id[source(*ei, g)] 
-       << "," << id[target(*ei, g)] << ")" << endl;
+  std::cout << "removing edge (" << id[source(*ei, g)] 
+       << "," << id[target(*ei, g)] << ")" << std::endl;
   remove_edge(ei, g);
 
   for(const auto& vertex : make_range_pair(vertices(g))) {
-    cout << id[vertex] << " ";
+    std::cout << id[vertex] << " ";
     for (const auto out_edge : make_range_pair(out_edges(vertex, g)))
-      cout << " --" << name[out_edge] << "--> " << id[target(out_edge, g)] << "  ";
-    cout << endl;
+      std::cout << " --" << name[out_edge] << "--> " << id[target(out_edge, g)] << "  ";
+    std::cout << std::endl;
   }
 
   print_edges(g, id);
