@@ -115,7 +115,7 @@ main()
 
     auto i = line_toks.begin();
 
-    boost::tie(pos, inserted) = name2vertex.insert(std::make_pair(*i, Vertex()));
+    std::tie(pos, inserted) = name2vertex.insert(std::make_pair(*i, Vertex()));
     if (inserted) {
       u = add_vertex(g);
       put(node_name, u, *i);
@@ -126,7 +126,7 @@ main()
 
     std::string hyperlink_name = *i++;
       
-    boost::tie(pos, inserted) = name2vertex.insert(std::make_pair(*i, Vertex()));
+    std::tie(pos, inserted) = name2vertex.insert(std::make_pair(*i, Vertex()));
     if (inserted) {
       v = add_vertex(g);
       put(node_name, v, *i);
@@ -135,7 +135,7 @@ main()
       v = pos->second;
 
     Edge e;
-    boost::tie(e, inserted) = add_edge(u, v, g);
+    std::tie(e, inserted) = add_edge(u, v, g);
     if (inserted) {
       put(link_name, e, hyperlink_name);
     }
@@ -169,7 +169,7 @@ main()
 
   std::cout << "Number of clicks from the home page: " << std::endl;
   Traits::vertex_iterator vi, vi_end;
-  for (boost::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
+  for (std::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
     std::cout << d_matrix[0][*vi] << "\t" << node_name[*vi] << std::endl;
   std::cout << std::endl;
   
@@ -191,7 +191,7 @@ main()
 
   // Add all the search tree edges into a new graph
   Graph search_tree(num_vertices(g));
-  boost::tie(vi, vi_end) = vertices(g);
+  std::tie(vi, vi_end) = vertices(g);
   ++vi;
   for (; vi != vi_end; ++vi)
     add_edge(parent[*vi], *vi, search_tree);

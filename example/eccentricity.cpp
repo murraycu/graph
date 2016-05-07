@@ -73,7 +73,7 @@ main(int argc, char *argv[])
     int r, d;
     EccentricityContainer eccs(num_vertices(g));
     EccentricityMap em(eccs, g);
-    boost::tie(r, d) = all_eccentricities(g, dm, em);
+    std::tie(r, d) = all_eccentricities(g, dm, em);
 
     // Print the closeness centrality of each vertex.
     for(const auto& vertex : make_range_pair(vertices(g))) {

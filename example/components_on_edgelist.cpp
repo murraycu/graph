@@ -49,7 +49,7 @@
  */
 
 
-using boost::tie;
+using std::tie;
 
 int main(int , char* []) 
 {

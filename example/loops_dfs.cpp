@@ -92,7 +92,7 @@ compute_loop_extent(typename graph_traits <
                                                get(vertex_index, g), c));
 
   typename graph_traits<Graph>::vertex_iterator vi, vi_end;
-  for (boost::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
+  for (std::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
     if (reachable_from_head[*vi] != Color::white()
         && reachable_to_tail[*vi] != Color::white())
       loop_set.insert(*vi);
@@ -151,7 +151,7 @@ main(int argc, char *argv[])
             << "ratio=\"fill\"\n"
             << "shape=\"box\"\n";
   graph_traits<Graph>::vertex_iterator vi, vi_end;
-  for (boost::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi) {
+  for (std::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi) {
     loops_out << *vi << "[";
     for (auto ai = vattr_map[*vi].begin();
          ai != vattr_map[*vi].end(); ++ai) {

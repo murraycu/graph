@@ -74,7 +74,7 @@ main()
   file_dep_graph g(n_vertices);
   while (input_begin != input_end) {
     size_type i, j;
-    boost::tie(i, j) = *input_begin++;
+    std::tie(i, j) = *input_begin++;
     add_edge(i, j, g);
   }
 #else

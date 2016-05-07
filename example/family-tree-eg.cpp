@@ -36,7 +36,7 @@ main()
 
   for (const auto& vertex : make_range_pair(vertices(g))) {
     std::cout << name[get(index_map, vertex)];
-    boost::tie(ai, a_end) = adjacent_vertices(vertex, g);
+    std::tie(ai, a_end) = adjacent_vertices(vertex, g);
     if (ai == a_end)
       std::cout << " has no children";
     else

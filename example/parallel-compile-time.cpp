@@ -77,9 +77,9 @@ generic_dfs_v2(const Graph & g, Visitor vis, ColorMap color)
   using ColorValue = typename property_traits <ColorMap >::value_type;
   using ColorT = color_traits<ColorValue> ;
   typename graph_traits<Graph>::vertex_iterator  vi, vi_end;
-  for (boost::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
+  for (std::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
     color[*vi] = ColorT::white();
-  for (boost::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
+  for (std::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
     if (color[*vi] == ColorT::white())
       dfs_v2(g, *vi, color, vis);
 }
@@ -133,7 +133,7 @@ main()
     id2vertex.emplace_back(add_vertex(g));
   while (input_begin != input_end) {
     size_type i, j;
-    boost::tie(i, j) = *input_begin++;
+    std::tie(i, j) = *input_begin++;
     add_edge(id2vertex[i], id2vertex[j], g);
   }
 #else
@@ -157,7 +157,7 @@ main()
     std::ifstream name_in("makefile-target-names.dat");
     std::ifstream compile_cost_in("target-compile-costs.dat");
     graph_traits<file_dep_graph2>::vertex_iterator vi, vi_end;
-    for (boost::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi) {
+    for (std::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi) {
       name_in >> name_map[*vi];
       compile_cost_in >> compile_cost_map[*vi];
     }
@@ -170,14 +170,14 @@ main()
   graph_traits<file_dep_graph2>::adjacency_iterator vi, vi_end;
 
   // find source vertices with zero in-degree by marking all vertices with incoming edges
-  for (boost::tie(i, i_end) = vertices(g); i != i_end; ++i)
+  for (std::tie(i, i_end) = vertices(g); i != i_end; ++i)
     color_map[*i] = white_color;
-  for (boost::tie(i, i_end) = vertices(g); i != i_end; ++i)
-    for (boost::tie(vi, vi_end) = adjacent_vertices(*i, g); vi != vi_end; ++vi)
+  for (std::tie(i, i_end) = vertices(g); i != i_end; ++i)
+    for (std::tie(vi, vi_end) = adjacent_vertices(*i, g); vi != vi_end; ++vi)
       color_map[*vi] = black_color;
 
   // initialize distances to zero, or for source vertices, to the compile cost
-  for (boost::tie(i, i_end) = vertices(g); i != i_end; ++i)
+  for (std::tie(i, i_end) = vertices(g); i != i_end; ++i)
     if (color_map[*i] == white_color)
       distance_map[*i] = compile_cost_map[*i];
     else
@@ -188,14 +188,14 @@ main()
     vertex_t
       u = *
       ui;
-    for (boost::tie(vi, vi_end) = adjacent_vertices(u, g); vi != vi_end; ++vi)
+    for (std::tie(vi, vi_end) = adjacent_vertices(u, g); vi != vi_end; ++vi)
       if (distance_map[*vi] < distance_map[u] + compile_cost_map[*vi])
         distance_map[*vi] = distance_map[u] + compile_cost_map[*vi];
   }
 
   graph_property_iter_range < file_dep_graph2,
     vertex_distance_t >::iterator ci, ci_end;
-  boost::tie(ci, ci_end) = get_property_iter_range(g, vertex_distance);
+  std::tie(ci, ci_end) = get_property_iter_range(g, vertex_distance);
   std::cout << "total (parallel) compile time: "
     << *std::max_element(ci, ci_end) << std::endl;
 

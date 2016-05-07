@@ -83,7 +83,7 @@ main()
 
   graph_property_iter_range < file_dep_graph2,
     vertex_compile_cost_t >::iterator ci, ci_end;
-  boost::tie(ci, ci_end) = get_property_iter_range(g, vertex_compile_cost);
+  std::tie(ci, ci_end) = get_property_iter_range(g, vertex_compile_cost);
   std::cout << "total (sequential) compile time: "
     << std::accumulate(ci, ci_end, 0.0) << std::endl;
 

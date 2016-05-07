@@ -44,7 +44,7 @@ main()
   int *wp = weights;
 
   graph_traits<Graph>::edge_iterator e, e_end;
-  for (boost::tie(e, e_end) = edges(g); e != e_end; ++e)
+  for (std::tie(e, e_end) = edges(g); e != e_end; ++e)
     w[*e] = *wp++;
 
   std::vector<int >d(V, (std::numeric_limits < int>::max)());

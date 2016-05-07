@@ -45,7 +45,7 @@ main(int, char *[])
   auto indexmap = get(vertex_index, g);
   auto name = get(vertex_name, g);
   int c = 0;
-  for (boost::tie(i, iend) = vertices(g); i != iend; ++i, ++c) {
+  for (std::tie(i, iend) = vertices(g); i != iend; ++i, ++c) {
     indexmap[*i] = c;
     name[*i] = 'A' + c;
   }

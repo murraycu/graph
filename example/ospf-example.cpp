@@ -51,7 +51,7 @@ main()
 
   vertex_descriptor router_six;
   graph_traits<g_dot_type>::vertex_iterator vi, vi_end;
-  for (boost::tie(vi, vi_end) = vertices(g_dot); vi != vi_end; ++vi)
+  for (std::tie(vi, vi_end) = vertices(g_dot); vi != vi_end; ++vi)
     if ("RT6" == get(vertex_name, g_dot, *vi)) {
       router_six = *vi;
       break;
@@ -90,7 +90,7 @@ main()
 
   std::ofstream rtable("routing-table.dat");
   rtable << "Dest    Next Hop    Total Cost" << std::endl;
-  for (boost::tie(vi, vi_end) = vertices(g_dot); vi != vi_end; ++vi)
+  for (std::tie(vi, vi_end) = vertices(g_dot); vi != vi_end; ++vi)
     if (parent[*vi] != *vi) {
       rtable << get(vertex_name, g_dot, *vi) << "    ";
       vertex_descriptor v = *vi, child;

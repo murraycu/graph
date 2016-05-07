@@ -71,12 +71,12 @@ int main(int argc, char* argv[])
 
   // First add representative vertices to each component's list
   graph_traits<Graph*>::vertex_iterator vi, vi_end;
-  for (boost::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
+  for (std::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
     if (root[*vi] == *vi)
       strong_comp[comp[index_map[*vi]]].emplace_back(*vi);
 
   // Then add the other vertices of the component
-  for (boost::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
+  for (std::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
     if (root[*vi] != *vi)
       strong_comp[comp[index_map[*vi]]].emplace_back(*vi);
 

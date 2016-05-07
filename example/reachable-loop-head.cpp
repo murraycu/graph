@@ -38,7 +38,7 @@ main(int argc, char *argv[])
   auto vattr_map = get(vertex_attribute, g);
 
   graph_traits<GraphvizDigraph>::vertex_iterator i, i_end;
-  for (boost::tie(i, i_end) = vertices(g); i != i_end; ++i)
+  for (std::tie(i, i_end) = vertices(g); i != i_end; ++i)
     if (reachable_from_head[*i] != Color::white()) {
       vattr_map[*i]["color"] = "gray";
       vattr_map[*i]["style"] = "filled";
@@ -52,7 +52,7 @@ main(int argc, char *argv[])
             << "ratio=\"fill\"\n"
             << "shape=\"box\"\n";
   graph_traits<GraphvizDigraph>::vertex_iterator vi, vi_end;
-  for (boost::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi) {
+  for (std::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi) {
     loops_out << *vi << "[";
     for (auto ai = vattr_map[*vi].begin();
          ai != vattr_map[*vi].end(); ++ai) {

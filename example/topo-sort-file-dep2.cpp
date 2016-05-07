@@ -60,7 +60,7 @@ generic_dfs_v1(const file_dep_graph & g, Visitor vis)
 {
   std::vector<default_color_type> color(num_vertices(g), white_color);
   graph_traits<file_dep_graph>::vertex_iterator vi, vi_end;
-  for (boost::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi) {
+  for (std::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi) {
     if (color[*vi] == white_color)
       dfs_v1(g, *vi, &color[0], vis);
   }
@@ -130,7 +130,7 @@ main()
   file_dep_graph g(n_vertices);
   while (input_begin != input_end) {
     size_type i, j;
-    boost::tie(i, j) = *input_begin++;
+    std::tie(i, j) = *input_begin++;
     add_edge(i, j, g);
   }
 #else
@@ -140,7 +140,7 @@ main()
   std::vector<std::string> name(num_vertices(g));
   std::ifstream name_in("makefile-target-names.dat");
   graph_traits<file_dep_graph>::vertex_iterator vi, vi_end;
-  for (boost::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
+  for (std::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
     name_in >> name[*vi];
 
   std::vector<vertex_t> order(num_vertices(g));

@@ -486,7 +486,7 @@ int main (int argc, char const *argv[]) {
     // Adjacent vertices
     // Here we want our adjacency_iterator and not boost::adjacency_iterator.
     ::adjacency_iterator ai, ai_end;
-    for (boost::tie(ai, ai_end) = adjacent_vertices(u, g); ai != ai_end; ai++) {
+    for (std::tie(ai, ai_end) = adjacent_vertices(u, g); ai != ai_end; ai++) {
       std::cout << *ai << " ";
     }
     std::cout << std::endl;
@@ -534,7 +534,7 @@ int main (int argc, char const *argv[]) {
                             distance_map(dist_pm) );
 
     std::cout << "Dijkstra search from vertex " << source << std::endl;
-    for (boost::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi) {
+    for (std::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi) {
       vertex_descriptor u = *vi;
       std::cout << "Vertex " << u << ": "
                 << "parent "<< pred[*vi] << ", "
