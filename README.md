@@ -1,40 +1,48 @@
-# Boost Graph Library
+Boost Graph Library
+===================
 
 A generic interface for traversing graphs, using C++ templates.
 
-## Build from git
+The full documentation is available on [boost.org](http://www.boost.org/doc/libs/release/libs/graph/doc/index.html).
 
-Clone the whole boost project, which includes the individual Boost projects as 
-git submodules: https://github.com/boostorg/boost
+## Support, bugs and feature requests ##
 
-Then run bootstap and b2. For instance, on Linux:
+Bugs and feature requests can be reported through the [trac issue tracker](https://svn.boost.org/trac/boost/query?component=graph&desc=1&order=id). The GitHub issue tracker is not (yet) used on the Boost Graph Library project.
 
-```
-$ ./bootstrap
-$ ./b2
-```
+You can submit your changes through a [pull request](https://github.com/boostorg/graph/pulls). One of the maintainers will take a look (remember that it can take some time).
 
-See https://svn.boost.org/trac/boost/wiki/TryModBoost#InstallingModularBoost
+There is no mailing-list specific to Boost Graph, although you can use the general-purpose Boost [mailing-list](https://groups.google.com/forum/#!forum/boost-devel-archive) using the tag [Graph].
 
-The Boost Graph Library cannot currently be built outside of Boost itself.
 
-## Documentation
+## Development ##
 
-http://www.boost.org/doc/libs/release/libs/graph/doc/index.html
+Clone the whole boost project, which includes the individual Boost projects as submodules ([see boost+git doc](https://svn.boost.org/trac/boost/wiki/TryModBoost#InstallingModularBoost)): 
 
-## Issues
+    git clone https://github.com/boostorg/boost
+    cd boost
+    git submodule update --init
 
-### Currently open issues:
+The Boost Graph Library is located in `libs/graph/`. 
 
-https://svn.boost.org/trac/boost/query?status=!closed&component=graph&desc=1&order=id
+To _build_ the headers the headers (as boost is mostly a headers-based library, hence no need to build) with:
+    
+    ./bootstrap.sh
+    ./b2 headers
 
-### Closed issues:
 
-https://svn.boost.org/trac/boost/query?status=closed&component=graph&col=id&col=summary&col=status&col=owner&col=type&col=milestone&col=version&desc=1&order=id
+**Note:** The Boost Graph Library cannot currently be built outside of Boost itself.
 
-## GitHub Pull Requests
+### Running tests ###
+First, make sure you are in `libs/graph/test`. To run the 300+ tests listed in `Jamfile.v2`, you can do
 
-https://github.com/boostorg/graph/pulls
+    ../../../b2
 
+Say you fixed some bugs in [`find_flow_cost.hpp`](https://github.com/boostorg/graph/blob/develop/include/boost/graph/find_flow_cost.hpp). You want to know which tests are relevant to that file. The is no straight-forward way to do that, as the tests are scattered in the `test` folder. You can, as an example, look for the main function in this file:
+
+    grep . -r -e "find_flow_cost("
+
+Say you found out that you only want to run the tests in `cycle_canceling_test.cpp`. You can launch the tests for that specific file using:
+
+    ../../../b2 cxxflags="-std=c++11" cycle_canceling_test
 
 
