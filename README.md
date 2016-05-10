@@ -26,11 +26,11 @@ Clone the whole boost project, which includes the individual Boost projects as s
 
 The Boost Graph Library is located in `libs/graph/`. 
 
-To _build_ the headers the headers (as boost is mostly a headers-based library, hence no need to build) with:
+Boost Graph Library is mostly made of headers but also contains some compiled components. Here are the build commands:
     
-    ./bootstrap.sh
-    ./b2 headers
-
+    ./bootstrap.sh            <- compile b2 
+    ./b2 headers              <- just installs headers
+    ./b2                      <- build compiled components
 
 **Note:** The Boost Graph Library cannot currently be built outside of Boost itself.
 
