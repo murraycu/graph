@@ -33,16 +33,10 @@ To _build_ the headers the headers (as boost is mostly a headers-based library, 
 **Note:** The Boost Graph Library cannot currently be built outside of Boost itself.
 
 ### Running tests ###
-First, make sure you are in `libs/graph/test`. To run the 300+ tests listed in `Jamfile.v2`, you can do
+First, make sure you are in `libs/graph/test`. 
+You can either run all the 300+ tests listed in `Jamfile.v2` or run a single test:
 
-    ../../../b2
-
-Say you fixed some bugs in [`find_flow_cost.hpp`](https://github.com/boostorg/graph/blob/develop/include/boost/graph/find_flow_cost.hpp). You want to know which tests are relevant to that file. The is no straight-forward way to do that, as the tests are scattered in the `test` folder. You can, as an example, look for the main function in this file:
-
-    grep . -r -e "find_flow_cost("
-
-Say you found out that you only want to run the tests in `cycle_canceling_test.cpp`. You can launch the tests for that specific file using:
-
-    ../../../b2 cxxflags="-std=c++11" cycle_canceling_test
+    ../../../b2                        <- run all tests
+    ../../../b2 cycle_canceling_test   <- single test
 
 
