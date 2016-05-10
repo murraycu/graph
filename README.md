@@ -7,9 +7,9 @@ The full documentation is available on [boost.org](http://www.boost.org/doc/libs
 
 ## Support, bugs and feature requests ##
 
-Bugs and feature requests can be reported through the [trac issue tracker](https://svn.boost.org/trac/boost/query?component=graph&desc=1&order=id)
+Bugs and feature requests can be reported through the [Trac issue tracker](https://svn.boost.org/trac/boost/query?component=graph&desc=1&order=id)
 (see [open issues](https://svn.boost.org/trac/boost/query?status=!closed&component=graph&desc=1&order=id) and
-[closed issues](https://svn.boost.org/trac/boost/query?status=closed&component=graph&col=id&col=summary&col=status&col=owner&col=type&col=milestone&col=version&desc=1&order=id)). Even though Trac is kind of outdated, the GitHub issue tracker is not used as it does not scales well to huge projects.
+[closed issues](https://svn.boost.org/trac/boost/query?status=closed&component=graph&col=id&col=summary&col=status&col=owner&col=type&col=milestone&col=version&desc=1&order=id)). [Here](http://lists.boost.org/Archives/boost/2015/04/221780.php) is why Trac is still in use.
 
 You can submit your changes through a [pull request](https://github.com/boostorg/graph/pulls). One of the maintainers will take a look (remember that it can take some time).
 
