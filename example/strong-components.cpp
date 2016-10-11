@@ -29,7 +29,7 @@ main()
 
   std::vector<int> c(N);
   int num = strong_components
-    (G, make_iterator_property_map(c.begin(), get(vertex_index, G), c[0]));
+    (G, boost::make_iterator_property_map(c.begin(), boost::get(vertex_index, G), c[0]));
 
   std::cout << "Total number of components: " << num << std::endl;
   for (auto i = c.begin(); i != c.end(); ++i)

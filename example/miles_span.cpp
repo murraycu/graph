@@ -85,16 +85,16 @@ int main(int argc, char* argv[])
    long sp_length = 0;
 
    // Use the "z" utility field for distance.
-   auto d = get(z_property<long>(), g);
+   auto d = boost::get(z_property<long>(), g);
    // Use the "w" property for parent
-   auto p = get(w_property<Vertex*>(), g);
+   auto p = boost::get(w_property<Vertex*>(), g);
    total_length_visitor<Distance> length_vis(sp_length, d);
 
    prim_minimum_spanning_tree(g, p,
-                              distance_map(get(z_property<long>(), g)).
-                              weight_map(get(edge_length_t(), g)). 
+                              distance_map(boost::get(z_property<long>(), g)).
+                              weight_map(boost::get(edge_length_t(), g)). 
                               // Use the "y" utility field for color
-                              color_map(get(y_property<long>(), g)).
+                              color_map(boost::get(y_property<long>(), g)).
                               visitor(length_vis));
 
    printf("  and its minimum spanning tree has length %ld.\n", sp_length);

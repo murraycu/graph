@@ -31,8 +31,8 @@ void print_bipartite (const Graph& g)
   if (bipartite)
   {
     using partition_t = std::vector <default_color_type>;
-    using index_map_t = typename property_map <Graph, vertex_index_t>::type;
-    using partition_map_t = iterator_property_map <partition_t::iterator, index_map_t>;
+    using index_map_t = typename boost::property_map <Graph, vertex_index_t>::type;
+    using partition_map_t = boost::iterator_property_map <partition_t::iterator, index_map_t>;
 
     partition_t partition (num_vertices (g));
     partition_map_t partition_map (partition.begin (), get (vertex_index, g));

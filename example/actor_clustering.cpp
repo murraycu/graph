@@ -35,7 +35,7 @@ struct Actor
 };
 
 using ActorGraph = adjacency_list<vecS, vecS, undirectedS, Actor,
-  property<edge_centrality_t, double>>;
+  boost::property<edge_centrality_t, double>>;
 using Vertex = graph_traits<ActorGraph>::vertex_descriptor;
 using Edge = graph_traits<ActorGraph>::edge_descriptor;
 
@@ -79,13 +79,13 @@ write_pajek_graph(std::ostream& out, const Graph& g,
 {
   out << "*Vertices " << num_vertices(g) << '\n';
   for (auto v = vertices(g).first; v != vertices(g).second; ++v) {
-    out << get(vertex_index, *v)+1 << " \"" << get(vertex_name, *v) << "\"\n";
+    out << boost::get(vertex_index, *v)+1 << " \"" << boost::get(vertex_name, *v) << "\"\n";
   }
 
   out << "*Edges\n";
   for (auto e = edges(g).first; e != edges(g).second; ++e) {
-    out << get(vertex_index, source(*e, g))+1 << ' ' 
-        << get(vertex_index, target(*e, g))+1 << " 1.0\n"; // HACK!
+    out << boost::get(vertex_index, source(*e, g))+1 << ' ' 
+        << boost::get(vertex_index, target(*e, g))+1 << " 1.0\n"; // HACK!
   }
   return out;
 }
@@ -169,7 +169,7 @@ int main(int argc, char* argv[])
   std::cout << "Clusting..." << std::endl;
   betweenness_centrality_clustering(g, 
     actor_clustering_threshold(threshold, g, normalize), 
-    get(edge_centrality, g));
+    boost::get(edge_centrality, g));
 
   // Output the graph
   {
@@ -179,7 +179,7 @@ int main(int argc, char* argv[])
       std::cerr << "Unable to open file \"" << out_file << "\" for output.\n";
       return -3;
     }
-    write_pajek_graph(out, g, get(vertex_index, g), get(&Actor::id, g));
+    write_pajek_graph(out, g, boost::get(vertex_index, g), boost::get(&Actor::id, g));
   }
   return 0;
 }

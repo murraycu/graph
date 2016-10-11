@@ -24,24 +24,24 @@ main()
   const int n = 12;
 
   using graph_t = adjacency_list<vecS, listS, undirectedS,
-    property<vertex_index_t, int>>;
+    boost::property<vertex_index_t, int>>;
   graph_t g1(n), g2(n);
 
   std::vector<graph_traits<graph_t>::vertex_descriptor> v1(n), v2(n);
 
-  property_map<graph_t, vertex_index_t>::type 
-    v1_index_map = get(vertex_index, g1),
-    v2_index_map = get(vertex_index, g2);
+  boost::property_map<graph_t, vertex_index_t>::type 
+    v1_index_map = boost::get(vertex_index, g1),
+    v2_index_map = boost::get(vertex_index, g2);
 
   graph_traits<graph_t>::vertex_iterator i, end;
   int id = 0;
   for (std::tie(i, end) = vertices(g1); i != end; ++i, ++id) {
-    put(v1_index_map, *i, id);
+    boost::put(v1_index_map, *i, id);
     v1[id] = *i;
   }
   id = 0;
   for (std::tie(i, end) = vertices(g2); i != end; ++i, ++id) {
-    put(v2_index_map, *i, id);
+    boost::put(v2_index_map, *i, id);
     v2[id] = *i;
   }
   add_edge(v1[0], v1[1], g1); add_edge(v1[1], v1[2], g1); 
@@ -64,18 +64,18 @@ main()
 
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
   bool ret = isomorphism
-    (g1, g2, make_iterator_property_map(f.begin(), v1_index_map, f[0]),
-     degree_vertex_invariant(), get(vertex_index, g1), get(vertex_index, g2));
+    (g1, g2, boost::make_iterator_property_map(f.begin(), v1_index_map, f[0]),
+     degree_vertex_invariant(), boost::get(vertex_index, g1), boost::get(vertex_index, g2));
 #else
   bool ret = isomorphism
     (g1, g2, isomorphism_map
-     (make_iterator_property_map(f.begin(), v1_index_map, f[0])));
+     (boost::make_iterator_property_map(f.begin(), v1_index_map, f[0])));
 #endif
   std::cout << "isomorphic? " << ret << std::endl;
 
   std::cout << "f: ";
   for (std::size_t v = 0; v != f.size(); ++v)
-    std::cout << get(get(vertex_index, g2), f[v]) << " ";
+    std::cout << boost::get(boost::get(vertex_index, g2), f[v]) << " ";
   std::cout << std::endl;
   
   return 0;

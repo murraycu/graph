@@ -36,15 +36,15 @@ main()
   add_edge(4, 1, G);
 
   std::cout << "original graph:" << std::endl;
-  print_graph(G, get(vertex_index, G));
+  print_graph(G, boost::get(vertex_index, G));
 
 
   std::cout << std::endl << "reversed graph:" << std::endl;
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300  // avoid VC++ bug...
   reverse_graph<Graph> R(G);
-  print_graph(R, get(vertex_index, G));
+  print_graph(R, boost::get(vertex_index, G));
 #else
-  print_graph(make_reverse_graph(G), get(vertex_index, G));
+  print_graph(make_reverse_graph(G), boost::get(vertex_index, G));
 #endif
 
   return EXIT_SUCCESS;

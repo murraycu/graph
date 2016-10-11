@@ -33,13 +33,13 @@ int main(int argc, char** argv)
 {
   using graph = adjacency_list<vecS, vecS,
     undirectedS,
-    property<vertex_index_t, int>>;
+    boost::property<vertex_index_t, int>>;
 
   //Define the storage type for the planar embedding
   using embedding_storage_t = std::vector<std::vector<graph_traits<graph>::edge_descriptor>>;
   using embedding_t = boost::iterator_property_map
     < embedding_storage_t::iterator, 
-      property_map<graph, vertex_index_t>::type 
+      boost::property_map<graph, vertex_index_t>::type 
     >;
 
 
@@ -73,7 +73,7 @@ int main(int argc, char** argv)
 
   // Create the planar embedding
   embedding_storage_t embedding_storage(num_vertices(g));
-  embedding_t embedding(embedding_storage.begin(), get(vertex_index,g));
+  embedding_t embedding(embedding_storage.begin(), boost::get(vertex_index,g));
 
   boyer_myrvold_planarity_test(boyer_myrvold_params::graph = g,
                                boyer_myrvold_params::embedding = embedding
@@ -90,14 +90,14 @@ int main(int argc, char** argv)
   using straight_line_drawing_storage_t = std::vector<coord_t>;
   using straight_line_drawing_t = boost::iterator_property_map
     < straight_line_drawing_storage_t::iterator, 
-      property_map<graph, vertex_index_t>::type 
+      boost::property_map<graph, vertex_index_t>::type 
     >;
 
   straight_line_drawing_storage_t straight_line_drawing_storage
     (num_vertices(g));
   straight_line_drawing_t straight_line_drawing
     (straight_line_drawing_storage.begin(), 
-     get(vertex_index,g)
+     boost::get(vertex_index,g)
      );
 
 
@@ -116,7 +116,7 @@ int main(int argc, char** argv)
   graph_traits<graph>::vertex_iterator vi, vi_end;
   for(std::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
     {
-      coord_t coord(get(straight_line_drawing,*vi));
+      coord_t coord(boost::get(straight_line_drawing,*vi));
       std::cout << *vi << " -> (" << coord.x << ", " << coord.y << ")" 
                 << std::endl;
     }

@@ -15,7 +15,7 @@ main()
 {
   using namespace boost;
   using Graph = adjacency_list<vecS, vecS, undirectedS,
-    no_property, property<edge_weight_t, int>>;
+    boost::no_property, boost::property<edge_weight_t, int>>;
   using Edge = graph_traits<Graph>::edge_descriptor;
   using E = std::pair<int, int>;
 
@@ -27,7 +27,7 @@ main()
   std::size_t num_edges = sizeof(edge_array) / sizeof(E);
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
   Graph g(num_nodes);
-  auto = get(edge_weight, g);
+  auto = boost::get(edge_weight, g);
   for (std::size_t j = 0; j < num_edges; ++j) {
     Edge e; bool inserted;
     std::tie(e, inserted) = add_edge(edge_array[j].first, edge_array[j].second, g);
@@ -36,7 +36,7 @@ main()
 #else
   Graph g(edge_array, edge_array + num_edges, weights, num_nodes);
 #endif
-  auto weight = get(edge_weight, g);
+  auto weight = boost::get(edge_weight, g);
   std::vector<Edge> spanning_tree;
 
   kruskal_minimum_spanning_tree(g, std::back_inserter(spanning_tree));
@@ -60,10 +60,10 @@ main()
     fout << source(*eiter, g) << " -- " << target(*eiter, g);
     if (std::find(spanning_tree.begin(), spanning_tree.end(), *eiter)
         != spanning_tree.end())
-      fout << "[color=\"black\", label=\"" << get(edge_weight, g, *eiter)
+      fout << "[color=\"black\", label=\"" << boost::get(edge_weight, g, *eiter)
            << "\"];\n";
     else
-      fout << "[color=\"gray\", label=\"" << get(edge_weight, g, *eiter)
+      fout << "[color=\"gray\", label=\"" << boost::get(edge_weight, g, *eiter)
            << "\"];\n";
   }
   fout << "}\n";

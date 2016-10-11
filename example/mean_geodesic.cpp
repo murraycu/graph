@@ -30,7 +30,7 @@ using Edge = graph_traits<Graph>::edge_descriptor;
 
 // The name map provides an abstract accessor for the names of
 // each vertex. This is used during graph creation.
-using NameMap = property_map<Graph, std::string Actor::*>::type;
+using NameMap = boost::property_map<Graph, std::string Actor::*>::type;
 
 // Declare a matrix type and its corresponding property map that
 // will contain the distances between each pair of vertices.
@@ -54,7 +54,7 @@ main(int argc, char *argv[])
     // Create the graph and a property map that provides access
     // to the actor names.
     Graph g;
-    NameMap nm(get(&Actor::name, g));
+    NameMap nm(boost::get(&Actor::name, g));
 
     // Read the graph from standad input.
     read_graph(g, nm, std::cin);
@@ -78,7 +78,7 @@ main(int argc, char *argv[])
     // the graph itself.
     for(const auto& vertex : make_range_pair(vertices(g))) {
         std::cout << std::setw(12) << std::setiosflags(std::ios::left)
-             << g[vertex].name << get(gm, vertex) << std::endl;
+             << g[vertex].name << boost::get(gm, vertex) << std::endl;
     }
     std::cout << "small world distance: " << sw << std::endl;
 

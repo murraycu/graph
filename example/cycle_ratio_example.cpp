@@ -21,9 +21,9 @@
 using namespace boost;
 using grap_real_t = adjacency_list<
     listS, listS, directedS,
-    property<vertex_index_t, int>,
-    property<
-        edge_weight_t, double, property<edge_weight2_t, double>
+    boost::property<vertex_index_t, int>,
+    boost::property<
+        edge_weight_t, double, boost::property<edge_weight2_t, double>
     >
 >;
 
@@ -50,9 +50,9 @@ int main(int argc, char* argv[])
     ccReal_t cc; ///critical cycle
 
     grap_real_t tgr;
-    auto vim = get(vertex_index, tgr);
-    auto ew1 = get(edge_weight, tgr);
-    auto ew2 = get(edge_weight2, tgr);
+    auto vim = boost::get(vertex_index, tgr);
+    auto ew1 = boost::get(edge_weight, tgr);
+    auto ew2 = boost::get(edge_weight2, tgr);
 
     gen_rand_graph(tgr, 1000, 30000);
     std::cout << "Vertices number: " << num_vertices(tgr) << std::endl;

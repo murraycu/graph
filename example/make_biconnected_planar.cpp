@@ -26,8 +26,8 @@ int main(int argc, char** argv)
   
   using graph = adjacency_list<vecS, vecS,
     undirectedS,
-    property<vertex_index_t, int>,
-    property<edge_index_t, int>>;
+    boost::property<vertex_index_t, int>,
+    boost::property<edge_index_t, int>>;
 
   graph g(11);
   add_edge(0,1,g);
@@ -45,10 +45,10 @@ int main(int argc, char** argv)
 
 
   //Initialize the interior edge index
-  auto e_index = get(edge_index, g);
+  auto e_index = boost::get(edge_index, g);
   graph_traits<graph>::edges_size_type edge_count = 0;
   for(const auto& edge : make_range_pair(edges(g)))
-    put(e_index, edge, edge_count++);
+    boost::put(e_index, edge, edge_count++);
   
   
   //Test for planarity; compute the planar embedding as a side-effect
@@ -64,13 +64,13 @@ int main(int argc, char** argv)
     std::cout << "Input graph is not planar" << std::endl;
   
   using component_storage_t = std::vector<graph_traits<graph>::edges_size_type>;
-  using component_map_t = iterator_property_map
+  using component_map_t = boost::iterator_property_map
     < component_storage_t::iterator, 
-      property_map<graph, edge_index_t>::type
+      boost::property_map<graph, edge_index_t>::type
     >;
   
   component_storage_t component_storage(num_edges(g));
-  component_map_t component(component_storage.begin(), get(edge_index, g));
+  component_map_t component(component_storage.begin(), boost::get(edge_index, g));
   
   std::cout << "Before calling make_biconnected_planar, the graph has "
             << biconnected_components(g, component)
@@ -81,13 +81,13 @@ int main(int argc, char** argv)
   // Re-initialize the edge index, since we just added a few edges
   edge_count = 0;
   for(const auto& edge : make_range_pair(edges(g)))
-    put(e_index, edge, edge_count++);
+    boost::put(e_index, edge, edge_count++);
 
   // Re-size the storage for the biconnected components, since we
   // just added a few edges
   
   component_storage.resize(num_edges(g));
-  component = component_map_t(component_storage.begin(), get(edge_index,g));
+  component = component_map_t(component_storage.begin(), boost::get(edge_index,g));
 
   std::cout << "After calling make_biconnected_planar, the graph has "
             << biconnected_components(g, component)

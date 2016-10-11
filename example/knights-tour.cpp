@@ -262,6 +262,8 @@ struct board_map
     board_map(int *b, int n):m_board(b), m_size(n)
   {
   }
+
+  // TODO: get() and put should be in boost::, not global.
   friend int get(const board_map & ba, Position p);
   friend void put(const board_map & ba, Position p, int v);
   friend std::ostream & operator << (std::ostream & os, const board_map & ba);

@@ -39,7 +39,7 @@ main()
   std::deque<int> topo_order;
 
   topological_sort(g, std::front_inserter(topo_order),
-                   vertex_index_map(identity_property_map()));
+                   vertex_index_map(boost::identity_property_map()));
 
   for (const auto& vertex : topo_order)
     std::cout << tasks[vertex] << std::endl;

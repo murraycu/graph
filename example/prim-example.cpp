@@ -15,7 +15,7 @@ main()
 {
   using namespace boost;
   using Graph = adjacency_list<vecS, vecS, undirectedS,
-    property<vertex_distance_t, int>, property<edge_weight_t, int >>;
+    boost::property<vertex_distance_t, int>, boost::property<edge_weight_t, int >>;
   using E = std::pair<int, int>;
   const int num_nodes = 5;
   const auto edges = { E(0, 2), E(1, 3), E(1, 4), E(2, 1), E(2, 3),
@@ -24,7 +24,7 @@ main()
   int weights[] = { 1, 1, 2, 7, 3, 1, 1 };
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
   Graph g(num_nodes);
-  auto weightmap = get(edge_weight, g); 
+  auto weightmap = boost::get(edge_weight, g); 
   for (std::size_t j = 0; j < sizeof(edges) / sizeof(E); ++j) {
     graph_traits<Graph>::edge_descriptor e; bool inserted;
     std::tie(e, inserted) = add_edge(edges[j].first, edges[j].second, g);
@@ -37,8 +37,8 @@ main()
     p(num_vertices(g));
 
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
-  auto distance = get(vertex_distance, g);
-  auto indexmap = get(vertex_index, g);
+  auto distance = boost::get(vertex_distance, g);
+  auto indexmap = boost::get(vertex_index, g);
   prim_minimum_spanning_tree
     (g, *vertices(g).first, &p[0], distance, weightmap, indexmap, 
      default_dijkstra_visitor());

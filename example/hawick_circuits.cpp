@@ -32,14 +32,14 @@ struct cycle_printer
 
         // Get the property map containing the vertex indices
         // so we can print them.
-        auto indices = get(boost::vertex_index, g);
+        auto indices = boost::get(boost::vertex_index, g);
 
         // Iterate over path printing each vertex that forms the cycle.
         typename Path::const_iterator i, before_end = boost::prior(p.end());
         for (i = p.begin(); i != before_end; ++i) {
-            os << get(indices, *i) << " ";
+            os << boost::get(indices, *i) << " ";
         }
-        os << get(indices, *i) << '\n';
+        os << boost::get(indices, *i) << '\n';
     }
     OutputStream& os;
 };

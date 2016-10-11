@@ -21,7 +21,7 @@ public:
   template <typename Node, typename Tree> 
   void inorder(Node n, Tree& t)
   {
-    std::cout << get(boost::vertex_name, t)[n];
+    std::cout << boost::get(boost::vertex_name, t)[n];
   }
   template <typename Node, typename Tree> 
   void postorder(Node, Tree&) {
@@ -34,7 +34,7 @@ int main()
 {
   using namespace boost;
   using graph_t = adjacency_list<vecS, vecS, directedS, 
-    property<vertex_name_t, std::string>>;
+    boost::property<vertex_name_t, std::string>>;
   using vertex_t = graph_traits<graph_t>::vertex_descriptor;
 
   graph_t g;
@@ -46,17 +46,17 @@ int main()
   add_edge(a, b, g);
   add_edge(a, c, g);
   
-  auto name = get(vertex_name, g);
+  auto name = boost::get(vertex_name, g);
   name[a] = "A";
   name[b] = "B";
   name[c] = "C";
 
-  using parent_map_t = iterator_property_map<std::vector<vertex_t>::iterator,
-    property_map<graph_t, vertex_index_t>::type>;
+  using parent_map_t = boost::iterator_property_map<std::vector<vertex_t>::iterator,
+    boost::property_map<graph_t, vertex_index_t>::type>;
   std::vector<vertex_t> parent(num_vertices(g));
   using tree_t = graph_as_tree<graph_t, parent_map_t>;
-  tree_t t(g, a, make_iterator_property_map(parent.begin(), 
-                                            get(vertex_index, g)));
+  tree_t t(g, a, boost::make_iterator_property_map(parent.begin(), 
+                                            boost::get(vertex_index, g)));
 
   tree_printer vis;
   traverse_tree(a, t, vis);

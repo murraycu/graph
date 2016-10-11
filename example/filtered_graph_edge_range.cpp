@@ -42,8 +42,8 @@ int main()
   using namespace boost;
   
   using Graph = adjacency_list<multisetS, vecS, directedS,
-    no_property, property<edge_weight_t, int>>;
-  using EdgeWeightMap = property_map<Graph, edge_weight_t>::type;
+    boost::no_property, boost::property<edge_weight_t, int>>;
+  using EdgeWeightMap = boost::property_map<Graph, edge_weight_t>::type;
 
   enum { A, B, C, D, E, N };
   const char* name = "ABCDE";
@@ -57,7 +57,7 @@ int main()
   add_edge(D, B, 3, g);
   add_edge(E, C, 0, g);
 
-  auto weight = get(edge_weight, g);
+  auto weight = boost::get(edge_weight, g);
 
   std::cout << "unfiltered edge_range(C,D)\n";
   graph_traits<Graph>::out_edge_iterator f, l;

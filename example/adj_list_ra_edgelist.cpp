@@ -15,8 +15,8 @@ int
 main()
 {
   using namespace boost;
-  using Graph = adjacency_list<vecS, vecS, bidirectionalS, no_property, 
-    property<int, edge_weight_t>, no_property, vecS>;
+  using Graph = adjacency_list<vecS, vecS, bidirectionalS, boost::no_property, 
+    boost::property<int, edge_weight_t>, boost::no_property, vecS>;
 
   const std::size_t n = 3;
   using E = std::pair<std::size_t, std::size_t>;

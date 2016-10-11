@@ -30,11 +30,11 @@ main()
 {
   using namespace boost;
   using graph_t = adjacency_list<vecS, vecS, bidirectionalS,
-    property<vertex_name_t, char>>;
+    boost::property<vertex_name_t, char>>;
 
   enum { a, b, c, d, e, f, g, N };
   graph_t G(N);
-  auto name_map = get(vertex_name, G);
+  auto name_map = boost::get(vertex_name, G);
   char name = 'a';
   graph_traits<graph_t>::vertex_iterator v, v_end;
   for (std::tie(v, v_end) = vertices(G); v != v_end; ++v, ++name)
@@ -56,7 +56,7 @@ main()
   graph_t G_copy;
   copy_graph(make_filtered_graph(G, keep_all(), non_zero_degree<graph_t>(G)), G_copy);
 
-  print_graph(G_copy, get(vertex_name, G_copy));
+  print_graph(G_copy, boost::get(vertex_name, G_copy));
 
   return 0;
 }

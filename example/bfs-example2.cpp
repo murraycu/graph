@@ -15,13 +15,13 @@
 
 using namespace boost;
 template <typename TimeMap> class bfs_time_visitor:public default_bfs_visitor {
-  using T = typename property_traits<TimeMap>::value_type;
+  using T = typename boost::property_traits<TimeMap>::value_type;
 public:
   bfs_time_visitor(TimeMap tmap, T & t):m_timemap(tmap), m_time(t) { }
   template <typename Vertex, typename Graph>
   void discover_vertex(Vertex u, const Graph & g) const
   {
-    put(m_timemap, u, m_time++);
+    boost::put(m_timemap, u, m_time++);
   }
   TimeMap m_timemap;
   T & m_time;
@@ -68,24 +68,24 @@ main()
   using Size = graph_traits<graph_t>::vertices_size_type;
 
   Size time = 0;
-  using dtime_map_t = property_map<graph_t, std::size_t VertexProps::*>::type;
-  auto dtime_map = get(&VertexProps::discover_time, g);
+  using dtime_map_t = boost::property_map<graph_t, std::size_t VertexProps::*>::type;
+  auto dtime_map = boost::get(&VertexProps::discover_time, g);
   bfs_time_visitor<dtime_map_t> vis(dtime_map, time);
-  breadth_first_search(g, vertex(s, g), color_map(get(&VertexProps::color, g)).
+  breadth_first_search(g, vertex(s, g), color_map(boost::get(&VertexProps::color, g)).
     visitor(vis));
 
   // a vector to hold the discover time property for each vertex
   std::vector<Size> dtime(num_vertices(g));
   using dtime_pm_type =
-    iterator_property_map<std::vector<Size>::iterator,
-                          property_map<graph_t, unsigned int VertexProps::*>::type>;
+    boost::iterator_property_map<std::vector<Size>::iterator,
+                          boost::property_map<graph_t, unsigned int VertexProps::*>::type>;
   graph_traits<graph_t>::vertex_iterator vi, vi_end;
   std::size_t c = 0;
   for (std::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi, ++c) {
     dtime[c] = dtime_map[*vi];
-    put(&VertexProps::index, g, *vi, c);
+    boost::put(&VertexProps::index, g, *vi, c);
   }
-  dtime_pm_type dtime_pm(dtime.begin(), get(&VertexProps::index, g));
+  dtime_pm_type dtime_pm(dtime.begin(), boost::get(&VertexProps::index, g));
 
   // Use std::sort to order the vertices by their discover time
   std::vector<graph_traits<graph_t>::vertices_size_type > discover_order(N);
@@ -94,9 +94,9 @@ main()
   std::sort(discover_order.begin(), discover_order.end(),
             make_indirect_cmp(
               std::less<Size>(),
-              make_iterator_property_map(
+              boost::make_iterator_property_map(
                 dtime.begin(),
-                typed_identity_property_map<std::size_t>())));
+                boost::typed_identity_property_map<std::size_t>())));
 
   std::cout << "order of discovery: ";
   for (int i = 0; i < N; ++i)

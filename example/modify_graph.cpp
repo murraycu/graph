@@ -46,7 +46,7 @@ void modify_demo(MutableGraph& g)
   typename GraphTraits::edges_size_type m = 0;
   typename GraphTraits::vertex_descriptor u, v, w;
   edge_descriptor e, e1, e2;
-  auto name_map = get(edge_name, g);
+  auto name_map = boost::get(edge_name, g);
   bool added;
   typename GraphTraits::vertex_iterator vi, vi_end;
 
@@ -195,7 +195,7 @@ int
 main()
 {
   adjacency_list<listS, vecS, bidirectionalS,
-    no_property, property<edge_name_t, std::string>> g;
+    boost::no_property, boost::property<edge_name_t, std::string>> g;
 
   modify_demo(g);
   return 0;

@@ -61,8 +61,8 @@ int main(int argc, char** argv)
     < vecS,
       vecS,
       undirectedS,
-      property<vertex_index_t, int>,
-      property<edge_index_t, int>
+      boost::property<vertex_index_t, int>,
+      boost::property<edge_index_t, int>
     >;
 
   // Create a graph - this is a biconnected, 3 x 3 grid.
@@ -91,10 +91,10 @@ int main(int argc, char** argv)
   
 
   // Initialize the interior edge index
-  auto e_index = get(edge_index, g);
+  auto e_index = boost::get(edge_index, g);
   graph_traits<graph>::edges_size_type edge_count = 0;
   for(const auto& edge : make_range_pair(edges(g)))
-    put(e_index, edge, edge_count++);
+    boost::put(e_index, edge, edge_count++);
   
 
   // Test for planarity - we know it is planar, we just want to 

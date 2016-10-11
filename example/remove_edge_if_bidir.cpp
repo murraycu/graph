@@ -42,17 +42,17 @@
 using namespace boost;
 
 using Graph = adjacency_list<vecS, vecS, bidirectionalS, 
-  no_property, property<edge_weight_t, int>>;
+  boost::no_property, boost::property<edge_weight_t, int>>;
 
 struct has_weight_greater_than {
   has_weight_greater_than(int w_, Graph& g_) : w(w_), g(g_) { }
   bool operator()(graph_traits<Graph>::edge_descriptor e) {
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
-    auto weight = get(edge_weight, g);
-    return get(weight, e) > w;
+    auto weight = boost::get(edge_weight, g);
+    return boost::get(weight, e) > w;
 #else
-    // This version of get() breaks VC++
-    return get(edge_weight, g, e) > w;
+    // This version of boost::get() breaks VC++
+    return boost::get(edge_weight, g, e) > w;
 #endif
   }
   int w;
@@ -75,15 +75,15 @@ main()
 #else
   Graph g(edge_array, edge_array + 6, 4);
 #endif
-  property_map<Graph, edge_weight_t>::type 
-    weight = get(edge_weight, g);
+  boost::property_map<Graph, edge_weight_t>::type 
+    weight = boost::get(edge_weight, g);
 
   int w = 0;
   graph_traits<Graph>::edge_iterator ei, ei_end;
   for (const auto& edge : make_range_pair(edges(g)))
     weight[edge] = ++w;
 
-  auto indexmap = get(vertex_index, g);
+  auto indexmap = boost::get(vertex_index, g);
 
   std::cout << "original graph:" << std::endl;
   print_graph(g, indexmap);

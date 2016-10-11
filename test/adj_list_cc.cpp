@@ -17,8 +17,8 @@ int main(int,char*[])
   // Check adjacency_list with properties
   {
     typedef adjacency_list<vecS, vecS, directedS, 
-      property<vertex_color_t, int>,
-      property<edge_weight_t, int>
+      boost::property<vertex_color_t, int>,
+      boost::property<edge_weight_t, int>
     > Graph;
     typedef graph_traits<Graph>::vertex_descriptor Vertex;
     typedef graph_traits<Graph>::edge_descriptor Edge;
@@ -39,8 +39,8 @@ int main(int,char*[])
   }
   {
     typedef adjacency_list<vecS, vecS, bidirectionalS, 
-      property<vertex_color_t, int>,
-      property<edge_weight_t, int>
+      boost::property<vertex_color_t, int>,
+      boost::property<edge_weight_t, int>
     > Graph;
     typedef graph_traits<Graph>::vertex_descriptor Vertex;
     typedef graph_traits<Graph>::edge_descriptor Edge;
@@ -62,8 +62,8 @@ int main(int,char*[])
   }
   {
     typedef adjacency_list< listS, listS, directedS, 
-      property<vertex_color_t, int>,
-      property<edge_weight_t, int>
+      boost::property<vertex_color_t, int>,
+      boost::property<edge_weight_t, int>
     > Graph;
     typedef graph_traits<Graph>::vertex_descriptor Vertex;
     typedef graph_traits<Graph>::edge_descriptor Edge;
@@ -82,8 +82,8 @@ int main(int,char*[])
   }
   {
     typedef adjacency_list< listS, listS, undirectedS, 
-      property<vertex_color_t, int>,
-      property<edge_weight_t, int>
+      boost::property<vertex_color_t, int>,
+      boost::property<edge_weight_t, int>
     > Graph;
     typedef graph_traits<Graph>::vertex_descriptor Vertex;
     typedef graph_traits<Graph>::edge_descriptor Edge;
@@ -103,8 +103,8 @@ int main(int,char*[])
   // Checking adjacency_list with EdgeList=setS
   {
     typedef adjacency_list<setS, vecS, bidirectionalS, 
-      property<vertex_color_t, int>,
-      property<edge_weight_t, int>
+      boost::property<vertex_color_t, int>,
+      boost::property<edge_weight_t, int>
     > Graph;
     typedef graph_traits<Graph>::vertex_descriptor Vertex;
     typedef graph_traits<Graph>::edge_descriptor Edge;
@@ -126,8 +126,8 @@ int main(int,char*[])
   }
   {
     typedef adjacency_list< setS, listS, directedS, 
-      property<vertex_color_t, int>,
-      property<edge_weight_t, int>
+      boost::property<vertex_color_t, int>,
+      boost::property<edge_weight_t, int>
     > Graph;
     typedef graph_traits<Graph>::vertex_descriptor Vertex;
     typedef graph_traits<Graph>::edge_descriptor Edge;
@@ -146,8 +146,8 @@ int main(int,char*[])
   }
   {
     typedef adjacency_list< setS, listS, undirectedS, 
-      property<vertex_color_t, int>,
-      property<edge_weight_t, int>
+      boost::property<vertex_color_t, int>,
+      boost::property<edge_weight_t, int>
     > Graph;
     typedef graph_traits<Graph>::vertex_descriptor Vertex;
     typedef graph_traits<Graph>::edge_descriptor Edge;

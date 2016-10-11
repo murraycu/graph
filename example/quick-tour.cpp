@@ -16,7 +16,7 @@ using namespace boost;
 template <typename VertexDescriptor, typename VertexNameMap> void
 print_vertex_name(VertexDescriptor v, VertexNameMap name_map)
 {
-  std::cout << get(name_map, v);
+  std::cout << boost::get(name_map, v);
 }
 
 template <typename Graph, typename TransDelayMap, typename VertexNameMap> void
@@ -24,8 +24,8 @@ print_trans_delay(typename graph_traits<Graph>::edge_descriptor e,
                   const Graph & g, TransDelayMap delay_map,
                   VertexNameMap name_map)
 {
-  std::cout << "trans-delay(" << get(name_map, source(e, g)) << ","
-    << get(name_map, target(e, g)) << ") = " << get(delay_map, e);
+  std::cout << "trans-delay(" << boost::get(name_map, source(e, g)) << ","
+    << boost::get(name_map, target(e, g)) << ") = " << boost::get(delay_map, e);
 }
 
 template <typename Graph, typename VertexNameMap> void
@@ -93,12 +93,12 @@ int
 main()
 {
   using graph_t = adjacency_list < listS, listS, directedS,
-    property<vertex_name_t, char>,
-    property<edge_weight_t, double>>;
+    boost::property<vertex_name_t, char>,
+    boost::property<edge_weight_t, double>>;
   graph_t g;
 
-  auto name_map = get(vertex_name, g);
-  auto delay_map = get(edge_weight, g);
+  auto name_map = boost::get(vertex_name, g);
+  auto delay_map = boost::get(edge_weight, g);
 
   build_router_network(g, name_map, delay_map);
   print_vertex_names(g, name_map);

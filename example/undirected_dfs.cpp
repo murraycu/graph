@@ -46,8 +46,8 @@ int main(int, char*[])
 {
   using namespace boost;
   using graph_t = adjacency_list< vecS, vecS, undirectedS,
-    no_property,
-    property<edge_color_t, default_color_type>>;
+    boost::no_property,
+    boost::property<edge_color_t, default_color_type>>;
   using vertex_t = graph_traits<graph_t>::vertex_descriptor;
   
   const std::size_t N = sizeof(name)/sizeof(std::string);
@@ -73,7 +73,7 @@ int main(int, char*[])
   std::cout << "back edges:\n";
   detect_loops vis;
   undirected_dfs(g, root_vertex(vertex_t(0)).visitor(vis)
-                 .edge_color_map(get(edge_color, g)));
+                 .edge_color_map(boost::get(edge_color, g)));
   std::cout << std::endl;
   
   return boost::exit_success;

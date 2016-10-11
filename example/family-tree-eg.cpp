@@ -32,17 +32,17 @@ main()
   add_edge(John, Benjamin, g);
 
   graph_traits<adjacency_list <>>::adjacency_iterator ai, a_end;
-  auto index_map = get(vertex_index, g);
+  auto index_map = boost::get(vertex_index, g);
 
   for (const auto& vertex : make_range_pair(vertices(g))) {
-    std::cout << name[get(index_map, vertex)];
+    std::cout << name[boost::get(index_map, vertex)];
     std::tie(ai, a_end) = adjacent_vertices(vertex, g);
     if (ai == a_end)
       std::cout << " has no children";
     else
       std::cout << " is the parent of ";
     for (; ai != a_end; ++ai) {
-      std::cout << name[get(index_map, *ai)];
+      std::cout << name[boost::get(index_map, *ai)];
       if (boost::next(ai) != a_end)
         std::cout << ", ";
     }

@@ -28,22 +28,27 @@ namespace std
 
 namespace boost
 {
+
+namespace graph
+{
   enum vertex_compile_cost_t { vertex_compile_cost };
   BOOST_INSTALL_PROPERTY(vertex, compile_cost);
-}
 
-using namespace boost;
+} // namespace graph
+} // namespace boost
+
+using namespace boost::graph;
 
 using file_dep_graph2 = adjacency_list<listS, // Store out-edges of each vertex in a std::list
   listS,                        // Store vertex set in a std::list
   directedS,                    // The file dependency graph is directed
   // vertex properties
-  property < vertex_name_t, std::string, 
-  property < vertex_compile_cost_t, float,
-  property < vertex_distance_t, float, 
-  property<vertex_color_t, default_color_type>>>>,
+  boost::property< vertex_name_t, std::string, 
+  boost::property< vertex_compile_cost_t, float,
+  boost::property< vertex_distance_t, float, 
+  boost::property<vertex_color_t, default_color_type>>>>,
   // an edge property
-  property<edge_weight_t, float >>;
+  boost::property<edge_weight_t, float >>;
 
 using vertex_t = graph_traits<file_dep_graph2>::vertex_descriptor;
 using edge_t = graph_traits<file_dep_graph2>::edge_descriptor;
@@ -54,7 +59,7 @@ dfs_v2(const Graph & g,
        typename graph_traits<Graph>::vertex_descriptor u,
        ColorMap color, Visitor vis)
 {
-  using color_type = typename property_traits<ColorMap>::value_type;
+  using color_type = typename boost::property_traits<ColorMap>::value_type;
   using ColorT = color_traits<color_type>;
   color[u] = ColorT::gray();
   vis.discover_vertex(u, g);
@@ -74,7 +79,7 @@ dfs_v2(const Graph & g,
 template <typename Graph, typename Visitor, typename ColorMap> void
 generic_dfs_v2(const Graph & g, Visitor vis, ColorMap color)
 {
-  using ColorValue = typename property_traits <ColorMap >::value_type;
+  using ColorValue = typename boost::property_traits <ColorMap >::value_type;
   using ColorT = color_traits<ColorValue> ;
   typename graph_traits<Graph>::vertex_iterator  vi, vi_end;
   for (std::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
@@ -109,10 +114,10 @@ topo_sort(const Graph & g, OutputIterator topo_order, ColorMap color)
 }
 
 
-using name_map_t = property_map<file_dep_graph2, vertex_name_t>::type;
-using compile_cost_map_t = property_map<file_dep_graph2, vertex_compile_cost_t>::type;
-using distance_map_t = property_map<file_dep_graph2, vertex_distance_t>::type;
-using color_map_t = property_map<file_dep_graph2, vertex_color_t>::type;
+using name_map_t = boost::property_map<file_dep_graph2, vertex_name_t>::type;
+using compile_cost_map_t = boost::property_map<file_dep_graph2, vertex_compile_cost_t>::type;
+using distance_map_t = boost::property_map<file_dep_graph2, vertex_distance_t>::type;
+using color_map_t = boost::property_map<file_dep_graph2, vertex_color_t>::type;
 
 
 int
@@ -142,16 +147,16 @@ main()
 
   name_map_t
     name_map =
-    get(vertex_name, g);
+    boost::get(vertex_name, g);
   compile_cost_map_t
     compile_cost_map =
-    get(vertex_compile_cost, g);
+    boost::get(vertex_compile_cost, g);
   distance_map_t
     distance_map =
-    get(vertex_distance, g);
+    boost::get(vertex_distance, g);
   color_map_t
     color_map =
-    get(vertex_color, g);
+    boost::get(vertex_color, g);
 
   {
     std::ifstream name_in("makefile-target-names.dat");
@@ -195,7 +200,7 @@ main()
 
   graph_property_iter_range < file_dep_graph2,
     vertex_distance_t >::iterator ci, ci_end;
-  std::tie(ci, ci_end) = get_property_iter_range(g, vertex_distance);
+  std::tie(ci, ci_end) = boost::get_property_iter_range(g, vertex_distance);
   std::cout << "total (parallel) compile time: "
     << *std::max_element(ci, ci_end) << std::endl;
 

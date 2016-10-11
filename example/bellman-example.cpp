@@ -27,7 +27,7 @@ struct edge_writer
   template <typename Edge>
     void operator() (std::ostream & out, const Edge & e) const
   {
-    out << "[label=\"" << get(edge_weight, m_g, e) << "\"";
+    out << "[label=\"" << boost::get(edge_weight, m_g, e) << "\"";
     auto u = source(e, m_g), v = target(e, m_g);
     if (m_parent[v] == u)
         out << ", color=\"black\"";
@@ -61,7 +61,7 @@ main()
   int weight[n_edges] = { -4, 8, 5, -2, 9, -3, 7, 2, 6, 7 };
 
   using Graph = adjacency_list < vecS, vecS, directedS,
-    no_property, EdgeProperties>;
+    boost::no_property, EdgeProperties>;
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
   // VC++ can't handle the iterator constructor
   Graph g(N);
@@ -71,7 +71,7 @@ main()
   Graph g(edge_array, edge_array + n_edges, N);
 #endif
   graph_traits<Graph>::edge_iterator ei, ei_end;
-  auto weight_pmap = get(&EdgeProperties::weight, g);
+  auto weight_pmap = boost::get(&EdgeProperties::weight, g);
   int i = 0;
   for (const auto& edge : make_range_pair(edges(g))) {
     weight_pmap[edge] = weight[i];
@@ -112,9 +112,9 @@ main()
   for(const auto& e : make_range_pair(edges(g))) {
       auto u = source(e, g), v = target(e, g);
       // VC++ doesn't like the 3-argument get function, so here
-      // we workaround by using 2-nested get()'s.
+      // we workaround by using 2-nested boost::get()'s.
       dot_file << name[u] << " -> " << name[v]
-        << "[label=\"" << get(get(&EdgeProperties::weight, g), e) << "\"";
+        << "[label=\"" << boost::get(boost::get(&EdgeProperties::weight, g), e) << "\"";
       if (parent[v] == u)
         dot_file << ", color=\"black\"";
       else

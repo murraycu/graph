@@ -24,8 +24,8 @@ template <class Graph> struct exercise_vertex {
   void operator()(const Vertex& v) const
   {
     using namespace boost;
-    auto vertex_id = get(vertex_index, g);
-    std::cout << "vertex: " << name[get(vertex_id, v)] << std::endl;
+    auto vertex_id = boost::get(vertex_index, g);
+    std::cout << "vertex: " << name[boost::get(vertex_id, v)] << std::endl;
 
     // Write out the outgoing edges
     std::cout << "\tout-edges: ";
@@ -36,8 +36,8 @@ template <class Graph> struct exercise_vertex {
     {
       e = *out_i;
       auto src = source(e, g), targ = target(e, g);
-      std::cout << "(" << name[get(vertex_id, src)]
-                << "," << name[get(vertex_id, targ)] << ") ";
+      std::cout << "(" << name[boost::get(vertex_id, src)]
+                << "," << name[boost::get(vertex_id, targ)] << ") ";
     }
     std::cout << std::endl;
 
@@ -48,8 +48,8 @@ template <class Graph> struct exercise_vertex {
     {
       e = *in_i;
       Vertex src = source(e, g), targ = target(e, g);
-      std::cout << "(" << name[get(vertex_id, src)]
-                << "," << name[get(vertex_id, targ)] << ") ";
+      std::cout << "(" << name[boost::get(vertex_id, src)]
+                << "," << name[boost::get(vertex_id, targ)] << ") ";
     }
     std::cout << std::endl;
 
@@ -57,7 +57,7 @@ template <class Graph> struct exercise_vertex {
     std::cout << "\tadjacent vertices: ";
     typename graph_traits<Graph>::adjacency_iterator ai, ai_end;
     for (std::tie(ai,ai_end) = adjacent_vertices(v, g);  ai != ai_end; ++ai)
-      std::cout << name[get(vertex_id, *ai)] <<  " ";
+      std::cout << name[boost::get(vertex_id, *ai)] <<  " ";
     std::cout << std::endl;
   }
   Graph& g;
@@ -69,7 +69,7 @@ int main(int,char*[])
 {
   // create an alias for the Graph type
   using Graph = adjacency_list<vecS, vecS, bidirectionalS,
-     no_property, property<edge_weight_t, float>>;
+     boost::no_property, boost::property<edge_weight_t, float>>;
 
   // Make convenient labels for the vertices
   enum { A, B, C, D, E, N };
@@ -90,7 +90,7 @@ int main(int,char*[])
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
   // VC++ can't handle the iterator constructor
   Graph g(num_vertices);
-  auto weightmap = get(edge_weight, g);
+  auto weightmap = boost::get(edge_weight, g);
   for (std::size_t j = 0; j < num_edges; ++j) {
     graph_traits<Graph>::edge_descriptor e; bool inserted;
     std::tie(e, inserted) = add_edge(edge_array[j].first, edge_array[j].second, g);
@@ -102,21 +102,21 @@ int main(int,char*[])
 #endif
 
   boost::property_map<Graph, vertex_index_t>::type
-    vertex_id = get(vertex_index, g);
+    vertex_id = boost::get(vertex_index, g);
   boost::property_map<Graph, edge_weight_t>::type
-    trans_delay = get(edge_weight, g);
+    trans_delay = boost::get(edge_weight, g);
 
   std::cout << "vertices(g) = ";
   using vertex_iter = graph_traits<Graph>::vertex_iterator;
   std::pair<vertex_iter, vertex_iter> vp;
   for (vp = vertices(g); vp.first != vp.second; ++vp.first)
-    std::cout << name[get(vertex_id, *vp.first)] <<  " ";
+    std::cout << name[boost::get(vertex_id, *vp.first)] <<  " ";
   std::cout << std::endl;
 
   std::cout << "edges(g) = ";
   for (const auto& edge : make_range_pair(edges(g)))
-    std::cout << "(" << name[get(vertex_id, source(edge, g))]
-              << "," << name[get(vertex_id, target(edge, g))] << ") ";
+    std::cout << "(" << name[boost::get(vertex_id, source(edge, g))]
+              << "," << name[boost::get(vertex_id, target(edge, g))] << ") ";
   std::cout << std::endl;
 
   std::for_each(vertices(g).first, vertices(g).second,

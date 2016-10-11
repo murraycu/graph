@@ -27,7 +27,7 @@ int main()
 {
   using namespace boost;
   using graph_t = adjacency_list<vecS, vecS, directedS, 
-    property<vertex_distance_t, int>, property<edge_weight_t, int>>;
+    boost::property<vertex_distance_t, int>, boost::property<edge_weight_t, int>>;
   graph_t g(6);
   enum verts { r, s, t, u, v, x };
   char name[] = "rstuvx";
@@ -42,7 +42,7 @@ int main()
   add_edge(u, x, 1, g);
   add_edge(v, x, -2, g);
 
-  auto d_map = get(vertex_distance, g);
+  auto d_map = boost::get(vertex_distance, g);
 
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
   // VC++ has trouble with the named-parameter mechanism, so
@@ -52,7 +52,7 @@ int main()
   default_dijkstra_visitor vis;
   std::less<int> compare;
   closed_plus<int> combine;
-  auto w_map = get(edge_weight, g);
+  auto w_map = boost::get(edge_weight, g);
   dag_shortest_paths(g, s, d_map, w_map, &color[0], &pred[0], 
      vis, compare, combine, (std::numeric_limits<int>::max)(), 0);
 #else

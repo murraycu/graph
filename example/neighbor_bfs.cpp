@@ -53,7 +53,7 @@ struct print_parent {
 template <class DistanceMap, class PredecessorMap, class ColorMap>
 class distance_and_pred_visitor : public neighbor_bfs_visitor<>
 {
-  using ColorValue = typename property_traits<ColorMap>::value_type;
+  using ColorValue = typename boost::property_traits<ColorMap>::value_type;
   using Color = color_traits<ColorValue>;
 public:
   distance_and_pred_visitor(DistanceMap d, PredecessorMap p, ColorMap c)
@@ -63,15 +63,15 @@ public:
   void tree_out_edge(Edge e, const Graph& g) const
   {
     auto u = source(e, g), v = target(e, g);
-    put(m_distance, v, get(m_distance, u) + 1);
-    put(m_predecessor, v, u);
+    boost::put(m_distance, v, boost::get(m_distance, u) + 1);
+    boost::put(m_predecessor, v, u);
   }
   template <class Edge, class Graph>
   void tree_in_edge(Edge e, const Graph& g) const
   {
     auto u = source(e, g), v = target(e, g);
-    put(m_distance, u, get(m_distance, v) + 1);
-    put(m_predecessor, u, v);
+    boost::put(m_distance, u, boost::get(m_distance, v) + 1);
+    boost::put(m_predecessor, u, v);
   }
 
   DistanceMap m_distance;
@@ -83,10 +83,10 @@ int main(int , char* [])
 {
   using Graph = adjacency_list< 
     mapS, vecS, bidirectionalS,
-    property<vertex_color_t, default_color_type>
+    boost::property<vertex_color_t, default_color_type>
   >;
 
-  using ColorMap = property_map<Graph, vertex_color_t>::type;
+  using ColorMap = boost::property_map<Graph, vertex_color_t>::type;
   
   Graph G(5);
   add_edge(0, 2, G);
@@ -121,10 +121,10 @@ int main(int , char* [])
   Vertex s = *(vertices(G).first);
   p[s] = s;
   distance_and_pred_visitor<size_type*, Vertex*, ColorMap> 
-    vis(d, &p[0], get(vertex_color, G));
+    vis(d, &p[0], boost::get(vertex_color, G));
   neighbor_breadth_first_search
     (G, s, visitor(vis).
-     color_map(get(vertex_color, G)));
+     color_map(boost::get(vertex_color, G)));
 
   print_graph(G);
 

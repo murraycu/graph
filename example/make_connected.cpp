@@ -24,7 +24,7 @@ int main(int argc, char** argv)
 
   using graph = adjacency_list<vecS, vecS,
     undirectedS,
-    property<vertex_index_t, int>>;
+    boost::property<vertex_index_t, int>>;
 
   graph g(11);
   add_edge(0,1,g);

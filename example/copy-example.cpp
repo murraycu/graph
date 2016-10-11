@@ -16,12 +16,12 @@ main()
 {
   using namespace boost;
   using graph_t = adjacency_list<vecS, vecS, directedS,
-    property<vertex_name_t, char >>;
+    boost::property<vertex_name_t, char >>;
 
   enum
   { a, b, c, d, e, f, g, N };
   graph_t G(N);
-  auto name_map = get(vertex_name, G);
+  auto name_map = boost::get(vertex_name, G);
   char name = 'a';
   graph_traits<graph_t>::vertex_iterator v, v_end;
   for (std::tie(v, v_end) = vertices(G); v != v_end; ++v, ++name)

@@ -53,8 +53,8 @@ int main()
     
   // Output the graph in DOT format
   dynamic_properties dp;
-  dp.property("label", get(&WebPage::url, g));
+  dp.property("label", boost::get(&WebPage::url, g));
   std::ofstream out("web-graph.dot");
-  write_graphviz(out, g, dp, std::string(), get(vertex_index, g));
+  write_graphviz(out, g, dp, std::string(), boost::get(vertex_index, g));
   return 0;
 }

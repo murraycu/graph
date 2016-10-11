@@ -31,10 +31,10 @@ int main()
 
   graph_traits<adjacency_list<>>::vertex_iterator i, end;
   graph_traits<adjacency_list<>>::adjacency_iterator ai, a_end;
-  auto index_map = get(vertex_index, g);
+  auto index_map = boost::get(vertex_index, g);
 
   BGL_FORALL_VERTICES(i, g, adjacency_list<>) {
-    std::cout << name[get(index_map, i)];
+    std::cout << name[boost::get(index_map, i)];
 
     if (out_degree(i, g) == 0)
       std::cout << " has no children";
@@ -42,7 +42,7 @@ int main()
       std::cout << " is the parent of ";
 
     BGL_FORALL_ADJ(i, j, g, adjacency_list<>)
-      std::cout << name[get(index_map, j)] << ", ";
+      std::cout << name[boost::get(index_map, j)] << ", ";
     std::cout << std::endl;
   }
   return EXIT_SUCCESS;

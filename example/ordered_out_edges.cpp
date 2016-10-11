@@ -78,9 +78,9 @@ main()
   std::cout << "This program requires partial specialization" << std::endl;
 #else
   using namespace boost;
-  using EdgeProperty = property<edge_name_t, std::string>;
+  using EdgeProperty = boost::property<edge_name_t, std::string>;
   using graph_type = adjacency_list<ordered_set_by_nameS, vecS, undirectedS,
-    no_property, EdgeProperty>;
+    boost::no_property, EdgeProperty>;
   graph_type g;
   
   add_edge(0, 1, EdgeProperty("joe"), g);
@@ -91,8 +91,8 @@ main()
   add_edge(3, 4, EdgeProperty("harry"), g);
   add_edge(0, 1, EdgeProperty("chandler"), g);
 
-  auto id = get(vertex_index, g);
-  auto name = get(edge_name, g);
+  auto id = boost::get(vertex_index, g);
+  auto name = boost::get(edge_name, g);
 
   for (const auto& vertex : make_range_pair(vertices(g))) {
     std::cout << id[vertex] << " ";

@@ -84,9 +84,9 @@ main()
   // Declare the graph type and object, and some property maps.
 
   using Graph = adjacency_list<vecS, vecS, directedS, 
-    property<vertex_name_t, std::string, 
-      property<vertex_color_t, default_color_type>>,
-    property<edge_name_t, std::string, property<edge_weight_t, int>>
+    boost::property<vertex_name_t, std::string, 
+      boost::property<vertex_color_t, default_color_type>>,
+    boost::property<edge_name_t, std::string, boost::property<edge_weight_t, int>>
   >;
 
   using Traits = graph_traits<Graph>;
@@ -97,8 +97,8 @@ main()
   NameVertexMap name2vertex;
   Graph g;
 
-  auto node_name  = get(vertex_name, g);
-  auto link_name = get(edge_name, g);
+  auto node_name  = boost::get(vertex_name, g);
+  auto link_name = boost::get(edge_name, g);
 
   //===========================================================================
   // Read the data file and construct the graph.
@@ -118,7 +118,7 @@ main()
     std::tie(pos, inserted) = name2vertex.insert(std::make_pair(*i, Vertex()));
     if (inserted) {
       u = add_vertex(g);
-      put(node_name, u, *i);
+      boost::put(node_name, u, *i);
       pos->second = u;
     } else
       u = pos->second;
@@ -129,7 +129,7 @@ main()
     std::tie(pos, inserted) = name2vertex.insert(std::make_pair(*i, Vertex()));
     if (inserted) {
       v = add_vertex(g);
-      put(node_name, v, *i);
+      boost::put(node_name, v, *i);
       pos->second = v;
     } else
       v = pos->second;
@@ -137,7 +137,7 @@ main()
     Edge e;
     std::tie(e, inserted) = add_edge(u, v, g);
     if (inserted) {
-      put(link_name, e, hyperlink_name);
+      boost::put(link_name, e, hyperlink_name);
     }
   }
 
@@ -203,12 +203,12 @@ main()
   // a directory-structure like format.
   std::vector<size_type> dfs_distances(num_vertices(g), 0);
 
-  using NameMap = property_map<Graph, vertex_name_t>::type;
+  using NameMap = boost::property_map<Graph, vertex_name_t>::type;
   print_tree_visitor<NameMap, size_type*>
     tree_printer(node_name, &dfs_distances[0]);
   for(const auto& vertex : make_range_pair(vertices(g)))
-    get(vertex_color, g)[vertex] = white_color;
-  depth_first_visit(search_tree, src, tree_printer, get(vertex_color, g));
+    boost::get(vertex_color, g)[vertex] = white_color;
+  depth_first_visit(search_tree, src, tree_printer, boost::get(vertex_color, g));
   
   return EXIT_SUCCESS;
 }

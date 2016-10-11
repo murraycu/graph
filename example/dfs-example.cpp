@@ -14,7 +14,7 @@
 
 using namespace boost;
 template <typename TimeMap> class dfs_time_visitor:public default_dfs_visitor {
-  using T = typename property_traits<TimeMap>::value_type;
+  using T = typename boost::property_traits<TimeMap>::value_type;
 public:
   dfs_time_visitor(TimeMap dmap, TimeMap fmap, T & t)
 :  m_dtimemap(dmap), m_ftimemap(fmap), m_time(t) {
@@ -22,12 +22,12 @@ public:
   template <typename Vertex, typename Graph>
     void discover_vertex(Vertex u, const Graph & g) const
   {
-    put(m_dtimemap, u, m_time++);
+    boost::put(m_dtimemap, u, m_time++);
   }
   template <typename Vertex, typename Graph>
     void finish_vertex(Vertex u, const Graph & g) const
   {
-    put(m_ftimemap, u, m_time++);
+    boost::put(m_ftimemap, u, m_time++);
   }
   TimeMap m_dtimemap;
   TimeMap m_ftimemap;
@@ -62,10 +62,10 @@ main()
   std::vector<size_type> dtime(num_vertices(g));
   std::vector<size_type> ftime(num_vertices(g));
   using time_pm_type =
-    iterator_property_map<std::vector<size_type>::iterator,
-                          property_map<graph_t, vertex_index_t>::const_type>;
-  time_pm_type dtime_pm(dtime.begin(), get(vertex_index, g));
-  time_pm_type ftime_pm(ftime.begin(), get(vertex_index, g));
+    boost::iterator_property_map<std::vector<size_type>::iterator,
+                          boost::property_map<graph_t, vertex_index_t>::const_type>;
+  time_pm_type dtime_pm(dtime.begin(), boost::get(vertex_index, g));
+  time_pm_type ftime_pm(ftime.begin(), boost::get(vertex_index, g));
   size_type t = 0;
   dfs_time_visitor<time_pm_type> vis(dtime_pm, ftime_pm, t);
 

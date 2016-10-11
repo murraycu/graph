@@ -77,7 +77,7 @@ graph concept, but is used for Dijkstra search.
 
 Apart from graph, client code should not instantiate the model classes
 directly. Instead it should access them and their properties via
-graph_traits<...> and property_traits<...> lookups. For convenience,
+graph_traits<...> and boost::property_traits<...> lookups. For convenience,
 this example defines short names for all these properties that client code can
 use.
 */
@@ -453,6 +453,7 @@ int main (int argc, char const *argv[]) {
   BOOST_CONCEPT_ASSERT(( VertexListGraphConcept<ring_graph> ));
   BOOST_CONCEPT_ASSERT(( EdgeListGraphConcept<ring_graph> ));
   BOOST_CONCEPT_ASSERT(( AdjacencyMatrixConcept<ring_graph> ));
+  // TODO: get() and set() should be in boost::, not global, but then this fails:
   BOOST_CONCEPT_ASSERT((
     ReadablePropertyMapConcept<const_edge_weight_map, edge_descriptor> ));
   BOOST_CONCEPT_ASSERT((
@@ -522,11 +523,11 @@ int main (int argc, char const *argv[]) {
     vertex_descriptor source = 0;
     std::vector<vertex_descriptor> pred(num_vertices(g));
     std::vector<edge_weight_map_value_type> dist(num_vertices(g));
-    iterator_property_map<std::vector<vertex_descriptor>::iterator,
-                          property_map<ring_graph, vertex_index_t>::const_type>
+    boost::iterator_property_map<std::vector<vertex_descriptor>::iterator,
+                          boost::property_map<ring_graph, vertex_index_t>::const_type>
       pred_pm(pred.begin(), get(vertex_index, g));
-    iterator_property_map<std::vector<edge_weight_map_value_type>::iterator,
-                          property_map<ring_graph, vertex_index_t>::const_type>
+    boost::iterator_property_map<std::vector<edge_weight_map_value_type>::iterator,
+                          boost::property_map<ring_graph, vertex_index_t>::const_type>
       dist_pm(dist.begin(), get(vertex_index, g));
 
     dijkstra_shortest_paths(g, source,

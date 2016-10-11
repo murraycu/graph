@@ -42,7 +42,7 @@ using topology_type = boost::rectangle_topology<>;
 using point_type = topology_type::point_type;
 
 using Graph = adjacency_list<listS, vecS, undirectedS, 
-                       property<vertex_name_t, std::string>>;
+                       boost::property<vertex_name_t, std::string>>;
 
 using Vertex = graph_traits<Graph>::vertex_descriptor;
 
@@ -116,9 +116,9 @@ int main(int argc, char* argv[])
   
   using PositionVec = std::vector<point_type>;
   PositionVec position_vec(num_vertices(g));
-  using PositionMap = iterator_property_map<PositionVec::iterator, 
-                                property_map<Graph, vertex_index_t>::type>;
-  PositionMap position(position_vec.begin(), get(vertex_index, g));
+  using PositionMap = boost::iterator_property_map<PositionVec::iterator, 
+                                boost::property_map<Graph, vertex_index_t>::type>;
+  PositionMap position(position_vec.begin(), boost::get(vertex_index, g));
 
   minstd_rand gen;
   topology_type topo(gen, -width/2, -height/2, width/2, height/2);
@@ -128,7 +128,7 @@ int main(int argc, char* argv[])
      cooling(progress_cooling(iterations)));
 
   for (const auto& vertex : make_range_pair(vertices(g))) {
-    std::cout << get(vertex_name, g, vertex) << '\t'
+    std::cout << boost::get(vertex_name, g, vertex) << '\t'
               << position[vertex][0] << '\t' << position[vertex][1] << std::endl;
   }
   return 0;

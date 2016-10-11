@@ -15,16 +15,16 @@
 int
 main()
 {
-  using namespace boost;
+  using namespace boost::graph;
   GraphvizDigraph g;
   read_graphviz("figs/scc.dot", g);
 
   using vertex_t = graph_traits<GraphvizDigraph>::vertex_descriptor;
   std::map<vertex_t, int> component;
 
-  strong_components(g, make_assoc_property_map(component));
+  strong_components(g, boost::make_assoc_property_map(component));
 
-  auto vertex_attr_map = get(vertex_attribute, g);
+  auto vertex_attr_map = boost::get(vertex_attribute, g);
   std::string color[] = {
   "white", "gray", "black", "lightgray"};
   graph_traits<GraphvizDigraph>::vertex_iterator vi, vi_end;

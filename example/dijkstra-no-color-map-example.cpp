@@ -25,7 +25,7 @@ int
 main(int, char *[])
 {
   using graph_t = adjacency_list<listS, vecS, directedS,
-    no_property, property<edge_weight_t, int>>;
+    boost::no_property, boost::property<edge_weight_t, int>>;
   using vertex_descriptor = graph_traits<graph_t>::vertex_descriptor;
   using Edge = std::pair<int, int>;
 
@@ -38,14 +38,14 @@ main(int, char *[])
   int weights[] = { 1, 2, 1, 2, 7, 3, 1, 1, 1 };
   int num_arcs = sizeof(edge_array) / sizeof(Edge);
   graph_t g(edge_array, edge_array + num_arcs, weights, num_nodes);
-  auto weightmap = get(edge_weight, g);
+  auto weightmap = boost::get(edge_weight, g);
   std::vector<vertex_descriptor> p(num_vertices(g));
   std::vector<int> d(num_vertices(g));
   auto s = vertex(A, g);
 
   dijkstra_shortest_paths_no_color_map(g, s,
-                                       predecessor_map(boost::make_iterator_property_map(p.begin(), get(boost::vertex_index, g))).
-                                       distance_map(boost::make_iterator_property_map(d.begin(), get(boost::vertex_index, g))));
+                                       predecessor_map(boost::make_iterator_property_map(p.begin(), boost::get(boost::vertex_index, g))).
+                                       distance_map(boost::make_iterator_property_map(d.begin(), boost::get(boost::vertex_index, g))));
 
   std::cout << "distances and parents:" << std::endl;
   for(const auto& vertex : make_range_pair(vertices(g))) {
@@ -66,7 +66,7 @@ main(int, char *[])
   for (const auto& e : make_range_pair(edges(g))) {
     auto u = source(e, g), v = target(e, g);
     dot_file << name[u] << " -> " << name[v]
-      << "[label=\"" << get(weightmap, e) << "\"";
+      << "[label=\"" << boost::get(weightmap, e) << "\"";
     if (p[v] == u)
       dot_file << ", color=\"black\"";
     else

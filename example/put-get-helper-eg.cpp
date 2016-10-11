@@ -19,9 +19,9 @@ namespace foo
 {
   using namespace boost;
     template <class RandomAccessIterator, class IndexMap>
-    class iterator_property_map:public boost::put_get_helper <
+    class iterator_property_map : public boost::put_get_helper <
     typename std::iterator_traits<RandomAccessIterator>::reference,
-    iterator_property_map<RandomAccessIterator, IndexMap>>
+    boost::iterator_property_map<RandomAccessIterator, IndexMap>>
   {
   public:
     using key_type = std::ptrdiff_t;
@@ -36,7 +36,7 @@ namespace foo
     }
     reference operator[] (std::ptrdiff_t v) const
     {
-      return *(iter + get(index, v));
+      return *(iter + boost::get(index, v));
     }
   protected:
       RandomAccessIterator iter;

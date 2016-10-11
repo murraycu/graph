@@ -36,8 +36,8 @@ int main(int,char*[])
   // Check adjacency_matrix with properties
   {
     typedef adjacency_matrix<directedS, 
-      property<vertex_color_t, int>,
-      property<edge_weight_t, float> > Graph;
+      boost::property<vertex_color_t, int>,
+      boost::property<edge_weight_t, float> > Graph;
     typedef graph_traits<Graph>::vertex_descriptor Vertex;
     typedef graph_traits<Graph>::edge_descriptor Edge;
     BOOST_CONCEPT_ASSERT(( VertexListGraphConcept<Graph> ));

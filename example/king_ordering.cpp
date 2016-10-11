@@ -33,8 +33,8 @@ int main(int , char* [])
 {
   using namespace boost;
   using Graph = adjacency_list<vecS, vecS, undirectedS, 
-     property<vertex_color_t, default_color_type,
-       property<vertex_degree_t,int>>>;
+     boost::property<vertex_color_t, default_color_type,
+       boost::property<vertex_degree_t,int>>>;
   using Vertex = graph_traits<Graph>::vertex_descriptor;
   using size_type = graph_traits<Graph>::vertices_size_type;
 
@@ -60,11 +60,11 @@ int main(int , char* [])
 
   graph_traits<Graph>::vertex_iterator ui, ui_end;
 
-  auto deg = get(vertex_degree, G);
+  auto deg = boost::get(vertex_degree, G);
   for (std::tie(ui, ui_end) = vertices(G); ui != ui_end; ++ui)
     deg[*ui] = degree(*ui, G);
 
-  auto index_map = get(vertex_index, G);
+  auto index_map = boost::get(vertex_index, G);
 
   std::cout << "original bandwidth: " << bandwidth(G) << std::endl;
 
@@ -73,8 +73,8 @@ int main(int , char* [])
   {
     auto s = vertex(6, G);
     //king_ordering
-    king_ordering(G, s, inv_perm.rbegin(), get(vertex_color, G), 
-                  get(vertex_degree, G), get(vertex_index, G));
+    king_ordering(G, s, inv_perm.rbegin(), boost::get(vertex_color, G), 
+                  boost::get(vertex_degree, G), boost::get(vertex_index, G));
     std::cout << "King ordering starting at: " << s << std::endl;
     std::cout << "  ";    
     for (auto i = inv_perm.begin();
@@ -85,14 +85,14 @@ int main(int , char* [])
     for (size_type c = 0; c != inv_perm.size(); ++c)
       perm[index_map[inv_perm[c]]] = c;
     std::cout << "  bandwidth: " 
-              << bandwidth(G, make_iterator_property_map(&perm[0], index_map, perm[0]))
+              << bandwidth(G, boost::make_iterator_property_map(&perm[0], index_map, perm[0]))
               << std::endl;
   }
   {
     Vertex s = vertex(0, G);
     //king_ordering
-    king_ordering(G, s, inv_perm.rbegin(), get(vertex_color, G),
-                  get(vertex_degree, G), get(vertex_index, G));
+    king_ordering(G, s, inv_perm.rbegin(), boost::get(vertex_color, G),
+                  boost::get(vertex_degree, G), boost::get(vertex_index, G));
     std::cout << "King ordering starting at: " << s << std::endl;
     std::cout << "  ";
     for (const auto& vertex : inv_perm)
@@ -102,14 +102,14 @@ int main(int , char* [])
     for (size_type c = 0; c != inv_perm.size(); ++c)
       perm[index_map[inv_perm[c]]] = c;
     std::cout << "  bandwidth: " 
-              << bandwidth(G, make_iterator_property_map(&perm[0], index_map, perm[0]))
+              << bandwidth(G, boost::make_iterator_property_map(&perm[0], index_map, perm[0]))
               << std::endl;
   }
 
   {
     //king_ordering
-    king_ordering(G, inv_perm.rbegin(), get(vertex_color, G),
-                  make_degree_map(G), get(vertex_index, G));
+    king_ordering(G, inv_perm.rbegin(), boost::get(vertex_color, G),
+                  make_degree_map(G), boost::get(vertex_index, G));
     
     std::cout << "King ordering:" << std::endl;
     std::cout << "  ";
@@ -120,7 +120,7 @@ int main(int , char* [])
     for (size_type c = 0; c != inv_perm.size(); ++c)
       perm[index_map[inv_perm[c]]] = c;
     std::cout << "  bandwidth: " 
-              << bandwidth(G, make_iterator_property_map(&perm[0], index_map, perm[0]))
+              << bandwidth(G, boost::make_iterator_property_map(&perm[0], index_map, perm[0]))
               << std::endl;
   }
   return 0;

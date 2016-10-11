@@ -83,7 +83,7 @@ int main(int argc, char* argv[])
   ds.union_set(2,5);
     
   std::cout << "An undirected graph:" << std::endl;
-  print_graph(graph, get(boost::vertex_index, graph));
+  print_graph(graph, boost::get(boost::vertex_index, graph));
   std::cout << std::endl;
     
   BOOST_FOREACH(Vertex current_vertex, vertices(graph)) {

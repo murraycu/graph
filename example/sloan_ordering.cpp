@@ -72,13 +72,13 @@ int main(int , char* [])
     setS, 
     vecS, 
     undirectedS, 
-    property<
+    boost::property<
     vertex_color_t, 
     default_color_type,
-    property<
+    boost::property<
     vertex_degree_t,
     int,
-    property<
+    boost::property<
     vertex_priority_t,
     double>>>>;
   
@@ -112,12 +112,12 @@ int main(int , char* [])
   graph_traits<Graph>::vertex_iterator ui, ui_end;
 
   //Creating a property_map with the degrees of the degrees of each vertex
-  auto deg = get(vertex_degree, G);
+  auto deg = boost::get(vertex_degree, G);
   for (std::tie(ui, ui_end) = vertices(G); ui != ui_end; ++ui)
     deg[*ui] = degree(*ui, G);
 
   //Creating a property_map for the indices of a vertex
-  auto index_map = get(vertex_index, G);
+  auto index_map = boost::get(vertex_index, G);
 
   std::cout << "original bandwidth: " << bandwidth(G) << std::endl;
   std::cout << "original profile: " << profile(G) << std::endl;
@@ -138,7 +138,7 @@ int main(int , char* [])
     int ecc;   //defining a variable for the pseudoperipheral radius
     
     //Calculating the pseudoeperipheral node and radius
-    Vertex e = pseudo_peripheral_pair(G, s, ecc, get(vertex_color, G), get(vertex_degree, G) );
+    Vertex e = pseudo_peripheral_pair(G, s, ecc, boost::get(vertex_color, G), boost::get(vertex_degree, G) );
 
     std::cout << std::endl;
     std::cout << "Starting vertex: " << s << std::endl;
@@ -148,8 +148,8 @@ int main(int , char* [])
 
 
     //Sloan ordering
-    sloan_ordering(G, s, e, sloan_order.begin(), get(vertex_color, G), 
-                           get(vertex_degree, G), get(vertex_priority, G));
+    sloan_ordering(G, s, e, sloan_order.begin(), boost::get(vertex_color, G), 
+                           boost::get(vertex_degree, G), boost::get(vertex_priority, G));
     
     std::cout << "Sloan ordering starting at: " << s << std::endl;
     std::cout << "  ";    
@@ -162,19 +162,19 @@ int main(int , char* [])
     for (size_type c = 0; c != sloan_order.size(); ++c)
       perm[index_map[sloan_order[c]]] = c;
     std::cout << "  bandwidth: " 
-              << bandwidth(G, make_iterator_property_map(&perm[0], index_map, perm[0]))
+              << bandwidth(G, boost::make_iterator_property_map(&perm[0], index_map, perm[0]))
               << std::endl;
     std::cout << "  profile: " 
-              << profile(G, make_iterator_property_map(&perm[0], index_map, perm[0]))
+              << profile(G, boost::make_iterator_property_map(&perm[0], index_map, perm[0]))
               << std::endl;
     std::cout << "  max_wavefront: " 
-              << max_wavefront(G, make_iterator_property_map(&perm[0], index_map, perm[0]))
+              << max_wavefront(G, boost::make_iterator_property_map(&perm[0], index_map, perm[0]))
               << std::endl;
     std::cout << "  aver_wavefront: " 
-              << aver_wavefront(G, make_iterator_property_map(&perm[0], index_map, perm[0]))
+              << aver_wavefront(G, boost::make_iterator_property_map(&perm[0], index_map, perm[0]))
               << std::endl;
     std::cout << "  rms_wavefront: " 
-              << rms_wavefront(G, make_iterator_property_map(&perm[0], index_map, perm[0]))
+              << rms_wavefront(G, boost::make_iterator_property_map(&perm[0], index_map, perm[0]))
               << std::endl;
   }
   
@@ -188,9 +188,9 @@ int main(int , char* [])
     {
       //sloan_ordering
       sloan_ordering(G, sloan_order.begin(), 
-                        get(vertex_color, G),
+                        boost::get(vertex_color, G),
                         make_degree_map(G), 
-                        get(vertex_priority, G) );
+                        boost::get(vertex_priority, G) );
       
       std::cout << std::endl << "Sloan ordering without a start-vertex:" << std::endl;
       std::cout << "  ";
@@ -202,19 +202,19 @@ int main(int , char* [])
       for (size_type c = 0; c != sloan_order.size(); ++c)
         perm[index_map[sloan_order[c]]] = c;
       std::cout << "  bandwidth: " 
-                << bandwidth(G, make_iterator_property_map(&perm[0], index_map, perm[0]))
+                << bandwidth(G, boost::make_iterator_property_map(&perm[0], index_map, perm[0]))
                 << std::endl;
       std::cout << "  profile: " 
-                << profile(G, make_iterator_property_map(&perm[0], index_map, perm[0]))
+                << profile(G, boost::make_iterator_property_map(&perm[0], index_map, perm[0]))
                 << std::endl;
       std::cout << "  max_wavefront: " 
-                << max_wavefront(G, make_iterator_property_map(&perm[0], index_map, perm[0]))
+                << max_wavefront(G, boost::make_iterator_property_map(&perm[0], index_map, perm[0]))
                 << std::endl;
       std::cout << "  aver_wavefront: " 
-                << aver_wavefront(G, make_iterator_property_map(&perm[0], index_map, perm[0]))
+                << aver_wavefront(G, boost::make_iterator_property_map(&perm[0], index_map, perm[0]))
                 << std::endl;
       std::cout << "  rms_wavefront: " 
-                << rms_wavefront(G, make_iterator_property_map(&perm[0], index_map, perm[0]))
+                << rms_wavefront(G, boost::make_iterator_property_map(&perm[0], index_map, perm[0]))
                 << std::endl;
     }
   

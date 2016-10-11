@@ -58,8 +58,8 @@ int main(int , char* [])
   const int V = 5;
   Graph g(V);
 
-  auto id = get(&VertexProperties::index, g);
-  auto name = get(&EdgeProperties::name, g);
+  auto id = boost::get(&VertexProperties::index, g);
+  auto name = boost::get(&EdgeProperties::name, g);
 
   int vnum = 0;
   for(const auto& vertex : make_range_pair(vertices(g)))

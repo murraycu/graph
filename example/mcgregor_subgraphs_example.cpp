@@ -38,17 +38,17 @@ struct example_callback {
                   VertexSizeFirst subgraph_size) {
 
     // Fill membership map for first graph
-    using VertexIndexMap = typename property_map<Graph, vertex_index_t>::type;
-    using MembershipMap = shared_array_property_map<bool, VertexIndexMap>;
+    using VertexIndexMap = typename boost::property_map<Graph, vertex_index_t>::type;
+    using MembershipMap = boost::shared_array_property_map<bool, VertexIndexMap>;
       
     MembershipMap membership_map1(num_vertices(m_graph1),
-                                  get(vertex_index, m_graph1));
+                                  boost::get(vertex_index, m_graph1));
 
     fill_membership_map<Graph>(m_graph1, correspondence_map_1_to_2, membership_map1);
 
     // Generate filtered graphs using membership map
     using MembershipFilteredGraph =
-      typename membership_filtered_graph_traits<Graph, MembershipMap>::graph_type;
+      typename boost::membership_filtered_graph_traits<Graph, MembershipMap>::graph_type;
 
     MembershipFilteredGraph subgraph1 =
       make_membership_filtered_graph(m_graph1, membership_map1);
@@ -72,21 +72,21 @@ int main (int argc, char *argv[]) {
   // Using a vecS graph here so that we don't have to mess around with
   // a vertex index map; it will be implicit.
   using Graph = adjacency_list<listS, vecS, directedS,
-    property<vertex_name_t, unsigned int,
-    property<vertex_index_t, unsigned int>>,
-    property<edge_name_t, unsigned int>>;
+    boost::property<vertex_name_t, unsigned int,
+    boost::property<vertex_index_t, unsigned int>>,
+    boost::property<edge_name_t, unsigned int>>;
 
   // Test maximum and unique variants on known graphs
   Graph graph_simple1, graph_simple2;
   example_callback<Graph> user_callback(graph_simple1);
 
-  auto vname_map_simple1 = get(vertex_name, graph_simple1);
-  auto vname_map_simple2 = get(vertex_name, graph_simple2);
+  auto vname_map_simple1 = boost::get(vertex_name, graph_simple1);
+  auto vname_map_simple2 = boost::get(vertex_name, graph_simple2);
 
   // Graph that looks like a triangle
-  put(vname_map_simple1, add_vertex(graph_simple1), 1);
-  put(vname_map_simple1, add_vertex(graph_simple1), 2);
-  put(vname_map_simple1, add_vertex(graph_simple1), 3);
+  boost::put(vname_map_simple1, add_vertex(graph_simple1), 1);
+  boost::put(vname_map_simple1, add_vertex(graph_simple1), 2);
+  boost::put(vname_map_simple1, add_vertex(graph_simple1), 3);
 
   add_edge(0, 1, graph_simple1);
   add_edge(0, 2, graph_simple1);
@@ -97,10 +97,10 @@ int main (int argc, char *argv[]) {
   std::cout << std::endl;
 
   // Triangle with an extra vertex
-  put(vname_map_simple2, add_vertex(graph_simple2), 1);
-  put(vname_map_simple2, add_vertex(graph_simple2), 2);
-  put(vname_map_simple2, add_vertex(graph_simple2), 3);
-  put(vname_map_simple2, add_vertex(graph_simple2), 4);
+  boost::put(vname_map_simple2, add_vertex(graph_simple2), 1);
+  boost::put(vname_map_simple2, add_vertex(graph_simple2), 2);
+  boost::put(vname_map_simple2, add_vertex(graph_simple2), 3);
+  boost::put(vname_map_simple2, add_vertex(graph_simple2), 4);
 
   add_edge(0, 1, graph_simple2);
   add_edge(0, 2, graph_simple2);
@@ -115,28 +115,28 @@ int main (int argc, char *argv[]) {
   std::cout << "mcgregor_common_subgraphs:" << std::endl;
   mcgregor_common_subgraphs
     (graph_simple1, graph_simple2, true, user_callback,
-     vertices_equivalent(make_property_map_equivalent(vname_map_simple1, vname_map_simple2))); 
+     vertices_equivalent(boost::make_property_map_equivalent(vname_map_simple1, vname_map_simple2))); 
   std::cout << std::endl;
 
   // Unique subgraphs
   std::cout << "mcgregor_common_subgraphs_unique:" << std::endl;
   mcgregor_common_subgraphs_unique
     (graph_simple1, graph_simple2, true, user_callback,
-     vertices_equivalent(make_property_map_equivalent(vname_map_simple1, vname_map_simple2))); 
+     vertices_equivalent(boost::make_property_map_equivalent(vname_map_simple1, vname_map_simple2))); 
   std::cout << std::endl;
 
   // Maximum subgraphs
   std::cout << "mcgregor_common_subgraphs_maximum:" << std::endl;
   mcgregor_common_subgraphs_maximum
     (graph_simple1, graph_simple2, true, user_callback,
-     vertices_equivalent(make_property_map_equivalent(vname_map_simple1, vname_map_simple2))); 
+     vertices_equivalent(boost::make_property_map_equivalent(vname_map_simple1, vname_map_simple2))); 
   std::cout << std::endl;
 
   // Maximum, unique subgraphs
   std::cout << "mcgregor_common_subgraphs_maximum_unique:" << std::endl;
   mcgregor_common_subgraphs_maximum_unique
     (graph_simple1, graph_simple2, true, user_callback,
-     vertices_equivalent(make_property_map_equivalent(vname_map_simple1, vname_map_simple2))); 
+     vertices_equivalent(boost::make_property_map_equivalent(vname_map_simple1, vname_map_simple2))); 
 
   return 0;
 }

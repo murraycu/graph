@@ -24,19 +24,19 @@ struct toto_t {
   enum { num = 23063};
   using kind = vertex_property_tag;
 };
-using Toto = property<toto_t, double>;
+using Toto = boost::property<toto_t, double>;
 
 struct radius_t {
   enum { num = 23062};
   using kind = vertex_property_tag;
 };
-using Radius = property<radius_t, double, Toto>;
+using Radius = boost::property<radius_t, double, Toto>;
 
 struct mass_t {
   enum { num = 23061};
   using kind = vertex_property_tag;
 };
-using Mass = property<mass_t, int, Radius>;
+using Mass = boost::property<mass_t, int, Radius>;
 
 
 //====== edge properties
@@ -44,7 +44,7 @@ struct stiff_t {
   enum { num = 23064};
   using kind = edge_property_tag;
 };
-using Stiff = property<stiff_t, double>;
+using Stiff = boost::property<stiff_t, double>;
 
 
 
@@ -94,20 +94,20 @@ int main(int argc, char* argv[])
   std::cout << write( graph );
   
   std::cout << "radii:" << std::endl;
-  auto seqRadius = get_property_iter_range(graph,radius_t());
+  auto seqRadius = boost::get_property_iter_range(graph,radius_t());
   std::for_each( seqRadius.first, seqRadius.second, Print() ); 
   std::cout << std::endl;
   
   std::cout << "stiff:" << std::endl;
-  auto seqStiff = get_property_iter_range(graph, stiff_t());
+  auto seqStiff = boost::get_property_iter_range(graph, stiff_t());
   std::for_each( seqStiff.first, seqStiff.second, Print() ); 
   std::cout << std::endl;
   
-  seqStiff = get_property_iter_range(graph, stiff_t());
+  seqStiff = boost::get_property_iter_range(graph, stiff_t());
   std::for_each( seqStiff.first, seqStiff.second, Set<double>(2.4) );
   
   std::cout << "new stiff:" << std::endl;
-  seqStiff = get_property_iter_range(graph,stiff_t());
+  seqStiff = boost::get_property_iter_range(graph,stiff_t());
   std::for_each( seqStiff.first, seqStiff.second, Print() ); 
   std::cout << std::endl;
   

@@ -35,6 +35,7 @@ int main(int argc, char* argv[]) {
        v_index < num_vertices(graph); ++v_index) {
 
     // The two indicies should always be equal
+    // TODO: get() is in the global namespace, but it should be in boost::.
     std::cout << "Index of vertex " << v_index << " is " <<
       get(boost::vertex_index, graph, vertex(v_index, graph)) << std::endl;
 

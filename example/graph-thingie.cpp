@@ -30,41 +30,41 @@ struct vertex_label_t { using kind = vertex_property_tag; };
 int main() {
 
   // Vertex properties
-  using vertex_p = property<vertex_name_t, std::string,
-    property< vertex_label_t, std::string,
-    property<vertex_root_t, int>>>;  
+  using vertex_p = boost::property<vertex_name_t, std::string,
+    boost::property< vertex_label_t, std::string,
+    boost::property<vertex_root_t, int>>>;  
   // Edge properties
-  using edge_p = property<edge_name_t, std::string>;
+  using edge_p = boost::property<edge_name_t, std::string>;
   // Graph properties
-  using graph_p = property<graph_name_t, std::string,
-    property<graph_identifier_t, std::string>>;
+  using graph_p = boost::property<graph_name_t, std::string,
+    boost::property<graph_identifier_t, std::string>>;
   // adjacency_list-based type
   using graph_t = adjacency_list<vecS, vecS, directedS,
     vertex_p, edge_p, graph_p>;
 
   // Construct an empty graph and prepare the dynamic_property_maps.
   graph_t graph(0);
-  dynamic_properties dp;
+  boost::dynamic_properties dp;
 
-  auto vname = get(vertex_name, graph);
+  auto vname = boost::get(vertex_name, graph);
   dp.property("node_id",vname);
 
-  auto vlabel = get(vertex_label_t(), graph);
+  auto vlabel = boost::get(vertex_label_t(), graph);
   dp.property("label",vlabel);
 
-  auto root = get(vertex_root, graph);
+  auto root = boost::get(vertex_root, graph);
   dp.property("root",root);
 
-  auto elabel = get(edge_name, graph);
+  auto elabel = boost::get(edge_name, graph);
   dp.property("label",elabel);
 
   // Use ref_property_map to turn a graph property into a property map
-  ref_property_map<graph_t*, std::string> 
+  boost::ref_property_map<graph_t*, std::string> 
     gname(get_property(graph,graph_name));
   dp.property("name",gname);
 
   // Use ref_property_map to turn a graph property into a property map
-  ref_property_map<graph_t*, std::string> 
+  boost::ref_property_map<graph_t*, std::string> 
     gid(get_property(graph,graph_identifier_t()));
   dp.property("identifier",gid);
   // Sample graph as an istream;
@@ -90,12 +90,12 @@ const char* dot =
     return -1;
   }
 
-  std::cout << "graph " << get("name",dp,&graph) <<
-      " (" << get("identifier",dp,&graph) << ")\n\n";
+  std::cout << "graph " << boost::get("name",dp,&graph) <<
+      " (" << boost::get("identifier",dp,&graph) << ")\n\n";
 
   BOOST_FOREACH( graph_t::vertex_descriptor v, vertices(graph) ) {
-    std::cout << "vertex " << get("node_id",dp,v) <<
-      " (" << get("label",dp,v) << ")\n";
+    std::cout << "vertex " << boost::get("node_id",dp,v) <<
+      " (" << boost::get("label",dp,v) << ")\n";
   }
 
   return status ? EXIT_SUCCESS : EXIT_FAILURE;

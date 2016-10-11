@@ -11,8 +11,8 @@
 using namespace boost;
 
 int main() {
-  using edge_property = property<edge_name_t, char>;
-  using vertex_property = property<vertex_name_t, char, property<vertex_index_t, int>>;
+  using edge_property = boost::property<edge_name_t, char>;
+  using vertex_property = boost::property<vertex_name_t, char, boost::property<vertex_index_t, int>>;
 
   // Using a vecS graphs => the index maps are implicit.
   using graph_type = adjacency_list<vecS, vecS, bidirectionalS, vertex_property, edge_property>;
@@ -66,9 +66,9 @@ int main() {
   
   // create predicates
   auto vertex_comp =
-    make_property_map_equivalent(get(vertex_name, graph1), get(vertex_name, graph2));
+    make_property_map_equivalent(boost::get(vertex_name, graph1), boost::get(vertex_name, graph2));
   auto edge_comp =
-    make_property_map_equivalent(get(edge_name, graph1), get(edge_name, graph2));
+    make_property_map_equivalent(boost::get(edge_name, graph1), boost::get(edge_name, graph2));
  
   // Create callback
   vf2_print_callback<graph_type, graph_type> callback(graph1, graph2);

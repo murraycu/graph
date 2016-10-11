@@ -72,8 +72,8 @@ namespace boost {
 template <class Graph>
 void print_network(const Graph& G)
 {
-  auto capacity = get(edge_mycapacity, G);
-  auto flow = get(edge_myflow, G);
+  auto capacity = boost::get(edge_mycapacity, G);
+  auto flow = boost::get(edge_myflow, G);
 
   for (const auto& vertex : make_range_pair(vertices(G))) {
     std::cout << vertex << "\t";
@@ -94,10 +94,10 @@ void print_network(const Graph& G)
 
 int main(int , char* [])
 {
-  using Cap = property<edge_mycapacity_t, int>;
-  using Flow = property<edge_myflow_t, int, Cap>;
+  using Cap = boost::property<edge_mycapacity_t, int>;
+  using Flow = boost::property<edge_myflow_t, int, Cap>;
   using Graph = adjacency_list<vecS, vecS, bidirectionalS, 
-     no_property, Flow>;
+     boost::no_property, Flow>;
 
   const int num_vertices = 9;
   Graph G(num_vertices);
@@ -130,8 +130,8 @@ int main(int , char* [])
 
   print_network(G);
 
-  property_map<Graph, edge_myflow_t>::type
-    flow = get(edge_myflow, G);
+  boost::property_map<Graph, edge_myflow_t>::type
+    flow = boost::get(edge_myflow, G);
 
   int f = 0;
   for (const auto& vertex : make_range_pair(vertices(G)))

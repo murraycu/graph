@@ -130,9 +130,9 @@ main()
     distance_list.resize(boost::num_vertices(g), 0);
 
     // obtain property maps
-    d_map = get(dist_t(), g);
-    p_map = get(pred_t(), g);
-    c_map = get(color_t(), g);
+    d_map = boost::get(dist_t(), g);
+    p_map = boost::get(pred_t(), g);
+    c_map = boost::get(color_t(), g);
 
     for (const auto& vertex : make_range_pair(boost::vertices(g)))
       d_map[vertex] = 0;

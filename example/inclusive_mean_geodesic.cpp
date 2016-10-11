@@ -62,7 +62,7 @@ using Edge = graph_traits<Graph>::edge_descriptor;
 
 // The name map provides an abstract accessor for the names of
 // each vertex. This is used during graph creation.
-using NameMap = property_map<Graph, std::string WebPage::*>::type;
+using NameMap = boost::property_map<Graph, std::string WebPage::*>::type;
 
 // Declare a matrix type and its corresponding property map that
 // will contain the distances between each pair of vertices.
@@ -72,7 +72,7 @@ using DistanceMatrixMap = DistanceProperty::matrix_map_type;
 
 // Declare the weight map as an accessor into the bundled
 // edge property.
-using WeightMap = property_map<Graph, float Link::*>::type;
+using WeightMap = boost::property_map<Graph, float Link::*>::type;
 
 // Declare a container and its corresponding property map that
 // will contain the resulting mean geodesic distances of each
@@ -91,8 +91,8 @@ main(int argc, char *argv[])
     // to the web page names, and the weight map as an accessor to
     // the edge weights (or probabilities).
     Graph g;
-    NameMap nm(get(&WebPage::name, g));
-    WeightMap wm(get(&Link::probability, g));
+    NameMap nm(boost::get(&WebPage::name, g));
+    WeightMap wm(boost::get(&Link::probability, g));
 
     // Read the weighted graph from standard input.
     read_weighted_graph(g, nm, wm, std::cin);
@@ -123,8 +123,8 @@ main(int argc, char *argv[])
     for(const auto& vertex : make_range_pair(vertices(g))) {
         std::cout << std::setw(12) << std::setiosflags(std::ios::left)
              << g[vertex].name
-             << std::setw(12) << get(exmap, vertex)
-             << std::setw(12) << get(inmap, vertex) << std::endl;
+             << std::setw(12) << boost::get(exmap, vertex)
+             << std::setw(12) << boost::get(inmap, vertex) << std::endl;
     }
     std::cout << "small world (excluding self-loops): " << ex << std::endl;
     std::cout << "small world (including self-loops): " << in << std::endl;

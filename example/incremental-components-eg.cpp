@@ -62,7 +62,7 @@ int main(int argc, char* argv[])
 
   // Generate component index. NOTE: We would need to pass in a vertex
   // index map into the component_index constructor if our graph type
-  // used listS instead of vecS (identity_property_map is used by
+  // used listS instead of vecS (boost::identity_property_map is used by
   // default).
   using Components = component_index<VertexIndex>;
   Components components(parent.begin(), parent.end());

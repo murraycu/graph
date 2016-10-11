@@ -54,9 +54,9 @@ template <class EdgeIter, class Graph>
 void who_owes_who(EdgeIter first, EdgeIter last, const Graph& G)
 {
   // Access the propety acessor type for this graph
-  using NamePA = typename property_map<Graph, vertex_first_name_t>
+  using NamePA = typename boost::property_map<Graph, vertex_first_name_t>
     ::const_type;
-  auto name = get(vertex_first_name, G);
+  auto name = boost::get(vertex_first_name, G);
 
   using NameType = typename boost::property_traits<NamePA>::value_type;
 
@@ -78,7 +78,7 @@ main()
     // Create the graph, and specify that we will use std::string to
     // store the first name's.
     using MyGraphType = adjacency_list<vecS, vecS, directedS, 
-      property<vertex_first_name_t, std::string>>;
+      boost::property<vertex_first_name_t, std::string>>;
     
     using Pair = std::pair<int,int>;
     Pair edge_array[11] = { Pair(0,1), Pair(0,2), Pair(0,3), Pair(0,4), 
@@ -89,8 +89,8 @@ main()
     for (int i=0; i<11; ++i)
       add_edge(edge_array[i].first, edge_array[i].second, G);
 
-    property_map<MyGraphType, vertex_first_name_t>::type name
-      = get(vertex_first_name, G);
+    boost::property_map<MyGraphType, vertex_first_name_t>::type name
+      = boost::get(vertex_first_name, G);
     
     boost::put(name, 0, "Jeremy");
     boost::put(name, 1, "Rich");

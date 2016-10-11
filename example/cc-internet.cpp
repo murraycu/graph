@@ -23,10 +23,10 @@ main()
   std::vector<int> component(num_vertices(g));
 
   connected_components
-    (g, make_iterator_property_map(component.begin(),
-                                   get(vertex_index, g), component[0]));
+    (g, boost::make_iterator_property_map(component.begin(),
+                                   boost::get(vertex_index, g), component[0]));
 
-  auto vertex_attr_map = get(vertex_attribute, g);
+  auto vertex_attr_map = boost::get(vertex_attribute, g);
   std::string color[] = {
   "white", "gray", "black", "lightgray"};
   for(const auto& vertex : make_range_pair(vertices(g))) {

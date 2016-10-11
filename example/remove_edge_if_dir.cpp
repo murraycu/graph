@@ -51,16 +51,16 @@ main()
   Graph g(std::begin(edges), std::end(edges), 4);
 
   std::cout << "original graph:" << std::endl;
-  print_graph(g, get(vertex_index, g));
+  print_graph(g, boost::get(vertex_index, g));
   std::cout << std::endl;
 
   std::cout << "removing edges (0,3)" << std::endl;
   remove_out_edge_if(vertex(0,g), incident_to(vertex(3,g), g), g);
-  print_graph(g, get(vertex_index, g));
+  print_graph(g, boost::get(vertex_index, g));
 
   std::cout << "removing edge (0,2) and (3, 2)" << std::endl;
   remove_edge_if(incident_to(vertex(2,g), g), g);
-  print_graph(g, get(vertex_index, g));
+  print_graph(g, boost::get(vertex_index, g));
 
   return 0;
 }

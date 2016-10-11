@@ -26,8 +26,8 @@ int main(int argc, char** argv)
 
   using graph = adjacency_list<vecS, vecS,
     undirectedS,
-    property<vertex_index_t, int>,
-    property<edge_index_t, int>>;
+    boost::property<vertex_index_t, int>,
+    boost::property<edge_index_t, int>>;
 
   // Create a maximal planar graph on 6 vertices
   graph g(6);
@@ -48,10 +48,10 @@ int main(int argc, char** argv)
   add_edge(1,5,g);
 
   // Initialize the interior edge index
-  auto e_index = get(edge_index, g);
+  auto e_index = boost::get(edge_index, g);
   graph_traits<graph>::edges_size_type edge_count = 0;
   for(const auto& edge : make_range_pair(edges(g)))
-    put(e_index, edge, edge_count++);
+    boost::put(e_index, edge, edge_count++);
   
 
   // Test for planarity - we know it is planar, we just want to 
@@ -60,8 +60,8 @@ int main(int argc, char** argv)
   std::vector<vec_t> embedding(num_vertices(g));
   if (boyer_myrvold_planarity_test(boyer_myrvold_params::graph = g,
                                    boyer_myrvold_params::embedding = 
-                                       make_iterator_property_map(
-                                         embedding.begin(), get(vertex_index, g))
+                                       boost::make_iterator_property_map(
+                                         embedding.begin(), boost::get(vertex_index, g))
                                    )
       )
     std::cout << "Input graph is planar" << std::endl;
@@ -72,8 +72,8 @@ int main(int argc, char** argv)
   
   ordering_storage_t ordering;
   planar_canonical_ordering(g,
-                            make_iterator_property_map(
-                              embedding.begin(), get(vertex_index, g)),
+                            boost::make_iterator_property_map(
+                              embedding.begin(), boost::get(vertex_index, g)),
                             std::back_inserter(ordering));
 
   auto oi_end = ordering.end();

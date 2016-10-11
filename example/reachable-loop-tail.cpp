@@ -39,15 +39,15 @@ main(int argc, char *argv[])
   std::vector<default_color_type> reachable_to_tail(num_vertices(g));
   reverse_graph<Graph> reverse_g(g);
   depth_first_visit(reverse_g, loop_tail, default_dfs_visitor(),
-                    make_iterator_property_map(reachable_to_tail.begin(),
-                                               get(vertex_index, g), c));
+                    boost::make_iterator_property_map(reachable_to_tail.begin(),
+                                               boost::get(vertex_index, g), c));
 
   std::ofstream loops_out(argv[2]);
   loops_out << "digraph G {\n"
     << "  graph [ratio=\"fill\",size=\"3,3\"];\n"
     << "  node [shape=\"box\"];\n" << "  edge [style=\"bold\"];\n";
 
-  auto vattr_map = get(vertex_attribute, g);
+  auto vattr_map = boost::get(vertex_attribute, g);
   graph_traits<GraphvizDigraph>::vertex_iterator i, i_end;
   for (std::tie(i, i_end) = vertices(g_in); i != i_end; ++i) {
     loops_out << *i << "[label=\"" << vattr_map[*i]["label"]

@@ -14,10 +14,10 @@ main()
 {
   using namespace boost;
   using graph_t = adjacency_list<listS, listS, directedS,
-    property<vertex_name_t, std::string>>;
+    boost::property<vertex_name_t, std::string>>;
   graph_t g;
   graph_traits<graph_t>::vertex_descriptor u = add_vertex(g);
-  auto name_map = get(vertex_name, g);
+  auto name_map = boost::get(vertex_name, g);
   name_map[u] = "Joe";
   std::cout << name_map[u] << std::endl;
   return EXIT_SUCCESS;

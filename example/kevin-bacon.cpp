@@ -55,12 +55,12 @@ main()
   }
 
   using Graph = adjacency_list <vecS, vecS, undirectedS,
-    property<vertex_name_t, std::string>,
-    property<edge_name_t, std::string>>;
+    boost::property<vertex_name_t, std::string>,
+    boost::property<edge_name_t, std::string>>;
   Graph g;
 
-  auto actor_name = get(vertex_name, g);
-  auto connecting_movie = get(edge_name, g);
+  auto actor_name = boost::get(vertex_name, g);
+  auto connecting_movie = boost::get(edge_name, g);
 
   using Vertex = graph_traits<Graph>::vertex_descriptor;
   using NameVertexMap = std::map<std::string, Vertex>;

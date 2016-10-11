@@ -41,7 +41,7 @@ main(int , char* [])
      internal decorator, so we "property" the color to the graph.
      */
   using Graph = adjacency_list<vecS, vecS, directedS, 
-    property<vertex_color_t, default_color_type>>;
+    boost::property<vertex_color_t, default_color_type>>;
 
   using Vertex = boost::graph_traits<Graph>::vertex_descriptor;
 
@@ -54,7 +54,7 @@ main(int , char* [])
     Pair(4, 3) };
   Graph G(std::begin(edges), std::end(edges), 6 /* vertices count */);
 
-  auto id = get(vertex_index, G);
+  auto id = boost::get(vertex_index, G);
 
   using container = std::vector<Vertex>;
   container c;

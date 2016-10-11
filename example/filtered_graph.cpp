@@ -42,8 +42,8 @@ int main()
   using namespace boost;
   
   using Graph = adjacency_list<vecS, vecS, directedS,
-    no_property, property<edge_weight_t, int>>;
-  using EdgeWeightMap = property_map<Graph, edge_weight_t>::type;
+    boost::no_property, boost::property<edge_weight_t, int>>;
+  using EdgeWeightMap = boost::property_map<Graph, edge_weight_t>::type;
 
   enum { A, B, C, D, E, N };
   const char* name = "ABCDE";
@@ -55,7 +55,7 @@ int main()
   add_edge(D, B, 3, g);
   add_edge(E, C, 0, g);
   
-  positive_edge_weight<EdgeWeightMap> filter(get(edge_weight, g));
+  positive_edge_weight<EdgeWeightMap> filter(boost::get(edge_weight, g));
   filtered_graph<Graph, positive_edge_weight<EdgeWeightMap>>
     fg(g, filter);
 

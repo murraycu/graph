@@ -29,7 +29,7 @@ add_named_vertex(Graph& g, NameMap nm, const std::string& name, VertexMap& vm)
         // The name was unique so we need to add a vertex to the graph
         v = add_vertex(g);
         iter->second = v;
-        put(nm, v, name);      // store the name in the name map
+        boost::put(nm, v, name);      // store the name in the name map
     }
     else {
         // We had alread inserted this name so we can return the
@@ -93,7 +93,7 @@ read_weighted_graph(Graph& g, NameMap nm, WeightMap wm, InputStream& is)
 
         // add the edge and set the weight
         Edge e = add_edge(u, v, g).first;
-        put(wm, e, p);
+        boost::put(wm, e, p);
     }
     return verts;
 }

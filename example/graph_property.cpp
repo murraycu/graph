@@ -14,21 +14,21 @@ main()
 {
   using namespace boost;
 
-  using graph_t = adjacency_list<vecS, vecS, directedS,no_property, 
-    property<edge_index_t, int>,
-    property<graph_name_t, std::string>>;
+  using graph_t = adjacency_list<vecS, vecS, directedS, boost::no_property, 
+    boost::property<edge_index_t, int>,
+    boost::property<graph_name_t, std::string>>;
 
   graph_t g;
-  get_property(g, graph_name) = "graph";
+  boost::get_property(g, graph_name) = "graph";
 
-  std::cout << "name: " << get_property(g, graph_name) << std::endl;
+  std::cout << "name: " << boost::get_property(g, graph_name) << std::endl;
 
   using subgraph_t = subgraph<graph_t>;
 
   subgraph_t sg;
-  get_property(sg, graph_name) = "subgraph";
+  boost::get_property(sg, graph_name) = "subgraph";
 
-  std::cout << "name: " << get_property(sg, graph_name) << std::endl;
+  std::cout << "name: " << boost::get_property(sg, graph_name) << std::endl;
   
   return exit_success;
 }

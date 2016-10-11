@@ -37,12 +37,12 @@ using file_dep_graph2 = adjacency_list<listS, // Store out-edges of each vertex 
   listS,                       // Store vertex set in a std::list
   directedS,                   // The file dependency graph is directed
   // vertex properties
-  property<vertex_name_t, std::string,
-  property<vertex_compile_cost_t, float,
-  property<vertex_distance_t, float,
-  property<vertex_color_t, default_color_type>>>>,
+  boost::property<vertex_name_t, std::string,
+  boost::property<vertex_compile_cost_t, float,
+  boost::property<vertex_distance_t, float,
+  boost::property<vertex_color_t, default_color_type>>>>,
   // an edge property
-  property<edge_weight_t, float>>;
+  boost::property<edge_weight_t, float>>;
 
 using vertex_t = graph_traits<file_dep_graph2>::vertex_descriptor;
 using edge_t = graph_traits<file_dep_graph2>::edge_descriptor;
@@ -69,8 +69,8 @@ main()
   file_dep_graph2 g(input_begin, input_end, n_vertices);
 #endif
 
-  auto name_map = get(vertex_name, g);
-  auto compile_cost_map = get(vertex_compile_cost, g);
+  auto name_map = boost::get(vertex_name, g);
+  auto compile_cost_map = boost::get(vertex_compile_cost, g);
 
   std::ifstream name_in("makefile-target-names.dat");
   std::ifstream compile_cost_in("target-compile-costs.dat");
@@ -81,7 +81,7 @@ main()
 
   graph_property_iter_range < file_dep_graph2,
     vertex_compile_cost_t >::iterator ci, ci_end;
-  std::tie(ci, ci_end) = get_property_iter_range(g, vertex_compile_cost);
+  std::tie(ci, ci_end) = boost::get_property_iter_range(g, vertex_compile_cost);
   std::cout << "total (sequential) compile time: "
     << std::accumulate(ci, ci_end, 0.0) << std::endl;
 

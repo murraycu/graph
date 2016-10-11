@@ -23,6 +23,7 @@ int main(int argc, char* argv[])
 
   // Get the index map of the grid graph
   using indexMapType = boost::property_map<GraphType, boost::vertex_index_t>::const_type;
+  // TODO: get() is in the global namespace, but it should be in boost::.
   indexMapType indexMap(get(boost::vertex_index, graph));
 
   // Create a float for every node in the graph
@@ -30,9 +31,10 @@ int main(int argc, char* argv[])
 
   // Associate the value 2.0 with the node at position (0,1) in the grid
   boost::graph_traits<GraphType>::vertex_descriptor v = { { 0, 1 } };
-  put(dataMap, v, 2.0f);
+  boost::put(dataMap, v, 2.0f);
 
-  // Get the data at the node at position (0,1) in the grid
+  // Get the data at: the node at position (0,1) in the grid
+  // TODO: get() is in the global namespace, but it should be in boost::.
   auto retrieved = get(dataMap, v);
   std::cout << "Retrieved value: " << retrieved << std::endl;
 

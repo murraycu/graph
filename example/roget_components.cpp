@@ -57,15 +57,15 @@ int main(int argc, char* argv[])
   //   a separate field for marking colors, so we use the w field.
 
   std::vector<int> comp(num_vertices(g));
-  auto index_map = get(vertex_index, g);
+  auto index_map = boost::get(vertex_index, g);
 
-  auto root = get(v_property<vertex_t>(), g);
+  auto root = boost::get(v_property<vertex_t>(), g);
 
   int num_comp = strong_components
-    (g, make_iterator_property_map(comp.begin(), index_map),
+    (g, boost::make_iterator_property_map(comp.begin(), index_map),
      root_map(root).
-     discover_time_map(get(z_property<long>(), g)).
-     color_map(get(w_property<long>(), g)));
+     discover_time_map(boost::get(z_property<long>(), g)).
+     color_map(boost::get(w_property<long>(), g)));
 
   std::vector<std::vector<vertex_t>> strong_comp(num_comp);
 

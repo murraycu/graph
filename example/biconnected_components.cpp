@@ -30,7 +30,7 @@ main()
 {
   using namespace boost;
   using graph_t = adjacency_list<vecS, vecS, undirectedS,
-    no_property, property<edge_component_t, std::size_t>>;
+    boost::no_property, boost::property<edge_component_t, std::size_t>>;
   using vertex_t = graph_traits<graph_t>::vertex_descriptor;
   graph_t g(9);
   add_edge(0, 5, g);
@@ -45,7 +45,7 @@ main()
   add_edge(6, 7, g);
   add_edge(7, 8, g);
 
-  auto component = get(edge_component, g);
+  auto component = boost::get(edge_component, g);
 
   auto num_comps = biconnected_components(g, component);
   std::cerr << "Found " << num_comps << " biconnected components.\n";

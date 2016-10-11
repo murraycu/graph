@@ -46,8 +46,8 @@ int main(int argc, char** argv)
 
   using graph = adjacency_list<vecS, vecS,
     undirectedS,
-    property<vertex_index_t, int>,
-    property<edge_index_t, int>>;
+    boost::property<vertex_index_t, int>,
+    boost::property<edge_index_t, int>>;
 
   // Create the graph - a straight line
   graph g(10);
@@ -68,10 +68,10 @@ int main(int argc, char** argv)
             << 2*num_vertices(g) - 4 << " faces." << std::endl;
 
   //Initialize the interior edge index
-  auto e_index = get(edge_index, g);
+  auto e_index = boost::get(edge_index, g);
   graph_traits<graph>::edges_size_type edge_count = 0;
   for(const auto& edge : make_range_pair(edges(g)))
-    put(e_index, edge, edge_count++);
+    boost::put(e_index, edge, edge_count++);
   
   
   //Test for planarity; compute the planar embedding as a side-effect
@@ -91,7 +91,7 @@ int main(int argc, char** argv)
   // Re-initialize the edge index, since we just added a few edges
   edge_count = 0;
   for(const auto& edge : make_range_pair(edges(g)))
-    put(e_index, edge, edge_count++);
+    boost::put(e_index, edge, edge_count++);
 
 
   //Test for planarity again; compute the planar embedding as a side-effect
@@ -113,7 +113,7 @@ int main(int argc, char** argv)
   // Re-initialize the edge index, since we just added a few edges
   edge_count = 0;
   for(const auto& edge : make_range_pair(edges(g)))
-    put(e_index, edge, edge_count++);
+    boost::put(e_index, edge, edge_count++);
 
   // Test for planarity one final time; compute the planar embedding as a 
   // side-effect

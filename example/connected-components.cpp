@@ -26,7 +26,7 @@ main()
 
   std::vector<int> c(num_vertices(G));
   auto num = connected_components
-    (G, make_iterator_property_map(c.begin(), get(vertex_index, G), c[0]));
+    (G, boost::make_iterator_property_map(c.begin(), boost::get(vertex_index, G), c[0]));
 
   std::cout << std::endl;
   std::vector<int>::iterator i;

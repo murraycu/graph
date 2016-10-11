@@ -30,7 +30,7 @@ using Edge = graph_traits<Graph>::edge_descriptor;
 
 // The name map provides an abstract accessor for the names of
 // each vertex. This is used during graph creation.
-using NameMap = property_map<Graph, std::string Actor::*>::type;
+using NameMap = boost::property_map<Graph, std::string Actor::*>::type;
 
 // The clustering property, container, and map define the containment
 // and abstract accessor for the clustering coefficients of vertices.
@@ -44,7 +44,7 @@ main(int argc, char *argv[])
     // Create the graph and a name map that provides access to
     // then actor names.
     Graph g;
-    NameMap nm(get(&Actor::name, g));
+    NameMap nm(boost::get(&Actor::name, g));
 
     // Read the graph from standard input.
     read_graph(g, nm, std::cin);
@@ -59,7 +59,7 @@ main(int argc, char *argv[])
     // Print the clustering coefficient of each vertex.
     for(const auto& vertex : make_range_pair(vertices(g))) {
         std::cout << std::setw(12) << std::setiosflags(std::ios::left)
-                << g[vertex].name << get(cm, vertex) << std::endl;
+                << g[vertex].name << boost::get(cm, vertex) << std::endl;
     }
     std::cout << "mean clustering coefficient: " << cc << std::endl;
 

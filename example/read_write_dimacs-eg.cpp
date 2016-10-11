@@ -52,7 +52,7 @@ struct zero_edge_capacity{
 
   template <typename Edge>
       bool operator() (const Edge& e) const {
-    return  get(m_cap_map, e) == 0 ;
+    return  boost::get(m_cap_map, e) == 0 ;
       }
 
       EdgeCapacityMap m_cap_map;
@@ -63,9 +63,9 @@ int main()
   using namespace boost;
   using Traits = adjacency_list_traits<vecS, vecS, directedS>;
   using Graph = adjacency_list<vecS, vecS, directedS,
-    no_property,
-    property<edge_capacity_t, long,
-    property<edge_reverse_t, Traits::edge_descriptor>>>;
+    boost::no_property,
+    boost::property<edge_capacity_t, long,
+    boost::property<edge_reverse_t, Traits::edge_descriptor>>>;
   
   using out_edge_iterator = graph_traits<Graph>::out_edge_iterator;
   using edge_descriptor = graph_traits<Graph>::edge_descriptor;
@@ -73,11 +73,11 @@ int main()
   
   Graph g;
 
-  using tCapMap = property_map<Graph, edge_capacity_t>::type;
+  using tCapMap = boost::property_map<Graph, edge_capacity_t>::type;
   using tCapMapValue = tCapMap::value_type;
   
-  auto capacity = get(edge_capacity, g);
-  auto rev = get(edge_reverse, g);
+  auto capacity = boost::get(edge_capacity, g);
+  auto rev = boost::get(edge_reverse, g);
   
   vertex_descriptor s, t;
   /*reading the graph from stdin*/
@@ -95,13 +95,13 @@ int main()
     bool is_there;
     std::tie(to_sink, is_there) = edge(v, t, g);
     if( is_there ){
-      if( get(capacity, to_sink) > get(capacity, from_source) ){ 
-        auto to_augment = get(capacity, from_source);
+      if( boost::get(capacity, to_sink) > boost::get(capacity, from_source) ){ 
+        auto to_augment = boost::get(capacity, from_source);
         capacity[from_source] = 0;
         capacity[to_sink] -= to_augment;
         augmented_flow += to_augment;
       }else{
-        tCapMapValue to_augment = get(capacity, to_sink);
+        tCapMapValue to_augment = boost::get(capacity, to_sink);
         capacity[to_sink] = 0;
         capacity[from_source] -= to_augment;
         augmented_flow += to_augment;
@@ -114,7 +114,7 @@ int main()
   remove_edge_if(filter, g);
   
   /*write the graph back to stdout */
-  write_dimacs_max_flow(g, capacity, identity_property_map(),s, t, std::cout);
+  write_dimacs_max_flow(g, capacity, boost::identity_property_map(),s, t, std::cout);
   //print flow we augmented to std::cerr
   std::cerr << "removed " << augmented_flow << " from SOURCE->NODE->SINK connects" <<std::endl;
   return 0;

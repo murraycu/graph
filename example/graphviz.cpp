@@ -15,12 +15,12 @@
 using namespace boost;
 
 using Digraph = boost::adjacency_list<vecS, vecS, directedS,
-                              property<vertex_name_t, std::string>,
-                              property<edge_weight_t, double>>;
+                              boost::property<vertex_name_t, std::string>,
+                              boost::property<edge_weight_t, double>>;
 
 using Graph = boost::adjacency_list<vecS, vecS, undirectedS,
-                              property<vertex_name_t, std::string>,
-                              property<edge_weight_t, double>>;
+                              boost::property<vertex_name_t, std::string>,
+                              boost::property<edge_weight_t, double>>;
 
 void test_graph_read_write(const std::string& filename)
 {
@@ -28,9 +28,9 @@ void test_graph_read_write(const std::string& filename)
   BOOST_REQUIRE(in);
 
   Graph g;
-  dynamic_properties dp;
-  dp.property("id", get(vertex_name, g));
-  dp.property("weight", get(edge_weight, g));
+  boost::dynamic_properties dp;
+  dp.property("id", boost::get(vertex_name, g));
+  dp.property("weight", boost::get(edge_weight, g));
   BOOST_CHECK(read_graphviz(in, g, dp, "id"));
 
   BOOST_CHECK(num_vertices(g) == 4);
@@ -40,7 +40,7 @@ void test_graph_read_write(const std::string& filename)
 
   std::map<std::string, Vertex> name_to_vertex;
   BGL_FORALL_VERTICES(v, g, Graph) 
-    name_to_vertex[get(vertex_name, g, v)] = v;
+    name_to_vertex[boost::get(vertex_name, g, v)] = v;
 
   // Check vertices
   BOOST_CHECK(name_to_vertex.find("0") != name_to_vertex.end());
@@ -54,16 +54,16 @@ void test_graph_read_write(const std::string& filename)
   BOOST_CHECK(edge(name_to_vertex["foo"], name_to_vertex["bar"], g).second);
   BOOST_CHECK(edge(name_to_vertex["1"], name_to_vertex["bar"], g).second);
 
-  BOOST_CHECK(get(edge_weight, g, 
+  BOOST_CHECK(boost::get(edge_weight, g, 
                   edge(name_to_vertex["0"], name_to_vertex["1"], g).first)
                 == 3.14159);
-  BOOST_CHECK(get(edge_weight, g, 
+  BOOST_CHECK(boost::get(edge_weight, g, 
                   edge(name_to_vertex["1"], name_to_vertex["foo"], g).first)
                 == 2.71828);
-  BOOST_CHECK(get(edge_weight, g, 
+  BOOST_CHECK(boost::get(edge_weight, g, 
                   edge(name_to_vertex["foo"], name_to_vertex["bar"], g).first)
                 == 10.0);
-  BOOST_CHECK(get(edge_weight, g, 
+  BOOST_CHECK(boost::get(edge_weight, g, 
                   edge(name_to_vertex["1"], name_to_vertex["bar"], g).first)
                 == 10.0);
 

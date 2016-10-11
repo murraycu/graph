@@ -49,14 +49,14 @@ using Edge = graph_traits<Graph>::edge_descriptor;
 
 // The name map provides an abstract accessor for the names of
 // each vertex. This is used during graph creation.
-using NameMap = property_map<Graph, std::string Actor::*>::type;
+using NameMap = boost::property_map<Graph, std::string Actor::*>::type;
 
 int
 main(int argc, char *argv[])
 {
     // Create the graph and and its name map accessor.
     Graph g;
-    NameMap nm(get(&Actor::name, g));
+    NameMap nm(boost::get(&Actor::name, g));
 
     // Read the graph from standard input.
     read_graph(g, nm, std::cin);

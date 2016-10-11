@@ -17,17 +17,17 @@ main()
 {
   using namespace boost;
   using graph_t = adjacency_list<listS, vecS, directedS,
-    property<vertex_name_t, std::string>>;
+    boost::property<vertex_name_t, std::string>>;
   graph_t g(3);
 
   const char *vertex_names[] = { "Kubrick", "Clark", "Hal" };
   int i = 0;
   graph_property_iter_range<graph_t, vertex_name_t>::iterator v, v_end;
-  for (std::tie(v, v_end) = get_property_iter_range(g, vertex_name);
+  for (std::tie(v, v_end) = boost::get_property_iter_range(g, vertex_name);
        v != v_end; ++v, ++i)
     *v = vertex_names[i];
 
-  std::tie(v, v_end) = get_property_iter_range(g, vertex_name);
+  std::tie(v, v_end) = boost::get_property_iter_range(g, vertex_name);
   std::copy(v, v_end, std::ostream_iterator<std::string> (std::cout, " "));
   std::cout << std::endl;
   return 0;

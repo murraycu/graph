@@ -128,16 +128,16 @@ int main(int argc, char* argv[])
 
   Vector supernode_sizes(n, 1); // init has to be 1
 
-  auto id = get(vertex_index, G);
+  auto id = boost::get(vertex_index, G);
 
   Vector degree(n, 0);
 
   minimum_degree_ordering
     (G,
-     make_iterator_property_map(&degree[0], id, degree[0]),
+     boost::make_iterator_property_map(&degree[0], id, degree[0]),
      &inverse_perm[0],
      &perm[0],
-     make_iterator_property_map(&supernode_sizes[0], id, supernode_sizes[0]), 
+     boost::make_iterator_property_map(&supernode_sizes[0], id, supernode_sizes[0]), 
      delta, id);
 
   if ( argc >= 3 ) {

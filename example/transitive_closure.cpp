@@ -18,8 +18,8 @@ int
 main(int, char *[])
 {
   using namespace boost;
-  using Name = property<vertex_name_t, char>;
-  using Index = property<vertex_index_t, std::size_t, Name>;
+  using Name = boost::property<vertex_name_t, char>;
+  using Index = boost::property<vertex_index_t, std::size_t, Name>;
   using graph_t = adjacency_list<listS, listS, directedS, Index>;
   using vertex_t = graph_traits<graph_t>::vertex_descriptor;
   graph_t G;
@@ -33,7 +33,7 @@ main(int, char *[])
   add_edge(verts[3], verts[0], G);
 
   std::cout << "Graph G:" << std::endl;
-  print_graph(G, get(vertex_name, G));
+  print_graph(G, boost::get(vertex_name, G));
 
   adjacency_list <> TC;
   transitive_closure(G, TC);

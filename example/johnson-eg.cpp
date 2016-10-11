@@ -20,8 +20,8 @@ int
 main()
 {
   using namespace boost;
-  using Graph = adjacency_list<vecS, vecS, directedS, no_property,
-    property<edge_weight_t, int, property<edge_weight2_t, int>>>;
+  using Graph = adjacency_list<vecS, vecS, directedS, boost::no_property,
+    boost::property<edge_weight_t, int, boost::property<edge_weight2_t, int>>>;
   const int V = 6;
   using Edge = std::pair<int, int>;
   Edge edge_array[] =
@@ -39,7 +39,7 @@ main()
   Graph g(edge_array, edge_array + E, V);
 #endif
 
-  auto w = get(edge_weight, g);
+  auto w = boost::get(edge_weight, g);
   int weights[] = { 0, 0, 0, 0, 0, 3, -4, 8, 1, 7, 4, -5, 2, 6 };
   int *wp = weights;
 
@@ -76,7 +76,7 @@ main()
   graph_traits<Graph>::edge_iterator ei, ei_end;
   for (const auto& edge : make_range_pair(edges(g)))
     fout << source(edge, g) << " -> " << target(edge, g)
-      << "[label=" << get(edge_weight, g)[edge] << "]\n";
+      << "[label=" << boost::get(edge_weight, g)[edge] << "]\n";
 
   fout << "}\n";
   return 0;

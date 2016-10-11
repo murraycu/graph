@@ -32,10 +32,10 @@ main(int argc, char *argv[])
     reachable_from_head(num_vertices(g), Color::white());
   default_color_type c;
   depth_first_visit(g, loop_head, default_dfs_visitor(),
-                    make_iterator_property_map(reachable_from_head.begin(),
-                                               get(vertex_index, g), c));
+                    boost::make_iterator_property_map(reachable_from_head.begin(),
+                                               boost::get(vertex_index, g), c));
 
-  auto vattr_map = get(vertex_attribute, g);
+  auto vattr_map = boost::get(vertex_attribute, g);
 
   graph_traits<GraphvizDigraph>::vertex_iterator i, i_end;
   for (std::tie(i, i_end) = vertices(g); i != i_end; ++i)
@@ -46,7 +46,7 @@ main(int argc, char *argv[])
 
   std::ofstream loops_out(argv[2]);
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
-  // VC++ has trouble with the get_property() functions
+  // VC++ has trouble with the boost::get_property() functions
   loops_out << "digraph G  {\n"
             << "size=\"3,3\"\n"
             << "ratio=\"fill\"\n"
@@ -62,8 +62,8 @@ main(int argc, char *argv[])
     }
     loops_out<< "]";
   }
-  property_map<GraphvizDigraph, edge_attribute_t>::type
-    eattr_map = get(edge_attribute, g);
+  boost::property_map<GraphvizDigraph, edge_attribute_t>::type
+    eattr_map = boost::get(edge_attribute, g);
   for (const auto& edge : make_range_pair(edges(g))) {
     loops_out << source(edge, g) << " -> " << target(edge, g) << "[";
     std::map<std::string,std::string>& attr_map = eattr_map[edge];
@@ -77,9 +77,9 @@ main(int argc, char *argv[])
   }
   loops_out << "}\n";
 #else
-  get_property(g, graph_graph_attribute)["size"] = "3,3";
-  get_property(g, graph_graph_attribute)["ratio"] = "fill";
-  get_property(g, graph_vertex_attribute)["shape"] = "box";
+  boost::get_property(g, graph_graph_attribute)["size"] = "3,3";
+  boost::get_property(g, graph_graph_attribute)["ratio"] = "fill";
+  boost::get_property(g, graph_vertex_attribute)["shape"] = "box";
 
   write_graphviz(loops_out, g,
                  make_vertex_attributes_writer(g),

@@ -22,11 +22,11 @@
 /* Output:
 
   distances from start vertex:
-  distance(a) = 0
-  distance(b) = 3
-  distance(c) = 1
-  distance(d) = 3
-  distance(e) = 3
+  boost::distance(a) = 0
+  boost::distance(b) = 3
+  boost::distance(c) = 1
+  boost::distance(d) = 3
+  boost::distance(e) = 3
 
   min-max paths tree
   a --> c 
@@ -43,7 +43,7 @@ main(int , char* [])
   using namespace boost;
 
   using Graph = adjacency_list<listS, vecS, directedS, 
-    no_property, property<edge_weight_t, int>>;
+    boost::no_property, boost::property<edge_weight_t, int>>;
   using Vertex = graph_traits<Graph>::vertex_descriptor;
 
   using E = std::pair<int,int>;
@@ -58,7 +58,7 @@ main(int , char* [])
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
   // VC++ can't handle iterator constructors
   Graph G(num_nodes);
-  auto weightmap = get(edge_weight, G);
+  auto weightmap = boost::get(edge_weight, G);
   for (std::size_t j = 0; j < sizeof(edges) / sizeof(E); ++j) {
     graph_traits<Graph>::edge_descriptor e; bool inserted;
     std::tie(e, inserted) = add_edge(edges[j].first, edges[j].second, G);
@@ -66,7 +66,7 @@ main(int , char* [])
   }
 #else
   Graph G(std::begin(edges), std::end(edges), weights, num_nodes);
-  auto = get(edge_weight, G);
+  auto = boost::get(edge_weight, G);
 #endif
 
   std::vector<Vertex> p(num_vertices(G));
@@ -76,7 +76,7 @@ main(int , char* [])
 
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
   dijkstra_shortest_paths
-    (G, s, &p[0], &d[0], weightmap, get(vertex_index, G),
+    (G, s, &p[0], &d[0], weightmap, boost::get(vertex_index, G),
      std::greater<int>(), closed_plus<int>(), (std::numeric_limits<int>::max)(), 0,
      default_dijkstra_visitor());
 #else

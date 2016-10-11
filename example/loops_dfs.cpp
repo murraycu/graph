@@ -55,8 +55,8 @@ find_loops(typename graph_traits<Graph>::vertex_descriptor entry,
   std::vector<default_color_type> color_map(num_vertices(g));
   depth_first_visit(g, entry,
                     make_back_edge_recorder(std::back_inserter(back_edges)),
-                    make_iterator_property_map(color_map.begin(),
-                                               get(vertex_index, g), color_map[0]));
+                    boost::make_iterator_property_map(color_map.begin(),
+                                               boost::get(vertex_index, g), color_map[0]));
 
   for (typename std::vector<Edge>::size_type i = 0; i < back_edges.size(); ++i) {
     typename Loops::value_type x;
@@ -82,14 +82,14 @@ compute_loop_extent(typename graph_traits <
     reachable_from_head(num_vertices(g), Color::white());
   default_color_type c;
   depth_first_visit(g, loop_head, default_dfs_visitor(),
-                    make_iterator_property_map(reachable_from_head.begin(),
-                                               get(vertex_index, g), c));
+                    boost::make_iterator_property_map(reachable_from_head.begin(),
+                                               boost::get(vertex_index, g), c));
 
   std::vector<default_color_type> reachable_to_tail(num_vertices(g));
   reverse_graph<Graph> reverse_g(g);
   depth_first_visit(reverse_g, loop_tail, default_dfs_visitor(),
-                    make_iterator_property_map(reachable_to_tail.begin(),
-                                               get(vertex_index, g), c));
+                    boost::make_iterator_property_map(reachable_to_tail.begin(),
+                                               boost::get(vertex_index, g), c));
 
   typename graph_traits<Graph>::vertex_iterator vi, vi_end;
   for (std::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
@@ -116,8 +116,8 @@ main(int argc, char *argv[])
 
   Graph g;
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
-  // VC++ has trouble with the get_property() function
-  get_property(g, graph_name) = "loops";
+  // VC++ has trouble with the boost::get_property() function
+  boost::get_property(g, graph_name) = "loops";
 #endif
 
   copy_graph(g_in, g);
@@ -129,8 +129,8 @@ main(int argc, char *argv[])
 
   find_loops(entry, g, loops);
 
-  auto vattr_map = get(vertex_attribute, g);
-  auto eattr_map = get(edge_attribute, g);
+  auto vattr_map = boost::get(vertex_attribute, g);
+  auto eattr_map = boost::get(edge_attribute, g);
 
   for (auto i = loops.begin(); i != loops.end(); ++i) {
     std::vector<bool> in_loop(num_vertices(g), false);
@@ -145,7 +145,7 @@ main(int argc, char *argv[])
 
   std::ofstream loops_out(argv[2]);
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
-  // VC++ has trouble with the get_property() functions
+  // VC++ has trouble with the boost::get_property() functions
   loops_out << "digraph loops {\n"
             << "size=\"3,3\"\n"
             << "ratio=\"fill\"\n"
@@ -175,9 +175,9 @@ main(int argc, char *argv[])
   }
   loops_out << "}\n";
 #else
-  get_property(g, graph_graph_attribute)["size"] = "3,3";
-  get_property(g, graph_graph_attribute)["ratio"] = "fill";
-  get_property(g, graph_vertex_attribute)["shape"] = "box";
+  boost::get_property(g, graph_graph_attribute)["size"] = "3,3";
+  boost::get_property(g, graph_graph_attribute)["ratio"] = "fill";
+  boost::get_property(g, graph_vertex_attribute)["shape"] = "box";
 
   write_graphviz(loops_out, g,
                  make_vertex_attributes_writer(g),

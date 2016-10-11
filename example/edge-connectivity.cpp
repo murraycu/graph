@@ -63,10 +63,10 @@ namespace boost
     using Color = color_traits<default_color_type>;
     using edge_descriptor = typename adjacency_list_traits < vecS, vecS,
       directedS >::edge_descriptor;
-    using FlowGraph = adjacency_list < vecS, vecS, directedS, no_property,
-      property < edge_capacity_t, degree_size_type,
-      property < edge_residual_capacity_t, degree_size_type,
-      property<edge_reverse_t, edge_descriptor>>>>;
+    using FlowGraph = adjacency_list < vecS, vecS, directedS, boost::no_property,
+      boost::property< edge_capacity_t, degree_size_type,
+      boost::property< edge_residual_capacity_t, degree_size_type,
+      boost::property<edge_reverse_t, edge_descriptor>>>>;
 
     vertex_descriptor u, v, p, k;
     edge_descriptor e1, e2;
@@ -79,9 +79,9 @@ namespace boost
     std::vector<edge_descriptor> pred(num_vertices(g));
 
     FlowGraph flow_g(num_vertices(g));
-    auto cap = get(edge_capacity, flow_g);
-    auto res_cap = get(edge_residual_capacity, flow_g);
-    auto rev_edge = get(edge_reverse, flow_g);
+    auto cap = boost::get(edge_capacity, flow_g);
+    auto res_cap = boost::get(edge_residual_capacity, flow_g);
+    auto rev_edge = boost::get(edge_reverse, flow_g);
 
     typename graph_traits<VertexListGraph>::edge_iterator ei, ei_end;
     for (const auto& edge : make_range_pair(edges(g))) {
@@ -156,7 +156,7 @@ main()
 
   std::cout << "The edge connectivity is " << c << "." << std::endl;
 
-  auto attr_map = get(vertex_attribute, g);
+  auto attr_map = boost::get(vertex_attribute, g);
 
   std::cout << "The disconnecting set is {";
   for (const auto& edge : disconnecting_set)

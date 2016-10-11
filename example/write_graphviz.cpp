@@ -49,8 +49,8 @@ int main(int,char*[])
   using namespace boost;
 
   using Graph = adjacency_list<vecS, vecS, directedS, 
-      property<vertex_color_t, default_color_type>,
-      property<edge_weight_t, int>
+      boost::property<vertex_color_t, default_color_type>,
+      boost::property<edge_weight_t, int>
     >;
   Graph g(used_by, used_by + nedges, weights, N);
 

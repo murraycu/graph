@@ -40,7 +40,7 @@ directed_graph_demo()
   const int V = 2;
   DirectedGraph digraph(V);
   using Weight = typename DirectedGraph::edge_property_type;
-  auto weight = get(edge_weight, digraph);
+  auto weight = boost::get(edge_weight, digraph);
   typename graph_traits<DirectedGraph>::edge_descriptor e1, e2;
   bool found;
 
@@ -58,8 +58,8 @@ directed_graph_demo()
   std::cout << "(u,v) == (v,u) ? "
     << std::boolalpha << (e1 == e2) << std::endl;
 #endif
-  std::cout << "weight[(u,v)] = " << get(weight, e1) << std::endl;
-  std::cout << "weight[(v,u)] = " << get(weight, e2) << std::endl;
+  std::cout << "weight[(u,v)] = " << boost::get(weight, e1) << std::endl;
+  std::cout << "weight[(v,u)] = " << boost::get(weight, e2) << std::endl;
 }
 
 template <typename UndirectedGraph> void
@@ -68,8 +68,8 @@ undirected_graph_demo2()
   const int V = 2;
   UndirectedGraph undigraph(V);
   using Weight = typename UndirectedGraph::edge_property_type;
-  typename property_map<UndirectedGraph, edge_weight_t>::type
-    weight = get(edge_weight, undigraph);
+  typename boost::property_map<UndirectedGraph, edge_weight_t>::type
+    weight = boost::get(edge_weight, undigraph);
   typename graph_traits<UndirectedGraph>::edge_descriptor e1, e2;
   bool found;
 
@@ -85,8 +85,8 @@ undirected_graph_demo2()
   std::cout << "(u,v) == (v,u) ? "
     << std::boolalpha << (e1 == e2) << std::endl;
 #endif
-  std::cout << "weight[(u,v)] = " << get(weight, e1) << std::endl;
-  std::cout << "weight[(v,u)] = " << get(weight, e2) << std::endl;
+  std::cout << "weight[(u,v)] = " << boost::get(weight, e1) << std::endl;
+  std::cout << "weight[(v,u)] = " << boost::get(weight, e2) << std::endl;
 
   std::cout << "the edges incident to v: ";
   typename boost::graph_traits<UndirectedGraph>::out_edge_iterator e, e_end;
@@ -100,11 +100,11 @@ undirected_graph_demo2()
 int
 main()
 {
-  using Weight = property < edge_weight_t, double >;
+  using Weight = boost::property < edge_weight_t, double >;
   using UndirectedGraph = adjacency_list < vecS, vecS, undirectedS,
-    no_property, Weight >;
+    boost::no_property, Weight >;
   using DirectedGraph = adjacency_list < vecS, vecS, directedS,
-    no_property, Weight >;
+    boost::no_property, Weight >;
   undirected_graph_demo1<UndirectedGraph> ();
   directed_graph_demo<DirectedGraph> ();
   undirected_graph_demo2<UndirectedGraph> ();

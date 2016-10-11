@@ -46,20 +46,20 @@
 int
 main()
 {
-  using namespace boost;
+  using namespace boost::graph;
 
   using Traits = adjacency_list_traits<vecS, vecS, directedS>;
   using Graph = adjacency_list < listS, vecS, directedS,
-    property<vertex_name_t, std::string>,
-    property < edge_capacity_t, long,
-    property < edge_residual_capacity_t, long,
-    property<edge_reverse_t, Traits::edge_descriptor>>>>;
+    boost::property<vertex_name_t, std::string>,
+    boost::property< edge_capacity_t, long,
+    boost::property< edge_residual_capacity_t, long,
+    boost::property<edge_reverse_t, Traits::edge_descriptor>>>>;
 
   Graph g;
 
-  auto capacity = get(edge_capacity, g);
-  auto rev = get(edge_reverse, g);
-  auto residual_capacity = get(edge_residual_capacity, g);
+  auto capacity = boost::get(edge_capacity, g);
+  auto rev = boost::get(edge_reverse, g);
+  auto residual_capacity = boost::get(edge_residual_capacity, g);
 
   Traits::vertex_descriptor s, t;
   read_dimacs_max_flow(g, capacity, rev, s, t);

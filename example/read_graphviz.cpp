@@ -19,32 +19,32 @@ using namespace boost;
 
 int main() {
   // Vertex properties
-  using vertex_p = property<vertex_name_t, std::string,
-    property<vertex_color_t, float>>;  
+  using vertex_p = boost::property<vertex_name_t, std::string,
+    boost::property<vertex_color_t, float>>;  
   // Edge properties
-  using edge_p = property<edge_weight_t, double>;
+  using edge_p = boost::property<edge_weight_t, double>;
   // Graph properties
-  using graph_p = property<graph_name_t, std::string>;
+  using graph_p = boost::property<graph_name_t, std::string>;
   // adjacency_list-based type
   using graph_t = adjacency_list < vecS, vecS, directedS,
     vertex_p, edge_p, graph_p >;
 
   // Construct an empty graph and prepare the dynamic_property_maps.
   graph_t graph(0);
-  dynamic_properties dp;
+  boost::dynamic_properties dp;
 
-  auto name = get(vertex_name, graph);
+  auto name = boost::get(vertex_name, graph);
   dp.property("node_id",name);
 
-  auto mass = get(vertex_color, graph);
+  auto mass = boost::get(vertex_color, graph);
   dp.property("mass",mass);
 
-  auto weight = get(edge_weight, graph);
+  auto weight = boost::get(edge_weight, graph);
   dp.property("weight",weight);
 
   // Use ref_property_map to turn a graph property into a property map
   boost::ref_property_map<graph_t*,std::string> 
-    gname(get_property(graph,graph_name));
+    gname(boost::get_property(graph,graph_name));
   dp.property("name",gname);
 
   // Sample graph as an std::istream;
