@@ -19,9 +19,9 @@ int main(int,char*[])
   // Check const reverse_graph
   {
     typedef adjacency_list< vecS, vecS, bidirectionalS, 
-      property<vertex_color_t, int>,
-      property<edge_weight_t, int>,
-      property<graph_name_t, std::string>
+      boost::property<vertex_color_t, int>,
+      boost::property<edge_weight_t, int>,
+      boost::property<graph_name_t, std::string>
     > AdjList;
     typedef reverse_graph<AdjList> Graph;
     BOOST_CONCEPT_ASSERT(( VertexListGraphConcept<Graph> ));
@@ -33,14 +33,14 @@ int main(int,char*[])
     BOOST_CONCEPT_ASSERT(( ReadablePropertyGraphConcept<Graph, Edge, edge_underlying_t> ));
     AdjList g;
     Graph gr(g);
-    get_property(gr, graph_name_t());
+    boost::get_property(gr, graph_name_t());
   }
   // Check non-const reverse_graph
   {
     typedef adjacency_list< vecS, vecS, bidirectionalS, 
-      property<vertex_color_t, int>,
-      property<edge_weight_t, int>,
-      property<graph_name_t, std::string>
+      boost::property<vertex_color_t, int>,
+      boost::property<edge_weight_t, int>,
+      boost::property<graph_name_t, std::string>
     > AdjList;
     typedef reverse_graph<AdjList,AdjList&> Graph;
     BOOST_CONCEPT_ASSERT(( VertexListGraphConcept<Graph> ));
@@ -52,7 +52,7 @@ int main(int,char*[])
     BOOST_CONCEPT_ASSERT(( ReadablePropertyGraphConcept<Graph, Edge, edge_underlying_t> ));
     AdjList g;
     Graph gr(g);
-    get_property(gr, graph_name_t());
+    boost::get_property(gr, graph_name_t());
     set_property(gr, graph_name_t(), "foo");
   }
   return 0;

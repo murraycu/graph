@@ -91,19 +91,19 @@ int test_main(int argc, char* argv[])
 
   // Set up graph
   typedef adjacency_list<listS, listS, directedS,
-    property<vertex_index_t, int >,
-    property<edge_weight_t, double> > graph_t;
+    boost::property<vertex_index_t, int >,
+    boost::property<edge_weight_t, double> > graph_t;
 
   graph_t graph;  
   generate_random_graph(graph, vertices_to_create, edges_to_create, generator);
 
   // Set up property maps
-  typedef property_map<graph_t, vertex_index_t>::type index_map_t;
+  typedef boost::property_map<graph_t, vertex_index_t>::type index_map_t;
   index_map_t index_map = get(vertex_index, graph);
   int vertex_index = 0;
 
   BGL_FORALL_VERTICES(current_vertex, graph, graph_t) {
-    put(index_map, current_vertex, vertex_index++);
+    boost::put(index_map, current_vertex, vertex_index++);
   }
 
   randomize_property<edge_weight_t>(graph, generator);

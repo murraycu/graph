@@ -13,8 +13,8 @@
 
 using namespace boost;
 
-typedef adjacency_list<vecS, vecS, undirectedS, no_property, no_property,
-                       no_property, setS> GraphType;
+typedef adjacency_list<vecS, vecS, undirectedS, boost::no_property, boost::no_property,
+                       boost::no_property, setS> GraphType;
 
 int test_main(int,char*[])
 {

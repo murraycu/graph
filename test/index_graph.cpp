@@ -15,7 +15,7 @@ template <typename Graph>
 void test()
 {
     typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
-    typedef typename property_map<Graph, vertex_index_t>::type IndexMap;
+    typedef typename boost::property_map<Graph, vertex_index_t>::type IndexMap;
 
     static const size_t N = 5;
 
@@ -65,7 +65,7 @@ template <typename Graph>
 void build()
 {
     typedef typename graph_traits<Graph>::vertex_iterator Iterator;
-    typedef typename property_map<Graph, vertex_index_t>::type IndexMap;
+    typedef typename boost::property_map<Graph, vertex_index_t>::type IndexMap;
 
     static const size_t N = 5;
 

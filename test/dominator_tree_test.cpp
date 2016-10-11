@@ -28,7 +28,7 @@ typedef adjacency_list<
     listS,
     listS,
     bidirectionalS,
-    property<vertex_index_t, std::size_t>, no_property> G;
+    boost::property<vertex_index_t, std::size_t>, boost::no_property> G;
 
 int test_main(int, char*[])
 {
@@ -229,36 +229,36 @@ int test_main(int, char*[])
       numOfVertices);
 
     typedef graph_traits<G>::vertex_descriptor Vertex;
-    typedef property_map<G, vertex_index_t>::type IndexMap;
+    typedef boost::property_map<G, vertex_index_t>::type IndexMap;
     typedef
-      iterator_property_map<vector<Vertex>::iterator, IndexMap>
+      boost::iterator_property_map<vector<Vertex>::iterator, IndexMap>
       PredMap;
 
     vector<Vertex> domTreePredVector, domTreePredVector2;
-    IndexMap indexMap(get(vertex_index, g));
+    IndexMap indexMap(boost::get(vertex_index, g));
     graph_traits<G>::vertex_iterator uItr, uEnd;
     int j = 0;
     for (boost::tie(uItr, uEnd) = vertices(g); uItr != uEnd; ++uItr, ++j)
     {
-      put(indexMap, *uItr, j);
+      boost::put(indexMap, *uItr, j);
     }
 
     // Lengauer-Tarjan dominator tree algorithm
     domTreePredVector =
       vector<Vertex>(num_vertices(g), graph_traits<G>::null_vertex());
     PredMap domTreePredMap =
-      make_iterator_property_map(domTreePredVector.begin(), indexMap);
+      boost::make_iterator_property_map(domTreePredVector.begin(), indexMap);
 
     lengauer_tarjan_dominator_tree(g, vertex(0, g), domTreePredMap);
 
     vector<int> idom(num_vertices(g));
     for (boost::tie(uItr, uEnd) = vertices(g); uItr != uEnd; ++uItr)
     {
-      if (get(domTreePredMap, *uItr) != graph_traits<G>::null_vertex())
-        idom[get(indexMap, *uItr)] =
-          get(indexMap, get(domTreePredMap, *uItr));
+      if (boost::get(domTreePredMap, *uItr) != graph_traits<G>::null_vertex())
+        idom[boost::get(indexMap, *uItr)] =
+          boost::get(indexMap, boost::get(domTreePredMap, *uItr));
       else
-        idom[get(indexMap, *uItr)] = (numeric_limits<int>::max)();
+        idom[boost::get(indexMap, *uItr)] = (numeric_limits<int>::max)();
     }
 
     copy(idom.begin(), idom.end(), ostream_iterator<int>(cout, " "));
@@ -271,18 +271,18 @@ int test_main(int, char*[])
     domTreePredVector2 =
       vector<Vertex>(num_vertices(g), graph_traits<G>::null_vertex());
     domTreePredMap =
-      make_iterator_property_map(domTreePredVector2.begin(), indexMap);
+      boost::make_iterator_property_map(domTreePredVector2.begin(), indexMap);
 
     iterative_bit_vector_dominator_tree(g, vertex(0, g), domTreePredMap);
 
     vector<int> idom2(num_vertices(g));
     for (boost::tie(uItr, uEnd) = vertices(g); uItr != uEnd; ++uItr)
     {
-      if (get(domTreePredMap, *uItr) != graph_traits<G>::null_vertex())
-        idom2[get(indexMap, *uItr)] =
-          get(indexMap, get(domTreePredMap, *uItr));
+      if (boost::get(domTreePredMap, *uItr) != graph_traits<G>::null_vertex())
+        idom2[boost::get(indexMap, *uItr)] =
+          boost::get(indexMap, boost::get(domTreePredMap, *uItr));
       else
-        idom2[get(indexMap, *uItr)] = (numeric_limits<int>::max)();
+        idom2[boost::get(indexMap, *uItr)] = (numeric_limits<int>::max)();
     }
 
     copy(idom2.begin(), idom2.end(), ostream_iterator<int>(cout, " "));

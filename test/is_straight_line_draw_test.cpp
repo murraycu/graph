@@ -27,14 +27,14 @@ struct coord_t
 int test_main(int, char*[]) 
 {
   typedef adjacency_list< vecS, vecS, undirectedS, 
-                          property<vertex_index_t, int> 
+                          boost::property<vertex_index_t, int> 
                          > graph_t;
 
   typedef std::vector< coord_t > drawing_storage_t;
 
   typedef boost::iterator_property_map 
       < drawing_storage_t::iterator,
-        property_map<graph_t, vertex_index_t>::type
+        boost::property_map<graph_t, vertex_index_t>::type
        > drawing_t;
 
   graph_t g(4);
@@ -42,7 +42,7 @@ int test_main(int, char*[])
   add_edge(2,3,g);
 
   drawing_storage_t drawing_storage(num_vertices(g));
-  drawing_t drawing(drawing_storage.begin(), get(vertex_index,g));
+  drawing_t drawing(drawing_storage.begin(), boost::get(vertex_index,g));
 
   // two perpendicular lines that intersect at (1,1)
   drawing[0].x = 1; drawing[0].y = 0;
@@ -84,7 +84,7 @@ int test_main(int, char*[])
   add_edge(2,3,g);    
   
   drawing_storage = drawing_storage_t(num_vertices(g));
-  drawing = drawing_t(drawing_storage.begin(), get(vertex_index,g));
+  drawing = drawing_t(drawing_storage.begin(), boost::get(vertex_index,g));
 
   drawing[0].x = 1; drawing[0].y = 2;
   drawing[1].x = 2; drawing[1].y = 1;
@@ -110,7 +110,7 @@ int test_main(int, char*[])
   add_edge(6,7,g);  
   
   drawing_storage = drawing_storage_t(num_vertices(g));
-  drawing = drawing_t(drawing_storage.begin(), get(vertex_index,g));
+  drawing = drawing_t(drawing_storage.begin(), boost::get(vertex_index,g));
 
   drawing[0].x = 1; drawing[0].y = 1;
   drawing[1].x = 5; drawing[1].y = 4;
@@ -130,7 +130,7 @@ int test_main(int, char*[])
     add_edge(2*i,2*i+1,g);
 
   drawing_storage = drawing_storage_t(num_vertices(g));
-  drawing = drawing_t(drawing_storage.begin(), get(vertex_index,g));
+  drawing = drawing_t(drawing_storage.begin(), boost::get(vertex_index,g));
 
   for(int i = 0; i < 10; ++i)
     {

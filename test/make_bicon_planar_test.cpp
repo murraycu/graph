@@ -22,11 +22,11 @@ using namespace boost;
 template <typename Graph>
 void reset_edge_index(Graph& g)
 {
-  typename property_map<Graph, edge_index_t>::type index = get(edge_index, g);
+  typename boost::property_map<Graph, edge_index_t>::type index = boost::get(edge_index, g);
   typename graph_traits<Graph>::edge_iterator ei, ei_end;
   typename graph_traits<Graph>::edges_size_type cnt = 0;
   for(boost::tie(ei,ei_end) = edges(g); ei != ei_end; ++ei)
-    put(index, *ei, cnt++);
+    boost::put(index, *ei, cnt++);
 }
 
 
@@ -51,11 +51,11 @@ struct UpdateVertexIndex
   template <typename Graph>
   void update(Graph& g)
   {
-    typename property_map<Graph, vertex_index_t>::type index = get(vertex_index, g);
+    typename boost::property_map<Graph, vertex_index_t>::type index = boost::get(vertex_index, g);
     typename graph_traits<Graph>::vertex_iterator vi, vi_end;
     typename graph_traits<Graph>::vertices_size_type cnt = 0;
     for(boost::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
-      put(index, *vi, cnt++);
+      boost::put(index, *vi, cnt++);
   }
 };
 
@@ -78,23 +78,23 @@ void test_line_graph(VertexIndexUpdater vertex_index_updater, int size)
   
   typedef std::vector< typename graph_traits<Graph>::edge_descriptor > edge_vector_t;
   typedef std::vector< edge_vector_t > embedding_storage_t;
-  typedef iterator_property_map
+  typedef boost::iterator_property_map
     < typename embedding_storage_t::iterator, 
-      typename property_map<Graph, vertex_index_t>::type
+      typename boost::property_map<Graph, vertex_index_t>::type
     > embedding_t;
   
   embedding_storage_t embedding_storage(num_vertices(g));
-  embedding_t embedding(embedding_storage.begin(), get(vertex_index, g));
+  embedding_t embedding(embedding_storage.begin(), boost::get(vertex_index, g));
 
   typename graph_traits<Graph>::vertex_iterator vi, vi_end;
   for(boost::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
     std::copy(out_edges(*vi,g).first, out_edges(*vi,g).second, std::back_inserter(embedding[*vi]));
 
-  BOOST_CHECK(biconnected_components(g, make_vector_property_map<int>(get(edge_index,g))) > 1);
+  BOOST_CHECK(biconnected_components(g, boost::make_vector_property_map<int>(boost::get(edge_index,g))) > 1);
   BOOST_CHECK(boyer_myrvold_planarity_test(g));
   make_biconnected_planar(g, embedding);
   reset_edge_index(g);
-  BOOST_CHECK(biconnected_components(g, make_vector_property_map<int>(get(edge_index,g))) == 1);
+  BOOST_CHECK(biconnected_components(g, boost::make_vector_property_map<int>(boost::get(edge_index,g))) == 1);
   BOOST_CHECK(boyer_myrvold_planarity_test(g));
 
 }
@@ -109,8 +109,8 @@ int test_main(int, char* [])
     <vecS, 
     vecS, 
     undirectedS,
-    property<vertex_index_t, int>,
-    property<edge_index_t, int>
+    boost::property<vertex_index_t, int>,
+    boost::property<edge_index_t, int>
     > 
     VVgraph_t;
   
@@ -118,8 +118,8 @@ int test_main(int, char* [])
     <vecS, 
     listS, 
     undirectedS,
-    property<vertex_index_t, int>,
-    property<edge_index_t, int>
+    boost::property<vertex_index_t, int>,
+    boost::property<edge_index_t, int>
     > 
     VLgraph_t;
 
@@ -127,8 +127,8 @@ int test_main(int, char* [])
     <listS, 
     vecS, 
     undirectedS,
-    property<vertex_index_t, int>,
-    property<edge_index_t, int>
+    boost::property<vertex_index_t, int>,
+    boost::property<edge_index_t, int>
     > 
     LVgraph_t;
 
@@ -136,8 +136,8 @@ int test_main(int, char* [])
     <listS, 
     listS, 
     undirectedS,
-    property<vertex_index_t, int>,
-    property<edge_index_t, int>
+    boost::property<vertex_index_t, int>,
+    boost::property<edge_index_t, int>
     > 
     LLgraph_t;
 
@@ -145,8 +145,8 @@ int test_main(int, char* [])
     <setS, 
     setS, 
     undirectedS,
-    property<vertex_index_t, int>,
-    property<edge_index_t, int>
+    boost::property<vertex_index_t, int>,
+    boost::property<edge_index_t, int>
     > 
     SSgraph_t;
 

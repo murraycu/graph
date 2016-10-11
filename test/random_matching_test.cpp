@@ -21,10 +21,10 @@ using namespace boost;
 typedef adjacency_list<vecS, 
                        vecS, 
                        undirectedS, 
-                       property<vertex_index_t, int> >  undirected_graph;
+                       boost::property<vertex_index_t, int> >  undirected_graph;
 
-typedef property_map<undirected_graph,vertex_index_t>::type vertex_index_map_t;
-typedef vector_property_map<graph_traits<undirected_graph>::vertex_descriptor, vertex_index_map_t > mate_t;
+typedef boost::property_map<undirected_graph,vertex_index_t>::type vertex_index_map_t;
+typedef boost::vector_property_map<graph_traits<undirected_graph>::vertex_descriptor, vertex_index_map_t > mate_t;
 typedef graph_traits<undirected_graph>::vertex_iterator vertex_iterator_t;
 typedef graph_traits<undirected_graph>::vertex_descriptor vertex_descriptor_t;
 typedef graph_traits<undirected_graph>::vertices_size_type v_size_t;
@@ -104,7 +104,7 @@ int main(int argc, char** argv)
   //...and run the matching verifier - it should tell us that the matching isn't
   //a maximum matching.
   bool modified_random_verification_result =
-    maximum_cardinality_matching_verifier<undirected_graph,mate_t,vertex_index_map_t>::verify_matching(g,mate,get(vertex_index,g));
+    maximum_cardinality_matching_verifier<undirected_graph,mate_t,vertex_index_map_t>::verify_matching(g,mate, boost::get(vertex_index,g));
   
   if (modified_random_verification_result)
     {
@@ -116,7 +116,7 @@ int main(int argc, char** argv)
   greedy_matching<undirected_graph, mate_t>::find_matching(g,greedy_mate);
 
   if (matching_size(g,mate) > matching_size(g,greedy_mate) &&
-      maximum_cardinality_matching_verifier<undirected_graph,mate_t,vertex_index_map_t>::verify_matching(g,greedy_mate,get(vertex_index,g)))
+      maximum_cardinality_matching_verifier<undirected_graph,mate_t,vertex_index_map_t>::verify_matching(g,greedy_mate, boost::get(vertex_index,g)))
         std::cout << "TEST 3 FAILED!!!" << std::endl;
 
   return 0;

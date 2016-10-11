@@ -19,11 +19,11 @@ struct EdgeProp
   double weight;
 };
 
-typedef adjacency_list<vecS, vecS, directedS, no_property, EdgeProp > graph_t;
+typedef adjacency_list<vecS, vecS, directedS, boost::no_property, EdgeProp > graph_t;
 int main()
 {
-    typedef property_map<graph_t, double EdgeProp::*>::type WeightMap;
-    typedef property_map<graph_t, double EdgeProp::*>::const_type cWeightMap;
+    typedef boost::property_map<graph_t, double EdgeProp::*>::type WeightMap;
+    typedef boost::property_map<graph_t, double EdgeProp::*>::const_type cWeightMap;
     typedef graph_traits<graph_t>::edge_descriptor Edge;
     BOOST_CONCEPT_ASSERT((ReadablePropertyMapConcept<WeightMap, Edge> ));
     BOOST_CONCEPT_ASSERT((ReadablePropertyMapConcept<cWeightMap, Edge> ));

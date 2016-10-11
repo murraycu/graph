@@ -19,18 +19,18 @@ namespace boost {
 struct SampleGraph {
     typedef adjacency_list_traits < vecS, vecS, directedS > Traits;
 
-    typedef adjacency_list < vecS, vecS, directedS, no_property,
-            property < edge_capacity_t, long,
-                property < edge_residual_capacity_t, long,
-                    property < edge_reverse_t, Traits::edge_descriptor, 
-                        property <edge_weight_t, long>
+    typedef adjacency_list < vecS, vecS, directedS, boost::no_property,
+            boost::property< edge_capacity_t, long,
+                boost::property< edge_residual_capacity_t, long,
+                    boost::property< edge_reverse_t, Traits::edge_descriptor, 
+                        boost::property<edge_weight_t, long>
                              > 
                         > 
                      > > Graph;
-    typedef property_map < Graph, edge_capacity_t >::type Capacity;
-    typedef property_map < Graph, edge_residual_capacity_t >::type ResidualCapacity;
-    typedef property_map < Graph, edge_weight_t >::type Weight;
-    typedef property_map < Graph, edge_reverse_t>::type Reversed;
+    typedef boost::property_map< Graph, edge_capacity_t >::type Capacity;
+    typedef boost::property_map< Graph, edge_residual_capacity_t >::type ResidualCapacity;
+    typedef boost::property_map< Graph, edge_weight_t >::type Weight;
+    typedef boost::property_map< Graph, edge_reverse_t>::type Reversed;
     typedef boost::graph_traits<Graph>::vertices_size_type size_type;
     typedef Traits::vertex_descriptor vertex_descriptor;
     
@@ -70,10 +70,10 @@ struct SampleGraph {
 
 
     static void getSampleGraph(Graph &g, vertex_descriptor & s, vertex_descriptor & t) {
-        Capacity  capacity = get(edge_capacity, g);
-        Reversed rev = get(edge_reverse, g);
-        ResidualCapacity residual_capacity = get(edge_residual_capacity, g); 
-        Weight weight = get(edge_weight, g);
+        Capacity  capacity = boost::get(edge_capacity, g);
+        Reversed rev = boost::get(edge_reverse, g);
+        ResidualCapacity residual_capacity = boost::get(edge_residual_capacity, g); 
+        Weight weight = boost::get(edge_weight, g);
         getSampleGraph(g,s,t,capacity,residual_capacity,weight,rev);
     }
 
@@ -107,16 +107,16 @@ struct SampleGraph {
     static void getSampleGraph2(Graph &g, vertex_descriptor & s, vertex_descriptor & t) {
 
         const boost::graph_traits<Graph>::vertices_size_type N(5);
-        typedef property_map < Graph, edge_reverse_t >::type Reversed;
+        typedef boost::property_map< Graph, edge_reverse_t >::type Reversed;
 
         for(size_type i = 0; i < N; ++i){
             add_vertex(g);
         }
 
-        Capacity  capacity = get(edge_capacity, g);
-        Reversed rev = get(edge_reverse, g);
-        ResidualCapacity residual_capacity = get(edge_residual_capacity, g); 
-        Weight weight = get(edge_weight, g);
+        Capacity  capacity = boost::get(edge_capacity, g);
+        Reversed rev = boost::get(edge_reverse, g);
+        ResidualCapacity residual_capacity = boost::get(edge_residual_capacity, g); 
+        Weight weight = boost::get(edge_weight, g);
 
         s = 0;
         t = 4;

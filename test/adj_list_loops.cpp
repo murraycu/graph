@@ -81,7 +81,7 @@ void test_multigraph_loop()
 template <typename Kind>
 void test()
 {
-    typedef no_property na;
+    typedef boost::no_property na;
     typedef adjacency_list<vecS, vecS, Kind, na, na, na, listS> VVL;
     typedef adjacency_list<listS, vecS, Kind, na, na, na, listS> LVL;
     typedef adjacency_list<setS, vecS, Kind, na, na, na, listS> SVL;

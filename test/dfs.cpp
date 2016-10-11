@@ -41,45 +41,45 @@ public:
   template <class Vertex, class Graph>
   void discover_vertex(Vertex u, Graph&) {
     using namespace boost;
-    BOOST_CHECK( get(m_color, u) == Color::gray() );
-    BOOST_CHECK( get(m_color, get(m_parent, u)) == Color::gray() );
+    BOOST_CHECK( boost::get(m_color, u) == Color::gray() );
+    BOOST_CHECK( boost::get(m_color, boost::get(m_parent, u)) == Color::gray() );
 
-    put(m_discover_time, u, m_time++);
+    boost::put(m_discover_time, u, m_time++);
   }
   template <class Edge, class Graph>
   void examine_edge(Edge e, Graph& g) {
     using namespace boost;
-    BOOST_CHECK( get(m_color, source(e, g)) == Color::gray() );
+    BOOST_CHECK( boost::get(m_color, source(e, g)) == Color::gray() );
   }
   template <class Edge, class Graph>
   void tree_edge(Edge e, Graph& g) {
     using namespace boost;
-    BOOST_CHECK( get(m_color, target(e, g)) == Color::white() );
+    BOOST_CHECK( boost::get(m_color, target(e, g)) == Color::white() );
 
-    put(m_parent, target(e, g), source(e, g));
+    boost::put(m_parent, target(e, g), source(e, g));
   }
   template <class Edge, class Graph>
   void back_edge(Edge e, Graph& g) {
     using namespace boost;
-    BOOST_CHECK( get(m_color, target(e, g)) == Color::gray() );
+    BOOST_CHECK( boost::get(m_color, target(e, g)) == Color::gray() );
   }
   template <class Edge, class Graph>
   void forward_or_cross_edge(Edge e, Graph& g) {
     using namespace boost;
-    BOOST_CHECK( get(m_color, target(e, g)) == Color::black() );
+    BOOST_CHECK( boost::get(m_color, target(e, g)) == Color::black() );
   }
   template <class Edge, class Graph>
   void finish_edge(Edge e, Graph& g) {
     using namespace boost;
-    BOOST_CHECK( get(m_color, target(e, g)) == Color::gray() ||
-                 get(m_color, target(e, g)) == Color::black() );
+    BOOST_CHECK( boost::get(m_color, target(e, g)) == Color::gray() ||
+                 boost::get(m_color, target(e, g)) == Color::black() );
   }
   template <class Vertex, class Graph>
   void finish_vertex(Vertex u, Graph&) {
     using namespace boost;
-    BOOST_CHECK( get(m_color, u) == Color::black() );
+    BOOST_CHECK( boost::get(m_color, u) == Color::black() );
 
-    put(m_finish_time, u, m_time++);
+    boost::put(m_finish_time, u, m_time++);
   }
 private:
   ColorMap m_color;
@@ -115,7 +115,7 @@ struct dfs_test
         Graph g;
         generate_random_graph(g, i, j, gen);
 
-        ColorMap color = get(boost::vertex_color, g);
+        ColorMap color = boost::get(boost::vertex_color, g);
         std::vector<vertex_descriptor> parent(num_vertices(g));
         for (k = 0; k < num_vertices(g); ++k)
           parent[k] = k;
@@ -124,7 +124,7 @@ struct dfs_test
 
         // Get vertex index map
         typedef typename boost::property_map<Graph, boost::vertex_index_t>::const_type idx_type;
-        idx_type idx = get(boost::vertex_index, g);
+        idx_type idx = boost::get(boost::vertex_index, g);
         
         typedef
           boost::iterator_property_map<typename std::vector<vertex_descriptor>::iterator, idx_type>
@@ -145,7 +145,7 @@ struct dfs_test
 
         // all vertices should be black
         for (boost::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
-          BOOST_CHECK(get(color, *vi) == Color::black());
+          BOOST_CHECK(boost::get(color, *vi) == Color::black());
 
         // check parenthesis structure of discover/finish times
         // See CLR p.480

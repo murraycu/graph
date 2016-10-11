@@ -55,7 +55,7 @@ void test()
 
     Graph g(er(rng, N, P), er(), N);
     renumber_indices(g);
-    print_edges(g, get(vertex_index, g));
+    print_edges(g, boost::get(vertex_index, g));
 
     size_t cycles = 0;
     cycle_validator vis(cycles);

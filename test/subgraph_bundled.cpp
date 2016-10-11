@@ -25,7 +25,7 @@ struct arc
 {
     int weight;
 };
-typedef property<edge_index_t, std::size_t, arc> arc_prop;
+typedef boost::property<edge_index_t, std::size_t, arc> arc_prop;
 
 typedef adjacency_list<
     vecS, vecS, bidirectionalS,
@@ -100,14 +100,14 @@ int test_main(int, char*[])
       return 0;
 
     // Test property maps for vertices.
-    typedef property_map<Subgraph, int node::*>::type ColorMap;
-    ColorMap colors = get(&node::color, g_s);
+    typedef boost::property_map<Subgraph, int node::*>::type ColorMap;
+    ColorMap colors = boost::get(&node::color, g_s);
     for(std::pair<VertexIter, VertexIter> r = vertices(g_s); r.first != r.second; ++r.first)
         colors[*r.first] = 0;
 
     // Test property maps for edges.
-    typedef property_map<Subgraph, int arc::*>::type WeightMap;
-    WeightMap weights = get(&arc::weight, g_s);
+    typedef boost::property_map<Subgraph, int arc::*>::type WeightMap;
+    WeightMap weights = boost::get(&arc::weight, g_s);
     for(std::pair<EdgeIter, EdgeIter> r = edges(g_s); r.first != r.second; ++r.first) {
         weights[*r.first] = 12;
     }
@@ -127,7 +127,7 @@ int test_main(int, char*[])
         graph_traits<Graph>::edge_iterator ei, ee;
         for (boost::tie(ei, ee) = edges(sub); ei != ee; ++ei) {
             // This used to segfault.
-            get(&arc::weight, sub, *ei);
+            boost::get(&arc::weight, sub, *ei);
         }
     }
 

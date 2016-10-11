@@ -27,12 +27,12 @@ BOOST_AUTO_TEST_CASE(using_named_parameters_and_bundled_params_on_edmonds_karp_m
   Graph g;
   traits::vertex_descriptor s,t;
 
-  boost::property_map<Graph,double edge_t::* >::type capacity = get(&edge_t::capacity, g);
-  boost::property_map<Graph,float edge_t::* >::type cost = get(&edge_t::cost, g);
-  boost::property_map<Graph,float edge_t::* >::type residual_capacity = get(&edge_t::residual_capacity, g);
-  boost::property_map<Graph,traits::edge_descriptor edge_t::* >::type rev = get(&edge_t::reversed_edge, g);
-  boost::property_map<Graph,traits::edge_descriptor node_t::* >::type pred = get(&node_t::predecessor, g);
-  boost::property_map<Graph,boost::default_color_type node_t::* >::type col = get(&node_t::color, g);
+  boost::property_map<Graph,double edge_t::* >::type capacity = boost::get(&edge_t::capacity, g);
+  boost::property_map<Graph,float edge_t::* >::type cost = boost::get(&edge_t::cost, g);
+  boost::property_map<Graph,float edge_t::* >::type residual_capacity = boost::get(&edge_t::residual_capacity, g);
+  boost::property_map<Graph,traits::edge_descriptor edge_t::* >::type rev = boost::get(&edge_t::reversed_edge, g);
+  boost::property_map<Graph,traits::edge_descriptor node_t::* >::type pred = boost::get(&node_t::predecessor, g);
+  boost::property_map<Graph,boost::default_color_type node_t::* >::type col = boost::get(&node_t::color, g);
 
   boost::SampleGraph::getSampleGraph(g,s,t,capacity,residual_capacity,cost,rev);
 

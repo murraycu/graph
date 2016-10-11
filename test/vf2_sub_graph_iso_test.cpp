@@ -70,14 +70,14 @@ void randomly_permute_graph(Graph1& g1, const Graph2& g2) {
   for (vertex_iterator vi = vertices(g1).first; 
        vi != vertices(g1).second; ++i, ++vi) {
     vertex_map[orig_vertices[i]] = *vi;
-    put(vertex_name_t(), g1, *vi, get(vertex_name_t(), g2, orig_vertices[i]));
+    boost::put(vertex_name_t(), g1, *vi, boost::get(vertex_name_t(), g2, orig_vertices[i]));
   }
 
   for (edge_iterator ei = edges(g2).first; ei != edges(g2).second; ++ei) {
     typename std::map<vertex2, vertex1>::iterator si = vertex_map.find(source(*ei, g2)),
       ti = vertex_map.find(target(*ei, g2));
     if ((si != vertex_map.end()) && (ti != vertex_map.end()))
-      add_edge(si->second, ti->second, get(edge_name_t(), g2, *ei), g1);
+      add_edge(si->second, ti->second, boost::get(edge_name_t(), g2, *ei), g1);
   }
 }
 
@@ -153,8 +153,8 @@ struct test_callback {
       std::cout << "Verfied: " << std::boolalpha << verified << std::endl;
       std::cout << "Num vertices: " << num_vertices(graph1_) << ' ' << num_vertices(graph2_) << std::endl;
       BGL_FORALL_VERTICES_T(v, graph1_, Graph1) 
-        std::cout << '(' << get(vertex_index_t(), graph1_, v) << ", " 
-                  << get(vertex_index_t(), graph2_, get(f, v)) << ") ";
+        std::cout << '(' << boost::get(vertex_index_t(), graph1_, v) << ", " 
+                  << boost::get(vertex_index_t(), graph2_, boost::get(f, v)) << ") ";
     
       std::cout << std::endl;
     }
@@ -192,8 +192,8 @@ void test_vf2_sub_graph_iso(int n1, int n2, double edge_probability,
                             int max_parallel_edges, double parallel_edge_probability,
                             int max_edge_name, int max_vertex_name, bool output) {
 
-  typedef property<edge_name_t, int> edge_property;
-  typedef property<vertex_name_t, int, property<vertex_index_t, int> > vertex_property;
+  typedef boost::property<edge_name_t, int> edge_property;
+  typedef boost::property<vertex_name_t, int, boost::property<vertex_index_t, int> > vertex_property;
   
   typedef adjacency_list<listS, listS, bidirectionalS, vertex_property, edge_property> graph1;
   typedef adjacency_list<vecS, vecS, bidirectionalS, vertex_property, edge_property> graph2;
@@ -207,24 +207,24 @@ void test_vf2_sub_graph_iso(int n1, int n2, double edge_probability,
   int v_idx = 0;
   for (graph_traits<graph1>::vertex_iterator vi = vertices(g1).first;
        vi != vertices(g1).second; ++vi) {
-    put(vertex_index_t(), g1, *vi, v_idx++);
+    boost::put(vertex_index_t(), g1, *vi, v_idx++);
   }
 
 
   // Create vertex and edge predicates
-  typedef property_map<graph1, vertex_name_t>::type vertex_name_map1;
-  typedef property_map<graph2, vertex_name_t>::type vertex_name_map2;
+  typedef boost::property_map<graph1, vertex_name_t>::type vertex_name_map1;
+  typedef boost::property_map<graph2, vertex_name_t>::type vertex_name_map2;
   
   typedef property_map_equivalent<vertex_name_map1, vertex_name_map2> vertex_predicate;
   vertex_predicate vertex_comp =
-    make_property_map_equivalent(get(vertex_name, g1), get(vertex_name, g2));
+    boost::make_property_map_equivalent(boost::get(vertex_name, g1), boost::get(vertex_name, g2));
   
-  typedef property_map<graph1, edge_name_t>::type edge_name_map1;
-  typedef property_map<graph2, edge_name_t>::type edge_name_map2;
+  typedef boost::property_map<graph1, edge_name_t>::type edge_name_map1;
+  typedef boost::property_map<graph2, edge_name_t>::type edge_name_map2;
   
   typedef property_map_equivalent<edge_name_map1, edge_name_map2> edge_predicate;
   edge_predicate edge_comp =
-    make_property_map_equivalent(get(edge_name, g1), get(edge_name, g2));
+    boost::make_property_map_equivalent(boost::get(edge_name, g1), boost::get(edge_name, g2));
   
   
   std::clock_t start = std::clock();
@@ -257,13 +257,13 @@ void test_vf2_sub_graph_iso(int n1, int n2, double edge_probability,
   if (output) {
     std::fstream file_graph1("graph1.dot", std::fstream::out);
     write_graphviz(file_graph1, g1,
-                   make_label_writer(get(boost::vertex_name, g1)),
-                   make_label_writer(get(boost::edge_name, g1)));
+                   make_label_writer(boost::get(boost::vertex_name, g1)),
+                   make_label_writer(boost::get(boost::edge_name, g1)));
     
     std::fstream file_graph2("graph2.dot", std::fstream::out);
     write_graphviz(file_graph2, g2,
-                   make_label_writer(get(boost::vertex_name, g2)),
-                   make_label_writer(get(boost::edge_name, g2)));
+                   make_label_writer(boost::get(boost::vertex_name, g2)),
+                   make_label_writer(boost::get(boost::edge_name, g2)));
   }
 }
 

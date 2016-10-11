@@ -52,7 +52,7 @@ BOOST_AUTO_TEST_CASE(path_augmentation_test) {
     std::vector<edge_descriptor> pred(N);
         
     boost::property_map<Graph, boost::vertex_index_t>::const_type
-      idx = get(boost::vertex_index, g);
+      idx = boost::get(boost::vertex_index, g);
 
     boost::successive_shortest_path_nonnegative_weights(g, s, t, 
             boost::distance_map(boost::make_iterator_property_map(dist.begin(), idx)).

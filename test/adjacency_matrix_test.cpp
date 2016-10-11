@@ -205,8 +205,8 @@ boost::add_edge(boost::vertex(1, g1), boost::vertex(2, g1), g1);
    std::vector<std::pair<int, int> > edge_pairs_g1;
    BGL_FORALL_EDGES_T(e, g1, Graph1) {
      edge_pairs_g1.push_back(
-       std::make_pair(get(index_map1, source(e, g1)),
-                      get(index_map1, target(e, g1))));
+       std::make_pair(boost::get(index_map1, source(e, g1)),
+                      boost::get(index_map1, target(e, g1))));
    }
    Graph2 g3(edge_pairs_g1.begin(), edge_pairs_g1.end(), num_vertices(g1));
    BOOST_CHECK(num_vertices(g1) == num_vertices(g3));
@@ -214,8 +214,8 @@ boost::add_edge(boost::vertex(1, g1), boost::vertex(2, g1), g1);
    IndexMap2 index_map3 = boost::get(boost::vertex_index_t(), g3);
    BGL_FORALL_EDGES_T(e, g3, Graph2) {
      edge_pairs_g3.push_back(
-       std::make_pair(get(index_map3, source(e, g3)),
-                      get(index_map3, target(e, g3))));
+       std::make_pair(boost::get(index_map3, source(e, g3)),
+                      boost::get(index_map3, target(e, g3))));
    }
    // Normalize the edge pairs for comparison
    if (boost::is_convertible<typename boost::graph_traits<Graph1>::directed_category*, boost::undirected_tag*>::value || boost::is_convertible<typename boost::graph_traits<Graph2>::directed_category*, boost::undirected_tag*>::value) {

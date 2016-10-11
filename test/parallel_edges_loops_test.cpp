@@ -188,15 +188,15 @@ int test_graph(const std::string& dimacs_filename)
   typedef adjacency_list<listS,
                          vecS,
                          undirectedS,
-                         property<vertex_index_t, int>,
-                         property<edge_index_t, int> > graph;
+                         boost::property<vertex_index_t, int>,
+                         boost::property<edge_index_t, int> > graph;
 
   typedef graph_traits<graph>::edge_descriptor edge_t;
   typedef graph_traits<graph>::edge_iterator edge_iterator_t;
   typedef graph_traits<graph>::vertex_iterator vertex_iterator_t;
   typedef graph_traits<graph>::edges_size_type e_size_t;
   typedef graph_traits<graph>::vertex_descriptor vertex_t;
-  typedef edge_index_update_visitor<property_map<graph, edge_index_t>::type> 
+  typedef edge_index_update_visitor<boost::property_map<graph, edge_index_t>::type> 
     edge_visitor_t;
 
   vertex_iterator_t vi, vi_end;
@@ -206,23 +206,23 @@ int test_graph(const std::string& dimacs_filename)
   read_dimacs(g, dimacs_filename);
 
   // Initialize the interior edge index
-  property_map<graph, edge_index_t>::type e_index = get(edge_index, g);
+  boost::property_map<graph, edge_index_t>::type e_index = boost::get(edge_index, g);
   e_size_t edge_count = 0;
   for(boost::tie(ei, ei_end) = edges(g); ei != ei_end; ++ei)
-    put(e_index, *ei, edge_count++);
+    boost::put(e_index, *ei, edge_count++);
 
   // Initialize the interior vertex index - not needed if the vertices
   // are stored with a vecS
   /*
-  property_map<graph, vertex_index_t>::type v_index = get(vertex_index, g);
+  boost::property_map<graph, vertex_index_t>::type v_index = boost::get(vertex_index, g);
   v_size_t vertex_count = 0;
   for(boost::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
-    put(v_index, *vi, vertex_count++);
+    boost::put(v_index, *vi, vertex_count++);
   */
 
   // This edge_updater will automatically update the interior edge
   // index of the graph as edges are created.
-  edge_visitor_t edge_updater(get(edge_index, g), num_edges(g));
+  edge_visitor_t edge_updater(boost::get(edge_index, g), num_edges(g));
 
   // The input graph may not be maximal planar, but the Chrobak-Payne straight
   // line drawing needs a maximal planar graph as input. So, we make a copy of
@@ -233,20 +233,20 @@ int test_graph(const std::string& dimacs_filename)
   graph g_copy(g);
 
   // Add edges to make g connected, if it isn't already
-  make_connected(g, get(vertex_index, g), edge_updater);
+  make_connected(g, boost::get(vertex_index, g), edge_updater);
 
   std::vector<graph_traits<graph>::edge_descriptor> kuratowski_edges;
 
   typedef std::vector< std::vector<edge_t> > edge_permutation_storage_t;
   typedef boost::iterator_property_map
     < edge_permutation_storage_t::iterator, 
-      property_map<graph, vertex_index_t>::type 
+      boost::property_map<graph, vertex_index_t>::type 
     >
     edge_permutation_t;
 
   edge_permutation_storage_t edge_permutation_storage(num_vertices(g));
   edge_permutation_t perm(edge_permutation_storage.begin(), 
-                          get(vertex_index,g)
+                          boost::get(vertex_index,g)
                           );
 
   // Test for planarity, computing the planar embedding or the kuratowski 
@@ -267,7 +267,7 @@ int test_graph(const std::string& dimacs_filename)
     }
 
   // If we get this far, we have a connected planar graph.
-  make_biconnected_planar(g, perm, get(edge_index, g), edge_updater);
+  make_biconnected_planar(g, perm, boost::get(edge_index, g), edge_updater);
 
   // Compute the planar embedding of the (now) biconnected planar graph
   BOOST_CHECK (boyer_myrvold_planarity_test(boyer_myrvold_params::graph = g,
@@ -277,7 +277,7 @@ int test_graph(const std::string& dimacs_filename)
                );
 
   // If we get this far, we have a biconnected planar graph
-  make_maximal_planar(g, perm, get(vertex_index,g), get(edge_index,g), 
+  make_maximal_planar(g, perm, boost::get(vertex_index,g), boost::get(edge_index,g), 
                       edge_updater);
   
   // Now the graph is triangulated - we can compute the final planar embedding
@@ -289,7 +289,7 @@ int test_graph(const std::string& dimacs_filename)
 
   // Make sure Euler's formula holds
   face_counter vis;
-  planar_face_traversal(g, perm, vis, get(edge_index, g));
+  planar_face_traversal(g, perm, vis, boost::get(edge_index, g));
 
   BOOST_CHECK(num_vertices(g) - num_edges(g) + vis.num_faces() == 2);
 
@@ -301,11 +301,11 @@ int test_graph(const std::string& dimacs_filename)
 
   typedef std::vector< coord_t > drawing_storage_t;
   typedef boost::iterator_property_map
-    < drawing_storage_t::iterator, property_map<graph, vertex_index_t>::type >
+    < drawing_storage_t::iterator, boost::property_map<graph, vertex_index_t>::type >
     drawing_map_t;
 
   drawing_storage_t drawing_vector(num_vertices(g));
-  drawing_map_t drawing(drawing_vector.begin(), get(vertex_index,g));
+  drawing_map_t drawing(drawing_vector.begin(), boost::get(vertex_index,g));
 
   // Compute a straight line drawing
   chrobak_payne_straight_line_drawing(g, 
