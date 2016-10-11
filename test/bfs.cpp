@@ -35,7 +35,7 @@ public:
     : current_distance(0), distance(d), parent(p), color(c), src(s) { }
 
   void initialize_vertex(const Vertex& u, const Graph& ) const {
-    BOOST_CHECK(get(color, u) == Color::white());
+    BOOST_CHECK(boost::get(color, u) == Color::white());
   }
   void examine_vertex(const Vertex& u, const Graph& ) const {
     current_vertex = u;
@@ -46,7 +46,7 @@ public:
       ++current_distance;
   }
   void discover_vertex(const Vertex& u, const Graph& ) const {
-    BOOST_CHECK( get(color, u) == Color::gray() );
+    BOOST_CHECK( boost::get(color, u) == Color::gray() );
     if (u == src) {
       current_vertex = src;
     } else {
@@ -59,7 +59,7 @@ public:
     BOOST_CHECK( source(e, g) == current_vertex );
   }
   void tree_edge(const Edge& e, const Graph& g) const {
-    BOOST_CHECK( get(color, target(e, g)) == Color::white() );
+    BOOST_CHECK( boost::get(color, target(e, g)) == Color::white() );
     Vertex u = source(e, g), v = target(e, g);
     BOOST_CHECK( distance[u] == current_distance );
     parent[v] = u;
@@ -142,7 +142,7 @@ struct bfs_test
 
         // Get vertex index map
         typedef typename boost::property_map<Graph, boost::vertex_index_t>::const_type idx_type;
-        idx_type idx = get(boost::vertex_index, g);
+        idx_type idx = boost::get(boost::vertex_index, g);
 
         // Make property maps from vectors
         typedef

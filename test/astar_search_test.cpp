@@ -117,9 +117,9 @@ int main(int, char **)
 {
   
   // specify some types
-  typedef adjacency_list<listS, vecS, undirectedS, no_property,
-    property<edge_weight_t, cost> > mygraph_t;
-  typedef property_map<mygraph_t, edge_weight_t>::type WeightMap;
+  typedef adjacency_list<listS, vecS, undirectedS, boost::no_property,
+    boost::property<edge_weight_t, cost> > mygraph_t;
+  typedef boost::property_map<mygraph_t, edge_weight_t>::type WeightMap;
   typedef mygraph_t::vertex_descriptor vertex;
   typedef mygraph_t::edge_descriptor edge_descriptor;
   typedef std::pair<int, int> edge;
@@ -164,7 +164,7 @@ int main(int, char **)
   
   // create graph
   mygraph_t g(N);
-  WeightMap weightmap = get(edge_weight, g);
+  WeightMap weightmap = boost::get(edge_weight, g);
   for(std::size_t j = 0; j < num_edges; ++j) {
     edge_descriptor e; bool inserted;
     boost::tie(e, inserted) = add_edge(edge_array[j].first,
@@ -186,7 +186,7 @@ int main(int, char **)
   vector<cost> d(num_vertices(g));
 
   boost::property_map<mygraph_t, boost::vertex_index_t>::const_type
-    idx = get(boost::vertex_index, g);
+    idx = boost::get(boost::vertex_index, g);
 
   try {
     // call astar named parameter interface
@@ -194,8 +194,8 @@ int main(int, char **)
       (g, start,
        distance_heuristic<mygraph_t, cost, location*>
         (locations, goal),
-       predecessor_map(make_iterator_property_map(p.begin(), idx)).
-       distance_map(make_iterator_property_map(d.begin(), idx)).
+       predecessor_map(boost::make_iterator_property_map(p.begin(), idx)).
+       distance_map(boost::make_iterator_property_map(d.begin(), idx)).
        visitor(astar_goal_visitor<vertex>(goal)).distance_inf(my_float((std::numeric_limits<float>::max)())));
   
   

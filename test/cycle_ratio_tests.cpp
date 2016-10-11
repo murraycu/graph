@@ -130,13 +130,13 @@ static const char test_graph6[]= "digraph test_graph6 {\
 }";
 
 using namespace boost;
-typedef  property<vertex_index_t, int, property<boost::vertex_name_t, std::string> > vertex_props_t;
+typedef  boost::property<vertex_index_t, int, boost::property<boost::vertex_name_t, std::string> > vertex_props_t;
 template <typename TW1, typename TW2> struct Graph
 {
     typedef typename boost::property<
         boost::edge_weight_t, TW1,
         typename boost::property<
-            boost::edge_weight2_t, TW2, property<boost::edge_index_t, int>
+            boost::edge_weight2_t, TW2, boost::property<boost::edge_index_t, int>
         >
     > edge_props_t;
     typedef typename boost::adjacency_list<
@@ -157,22 +157,22 @@ struct CEdgeProps
   TW2 m_w2;
   int m_edge_index;
 };
-typedef  adjacency_matrix<directedS, no_property, CEdgeProps<int, int> > GraphMInt;
+typedef  adjacency_matrix<directedS, boost::no_property, CEdgeProps<int, int> > GraphMInt;
 
 ///Create "tokens_map" for reading graph properties from .dot file
 template <typename TG>
 void  make_dynamic_properties(TG &g, dynamic_properties &p)
 {
-  p.property("node_id", get(vertex_name, g));
-  p.property("label", get(edge_weight, g));
-  p.property("w1", get(edge_weight, g));
-  p.property("w2", get(edge_weight2, g));
+  p.property("node_id", boost::get(vertex_name, g));
+  p.property("label", boost::get(edge_weight, g));
+  p.property("w1", boost::get(edge_weight, g));
+  p.property("w2", boost::get(edge_weight2, g));
 }
 
 template <typename TG>
 void read_data1(std::istream &is, TG &g)
 {
-  dynamic_properties p;
+  boost::dynamic_properties p;
   make_dynamic_properties(g, p);
   read_graphviz(is, g, p);
   std::cout << "Number of vertices: " << num_vertices(g) << std::endl;
@@ -180,12 +180,12 @@ void read_data1(std::istream &is, TG &g)
   int i = 0;
   BGL_FORALL_VERTICES_T(vd, g, TG)
   {
-    put(vertex_index, g, vd, i++);
+    boost::put(vertex_index, g, vd, i++);
   }
   i=0;
   BGL_FORALL_EDGES_T(ed, g, TG)
   {
-    put(edge_index, g, ed, i++);
+    boost::put(edge_index, g, ed, i++);
   }
 }
 
@@ -222,9 +222,9 @@ int test_main(int argc, char* argv[])
   ccInt_t cc; ///critical cycle
 
   diGraphInt tg;
-  property_map<diGraphInt, vertex_index_t>::type vim = get(vertex_index, tg);
-  property_map<diGraphInt, edge_weight_t>::type ew1m = get(edge_weight, tg);
-  property_map<diGraphInt, edge_weight2_t>::type ew2m = get(edge_weight2, tg);
+  boost::property_map<diGraphInt, vertex_index_t>::type vim = boost::get(vertex_index, tg);
+  boost::property_map<diGraphInt, edge_weight_t>::type ew1m = boost::get(edge_weight, tg);
+  boost::property_map<diGraphInt, edge_weight2_t>::type ew2m = boost::get(edge_weight2, tg);
 
 
 
@@ -257,7 +257,7 @@ int test_main(int argc, char* argv[])
       static_cast<ccInt_t*>(0));
     cout << "Maximum cycle ratio is " << max_cr << endl;
     BOOST_CHECK(std::abs( max_cr - 2.75) < epsilon );
-    double maxmc = maximum_cycle_mean(tgi, vim, ew1m, get(edge_index, tgi));
+    double maxmc = maximum_cycle_mean(tgi, vim, ew1m, boost::get(edge_index, tgi));
     cout << "Maximum cycle mean is " << maxmc << endl;
     BOOST_CHECK(std::abs( maxmc - 5.5) < epsilon );
     tg.clear();
@@ -284,8 +284,8 @@ int test_main(int argc, char* argv[])
     cout << "Critical cycle is:\n";
     for (ccInt_t::iterator itr = cc.begin(); itr != cc.end(); ++itr)
     {
-      cout << "(" << get(vertex_name, tg, source(*itr, tg)) <<
-        "," << get(vertex_name, tg, target(*itr, tg)) << ") ";
+      cout << "(" << boost::get(vertex_name, tg, source(*itr, tg)) <<
+        "," << boost::get(vertex_name, tg, target(*itr, tg)) << ") ";
     }
     cout << endl;
     tg.clear();
@@ -299,8 +299,8 @@ int test_main(int argc, char* argv[])
       cout << "Critical cycle is:" << endl;
       for (ccInt_t::iterator it = cc.begin(); it != cc.end(); ++it)
     {
-          cout << "(" << get(vertex_name, tg, source(*it, tg)) << "," <<
-            get(vertex_name, tg, target(*it, tg)) << ") ";
+          cout << "(" << boost::get(vertex_name, tg, source(*it, tg)) << "," <<
+            boost::get(vertex_name, tg, target(*it, tg)) << ") ";
     }
       cout << endl;
       tg.clear();
@@ -311,18 +311,18 @@ int test_main(int argc, char* argv[])
     ccReal_t  cc1;
     std::istringstream  iss(test_graph6);
     read_data1(iss, tgr);
-    max_cr = maximum_cycle_ratio(tgr, get(vertex_index, tgr), get(edge_weight, tgr), get(edge_weight2, tgr));
+    max_cr = maximum_cycle_ratio(tgr, boost::get(vertex_index, tgr), boost::get(edge_weight, tgr), boost::get(edge_weight2, tgr));
     cout << "Maximum cycle ratio is " << max_cr << endl;
-    min_cr = minimum_cycle_ratio(tgr, get(vertex_index, tgr), get(edge_weight, tgr),
-                                     get(edge_weight2, tgr), &cc);
+    min_cr = minimum_cycle_ratio(tgr, boost::get(vertex_index, tgr), boost::get(edge_weight, tgr),
+                                     boost::get(edge_weight2, tgr), &cc);
     cout << "Minimal cycle ratio is " << min_cr << endl;
     std::pair<double, double> cr(.0,.0);
     cout << "Critical cycle is:\n";
     for (ccReal_t::iterator itr = cc.begin(); itr != cc.end(); ++itr)
     {
-      cr.first += get(edge_weight, tgr, *itr); cr.second += get(edge_weight2, tgr, *itr);
-      cout << "(" << get(vertex_name, tgr, source(*itr, tgr)) << "," <<
-        get(vertex_name, tgr, target(*itr, tgr)) << ") ";
+      cr.first += boost::get(edge_weight, tgr, *itr); cr.second += boost::get(edge_weight2, tgr, *itr);
+      cout << "(" << boost::get(vertex_name, tgr, source(*itr, tgr)) << "," <<
+        boost::get(vertex_name, tgr, target(*itr, tgr)) << ") ";
     }
     BOOST_CHECK(std::abs(cr.first / cr.second - min_cr) < epsilon);
     cout << endl;
@@ -337,8 +337,8 @@ int test_main(int argc, char* argv[])
       for (vi2 = vertices(gm).first; vi2 != vi_end; ++vi2)
         add_edge(*vi1, *vi2, gm);
     }
-    max_cr = maximum_cycle_ratio(gm, get(vertex_index, gm),
-      get(&CEdgeProps<int, int>::m_w1, gm), get(&CEdgeProps<int, int>::m_w2, gm));
+    max_cr = maximum_cycle_ratio(gm, boost::get(vertex_index, gm),
+      boost::get(&CEdgeProps<int, int>::m_w1, gm), boost::get(&CEdgeProps<int, int>::m_w2, gm));
     BOOST_CHECK(std::abs(max_cr - 0.5) < epsilon);
   }
 

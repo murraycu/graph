@@ -107,7 +107,7 @@ int main(int, char*[]) {
 
   typedef boost::property_map<graph_type, boost::vertex_index_t>::type 
     VertexIndexMap;
-  VertexIndexMap vertex_index = get(boost::vertex_index_t(), graph);
+  VertexIndexMap vertex_index = boost::get(boost::vertex_index_t(), graph);
 
   typedef boost::heart_topology<> topology;
   topology space;
@@ -129,7 +129,7 @@ int main(int, char*[]) {
 #endif
 
   boost::gursoy_atun_layout(graph, space, position,
-                            weight_map(get(boost::edge_weight, graph)));
+                            weight_map(boost::get(boost::edge_weight, graph)));
 
 #if 0
   std::cerr << "--------Weighted layout--------\n";

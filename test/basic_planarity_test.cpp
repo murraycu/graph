@@ -22,11 +22,11 @@ struct VertexIndexUpdater
   template <typename Graph>
   void reset(Graph& g)
   {
-    typename property_map<Graph, vertex_index_t>::type index = get(vertex_index, g);
+    typename boost::property_map<Graph, vertex_index_t>::type index = boost::get(vertex_index, g);
     typename graph_traits<Graph>::vertex_iterator vi, vi_end;
     typename graph_traits<Graph>::vertices_size_type cnt = 0;
     for(boost::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
-      put(index, *vi, cnt++);
+      boost::put(index, *vi, cnt++);
   }
 };
 
@@ -179,7 +179,7 @@ int test_main(int, char* [])
     <vecS, 
     vecS, 
     undirectedS,
-    property<vertex_index_t, int>
+    boost::property<vertex_index_t, int>
     > 
     VVgraph_t;
   
@@ -187,7 +187,7 @@ int test_main(int, char* [])
     <vecS, 
     listS, 
     undirectedS,
-    property<vertex_index_t, int>
+    boost::property<vertex_index_t, int>
     > 
     VLgraph_t;
 
@@ -195,7 +195,7 @@ int test_main(int, char* [])
     <listS, 
     vecS, 
     undirectedS,
-    property<vertex_index_t, int>
+    boost::property<vertex_index_t, int>
     > 
     LVgraph_t;
 
@@ -203,7 +203,7 @@ int test_main(int, char* [])
     <listS, 
     listS, 
     undirectedS,
-    property<vertex_index_t, int>
+    boost::property<vertex_index_t, int>
     > 
     LLgraph_t;
 
@@ -211,7 +211,7 @@ int test_main(int, char* [])
     <setS, 
     setS, 
     undirectedS,
-    property<vertex_index_t, int>
+    boost::property<vertex_index_t, int>
     > 
     SSgraph_t;
 

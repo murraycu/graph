@@ -62,13 +62,13 @@ int test_main(int argc, char* argv[])
   
   typedef adjacency_list_traits < vecS, vecS, directedS > Traits;
   typedef adjacency_list < vecS, vecS, directedS,
-  property < vertex_index_t, long,
-  property < vertex_color_t, boost::default_color_type,
-  property < vertex_distance_t, long,
-  property < vertex_predecessor_t, Traits::edge_descriptor > > > >,
-  property < edge_capacity_t, long,
-  property < edge_residual_capacity_t, long,
-  property < edge_reverse_t, Traits::edge_descriptor > > > > Graph;
+  boost::property< vertex_index_t, long,
+  boost::property< vertex_color_t, boost::default_color_type,
+  boost::property< vertex_distance_t, long,
+  boost::property< vertex_predecessor_t, Traits::edge_descriptor > > > >,
+  boost::property< edge_capacity_t, long,
+  boost::property< edge_residual_capacity_t, long,
+  boost::property< edge_reverse_t, Traits::edge_descriptor > > > > Graph;
   
   typedef graph_traits<Graph>::edge_descriptor tEdge;
   typedef graph_traits<Graph>::vertex_descriptor tVertex;
@@ -86,13 +86,13 @@ int test_main(int argc, char* argv[])
   const int cap_high = 1000;
   
   //init random numer generator
-  minstd_rand gen(seed);
+  boost::minstd_rand gen(seed);
   //generate graph
   generate_random_graph(g, n_verts, n_edges, gen);   
   
   //init an uniform distribution int generator
-  typedef variate_generator<minstd_rand, uniform_int<int> > tIntGen;
-  tIntGen int_gen(gen, uniform_int<int>(cap_low, cap_high));
+  typedef boost::variate_generator<boost::minstd_rand, boost::uniform_int<int> > tIntGen;
+  tIntGen int_gen(gen, boost::uniform_int<int>(cap_low, cap_high));
   //init edge-capacities
   randomize_property<edge_capacity_t, Graph, tIntGen> (g,int_gen);
   
@@ -103,8 +103,8 @@ int test_main(int argc, char* argv[])
     sink_vertex = random_vertex(g, gen);
   
   //add reverse edges (ugly... how to do better?!)
-  property_map < Graph, edge_reverse_t >::type rev = get(edge_reverse, g);
-  property_map < Graph, edge_capacity_t >::type cap = get(edge_capacity, g);
+  boost::property_map< Graph, edge_reverse_t >::type rev = boost::get(edge_reverse, g);
+  boost::property_map< Graph, edge_capacity_t >::type cap = boost::get(edge_capacity, g);
   std::list<tEdge> edges_copy;
   graph_traits<Graph>::edge_iterator ei, e_end;
   boost::tie(ei, e_end) = edges(g);  
@@ -123,7 +123,7 @@ int test_main(int argc, char* argv[])
     cap[new_edge] = 0;
   }
   
-  typedef property_traits< property_map<Graph, edge_capacity_t>::const_type>::value_type tEdgeVal;
+  typedef boost::property_traits< boost::property_map<Graph, edge_capacity_t>::const_type>::value_type tEdgeVal;
   
   tEdgeVal bk = boykov_kolmogorov_max_flow(g,source_vertex,sink_vertex); 
   tEdgeVal push_relabel = push_relabel_max_flow(g,source_vertex,sink_vertex);

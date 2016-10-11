@@ -282,8 +282,8 @@ void graph_test(const OrigGraph& g)
   // each edge in g2
   std::size_t last_src = 0;
   for (boost::tie(ei, ei_end) = edges(g2); ei != ei_end; ++ei) {
-    BOOST_CHECK(edge_from_index(get(boost::edge_index, g2, *ei), g2) == *ei);
-    std::size_t src = get(boost::vertex_index, g2, source(*ei, g2));
+    BOOST_CHECK(edge_from_index(boost::get(boost::edge_index, g2, *ei), g2) == *ei);
+    std::size_t src = boost::get(boost::vertex_index, g2, source(*ei, g2));
     (void)(std::size_t)get(boost::vertex_index, g2, target(*ei, g2));
     BOOST_CHECK(src >= last_src);
     last_src = src;
@@ -294,7 +294,7 @@ void graph_test(const OrigGraph& g)
   std::size_t last_vertex = 0;
   bool first_iter = true;
   for (boost::tie(vi, vi_end) = vertices(g2); vi != vi_end; ++vi) {
-    std::size_t v = get(boost::vertex_index, g2, *vi);
+    std::size_t v = boost::get(boost::vertex_index, g2, *vi);
     BOOST_CHECK(first_iter || v > last_vertex);
     last_vertex = v;
     first_iter = false;
@@ -321,10 +321,10 @@ void graph_test(const OrigGraph& g)
   std::vector<double> edge_centralities(num_edges(g3));
   brandes_betweenness_centrality
     (g3,
-     make_iterator_property_map(vertex_centralities.begin(),
-                                get(boost::vertex_index, g3)),
-     make_iterator_property_map(edge_centralities.begin(),
-                                get(boost::edge_index, g3)));
+     boost::make_iterator_property_map(vertex_centralities.begin(),
+                                boost::get(boost::vertex_index, g3)),
+     boost::make_iterator_property_map(edge_centralities.begin(),
+                                boost::get(boost::edge_index, g3)));
     // Extra qualifications for aCC
 
   // Invert the edge centralities and use these as weights to
@@ -340,8 +340,8 @@ void graph_test(const OrigGraph& g)
   mst_edges.reserve(num_vertices(g3));
   kruskal_minimum_spanning_tree
     (g3, std::back_inserter(mst_edges),
-     weight_map(make_iterator_property_map(edge_centralities.begin(),
-                                           get(boost::edge_index, g3))));
+     weight_map(boost::make_iterator_property_map(edge_centralities.begin(),
+                                           boost::get(boost::edge_index, g3))));
 }
 
 void graph_test(int nnodes, double density, int seed)
@@ -357,15 +357,15 @@ void test_graph_properties()
   using namespace boost;
 
   typedef compressed_sparse_row_graph<directedS,
-                                      no_property,
-                                      no_property,
-                                      property<graph_name_t, std::string> >
+                                      boost::no_property,
+                                      boost::no_property,
+                                      boost::property<graph_name_t, std::string> >
     CSRGraphT;
 
   CSRGraphT g;
-  BOOST_CHECK(get_property(g, graph_name) == "");
+  BOOST_CHECK(boost::get_property(g, graph_name) == "");
   set_property(g, graph_name, "beep");
-  BOOST_CHECK(get_property(g, graph_name) == "beep");
+  BOOST_CHECK(boost::get_property(g, graph_name) == "beep");
 }
 
 struct Vertex
@@ -395,9 +395,9 @@ void test_vertex_and_edge_properties()
   CSRGraphWithPropsT g(boost::edges_are_sorted, &edges_init[0], &edges_init[0] + 6, &weights[0], 5, 6);
   brandes_betweenness_centrality
     (g,
-     centrality_map(get(&Vertex::centrality, g)).
-     weight_map(get(&Edge::weight, g)).
-     edge_centrality_map(get(&Edge::centrality, g)));
+     centrality_map(boost::get(&Vertex::centrality, g)).
+     weight_map(boost::get(&Edge::weight, g)).
+     edge_centrality_map(boost::get(&Edge::centrality, g)));
 
   BGL_FORALL_VERTICES(v, g, CSRGraphWithPropsT)
     BOOST_CHECK(g[v].centrality == centrality[v]);
@@ -431,23 +431,23 @@ int test_main(int argc, char* argv[])
 
     // Test vertex and edge bundle access
     boost::ignore_unused_variable_warning(
-      (VertexData&)get(get(boost::vertex_bundle, g), vertex(0, g)));
+      (VertexData&)get(boost::get(boost::vertex_bundle, g), vertex(0, g)));
     boost::ignore_unused_variable_warning(
-      (const VertexData&)get(get(boost::vertex_bundle, (const CSRGraphT&)g), vertex(0, g)));
+      (const VertexData&)get(boost::get(boost::vertex_bundle, (const CSRGraphT&)g), vertex(0, g)));
     boost::ignore_unused_variable_warning(
       (VertexData&)get(boost::vertex_bundle, g, vertex(0, g)));
     boost::ignore_unused_variable_warning(
       (const VertexData&)get(boost::vertex_bundle, (const CSRGraphT&)g, vertex(0, g)));
-    put(boost::vertex_bundle, g, vertex(0, g), VertexData());
+    boost::put(boost::vertex_bundle, g, vertex(0, g), VertexData());
     boost::ignore_unused_variable_warning(
-      (EdgeData&)get(get(boost::edge_bundle, g), *edges(g).first));
+      (EdgeData&)get(boost::get(boost::edge_bundle, g), *edges(g).first));
     boost::ignore_unused_variable_warning(
-      (const EdgeData&)get(get(boost::edge_bundle, (const CSRGraphT&)g), *edges(g).first));
+      (const EdgeData&)get(boost::get(boost::edge_bundle, (const CSRGraphT&)g), *edges(g).first));
     boost::ignore_unused_variable_warning(
       (EdgeData&)get(boost::edge_bundle, g, *edges(g).first));
     boost::ignore_unused_variable_warning(
       (const EdgeData&)get(boost::edge_bundle, (const CSRGraphT&)g, *edges(g).first));
-    put(boost::edge_bundle, g, *edges(g).first, EdgeData());
+    boost::put(boost::edge_bundle, g, *edges(g).first, EdgeData());
 
     CSRGraphT g2(boost::edges_are_unsorted_multi_pass, unsorted_edges, unsorted_edges + sizeof(unsorted_edges) / sizeof(*unsorted_edges), 6);
     graph_test(g);

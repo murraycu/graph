@@ -33,13 +33,13 @@ int test_main(int, char*[])
   int const weight[numEdges] = {11};
 
   typedef adjacency_list<vecS,vecS,undirectedS,
-    no_property,property<edge_weight_t,int> > Graph;
+    boost::no_property, boost::property<edge_weight_t,int> > Graph;
 
   Graph g(edge_array, edge_array + numEdges, numVertex);
 
   Graph::edge_iterator ei, ei_end;
-  property_map<Graph,edge_weight_t>::type
-    weight_pmap = get(edge_weight, g);
+  boost::property_map<Graph,edge_weight_t>::type
+    weight_pmap = boost::get(edge_weight, g);
 
   int i = 0;
   for(boost::tie(ei, ei_end) = edges(g); ei != ei_end; ++ei, ++i)
@@ -56,8 +56,8 @@ int test_main(int, char*[])
   bool const r = bellman_ford_shortest_paths
     (g, int (numVertex),
      weight_pmap, 
-     boost::make_iterator_property_map(parent.begin(), get(boost::vertex_index, g)),
-     boost::make_iterator_property_map(distance.begin(), get(boost::vertex_index, g)),
+     boost::make_iterator_property_map(parent.begin(), boost::get(boost::vertex_index, g)),
+     boost::make_iterator_property_map(distance.begin(), boost::get(boost::vertex_index, g)),
      closed_plus<int>(),
      std::less<int>(),
      default_bellman_visitor());
@@ -82,8 +82,8 @@ int test_main(int, char*[])
   bool const r2 = bellman_ford_shortest_paths
                     (g, 
                      weight_map(weight_pmap).
-                     distance_map(boost::make_iterator_property_map(distance2.begin(), get(boost::vertex_index, g))).
-                     predecessor_map(boost::make_iterator_property_map(parent2.begin(), get(boost::vertex_index, g))).
+                     distance_map(boost::make_iterator_property_map(distance2.begin(), boost::get(boost::vertex_index, g))).
+                     predecessor_map(boost::make_iterator_property_map(parent2.begin(), boost::get(boost::vertex_index, g))).
                      root_vertex(s));
   if (r2) {
     for(int i = 0; i < numVertex; ++i) {

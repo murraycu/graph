@@ -35,8 +35,8 @@ check_articulation_points(const Graph& g, std::vector<Vertex> art_points)
   std::vector<int> components(num_vertices(g));
   int basic_comps = 
     connected_components(g, 
-                         make_iterator_property_map(components.begin(), 
-                                                    get(vertex_index, g),
+                         boost::make_iterator_property_map(components.begin(), 
+                                                    boost::get(vertex_index, g),
                                                     int()));
 
   std::vector<Vertex> art_points_check;
@@ -44,15 +44,15 @@ check_articulation_points(const Graph& g, std::vector<Vertex> art_points)
   typename graph_traits<Graph>::vertex_iterator vi, vi_end;
   for (boost::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi) {
     Graph g_copy(g);
-    Vertex victim = vertex(get(vertex_index, g, *vi), g_copy);
+    Vertex victim = vertex(boost::get(vertex_index, g, *vi), g_copy);
     clear_vertex(victim, g_copy);
     remove_vertex(victim, g_copy);
 
     int copy_comps = 
       connected_components
         (g_copy, 
-         make_iterator_property_map(components.begin(), 
-                                    get(vertex_index, g_copy),
+         boost::make_iterator_property_map(components.begin(), 
+                                    boost::get(vertex_index, g_copy),
                                     int()));
 
     if (copy_comps > basic_comps)
@@ -78,7 +78,7 @@ check_articulation_points(const Graph& g, std::vector<Vertex> art_points)
 }
 
 typedef adjacency_list<listS, vecS, undirectedS,
-                       no_property, EdgeProperty> Graph;
+                       boost::no_property, EdgeProperty> Graph;
 typedef graph_traits<Graph>::vertex_descriptor Vertex;
 
 bool test_graph(Graph& g) { // Returns false on failure
@@ -89,7 +89,7 @@ bool test_graph(Graph& g) { // Returns false on failure
 
   std::size_t num_comps = 
     biconnected_components(g, 
-                           get(&EdgeProperty::component, g),
+                           boost::get(&EdgeProperty::component, g),
                            std::back_inserter(art_points)).first;
   
   std::cout << "done.\n\t" << num_comps << " biconnected components.\n"

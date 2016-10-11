@@ -59,7 +59,7 @@ void test()
     boost::minstd_rand rng;
     Graph g(er(rng, N, P), er(), N);
     renumber_indices(g);
-    print_edges(g, get(vertex_index, g));
+    print_edges(g, boost::get(vertex_index, g));
 
     bron_kerbosch_all_cliques(g, clique_validator());
 }

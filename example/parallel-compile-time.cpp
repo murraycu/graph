@@ -29,15 +29,12 @@ namespace std
 namespace boost
 {
 
-namespace graph
-{
   enum vertex_compile_cost_t { vertex_compile_cost };
   BOOST_INSTALL_PROPERTY(vertex, compile_cost);
 
-} // namespace graph
 } // namespace boost
 
-using namespace boost::graph;
+using namespace boost;
 
 using file_dep_graph2 = adjacency_list<listS, // Store out-edges of each vertex in a std::list
   listS,                        // Store vertex set in a std::list

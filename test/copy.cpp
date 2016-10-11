@@ -16,8 +16,8 @@ public:
 
 int main()
 {
-    adjacency_list<vecS, vecS, directedS, property<vertex_root_t, int> > g1, g2;
-    adjacency_list<vecS, setS, directedS, property<vertex_index_t, int> > g3;
+    adjacency_list<vecS, vecS, directedS, boost::property<vertex_root_t, int> > g1, g2;
+    adjacency_list<vecS, setS, directedS, boost::property<vertex_index_t, int> > g3;
 
     copy_graph(g1, g2);
     copier c;

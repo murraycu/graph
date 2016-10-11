@@ -17,7 +17,7 @@ int test_main(int, char*[])
 {
   typedef adjacency_list<listS, vecS, undirectedS> Graph;
   typedef graph_traits<Graph>::vertices_size_type vertices_size_type;
-  typedef property_map<Graph, vertex_index_t>::const_type vertex_index_map;
+  typedef boost::property_map<Graph, vertex_index_t>::const_type vertex_index_map;
 
   typedef std::pair<int, int> Edge;
   enum nodes {A, B, C, D, E, n};
@@ -29,16 +29,16 @@ int test_main(int, char*[])
 
   // Test with the normal order
   std::vector<vertices_size_type> color_vec(num_vertices(g));
-  iterator_property_map<vertices_size_type*, vertex_index_map, 
+  boost::iterator_property_map<vertices_size_type*, vertex_index_map, 
                         vertices_size_type, vertices_size_type&>
-    color(&color_vec.front(), get(vertex_index, g));
+    color(&color_vec.front(), boost::get(vertex_index, g));
   vertices_size_type num_colors = sequential_vertex_coloring(g, color);
   BOOST_CHECK(num_colors == 3);
-  BOOST_CHECK(get(color, (vertices_size_type)A) == 0);
-  BOOST_CHECK(get(color, (vertices_size_type)B) == 0);
-  BOOST_CHECK(get(color, (vertices_size_type)C) == 1);
-  BOOST_CHECK(get(color, (vertices_size_type)D) == 2);
-  BOOST_CHECK(get(color, (vertices_size_type)E) == 1);
+  BOOST_CHECK(boost::get(color, (vertices_size_type)A) == 0);
+  BOOST_CHECK(boost::get(color, (vertices_size_type)B) == 0);
+  BOOST_CHECK(boost::get(color, (vertices_size_type)C) == 1);
+  BOOST_CHECK(boost::get(color, (vertices_size_type)D) == 2);
+  BOOST_CHECK(boost::get(color, (vertices_size_type)E) == 1);
   return 0;
 }
 

@@ -22,8 +22,8 @@ int test_main(int, char*[])
 {
   using namespace boost;
   typedef adjacency_list<vecS, vecS, bidirectionalS,
-    property<vertex_color_t, int>,
-    property<edge_index_t, std::size_t, property<edge_weight_t, int> >
+    boost::property<vertex_color_t, int>,
+    boost::property<edge_index_t, std::size_t, boost::property<edge_weight_t, int> >
   > graph_t;
   typedef subgraph<graph_t> subgraph_t;
   typedef graph_traits<subgraph_t>::vertex_descriptor vertex_t;
@@ -106,7 +106,7 @@ int test_main(int, char*[])
         graph_t::edge_iterator ei, ee;
         for (boost::tie(ei, ee) = edges(sub); ei != ee; ++ei) {
             // This used to segfault.
-            get(edge_weight, sub, *ei);
+            boost::get(edge_weight, sub, *ei);
         }
     }
 
@@ -115,18 +115,18 @@ int test_main(int, char*[])
     // TODO: Under construction.
     {
         using namespace boost;
-        typedef property<edge_index_t, size_t, EdgeBundle> EdgeProp;
+        typedef boost::property<edge_index_t, size_t, EdgeBundle> EdgeProp;
         typedef adjacency_list<vecS, vecS, directedS, VertexBundle, EdgeProp> BaseGraph;
         typedef subgraph<BaseGraph> Graph;
         typedef graph_traits<Graph>::vertex_descriptor Vertex;
         Graph g;
         Vertex v = add_vertex(g);
 
-        typedef property_map<Graph, int VertexBundle::*>::type BundleMap;
-        BundleMap map = get(&VertexBundle::value, g);
-        get(map, v);
-//         put(map, v, 5);
-//         BOOST_ASSERT(get(map, v) == 5);
+        typedef boost::property_map<Graph, int VertexBundle::*>::type BundleMap;
+        BundleMap map = boost::get(&VertexBundle::value, g);
+        boost::get(map, v);
+//         boost::put(map, v, 5);
+//         BOOST_ASSERT(boost::get(map, v) == 5);
 
 //         test_graph(g);
         return 0;

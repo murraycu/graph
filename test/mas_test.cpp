@@ -79,7 +79,7 @@ class mas_edge_connectivity_visitor : public boost::default_mas_visitor {
     *m_prev = *m_curr;
     *m_curr = u;
     //BOOST_TEST_MESSAGE( "Initializing Vertex(weight): " << u << "(" << *m_reach_weight << ")" );
-    *m_reach_weight = get(m_pq.keys(), u);
+    *m_reach_weight = boost::get(m_pq.keys(), u);
   }
 
   vertex_descriptor curr() const { return *m_curr; }
@@ -108,16 +108,16 @@ BOOST_AUTO_TEST_CASE(test0)
   weight_type ws[] = {2, 3, 4, 3, 2, 2, 2, 2, 2, 3, 1, 3};
   undirected_graph g(edges, edges + 12, ws, 8, 12);
 
-  weight_map_type weights = get(boost::edge_weight, g);
+  weight_map_type weights = boost::get(boost::edge_weight, g);
 
   std::map<vertex_descriptor, vertex_descriptor> assignment;
   boost::associative_property_map<std::map<vertex_descriptor, vertex_descriptor> > assignments(assignment);
 
   typedef boost::shared_array_property_map<weight_type, boost::property_map<undirected_graph, boost::vertex_index_t>::const_type> distances_type;
-  distances_type distances = boost::make_shared_array_property_map(num_vertices(g), weight_type(0), get(boost::vertex_index, g));
+  distances_type distances = boost::make_shared_array_property_map(num_vertices(g), weight_type(0), boost::get(boost::vertex_index, g));
   typedef std::vector<vertex_descriptor>::size_type index_in_heap_type;
   typedef boost::shared_array_property_map<index_in_heap_type, boost::property_map<undirected_graph, boost::vertex_index_t>::const_type> indicesInHeap_type;
-  indicesInHeap_type indicesInHeap = boost::make_shared_array_property_map(num_vertices(g), index_in_heap_type(-1), get(boost::vertex_index, g));
+  indicesInHeap_type indicesInHeap = boost::make_shared_array_property_map(num_vertices(g), index_in_heap_type(-1), boost::get(boost::vertex_index, g));
   boost::d_ary_heap_indirect<vertex_descriptor, 22, indicesInHeap_type, distances_type, std::greater<weight_type> > pq(distances, indicesInHeap);
 
   mas_edge_connectivity_visitor<undirected_graph,boost::d_ary_heap_indirect<vertex_descriptor, 22, indicesInHeap_type, distances_type, std::greater<weight_type> > >  test_vis(pq);
@@ -191,10 +191,10 @@ BOOST_AUTO_TEST_CASE(test1)
 
   typedef unsigned weight_type;
   typedef boost::shared_array_property_map<weight_type, boost::property_map<undirected_graph, boost::vertex_index_t>::const_type> distances_type;
-  distances_type distances = boost::make_shared_array_property_map(num_vertices(g), weight_type(0), get(boost::vertex_index, g));
+  distances_type distances = boost::make_shared_array_property_map(num_vertices(g), weight_type(0), boost::get(boost::vertex_index, g));
   typedef std::vector<vertex_descriptor>::size_type index_in_heap_type;
   typedef boost::shared_array_property_map<index_in_heap_type, boost::property_map<undirected_graph, boost::vertex_index_t>::const_type> indicesInHeap_type;
-  indicesInHeap_type indicesInHeap = boost::make_shared_array_property_map(num_vertices(g), index_in_heap_type(-1), get(boost::vertex_index, g));
+  indicesInHeap_type indicesInHeap = boost::make_shared_array_property_map(num_vertices(g), index_in_heap_type(-1), boost::get(boost::vertex_index, g));
   boost::d_ary_heap_indirect<vertex_descriptor, 22, indicesInHeap_type, distances_type, std::greater<weight_type> > pq(distances, indicesInHeap);
 
   mas_edge_connectivity_visitor<undirected_unweighted_graph,boost::d_ary_heap_indirect<vertex_descriptor, 22, indicesInHeap_type, distances_type, std::greater<weight_type> > >  test_vis(pq);

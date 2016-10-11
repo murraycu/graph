@@ -161,9 +161,9 @@ public:
                             <SPPRC_Example_Graph>::edge_descriptor ed ) const
   {
     const SPPRC_Example_Graph_Arc_Prop& arc_prop = 
-      get( edge_bundle, g )[ed];
+      boost::get( edge_bundle, g )[ed];
     const SPPRC_Example_Graph_Vert_Prop& vert_prop = 
-      get( vertex_bundle, g )[target( ed, g )];
+      boost::get( vertex_bundle, g )[target( ed, g )];
     new_cont.cost = old_cont.cost + arc_prop.cost;
     int& i_time = new_cont.time;
     i_time = old_cont.time + arc_prop.time;
@@ -278,8 +278,8 @@ int test_main(int, char*[])
     {
       r_c_shortest_paths
       ( g, 
-        get( &SPPRC_Example_Graph_Vert_Prop::num, g ), 
-        get( &SPPRC_Example_Graph_Arc_Prop::num, g ), 
+        boost::get( &SPPRC_Example_Graph_Vert_Prop::num, g ), 
+        boost::get( &SPPRC_Example_Graph_Arc_Prop::num, g ), 
         s, 
         t, 
         opt_solutions, 
@@ -308,8 +308,8 @@ int test_main(int, char*[])
   //                           s, 
   //                           &p[0], 
   //                           &d[0], 
-  //                           get( &SPPRC_Example_Graph_Arc_Prop::cost, g ), 
-  //                           get( &SPPRC_Example_Graph_Vert_Prop::num, g ), 
+  //                           boost::get( &SPPRC_Example_Graph_Arc_Prop::cost, g ), 
+  //                           boost::get( &SPPRC_Example_Graph_Vert_Prop::num, g ), 
   //                           std::less<int>(), 
   //                           closed_plus<int>(), 
   //                           (std::numeric_limits<int>::max)(), 
@@ -446,8 +446,8 @@ int test_main(int, char*[])
     {
       r_c_shortest_paths
       ( g, 
-        get( &SPPRC_Example_Graph_Vert_Prop::num, g ), 
-        get( &SPPRC_Example_Graph_Arc_Prop::num, g ), 
+        boost::get( &SPPRC_Example_Graph_Vert_Prop::num, g ), 
+        boost::get( &SPPRC_Example_Graph_Arc_Prop::num, g ), 
         s, 
         t, 
         opt_solutions_spptw, 
@@ -621,8 +621,8 @@ int test_main(int, char*[])
   std::vector<graph_traits<SPPRC_Example_Graph>::edge_descriptor> opt_solution;
   spp_spptw_res_cont pareto_opt_rc;
   r_c_shortest_paths( g2, 
-                      get( &SPPRC_Example_Graph_Vert_Prop::num, g2 ), 
-                      get( &SPPRC_Example_Graph_Arc_Prop::num, g2 ), 
+                      boost::get( &SPPRC_Example_Graph_Vert_Prop::num, g2 ), 
+                      boost::get( &SPPRC_Example_Graph_Arc_Prop::num, g2 ), 
                       0, 
                       3, 
                       opt_solution, 

@@ -79,6 +79,7 @@ void do_test(minstd_rand& generator) {
   for (vertices_size_type vertex_index = 0;
        vertex_index < num_vertices(graph);
        ++vertex_index) {
+    // TODO: get() should be in boost::, not global.
     BOOST_REQUIRE(get(boost::vertex_index, graph, vertex(vertex_index, graph)) == vertex_index);
   }
 
