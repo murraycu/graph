@@ -73,7 +73,7 @@ main()
 
   // use std::sort to order the vertices by their discover time
   std::vector<size_type> discover_order(N);
-  integer_range<size_type> r(0, N);
+  boost::integer_range<size_type> r(0, N);
   std::copy(r.begin(), r.end(), discover_order.begin());
   std::sort(discover_order.begin(), discover_order.end(),
             indirect_cmp<time_pm_type, std::less<size_type>>(dtime_pm));

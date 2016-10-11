@@ -26,7 +26,7 @@ main()
   Graph g(num_vertices(g_dot));
   auto edge_attr_map = boost::get(edge_attribute, g_dot);
   for (const auto& edge : make_range_pair(edges(g_dot))) {
-    auto weight = lexical_cast<int>(edge_attr_map[edge]["label"]);
+    auto weight = boost::lexical_cast<int>(edge_attr_map[edge]["label"]);
     boost::property<edge_weight_t, int> edge_property(weight);
     add_edge(source(edge, g_dot), target(edge, g_dot), edge_property, g);
   }

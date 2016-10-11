@@ -25,8 +25,8 @@ main()
   int i;
   boost::mt19937 gen;
   for (int N = 2; N < 200; ++N) {
-    uniform_int<> distrib(0, N-1);
-    variate_generator<boost::mt19937&, uniform_int<>> rand_gen(gen, distrib);
+    boost::uniform_int<> distrib(0, N-1);
+    boost::variate_generator<boost::mt19937&, boost::uniform_int<>> rand_gen(gen, distrib);
     for (std::size_t t = 0; t < 10; ++t) {
       std::vector<float> v, w(N);
 

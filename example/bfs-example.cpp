@@ -69,7 +69,7 @@ main()
 
   // Use std::sort to order the vertices by their discover time
   std::vector<graph_traits<graph_t>::vertices_size_type > discover_order(N);
-  integer_range<int> range(0, N);
+  boost::integer_range<int> range(0, N);
   std::copy(range.begin(), range.end(), discover_order.begin());
   std::sort(discover_order.begin(), discover_order.end(),
             indirect_cmp<dtime_pm_type, std::less<Size>>(dtime_pm));

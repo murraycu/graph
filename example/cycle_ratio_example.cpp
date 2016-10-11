@@ -31,7 +31,7 @@ template <typename TG>
 void gen_rand_graph(TG &g, size_t nV, size_t nE)
 {
     g.clear();
-    mt19937 rng;
+    boost::mt19937 rng;
     rng.seed(uint32_t(time(0)));
     boost::generate_random_graph(g, nV, nE, rng, true, true);
     boost::uniform_real<> ur(-1,10);

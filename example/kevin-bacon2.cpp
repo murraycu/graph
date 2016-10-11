@@ -64,7 +64,7 @@ int main()
     std::cerr << "No ./kevin-bacon2.dat file" << std::endl;
     return EXIT_FAILURE;
   }
-  archive::text_iarchive ia(ifs);
+  boost::archive::text_iarchive ia(ifs);
   Graph g;
   ia >> g;
 

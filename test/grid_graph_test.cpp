@@ -39,7 +39,7 @@ void print_vertex(Vertex vertex_to_print) {
 }
 
 template <unsigned int Dims>
-void do_test(minstd_rand& generator) {
+void do_test(boost::minstd_rand& generator) {
   typedef grid_graph<Dims> Graph;
   typedef typename graph_traits<Graph>::vertices_size_type vertices_size_type;
   typedef typename graph_traits<Graph>::edges_size_type edges_size_type;
@@ -203,10 +203,10 @@ int test_main(int argc, char* argv[]) {
   std::size_t random_seed = time(0);
 
   if (argc > 1) {
-    random_seed = lexical_cast<std::size_t>(argv[1]);
+    random_seed = boost::lexical_cast<std::size_t>(argv[1]);
   }
 
-  minstd_rand generator(random_seed);
+  boost::minstd_rand generator(random_seed);
 
   do_test<0>(generator);
   do_test<1>(generator);

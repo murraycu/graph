@@ -73,7 +73,7 @@ class progress_cooling : public linear_cooling<double>
   }
 
  private:
-  shared_ptr<boost::progress_display> display;
+  boost::shared_ptr<boost::progress_display> display;
 };
 
 int main(int argc, char* argv[])
@@ -90,10 +90,10 @@ int main(int argc, char* argv[])
     if (arg == "--iterations") {
       ++arg_idx;
       if (arg_idx >= argc) { usage(); return -1; }
-      iterations = lexical_cast<int>(argv[arg_idx]);
+      iterations = boost::lexical_cast<int>(argv[arg_idx]);
     } else {
-      if (width == 0.0) width = lexical_cast<double>(arg);
-      else if (height == 0.0) height = lexical_cast<double>(arg);
+      if (width == 0.0) width = boost::lexical_cast<double>(arg);
+      else if (height == 0.0) height = boost::lexical_cast<double>(arg);
       else {
         usage();
         return -1;
@@ -120,7 +120,7 @@ int main(int argc, char* argv[])
                                 boost::property_map<Graph, vertex_index_t>::type>;
   PositionMap position(position_vec.begin(), boost::get(vertex_index, g));
 
-  minstd_rand gen;
+  boost::minstd_rand gen;
   topology_type topo(gen, -width/2, -height/2, width/2, height/2);
   random_graph_layout(g, position, topo);
   fruchterman_reingold_force_directed_layout

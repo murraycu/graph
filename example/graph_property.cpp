@@ -30,5 +30,5 @@ main()
 
   std::cout << "name: " << boost::get_property(sg, graph_name) << std::endl;
   
-  return exit_success;
+  return boost::exit_success;
 }

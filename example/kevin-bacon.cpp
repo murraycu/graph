@@ -67,9 +67,9 @@ main()
   NameVertexMap actors;
 
   for (std::string line; std::getline(datafile, line);) {
-    char_delimiters_separator<char> sep(false, "", ";");
-    tokenizer <> line_toks(line, sep);
-    tokenizer <>::iterator i = line_toks.begin();
+    boost::char_delimiters_separator<char> sep(false, "", ";");
+    boost::tokenizer <> line_toks(line, sep);
+    boost::tokenizer <>::iterator i = line_toks.begin();
     std::string actors_name = *i++;
     NameVertexMap::iterator pos;
     bool inserted;

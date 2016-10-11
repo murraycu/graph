@@ -240,10 +240,10 @@ void randomly_add_edges(MutableGraph& g, double edge_probability)
   typedef typename graph_traits<MutableGraph>::directed_category
     directed_category;
   const bool is_undirected = 
-    is_same<directed_category, undirected_tag>::value;
+    boost::is_same<directed_category, undirected_tag>::value;
 
-  minstd_rand gen;
-  uniform_01<minstd_rand, double> rand_gen(gen);
+  boost::minstd_rand gen;
+  boost::uniform_01<boost::minstd_rand, double> rand_gen(gen);
 
   typedef typename graph_traits<MutableGraph>::vertex_descriptor vertex;
   typename graph_traits<MutableGraph>::vertex_iterator vi, vi_end;
@@ -363,7 +363,7 @@ simple_unweighted_betweenness_centrality(const Graph& g, VertexIndexMap index,
 
   typedef typename graph_traits<Graph>::directed_category directed_category;
   const bool is_undirected = 
-    is_same<directed_category, undirected_tag>::value;
+    boost::is_same<directed_category, undirected_tag>::value;
   if (is_undirected) {
     vertex_iterator v, v_end;
     for(boost::tie(v, v_end) = vertices(g); v != v_end; ++v) {

@@ -21,7 +21,7 @@ void test_graph_nonloop()
     // Build a graph with 1 edge and turn it into a loop.
     Graph g(5);
     Vertex u = *vertices(g).first;
-    Vertex v = *next(vertices(g).first, 2);
+    Vertex v = *boost::next(vertices(g).first, 2);
     add_edge(u, v, g);
     BOOST_ASSERT(num_vertices(g) == 5);
     BOOST_ASSERT(num_edges(g) == 1);
@@ -39,7 +39,7 @@ void test_multigraph_nonloop()
     // Build a graph with 1 edge and turn it into a loop.
     Graph g(5);
     Vertex u = *vertices(g).first;
-    Vertex v = *next(vertices(g).first, 2);
+    Vertex v = *boost::next(vertices(g).first, 2);
     add_edge(u, v, g);
     add_edge(u, v, g);
     BOOST_ASSERT(num_vertices(g) == 5);
@@ -55,7 +55,7 @@ void test_graph_loop()
     typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
 
     Graph g(5);
-    Vertex v = *next(vertices(g).first, 2);
+    Vertex v = *boost::next(vertices(g).first, 2);
     add_edge(v, v, g);
     BOOST_ASSERT(num_vertices(g) == 5);
     BOOST_ASSERT(num_edges(g) == 1);
@@ -69,7 +69,7 @@ void test_multigraph_loop()
     typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
 
     Graph g(5);
-    Vertex v = *next(vertices(g).first, 2);
+    Vertex v = *boost::next(vertices(g).first, 2);
     add_edge(v, v, g);
     add_edge(v, v, g);
     BOOST_ASSERT(num_vertices(g) == 5);

@@ -57,7 +57,7 @@ void run_test(const Graph& g, const char* name, Kind kind,
 
   std::cout << "Running Dijkstra's with " << name << "...";
   std::cout.flush();
-  timer t;
+  boost::timer t;
   dijkstra_heap_kind = kind;
 
   dijkstra_shortest_paths(g, vertex(0, g),
@@ -83,22 +83,22 @@ void run_test(const Graph& g, const char* name, Kind kind,
 
 int main(int argc, char* argv[])
 {
-  unsigned n = (argc > 1? lexical_cast<unsigned>(argv[1]) : 10000u);
-  unsigned m = (argc > 2? lexical_cast<unsigned>(argv[2]) : 10*n);
-  int seed = (argc > 3? lexical_cast<int>(argv[3]) : 1);
+  unsigned n = (argc > 1? boost::lexical_cast<unsigned>(argv[1]) : 10000u);
+  unsigned m = (argc > 2? boost::lexical_cast<unsigned>(argv[2]) : 10*n);
+  int seed = (argc > 3? boost::lexical_cast<int>(argv[3]) : 1);
 
   // Build random graph
   typedef adjacency_list<vecS, vecS, directedS, boost::no_property,
                          boost::property<edge_weight_t, double> > Graph;
   std::cout << "Generating graph...";
   std::cout.flush();
-  minstd_rand gen(seed);
+  boost::minstd_rand gen(seed);
   double p = double(m)/(double(n)*double(n));
-  Graph g(erdos_renyi_iterator<minstd_rand, Graph>(gen, n, p),
-          erdos_renyi_iterator<minstd_rand, Graph>(),
+  Graph g(erdos_renyi_iterator<boost::minstd_rand, Graph>(gen, n, p),
+          erdos_renyi_iterator<boost::minstd_rand, Graph>(),
           n);
   std::cout << n << " vertices, " << num_edges(g) << " edges.\n";
-  uniform_real<double> rand01(0.0, 1.0);
+  boost::uniform_real<double> rand01(0.0, 1.0);
   graph_traits<Graph>::edge_iterator ei, ei_end;
   for (boost::tie(ei, ei_end) = edges(g); ei != ei_end; ++ei)
     boost::put(edge_weight, g, *ei, rand01(gen));
@@ -110,7 +110,7 @@ int main(int argc, char* argv[])
   // Run binary or d-ary heap version
   std::cout << "Running Dijkstra's with binary heap...";
   std::cout.flush();
-  timer t;
+  boost::timer t;
 #ifdef BOOST_GRAPH_DIJKSTRA_TESTING_DIETMAR
   dijkstra_heap_kind = dijkstra_binary_heap;
 #else

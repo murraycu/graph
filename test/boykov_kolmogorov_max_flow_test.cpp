@@ -58,13 +58,13 @@ fill_random_max_flow_graph(Graph& g, CapacityMap cap, ReverseEdgeMap rev, typena
   const int cap_high = 1000;
 
   //init random numer generator
-  minstd_rand gen(seed);
+  boost::minstd_rand gen(seed);
   //generate graph
   generate_random_graph(g, n_verts, n_edges, gen);
 
   //init an uniform distribution int generator
-  typedef variate_generator<minstd_rand, uniform_int<int> > tIntGen;
-  tIntGen int_gen(gen, uniform_int<int>(cap_low, cap_high));
+  typedef boost::variate_generator<boost::minstd_rand, boost::uniform_int<int> > tIntGen;
+  tIntGen int_gen(gen, boost::uniform_int<int>(cap_low, cap_high));
   //randomize edge-capacities
   //randomize_property<edge_capacity, Graph, tIntGen> (g,int_gen); //we cannot use this, as we have no idea how properties are stored, right?
   typename graph_traits<Graph>::edge_iterator ei, e_end;
@@ -429,9 +429,9 @@ int test_main(int argc, char* argv[])
   int n_edges = 500;
   std::size_t seed = 1;
 
-  if (argc > 1) n_verts = lexical_cast<int>(argv[1]);
-  if (argc > 2) n_edges = lexical_cast<int>(argv[2]);
-  if (argc > 3) seed = lexical_cast<std::size_t>(argv[3]);
+  if (argc > 1) n_verts = boost::lexical_cast<int>(argv[1]);
+  if (argc > 2) n_edges = boost::lexical_cast<int>(argv[2]);
+  if (argc > 3) seed = boost::lexical_cast<std::size_t>(argv[3]);
 
   //we need at least 2 vertices to create src and sink in random graphs
   //this case is also caught in boykov_kolmogorov_max_flow

@@ -76,18 +76,18 @@ int test_main(int argc, char* argv[])
   std::size_t random_seed = time(0);
   
   if (argc > 1) {
-    vertices_to_create = lexical_cast<int>(argv[1]);
+    vertices_to_create = boost::lexical_cast<int>(argv[1]);
   }
   
   if (argc > 2) {
-    edges_to_create = lexical_cast<int>(argv[2]);
+    edges_to_create = boost::lexical_cast<int>(argv[2]);
   }
   
   if (argc > 3) {
-    random_seed = lexical_cast<std::size_t>(argv[3]);
+    random_seed = boost::lexical_cast<std::size_t>(argv[3]);
   }
 
-  minstd_rand generator(random_seed);
+  boost::minstd_rand generator(random_seed);
 
   // Set up graph
   typedef adjacency_list<listS, listS, directedS,
@@ -99,7 +99,7 @@ int test_main(int argc, char* argv[])
 
   // Set up property maps
   typedef boost::property_map<graph_t, vertex_index_t>::type index_map_t;
-  index_map_t index_map = get(vertex_index, graph);
+  index_map_t index_map = boost::get(vertex_index, graph);
   int vertex_index = 0;
 
   BGL_FORALL_VERTICES(current_vertex, graph, graph_t) {

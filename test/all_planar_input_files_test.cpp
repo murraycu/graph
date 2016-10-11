@@ -82,7 +82,7 @@ void read_dimacs(Graph& g, const std::string& filename)
         continue;
       
       std::vector<std::string> v;
-      split(v, buffer, is_any_of(" \t\n"));
+      split(v, buffer, boost::is_any_of(" \t\n"));
       
       if (v[0] == "p")
         {
@@ -263,12 +263,12 @@ int test_main(int argc, char* argv[])
   std::cout << "Reading planar input files from " << input_directory_str
             << std::endl;
 
-  filesystem::path input_directory = 
-    filesystem::system_complete(filesystem::path(input_directory_str));
+  boost::filesystem::path input_directory = 
+    boost::filesystem::system_complete(boost::filesystem::path(input_directory_str));
   const std::string dimacs_extension = ".dimacs";
 
-  filesystem::directory_iterator dir_end;
-  for( filesystem::directory_iterator dir_itr(input_directory);
+  boost::filesystem::directory_iterator dir_end;
+  for( boost::filesystem::directory_iterator dir_itr(input_directory);
        dir_itr != dir_end; ++dir_itr)
   { 
 

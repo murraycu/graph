@@ -48,10 +48,10 @@ void load_actor_graph(std::istream& in, ActorGraph& g)
     std::vector<Vertex> actors_in_movie;
 
     // Map from the actor numbers on this line to the actor vertices
-    using Tok = tokenizer<char_separator<char>>;
-    Tok tok(line, char_separator<char>(" "));
+    using Tok = boost::tokenizer<boost::char_separator<char>>;
+    Tok tok(line, boost::char_separator<char>(" "));
     for (const auto& id : tok) {
-      auto actor_id = lexical_cast<int>(id);
+      auto actor_id = boost::lexical_cast<int>(id);
       auto v = actors.find(actor_id);
       if (v == actors.end()) {
         auto new_vertex = add_vertex(Actor(actor_id), g);
@@ -131,7 +131,7 @@ int main(int argc, char* argv[])
         out_file = argv[on_arg];
       } else if (arg == "-threshold") {
         ++on_arg; assert(on_arg < argc);
-        threshold = lexical_cast<double>(argv[on_arg]);
+        threshold = boost::lexical_cast<double>(argv[on_arg]);
       } else if (arg == "-normalize") {
         normalize = true;
       } else {

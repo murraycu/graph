@@ -61,5 +61,5 @@ int main()
   tree_printer vis;
   traverse_tree(a, t, vis);
   
-  return exit_success;
+  return boost::exit_success;
 }

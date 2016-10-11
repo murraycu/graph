@@ -22,7 +22,7 @@ using namespace boost;
 
 int test_main(int argc, char** argv) {
 
-  typedef rand48 RandomGenerator;
+  typedef boost::rand48 RandomGenerator;
 
   typedef adjacency_list<vecS, vecS, directedS> Graph;
 

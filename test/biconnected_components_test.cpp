@@ -124,13 +124,13 @@ int test_main(int argc, char* argv[])
   std::size_t m = 500;
   std::size_t seed = 1;
 
-  if (argc > 1) n = lexical_cast<std::size_t>(argv[1]);
-  if (argc > 2) m = lexical_cast<std::size_t>(argv[2]);
-  if (argc > 3) seed = lexical_cast<std::size_t>(argv[3]);
+  if (argc > 1) n = boost::lexical_cast<std::size_t>(argv[1]);
+  if (argc > 2) m = boost::lexical_cast<std::size_t>(argv[2]);
+  if (argc > 3) seed = boost::lexical_cast<std::size_t>(argv[3]);
 
   {
     Graph g(n);
-    minstd_rand gen(seed);
+    boost::minstd_rand gen(seed);
     generate_random_graph(g, n, m, gen);
     if (test_graph(g)) return 1;
   }
