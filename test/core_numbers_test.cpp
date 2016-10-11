@@ -51,7 +51,7 @@ int test_1() {
 
     std::vector<int> core_nums(num_vertices(G));
     core_numbers(G,
-        make_iterator_property_map(core_nums.begin(), get(vertex_index,G)));
+        boost::make_iterator_property_map(core_nums.begin(), boost::get(vertex_index,G)));
 
     for (size_t i=0; i<num_vertices(G); ++i) {
         printf("vertex %3lu : %i\n", (unsigned long)i, core_nums[i]);
@@ -69,7 +69,7 @@ int test_1() {
 int test_2() {
     // core numbers of sample graph
     typedef adjacency_list < listS, vecS, undirectedS,
-        no_property, property < edge_weight_t, int > > graph_t;
+        boost::no_property, boost::property< edge_weight_t, int > > graph_t;
     int num_nodes = 3;
     typedef std::pair<int,int> Edge;
 
@@ -81,7 +81,7 @@ int test_2() {
 
     std::vector<int> core_nums(num_vertices(G));
     weighted_core_numbers(G,
-        make_iterator_property_map(core_nums.begin(), get(vertex_index,G)));
+        boost::make_iterator_property_map(core_nums.begin(), boost::get(vertex_index,G)));
 
     for (size_t i=0; i<num_vertices(G); ++i) {
         printf("vertex %3lu : %i\n", (unsigned long)i, core_nums[i]);
@@ -110,7 +110,7 @@ int test_3() {
 
     std::vector<int> core_nums(num_vertices(G));
     core_numbers(G,
-        make_iterator_property_map(core_nums.begin(), get(vertex_index,G)));
+        boost::make_iterator_property_map(core_nums.begin(), boost::get(vertex_index,G)));
 
     for (size_t i=0; i<num_vertices(G); ++i) {
         printf("vertex %3lu : %i\n", (unsigned long)i, core_nums[i]);

@@ -22,7 +22,7 @@ using namespace boost;
 
 /* An undirected graph with distance values stored on the vertices. */
 typedef adjacency_list<vecS, vecS, undirectedS,
-                       property<vertex_distance_t, std::size_t> >
+                       boost::property<vertex_distance_t, std::size_t> >
   Graph;
 
 int main(int argc, char* argv[])

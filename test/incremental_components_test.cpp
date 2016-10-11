@@ -25,7 +25,7 @@ using namespace boost;
 typedef adjacency_list<vecS, vecS, undirectedS> VectorGraph;
 
 typedef adjacency_list<listS, listS, undirectedS,
-                       property<vertex_index_t, unsigned int> > ListGraph;
+                       boost::property<vertex_index_t, unsigned int> > ListGraph;
 
 template <typename Graph>
 void test_graph(const Graph& graph) {
@@ -33,13 +33,13 @@ void test_graph(const Graph& graph) {
   typedef typename graph_traits<Graph>::edge_descriptor edge_descriptor;
   typedef typename graph_traits<Graph>::vertices_size_type vertices_size_type;
 
-  typedef typename property_map<Graph, vertex_index_t>::type IndexPropertyMap;
+  typedef typename boost::property_map<Graph, vertex_index_t>::type IndexPropertyMap;
 
   typedef std::map<vertex_descriptor, vertices_size_type> RankMap;
-  typedef associative_property_map<RankMap> RankPropertyMap;
+  typedef boost::associative_property_map<RankMap> RankPropertyMap;
 
   typedef std::vector<vertex_descriptor> ParentMap;
-  typedef iterator_property_map<typename ParentMap::iterator,
+  typedef boost::iterator_property_map<typename ParentMap::iterator,
     IndexPropertyMap, vertex_descriptor, vertex_descriptor&> IndexParentMap;
 
   RankMap rank_map;
@@ -60,13 +60,13 @@ void test_graph(const Graph& graph) {
   typedef component_index<vertices_size_type> Components;
   Components vertex_components(parent_map.begin(),
                                parent_map.end(),
-                               get(boost::vertex_index, graph));
+                               boost::get(boost::vertex_index, graph));
 
   // Create a reverse-lookup map for vertex indices
   std::vector<vertex_descriptor> reverse_index_map(num_vertices(graph));
 
   BOOST_FOREACH(vertex_descriptor vertex, vertices(graph)) {
-    reverse_index_map[get(get(boost::vertex_index, graph), vertex)] = vertex;
+    reverse_index_map[boost::get(boost::get(boost::vertex_index, graph), vertex)] = vertex;
   }
 
   // Verify that components are really connected
@@ -152,7 +152,7 @@ int test_main(int argc, char* argv[])
   graph_traits<ListGraph>::vertices_size_type index = 0;
   BOOST_FOREACH(graph_traits<ListGraph>::vertex_descriptor vertex,
                 vertices(list_graph)) {
-    put(get(boost::vertex_index, list_graph), vertex, index++);
+    boost::put(boost::get(boost::vertex_index, list_graph), vertex, index++);
   }
 
   test_graph(list_graph); 

@@ -23,15 +23,15 @@ using namespace boost;
 typedef adjacency_list<vecS, 
                        vecS, 
                        undirectedS, 
-                       property<vertex_index_t, int> >  undirected_graph;
+                       boost::property<vertex_index_t, int> >  undirected_graph;
 
 typedef adjacency_list<listS,
                        listS,
                        undirectedS,
-                       property<vertex_index_t, int> >  undirected_list_graph;
+                       boost::property<vertex_index_t, int> >  undirected_list_graph;
 
 typedef adjacency_matrix<undirectedS, 
-                         property<vertex_index_t,int> > undirected_adjacency_matrix_graph;
+                         boost::property<vertex_index_t,int> > undirected_adjacency_matrix_graph;
 
 
 template <typename Graph>
@@ -52,7 +52,7 @@ struct vertex_index_installer<undirected_list_graph>
     vertex_iterator_t vi, vi_end;
     v_size_t i = 0;
     for(boost::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi, ++i)
-      put(vertex_index, g, *vi, i);
+      boost::put(vertex_index, g, *vi, i);
   }
 };
 
@@ -127,8 +127,8 @@ void gabows_graph(Graph& g, int n)
 template <typename Graph>
 void matching_test(std::size_t num_v, const std::string& graph_name)
 {
-  typedef typename property_map<Graph,vertex_index_t>::type vertex_index_map_t;
-  typedef vector_property_map< typename graph_traits<Graph>::vertex_descriptor, vertex_index_map_t > mate_t;
+  typedef typename boost::property_map<Graph,vertex_index_t>::type vertex_index_map_t;
+  typedef boost::vector_property_map< typename graph_traits<Graph>::vertex_descriptor, vertex_index_map_t > mate_t;
   typedef typename graph_traits<Graph>::vertex_iterator vertex_iterator_t;
   typedef typename graph_traits<Graph>::vertex_descriptor vertex_descriptor_t;
 
@@ -153,7 +153,7 @@ void matching_test(std::size_t num_v, const std::string& graph_name)
   bool edmonds_result =
     matching < Graph, mate_t, vertex_index_map_t,
                edmonds_augmenting_path_finder, empty_matching, maximum_cardinality_matching_verifier>
-    (g,edmonds_mate, get(vertex_index,g));
+    (g,edmonds_mate, boost::get(vertex_index,g));
 
   BOOST_CHECK (edmonds_result);
   if (!edmonds_result)
@@ -167,7 +167,7 @@ void matching_test(std::size_t num_v, const std::string& graph_name)
   bool greedy_result =
     matching<Graph, mate_t, vertex_index_map_t,
              no_augmenting_path_finder, greedy_matching, maximum_cardinality_matching_verifier>
-    (g,greedy_mate, get(vertex_index,g));
+    (g,greedy_mate, boost::get(vertex_index,g));
 
   BOOST_CHECK (greedy_result);
   if (!greedy_result)
@@ -181,7 +181,7 @@ void matching_test(std::size_t num_v, const std::string& graph_name)
   bool extra_greedy_result =
     matching<Graph, mate_t, vertex_index_map_t,
              no_augmenting_path_finder, extra_greedy_matching, maximum_cardinality_matching_verifier>
-    (g,extra_greedy_mate,get(vertex_index,g));
+    (g,extra_greedy_mate, boost::get(vertex_index,g));
 
   BOOST_CHECK (extra_greedy_result);
   if (!extra_greedy_result)
@@ -242,7 +242,7 @@ void matching_test(std::size_t num_v, const std::string& graph_name)
   //...and run the matching verifier - it should tell us that the matching isn't
   //a maximum matching.
   bool modified_edmonds_verification_result =
-    maximum_cardinality_matching_verifier<Graph,mate_t,vertex_index_map_t>::verify_matching(g,edmonds_mate,get(vertex_index,g));
+    maximum_cardinality_matching_verifier<Graph,mate_t,vertex_index_map_t>::verify_matching(g,edmonds_mate, boost::get(vertex_index,g));
   
   BOOST_CHECK (!modified_edmonds_verification_result);
   if (modified_edmonds_verification_result)
@@ -325,7 +325,7 @@ void matching_test(std::size_t num_v, const std::string& graph_name)
   //...and run the matching verifier - it should tell us that the matching isn't
   //a maximum matching.
   bool modified_random_verification_result =
-    maximum_cardinality_matching_verifier<Graph,mate_t,vertex_index_map_t>::verify_matching(j,random_mate,get(vertex_index,j));
+    maximum_cardinality_matching_verifier<Graph,mate_t,vertex_index_map_t>::verify_matching(j,random_mate, boost::get(vertex_index,j));
   
   BOOST_CHECK(!modified_random_verification_result);
   if (modified_random_verification_result)

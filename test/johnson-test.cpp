@@ -35,9 +35,9 @@
 int main()
 {
     using namespace boost;
-    typedef adjacency_list<vecS, vecS, undirectedS, no_property,
-      property< edge_weight_t, int, 
-      property< edge_weight2_t, int > > > Graph;
+    typedef adjacency_list<vecS, vecS, undirectedS, boost::no_property,
+      boost::property< edge_weight_t, int, 
+      boost::property< edge_weight2_t, int > > > Graph;
     const int V = 10;
     typedef std::pair < int, int >Edge;
     Edge edge_array[] =
@@ -51,7 +51,7 @@ int main()
     Graph g(edge_array, edge_array + E, V);
 
 
-    property_map < Graph, edge_weight_t >::type w = get(edge_weight, g);
+    boost::property_map< Graph, edge_weight_t >::type w = boost::get(edge_weight, g);
     int weights[] = { 99, 12, 12, 4, 99, 12, 4, 99, 2, 4, 2, 99, 12  };
     int *wp = weights;
 

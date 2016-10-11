@@ -153,9 +153,9 @@ int main(int, char* [])
 
   bool is_failed = false;
 
-  property_map<Graph, vertex_id_t>::type vertex_id_map = get(vertex_id, g);
+  boost::property_map<Graph, vertex_id_t>::type vertex_id_map = boost::get(vertex_id, g);
 
-  property_map<Graph, edge_id_t>::type edge_id_map = get(edge_id, g);
+  boost::property_map<Graph, edge_id_t>::type edge_id_map = boost::get(edge_id, g);
 
   for (std::size_t k = 0; k < N; ++k)
     add_vertex(current_vertex_id++, g);

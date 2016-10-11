@@ -82,11 +82,11 @@ void testScalability(unsigned numpts)
     using namespace boost;
     using namespace std;
 
-    typedef adjacency_matrix<undirectedS, no_property,
-        property <edge_weight_t, double,
-        property<edge_index_t, int> > > Graph;
+    typedef adjacency_matrix<undirectedS, boost::no_property,
+        boost::property<edge_weight_t, double,
+        boost::property<edge_index_t, int> > > Graph;
     typedef graph_traits<Graph>::vertex_descriptor Vertex;
-    typedef property_map<Graph, edge_weight_t>::type WeightMap;
+    typedef boost::property_map<Graph, edge_weight_t>::type WeightMap;
     typedef set<simple_point<double>, cmpPnt<double> > PointSet;
     typedef vector< Vertex > Container;
 
@@ -106,10 +106,10 @@ void testScalability(unsigned numpts)
     }
 
     Graph g(numpts);
-    WeightMap weight_map(get(edge_weight, g));
+    WeightMap weight_map(boost::get(edge_weight, g));
     vector<simple_point<double> > point_vec(points.begin(), points.end());
 
-    connectAllEuclidean(g, point_vec, weight_map, get(vertex_index, g), numpts);
+    connectAllEuclidean(g, point_vec, weight_map, boost::get(vertex_index, g), numpts);
 
     Container c;
     timer t;
@@ -136,8 +136,8 @@ void checkAdjList(PositionVec v)
     typedef vector<Vertex> Container;
     typedef map<Vertex, std::size_t> VertexIndexMap;
     typedef map<Edge, double> EdgeWeightMap;
-    typedef associative_property_map<VertexIndexMap> VPropertyMap;
-    typedef associative_property_map<EdgeWeightMap> EWeightPropertyMap;
+    typedef boost::associative_property_map<VertexIndexMap> VPropertyMap;
+    typedef boost::associative_property_map<EdgeWeightMap> EWeightPropertyMap;
     typedef graph_traits<Graph>::vertex_iterator VItr;
 
     Container c;
@@ -195,12 +195,12 @@ int main(int argc, char* argv[])
    using namespace std;
 
     typedef vector<simple_point<double> > PositionVec;
-    typedef adjacency_matrix<undirectedS, no_property,
-        property <edge_weight_t, double> > Graph;
+    typedef adjacency_matrix<undirectedS, boost::no_property,
+        boost::property<edge_weight_t, double> > Graph;
     typedef graph_traits<Graph>::vertex_descriptor Vertex;
     typedef vector<Vertex> Container;
-    typedef property_map<Graph, edge_weight_t>::type WeightMap;
-    typedef property_map<Graph, vertex_index_t>::type VertexMap;
+    typedef boost::property_map<Graph, edge_weight_t>::type WeightMap;
+    typedef boost::property_map<Graph, vertex_index_t>::type VertexMap;
 
     // Make sure that the the we can parse the given file.
     if(argc < 2) {
@@ -241,8 +241,8 @@ int main(int argc, char* argv[])
 
    Container c;
    Graph g(position_vec.size());
-   WeightMap weight_map(get(edge_weight, g));
-   VertexMap v_map = get(vertex_index, g);
+   WeightMap weight_map(boost::get(edge_weight, g));
+   VertexMap v_map = boost::get(vertex_index, g);
 
    connectAllEuclidean(g, position_vec, weight_map, v_map, n);
 
@@ -259,7 +259,7 @@ int main(int argc, char* argv[])
    checkAdjList(position_vec);
 
    metric_tsp_approx_from_vertex(g, *vertices(g).first,
-       get(edge_weight, g), get(vertex_index, g),
+       boost::get(edge_weight, g), boost::get(vertex_index, g),
        tsp_tour_visitor<back_insert_iterator<vector<Vertex> > >
        (back_inserter(c)));
 

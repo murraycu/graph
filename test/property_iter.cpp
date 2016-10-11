@@ -67,10 +67,10 @@ int main(int, char* [])
   std::size_t current_vertex_id = 0;
   std::size_t current_edge_id = 0;
 
-  property_map<Graph, vertex_id_t>::type vertex_id_map = get(vertex_id, g);
+  boost::property_map<Graph, vertex_id_t>::type vertex_id_map = boost::get(vertex_id, g);
   (void)vertex_id_map;
 
-  property_map<Graph, edge_id_t>::type edge_id_map = get(edge_id, g);
+  boost::property_map<Graph, edge_id_t>::type edge_id_map = boost::get(edge_id, g);
   (void)edge_id_map;
 
   for (std::size_t k = 0; k < N; ++k)
@@ -115,7 +115,7 @@ int main(int, char* [])
 
   TLinkIterator itEdgeBegin, itEdgeEnd;
 
-  boost::tie(itEdgeBegin, itEdgeEnd) = get_property_iter_range(g, edge_id);
+  boost::tie(itEdgeBegin, itEdgeEnd) = boost::get_property_iter_range(g, edge_id);
 
   cout << "Edge iteration:" << endl;
   for (; itEdgeBegin != itEdgeEnd; ++itEdgeBegin)
@@ -126,7 +126,7 @@ int main(int, char* [])
 
   TNodeIterator itVertexBegin, itVertexEnd;
 
-  boost::tie(itVertexBegin, itVertexEnd) = get_property_iter_range(g, vertex_id);
+  boost::tie(itVertexBegin, itVertexEnd) = boost::get_property_iter_range(g, vertex_id);
 
   cout << "Vertex iteration:" << endl;
   for (; itVertexBegin != itVertexEnd; ++itVertexBegin)

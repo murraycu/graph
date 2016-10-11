@@ -94,8 +94,8 @@ int main() {
   ParetoOpt ol;
   
   r_c_shortest_paths( g,
-                      get(&VertexProperty::id, g),
-                      get(&EdgeProperty::id, g),
+                      boost::get(&VertexProperty::id, g),
+                      boost::get(&EdgeProperty::id, g),
                       v1,
                       v2,
                       op,

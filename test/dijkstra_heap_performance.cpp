@@ -88,8 +88,8 @@ int main(int argc, char* argv[])
   int seed = (argc > 3? lexical_cast<int>(argv[3]) : 1);
 
   // Build random graph
-  typedef adjacency_list<vecS, vecS, directedS, no_property,
-                         property<edge_weight_t, double> > Graph;
+  typedef adjacency_list<vecS, vecS, directedS, boost::no_property,
+                         boost::property<edge_weight_t, double> > Graph;
   std::cout << "Generating graph...";
   std::cout.flush();
   minstd_rand gen(seed);
@@ -101,7 +101,7 @@ int main(int argc, char* argv[])
   uniform_real<double> rand01(0.0, 1.0);
   graph_traits<Graph>::edge_iterator ei, ei_end;
   for (boost::tie(ei, ei_end) = edges(g); ei != ei_end; ++ei)
-    put(edge_weight, g, *ei, rand01(gen));
+    boost::put(edge_weight, g, *ei, rand01(gen));
 
   std::vector<double> binary_heap_distances(n);
   std::vector<double> relaxed_heap_distances(n);
@@ -119,7 +119,7 @@ int main(int argc, char* argv[])
   dijkstra_shortest_paths(g, vertex(0, g),
                           distance_map(
                             boost::make_iterator_property_map(
-                              binary_heap_distances.begin(), get(boost::vertex_index, g))));
+                              binary_heap_distances.begin(), boost::get(boost::vertex_index, g))));
   double binary_heap_time = t.elapsed();
   std::cout << binary_heap_time << " seconds.\n";
 
@@ -139,7 +139,7 @@ int main(int argc, char* argv[])
   dijkstra_shortest_paths(g, vertex(0, g),
                           distance_map(
                             boost::make_iterator_property_map(
-                              relaxed_heap_distances.begin(), get(boost::vertex_index, g))));
+                              relaxed_heap_distances.begin(), boost::get(boost::vertex_index, g))));
   double relaxed_heap_time = t.elapsed();
   std::cout << relaxed_heap_time << " seconds.\n"
             << "Speedup = " << (binary_heap_time / relaxed_heap_time) << ".\n";
@@ -164,10 +164,10 @@ int main(int argc, char* argv[])
     (g, vertex(0, g),
      boost::dummy_property_map(),
      boost::make_iterator_property_map(no_color_map_distances.begin(),
-                                       get(boost::vertex_index, g),
+                                       boost::get(boost::vertex_index, g),
                                        0.),
-     get(boost::edge_weight, g),
-     get(boost::vertex_index, g),
+     boost::get(boost::edge_weight, g),
+     boost::get(boost::vertex_index, g),
      std::less<double>(),
      boost::closed_plus<double>(),
      (std::numeric_limits<double>::max)(),

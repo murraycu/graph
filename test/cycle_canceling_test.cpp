@@ -52,7 +52,7 @@ BOOST_AUTO_TEST_CASE(cycle_canceling_test) {
     typedef boost::graph_traits<Graph>::edge_descriptor edge_descriptor;
     std::vector<edge_descriptor> pred(N);
 
-    boost::property_map<Graph, boost::vertex_index_t>::const_type idx = get(boost::vertex_index, g);
+    boost::property_map<Graph, boost::vertex_index_t>::const_type idx = boost::get(boost::vertex_index, g);
 
     boost::edmonds_karp_max_flow(g, s, t);
     boost::cycle_canceling(g, boost::distance_map(boost::make_iterator_property_map(dist.begin(), idx)).predecessor_map(boost::make_iterator_property_map(pred.begin(), idx)).vertex_index_map(idx));
