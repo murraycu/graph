@@ -364,7 +364,7 @@ void test_graph_properties()
 
   CSRGraphT g;
   BOOST_CHECK(boost::get_property(g, graph_name) == "");
-  set_property(g, graph_name, "beep");
+  boost::set_property(g, graph_name, "beep");
   BOOST_CHECK(boost::get_property(g, graph_name) == "beep");
 }
 

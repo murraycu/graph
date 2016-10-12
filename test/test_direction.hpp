@@ -31,12 +31,12 @@ void test_outdirected_graph(Graph const& g, VertexSet const& verts, boost::mpl::
         outs[i] = out_edges(verts[i], g);
     }
 
-    BOOST_ASSERT(distance(outs[0]) == 0);
-    BOOST_ASSERT(distance(outs[1]) == 1);
-    BOOST_ASSERT(distance(outs[2]) == 1);
-    BOOST_ASSERT(distance(outs[3]) == 2);
-    BOOST_ASSERT(distance(outs[4]) == 2);
-    BOOST_ASSERT(distance(outs[5]) == 1);
+    BOOST_ASSERT(boost::distance(outs[0]) == 0);
+    BOOST_ASSERT(boost::distance(outs[1]) == 1);
+    BOOST_ASSERT(boost::distance(outs[2]) == 1);
+    BOOST_ASSERT(boost::distance(outs[3]) == 2);
+    BOOST_ASSERT(boost::distance(outs[4]) == 2);
+    BOOST_ASSERT(boost::distance(outs[5]) == 1);
 
     // Verify that the edges are actually correct.
     // TODO: Find a better way of testing connectivity with multiple edges.
@@ -74,12 +74,12 @@ void test_indirected_graph(Graph const& g, VertexSet const& verts, boost::mpl::t
         ins[i] = in_edges(verts[i], g);
     }
 
-    BOOST_ASSERT(distance(ins[0]) == 2);
-    BOOST_ASSERT(distance(ins[1]) == 2);
-    BOOST_ASSERT(distance(ins[2]) == 1);
-    BOOST_ASSERT(distance(ins[3]) == 1);
-    BOOST_ASSERT(distance(ins[4]) == 1);
-    BOOST_ASSERT(distance(ins[5]) == 0);
+    BOOST_ASSERT(boost::distance(ins[0]) == 2);
+    BOOST_ASSERT(boost::distance(ins[1]) == 2);
+    BOOST_ASSERT(boost::distance(ins[2]) == 1);
+    BOOST_ASSERT(boost::distance(ins[3]) == 1);
+    BOOST_ASSERT(boost::distance(ins[4]) == 1);
+    BOOST_ASSERT(boost::distance(ins[5]) == 0);
 
     // Verify that the connected edges are correct.
     // TODO: Find a better way of testing connectivity with multiple edges.
@@ -114,12 +114,12 @@ void test_undirected_graph(Graph const& g, VertexSet const& verts, boost::mpl::t
 
     // TODO: Actually test the end connections to ensure that these are
     // definitely correct.
-    BOOST_ASSERT(distance(outs[0]) == 2);
-    BOOST_ASSERT(distance(outs[1]) == 3);
-    BOOST_ASSERT(distance(outs[2]) == 2);
-    BOOST_ASSERT(distance(outs[3]) == 3);
-    BOOST_ASSERT(distance(outs[4]) == 3);
-    BOOST_ASSERT(distance(outs[5]) == 1);
+    BOOST_ASSERT(boost::distance(outs[0]) == 2);
+    BOOST_ASSERT(boost::distance(outs[1]) == 3);
+    BOOST_ASSERT(boost::distance(outs[2]) == 2);
+    BOOST_ASSERT(boost::distance(outs[3]) == 3);
+    BOOST_ASSERT(boost::distance(outs[4]) == 3);
+    BOOST_ASSERT(boost::distance(outs[5]) == 1);
 }
 
 template <typename Graph, typename VertexSet>

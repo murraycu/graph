@@ -36,7 +36,7 @@ namespace cycle_test_detail {
             // is truly connected and that the back is connected to the
             // front - it's not validating that we find all paths, just
             // that the paths are valid.
-            typename Path::const_iterator i, j, last = prior(p.end());
+            typename Path::const_iterator i, j, last = boost::prior(p.end());
             for (i = p.begin(); i != last; ++i) {
                 j = boost::next(i);
                 BOOST_ASSERT(edge(*i, *j, g).second);
@@ -49,13 +49,13 @@ namespace cycle_test_detail {
 
     template <typename Graph, typename Algorithm>
     void test_one(Algorithm algorithm) {
-        typedef erdos_renyi_iterator<minstd_rand, Graph> er;
+        typedef erdos_renyi_iterator<boost::minstd_rand, Graph> er;
 
         // Generate random graphs with 15 vertices and 15% probability
         // of edge connection.
         static std::size_t const N = 20;
         static double const P = 0.1;
-        minstd_rand rng;
+        boost::minstd_rand rng;
 
         Graph g(er(rng, N, P), er(), N);
         renumber_indices(g);

@@ -50,7 +50,7 @@ int main()
 {
   {
     std::ofstream ofs("./kevin-bacon2.dat");
-    archive::xml_oarchive oa(ofs);
+    boost::archive::xml_oarchive oa(ofs);
     Graph g;
     vertex_properties vp;
     vp.name = "A";
@@ -70,7 +70,7 @@ int main()
 
   {
     std::ifstream ifs("./kevin-bacon2.dat");
-    archive::xml_iarchive ia(ifs);
+    boost::archive::xml_iarchive ia(ifs);
     Graph g;
     ia >> BOOST_SERIALIZATION_NVP(g);
 
