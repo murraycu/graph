@@ -124,18 +124,18 @@ int test_main(int argc, char* argv[])
   // Parse command-line arguments
 
   if (argc > 1) {
-    vertices_to_generate = lexical_cast<std::size_t>(argv[1]);
+    vertices_to_generate = boost::lexical_cast<std::size_t>(argv[1]);
   }
 
   if (argc > 2) {
-    edges_to_generate = lexical_cast<std::size_t>(argv[2]);
+    edges_to_generate = boost::lexical_cast<std::size_t>(argv[2]);
   }
 
   if (argc > 3) {
-    random_seed = lexical_cast<std::size_t>(argv[3]);
+    random_seed = boost::lexical_cast<std::size_t>(argv[3]);
   }
 
-  minstd_rand generator(random_seed);
+  boost::minstd_rand generator(random_seed);
 
   // Generate random vector and list graphs
   VectorGraph vector_graph;

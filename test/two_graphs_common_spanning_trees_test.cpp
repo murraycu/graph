@@ -66,8 +66,8 @@ public:
   typedef typename Coll::value_type coll_value_type;
   typedef typename Seq::value_type seq_value_type;
 
-  BOOST_STATIC_ASSERT((is_same<coll_value_type, Seq>::value));
-  BOOST_STATIC_ASSERT((is_same<seq_value_type, bool>::value));
+  BOOST_STATIC_ASSERT((boost::is_same<coll_value_type, Seq>::value));
+  BOOST_STATIC_ASSERT((boost::is_same<seq_value_type, bool>::value));
 
   void operator()(Coll& coll, Seq& seq)
   {

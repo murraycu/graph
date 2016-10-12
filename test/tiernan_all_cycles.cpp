@@ -31,7 +31,7 @@ struct cycle_validator
         // is truly connected and that the back is connected to the
         // front - it's not validating that we find all paths, just
         // that the paths are valid.
-        typename Path::const_iterator i, j, last = prior(p.end());
+        typename Path::const_iterator i, j, last = boost::prior(p.end());
         for(i = p.begin(); i != last; ++i) {
             j = boost::next(i);
             BOOST_ASSERT(edge(*i, *j, g).second);

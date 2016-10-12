@@ -28,7 +28,7 @@ int test_main(int, char*[])
   typedef subgraph<graph_t> subgraph_t;
   typedef graph_traits<subgraph_t>::vertex_descriptor vertex_t;
 
-  mt19937 gen;
+  boost::mt19937 gen;
   for (int t = 0; t < 100; t += 5) {
     subgraph_t g;
     int N = t + 2;

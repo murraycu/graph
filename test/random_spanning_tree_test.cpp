@@ -35,7 +35,7 @@ void write_spanning_tree(const Graph& g, PredMap pred, WeightMap weight, string 
     boost::put(edge_style, e, (boost::get(pred, target(e, g)) == source(e, g) || boost::get(pred, source(e, g)) == target(e, g)) ? "bold" : "dotted");
   }
   BGL_FORALL_VERTICES_T(v, g, Graph) {
-    boost::put(vertex_pos, v, lexical_cast<string>(v[0]) + "," + lexical_cast<string>(v[1]));
+    boost::put(vertex_pos, v, boost::lexical_cast<string>(v[0]) + "," + boost::lexical_cast<string>(v[1]));
   }
   boost::dynamic_properties dp;
   dp.property("style", edge_style);
