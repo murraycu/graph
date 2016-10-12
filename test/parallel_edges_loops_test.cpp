@@ -99,7 +99,7 @@ void read_dimacs(Graph& g, const std::string& filename)
         continue;
       
       std::vector<std::string> v;
-      split(v, buffer, is_any_of(" \t\n"));
+      split(v, buffer, boost::is_any_of(" \t\n"));
       
       if (v[0] == "p")
         {

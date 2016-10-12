@@ -53,7 +53,7 @@ int main(int,char*[])
     AdjList g;
     Graph gr(g);
     boost::get_property(gr, graph_name_t());
-    set_property(gr, graph_name_t(), "foo");
+    boost::set_property(gr, graph_name_t(), "foo");
   }
   return 0;
 }

@@ -41,7 +41,7 @@ int main()
       allow_parallel_edge_tag> IncidenceGraph;
     typedef vertex_list_graph_archetype<vertex_t, directed_tag, 
       allow_parallel_edge_tag, IncidenceGraph> graph_t;
-    graph_t& g = static_object<graph_t>::get();
+    graph_t& g = boost::static_object<graph_t>::get();
     vertex_t s;
     typedef graph_traits<graph_t>::edge_descriptor edge_t;
     readable_property_map_archetype<edge_t, std::size_t> weight;
@@ -67,7 +67,7 @@ int main()
     readable_property_map_archetype<edge_t, std::size_t> weight;
     typedef property_graph_archetype<Graph, vertex_index_t, std::size_t> 
       graph_t;
-    graph_t& g = static_object<graph_t>::get();
+    graph_t& g = boost::static_object<graph_t>::get();
     read_write_property_map_archetype<vertex_t, vertex_t> pred;
     dijkstra_shortest_paths(g, s,
                             predecessor_map(pred).
@@ -85,7 +85,7 @@ int main()
     vertex_t s;
     typedef property_graph_archetype<Graph, edge_weight_t, std::size_t> 
       graph_t;
-    graph_t& g = static_object<graph_t>::get();
+    graph_t& g = boost::static_object<graph_t>::get();
     read_write_property_map_archetype<vertex_t, vertex_t> pred;
     readable_property_map_archetype<vertex_t, int> index;
     dijkstra_shortest_paths(g, s,
@@ -101,7 +101,7 @@ int main()
       allow_parallel_edge_tag> IncidenceGraph;
     typedef vertex_list_graph_archetype<vertex_t, directed_tag, 
       allow_parallel_edge_tag, IncidenceGraph> graph_t;
-    graph_t& g = static_object<graph_t>::get();
+    graph_t& g = boost::static_object<graph_t>::get();
     vertex_t s;
     typedef graph_traits<graph_t>::edge_descriptor edge_t;
     readable_property_map_archetype<edge_t, dist_value> weight;
@@ -110,10 +110,10 @@ int main()
     read_write_property_map_archetype<vertex_t, dist_value> distance;
     typedef binary_function_archetype<dist_value, dist_value, dist_value> 
       Combine;
-    Combine combine = static_object<Combine>::get();
+    Combine combine = boost::static_object<Combine>::get();
     typedef binary_predicate_archetype<dist_value, dist_value>
       Compare;
-    Compare compare = static_object<Compare>::get();
+    Compare compare = boost::static_object<Compare>::get();
     dijkstra_visitor<> vis;
 
     dijkstra_shortest_paths(g, s, color_map(color).

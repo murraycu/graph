@@ -60,7 +60,7 @@ int main(int argc, char** argv)
       if (u != v)
         {
           if (!edge(u,v,g).second)
-            boost::tie(tuples::ignore, success) = add_edge(u, v, g);
+            boost::tie(boost::tuples::ignore, success) = add_edge(u, v, g);
           else
             success = false;
 

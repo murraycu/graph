@@ -91,8 +91,8 @@ void testScalability(unsigned numpts)
     typedef vector< Vertex > Container;
 
     boost::mt19937 rng(time(0));
-    uniform_real<> range(0.01, (numpts * 2));
-    variate_generator<boost::mt19937&, uniform_real<> >
+    boost::uniform_real<> range(0.01, (numpts * 2));
+    boost::variate_generator<boost::mt19937&, boost::uniform_real<> >
         pnt_gen(rng, range);
 
     PointSet points;
@@ -112,7 +112,7 @@ void testScalability(unsigned numpts)
     connectAllEuclidean(g, point_vec, weight_map, boost::get(vertex_index, g), numpts);
 
     Container c;
-    timer t;
+    boost::timer t;
     double len = 0.0;
 
     // Run the TSP approx, creating the visitor on the fly.
@@ -230,8 +230,8 @@ int main(int argc, char* argv[])
        string xStr(line.substr(0, idx));
        string yStr(line.substr(idx + 1, line.size() - idx));
 
-       vertex.x = lexical_cast<double>(xStr);
-       vertex.y = lexical_cast<double>(yStr);
+       vertex.x = boost::lexical_cast<double>(xStr);
+       vertex.y = boost::lexical_cast<double>(yStr);
 
        position_vec.push_back(vertex);
        n++;
