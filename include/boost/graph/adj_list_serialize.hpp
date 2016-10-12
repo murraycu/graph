@@ -52,14 +52,14 @@ inline void save(
   int num = 0;
   BGL_FORALL_VERTICES_T(v, graph, Graph) {
     indices[v] = num++;
-    ar << boost::serialization::make_nvp("vertex_property", get(vertex_all_t(), graph, v) );
+    ar << boost::serialization::make_nvp("vertex_property", boost::get(vertex_all_t(), graph, v) );
   }
   
   // write edges
   BGL_FORALL_EDGES_T(e, graph, Graph) {
     ar << boost::serialization::make_nvp("u" , indices[source(e,graph)]);
     ar << boost::serialization::make_nvp("v" , indices[target(e,graph)]);
-    ar << boost::serialization::make_nvp("edge_property", get(edge_all_t(), graph, e) );
+    ar << boost::serialization::make_nvp("edge_property", boost::get(edge_all_t(), graph, e) );
   }
 
   ar << boost::serialization::make_nvp("graph_property", get_property(graph, graph_all_t()) );
@@ -87,7 +87,7 @@ inline void load(
   while(V-- > 0){
     Vertex v = add_vertex(graph);
     verts[i++] = v;
-    ar >> boost::serialization::make_nvp("vertex_property", get(vertex_all_t(), graph, v) );
+    ar >> boost::serialization::make_nvp("vertex_property", boost::get(vertex_all_t(), graph, v) );
   }
   while(E-- > 0){
     int u; int v;
@@ -95,7 +95,7 @@ inline void load(
     ar >> BOOST_SERIALIZATION_NVP(v);
     Edge e; bool inserted;
     boost::tie(e,inserted) = add_edge(verts[u], verts[v], graph);
-    ar >> boost::serialization::make_nvp("edge_property", get(edge_all_t(), graph, e) );
+    ar >> boost::serialization::make_nvp("edge_property", boost::get(edge_all_t(), graph, e) );
   }
   ar >> boost::serialization::make_nvp("graph_property", get_property(graph, graph_all_t()) );
 }

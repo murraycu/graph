@@ -28,7 +28,7 @@ namespace boost {
     template <class ComponentsPA, class DFSVisitor>
     class components_recorder : public DFSVisitor
     {
-      typedef typename property_traits<ComponentsPA>::value_type comp_type;
+      typedef typename boost::property_traits<ComponentsPA>::value_type comp_type;
     public:
       components_recorder(ComponentsPA c, 
                           comp_type& c_count, 
@@ -42,7 +42,7 @@ namespace boost {
       }
       template <class Vertex, class Graph>
       void discover_vertex(Vertex u, Graph& g) {
-        put(m_component, u, m_count);
+        boost::put(m_component, u, m_count);
         DFSVisitor::discover_vertex(u, g);
       }
     protected:
@@ -60,12 +60,12 @@ namespace boost {
 
       template <class Vertex, class Graph>
       void discover_vertex(Vertex u, Graph& g) {
-        put(m_discover_time, u, ++m_t);
+        boost::put(m_discover_time, u, ++m_t);
         DFSVisitor::discover_vertex(u, g);
       }
       template <class Vertex, class Graph>
       void finish_vertex(Vertex u, Graph& g) {
-        put(m_finish_time, u, ++m_t);
+        boost::put(m_finish_time, u, ++m_t);
         DFSVisitor::discover_vertex(u, g);
       }
     protected:

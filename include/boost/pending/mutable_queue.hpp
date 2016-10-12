@@ -38,7 +38,7 @@ namespace boost {
   template <class IndexedType,
             class RandomAccessContainer = std::vector<IndexedType>,
             class Comp = std::less<typename RandomAccessContainer::value_type>,
-            class ID = identity_property_map >
+            class ID = boost::identity_property_map >
   class mutable_queue {
   public:
     typedef IndexedType value_type;
@@ -78,8 +78,8 @@ namespace boost {
       c.back() = c.front();
       c.front() = tmp;
 
-      size_type id_f = get(id, c.back());
-      size_type id_b = get(id, tmp);
+      size_type id_f = boost::get(id, c.back());
+      size_type id_b = boost::get(id, tmp);
       size_type i = index_array[ id_b ];
       index_array[ id_b ] = index_array[ id_f ];
       index_array[ id_f ] = i;
@@ -91,13 +91,13 @@ namespace boost {
     void push(const IndexedType& x) {
       c.push_back(x);
       /*set index-array*/
-      index_array[ get(id, x) ] = c.size()-1;
+      index_array[ boost::get(id, x) ] = c.size()-1;
       Node node(c.begin(), c.end(), c.end() - 1, id);
       up_heap(node, comp, index_array);
     }
 
     void update(const IndexedType& x) {
-      size_type current_pos = index_array[ get(id, x) ];
+      size_type current_pos = index_array[ boost::get(id, x) ];
       c[current_pos] = x;
 
       Node node(c.begin(), c.end(), c.begin()+current_pos, id);

@@ -75,13 +75,13 @@ namespace boost {
       // Some helper predicates
 
       inline bool is_admissible(vertex_descriptor u, vertex_descriptor v) {
-        return get(distance, u) == get(distance, v) + 1;
+        return boost::get(distance, u) == boost::get(distance, v) + 1;
       }
       inline bool is_residual_edge(edge_descriptor a) {
-        return 0 < get(residual_capacity, a);
+        return 0 < boost::get(residual_capacity, a);
       }
       inline bool is_saturated(edge_descriptor a) {
-        return get(residual_capacity, a) == 0;
+        return boost::get(residual_capacity, a) == 0;
       }
 
       //=======================================================================
@@ -93,12 +93,12 @@ namespace boost {
         BOOST_USING_STD_MIN();
         BOOST_USING_STD_MAX();
         layer.active_vertices.push_front(u);
-        max_active = max BOOST_PREVENT_MACRO_SUBSTITUTION(get(distance, u), max_active);
-        min_active = min BOOST_PREVENT_MACRO_SUBSTITUTION(get(distance, u), min_active);
+        max_active = max BOOST_PREVENT_MACRO_SUBSTITUTION(boost::get(distance, u), max_active);
+        min_active = min BOOST_PREVENT_MACRO_SUBSTITUTION(boost::get(distance, u), min_active);
         layer_list_ptr[u] = layer.active_vertices.begin();
       }
       void remove_from_active_list(vertex_descriptor u) {
-        layers[get(distance, u)].active_vertices.erase(layer_list_ptr[u]);    
+        layers[boost::get(distance, u)].active_vertices.erase(layer_list_ptr[u]);    
       }
 
       void add_to_inactive_list(vertex_descriptor u, Layer& layer) {
@@ -106,7 +106,7 @@ namespace boost {
         layer_list_ptr[u] = layer.inactive_vertices.begin();
       }
       void remove_from_inactive_list(vertex_descriptor u) {
-        layers[get(distance, u)].inactive_vertices.erase(layer_list_ptr[u]);    
+        layers[boost::get(distance, u)].inactive_vertices.erase(layer_list_ptr[u]);    
       }
 
       //=======================================================================
@@ -148,12 +148,12 @@ namespace boost {
         out_edge_iterator ei, e_end;
         for (boost::tie(u_iter, u_end) = vertices(g); u_iter != u_end; ++u_iter)
           for (boost::tie(ei, e_end) = out_edges(*u_iter, g); ei != e_end; ++ei) {
-            put(residual_capacity, *ei, get(capacity, *ei));
+            boost::put(residual_capacity, *ei, boost::get(capacity, *ei));
           }
 
         for (boost::tie(u_iter, u_end) = vertices(g); u_iter != u_end; ++u_iter) {
           vertex_descriptor u = *u_iter;
-          put(excess_flow, u, 0);
+          boost::put(excess_flow, u, 0);
           current[u] = out_edges(u, g);
         }
 
@@ -163,25 +163,25 @@ namespace boost {
         out_edge_iterator a_iter, a_end;
         for (boost::tie(a_iter, a_end) = out_edges(src, g); a_iter != a_end; ++a_iter)
           if (target(*a_iter, g) != src)
-            test_excess += get(residual_capacity, *a_iter);
+            test_excess += boost::get(residual_capacity, *a_iter);
         if (test_excess > (std::numeric_limits<FlowValue>::max)())
           overflow_detected = true;
 
         if (overflow_detected)
-          put(excess_flow, src, (std::numeric_limits<FlowValue>::max)());
+          boost::put(excess_flow, src, (std::numeric_limits<FlowValue>::max)());
         else {
-          put(excess_flow, src, 0);
+          boost::put(excess_flow, src, 0);
           for (boost::tie(a_iter, a_end) = out_edges(src, g); 
                a_iter != a_end; ++a_iter) {
             edge_descriptor a = *a_iter;
             vertex_descriptor tgt = target(a, g);
             if (tgt != src) {
               ++push_count;
-              FlowValue delta = get(residual_capacity, a);
-              put(residual_capacity, a, get(residual_capacity, a) - delta);
-              edge_descriptor rev = get(reverse_edge, a);
-              put(residual_capacity, rev, get(residual_capacity, rev) + delta);
-              put(excess_flow, tgt, get(excess_flow, tgt) + delta);
+              FlowValue delta = boost::get(residual_capacity, a);
+              boost::put(residual_capacity, a, boost::get(residual_capacity, a) - delta);
+              edge_descriptor rev = boost::get(reverse_edge, a);
+              boost::put(residual_capacity, rev, boost::get(residual_capacity, rev) + delta);
+              boost::put(excess_flow, tgt, boost::get(excess_flow, tgt) + delta);
             }
           }
         }
@@ -192,16 +192,16 @@ namespace boost {
         for (boost::tie(u_iter, u_end) = vertices(g); u_iter != u_end; ++u_iter) {
           vertex_descriptor u = *u_iter;
           if (u == sink) {
-            put(distance, u, 0);
+            boost::put(distance, u, 0);
             continue;
           } else if (u == src && !overflow_detected)
-            put(distance, u, n);
+            boost::put(distance, u, n);
           else
-            put(distance, u, 1);
+            boost::put(distance, u, 1);
 
-          if (get(excess_flow, u) > 0)
+          if (boost::get(excess_flow, u) > 0)
             add_to_active_list(u, layers[1]);
-          else if (get(distance, u) < n)
+          else if (boost::get(distance, u) < n)
             add_to_inactive_list(u, layers[1]);
         }       
 
@@ -219,11 +219,11 @@ namespace boost {
         ++update_count;
         vertex_iterator u_iter, u_end;
         for (boost::tie(u_iter,u_end) = vertices(g); u_iter != u_end; ++u_iter) {
-          put(color, *u_iter, ColorTraits::white());
-          put(distance, *u_iter, n);
+          boost::put(color, *u_iter, ColorTraits::white());
+          boost::put(distance, *u_iter, n);
         }
-        put(color, sink, ColorTraits::gray());
-        put(distance, sink, 0);
+        boost::put(color, sink, ColorTraits::gray());
+        boost::put(distance, sink, 0);
         
         for (distance_size_type l = 0; l <= max_distance; ++l) {
           layers[l].active_vertices.clear();
@@ -237,20 +237,20 @@ namespace boost {
         while (! Q.empty()) {
           vertex_descriptor u = Q.top();
           Q.pop();
-          distance_size_type d_v = get(distance, u) + 1;
+          distance_size_type d_v = boost::get(distance, u) + 1;
 
           out_edge_iterator ai, a_end;
           for (boost::tie(ai, a_end) = out_edges(u, g); ai != a_end; ++ai) {
             edge_descriptor a = *ai;
             vertex_descriptor v = target(a, g);
-            if (get(color, v) == ColorTraits::white()
-                && is_residual_edge(get(reverse_edge, a))) {
-              put(distance, v, d_v);
-              put(color, v, ColorTraits::gray());
+            if (boost::get(color, v) == ColorTraits::white()
+                && is_residual_edge(boost::get(reverse_edge, a))) {
+              boost::put(distance, v, d_v);
+              boost::put(color, v, ColorTraits::gray());
               current[v] = out_edges(v, g);
               max_distance = max BOOST_PREVENT_MACRO_SUBSTITUTION(d_v, max_distance);
 
-              if (get(excess_flow, v) > 0)
+              if (boost::get(excess_flow, v) > 0)
                 add_to_active_list(v, layers[d_v]);
               else
                 add_to_inactive_list(v, layers[d_v]);
@@ -266,7 +266,7 @@ namespace boost {
       // but it is called "discharge" in the paper and in hi_pr.c.
       void discharge(vertex_descriptor u)
       {
-        BOOST_ASSERT(get(excess_flow, u) > 0);
+        BOOST_ASSERT(boost::get(excess_flow, u) > 0);
         while (1) {
           out_edge_iterator ai, ai_end;
           for (boost::tie(ai, ai_end) = current[u]; ai != ai_end; ++ai) {
@@ -275,26 +275,26 @@ namespace boost {
               vertex_descriptor v = target(a, g);
               if (is_admissible(u, v)) {
                 ++push_count;
-                if (v != sink && get(excess_flow, v) == 0) {
+                if (v != sink && boost::get(excess_flow, v) == 0) {
                   remove_from_inactive_list(v);
-                  add_to_active_list(v, layers[get(distance, v)]);
+                  add_to_active_list(v, layers[boost::get(distance, v)]);
                 }
                 push_flow(a);
-                if (get(excess_flow, u) == 0)
+                if (boost::get(excess_flow, u) == 0)
                   break;
               } 
             } 
           } // for out_edges of i starting from current
 
-          Layer& layer = layers[get(distance, u)];
-          distance_size_type du = get(distance, u);
+          Layer& layer = layers[boost::get(distance, u)];
+          distance_size_type du = boost::get(distance, u);
 
           if (ai == ai_end) {   // i must be relabeled
             relabel_distance(u);
             if (layer.active_vertices.empty()
                 && layer.inactive_vertices.empty())
               gap(du);
-            if (get(distance, u) == n)
+            if (boost::get(distance, u) == n)
               break;
           } else {              // i is no longer active
             current[u].first = ai;
@@ -316,14 +316,14 @@ namespace boost {
         
         BOOST_USING_STD_MIN();
         FlowValue flow_delta
-          = min BOOST_PREVENT_MACRO_SUBSTITUTION(get(excess_flow, u), get(residual_capacity, u_v));
+          = min BOOST_PREVENT_MACRO_SUBSTITUTION(boost::get(excess_flow, u), boost::get(residual_capacity, u_v));
 
-        put(residual_capacity, u_v, get(residual_capacity, u_v) - flow_delta);
-        edge_descriptor rev = get(reverse_edge, u_v);
-        put(residual_capacity, rev, get(residual_capacity, rev) + flow_delta);
+        boost::put(residual_capacity, u_v, boost::get(residual_capacity, u_v) - flow_delta);
+        edge_descriptor rev = boost::get(reverse_edge, u_v);
+        boost::put(residual_capacity, rev, boost::get(residual_capacity, rev) + flow_delta);
 
-        put(excess_flow, u, get(excess_flow, u) - flow_delta);
-        put(excess_flow, v, get(excess_flow, v) + flow_delta);
+        boost::put(excess_flow, u, boost::get(excess_flow, u) - flow_delta);
+        boost::put(excess_flow, v, boost::get(excess_flow, v) + flow_delta);
       } // push_flow()
 
       //=======================================================================
@@ -340,7 +340,7 @@ namespace boost {
         work_since_last_update += beta();
 
         distance_size_type min_distance = num_vertices(g);
-        put(distance, u, min_distance);
+        boost::put(distance, u, min_distance);
 
         // Examine the residual out-edges of vertex i, choosing the
         // edge whose target vertex has the minimal distance.
@@ -349,14 +349,14 @@ namespace boost {
           ++work_since_last_update;
           edge_descriptor a = *ai;
           vertex_descriptor v = target(a, g);
-          if (is_residual_edge(a) && get(distance, v) < min_distance) {
-            min_distance = get(distance, v);
+          if (is_residual_edge(a) && boost::get(distance, v) < min_distance) {
+            min_distance = boost::get(distance, v);
             min_edge_iter = ai;
           }
         }
         ++min_distance;
         if (min_distance < n) {
-          put(distance, u, min_distance);     // this is the main action
+          boost::put(distance, u, min_distance);     // this is the main action
           current[u].first = min_edge_iter;
           max_distance = max BOOST_PREVENT_MACRO_SUBSTITUTION(min_distance, max_distance);
         }
@@ -378,7 +378,7 @@ namespace boost {
           list_iterator i;
           for (i = l->inactive_vertices.begin(); 
                i != l->inactive_vertices.end(); ++i) {
-            put(distance, *i, n);
+            boost::put(distance, *i, n);
             ++gap_node_count;
           }
           l->inactive_vertices.clear();
@@ -413,7 +413,7 @@ namespace boost {
           }
         } // while (max_active >= min_active)
 
-        return get(excess_flow, sink);
+        return boost::get(excess_flow, sink);
       } // maximum_preflow()
 
       //=======================================================================
@@ -444,39 +444,39 @@ namespace boost {
         for (boost::tie(u_iter, u_end) = vertices(g); u_iter != u_end; ++u_iter)
           for (boost::tie(ai, a_end) = out_edges(*u_iter, g); ai != a_end; ++ai)
             if (target(*ai, g) == *u_iter)
-              put(residual_capacity, *ai, get(capacity, *ai));
+              boost::put(residual_capacity, *ai, boost::get(capacity, *ai));
 
         // initialize
         for (boost::tie(u_iter, u_end) = vertices(g); u_iter != u_end; ++u_iter) {
           u = *u_iter;
-          put(color, u, ColorTraits::white());
-          parent[get(index, u)] = u;
+          boost::put(color, u, ColorTraits::white());
+          parent[boost::get(index, u)] = u;
           current[u] = out_edges(u, g);
         }
         // eliminate flow cycles and topologically order the vertices
         for (boost::tie(u_iter, u_end) = vertices(g); u_iter != u_end; ++u_iter) {
           u = *u_iter;
-          if (get(color, u) == ColorTraits::white() 
-              && get(excess_flow, u) > 0
+          if (boost::get(color, u) == ColorTraits::white() 
+              && boost::get(excess_flow, u) > 0
               && u != src && u != sink ) {
             r = u;
-            put(color, r, ColorTraits::gray());
+            boost::put(color, r, ColorTraits::gray());
             while (1) {
               for (; current[u].first != current[u].second; ++current[u].first) {
                 edge_descriptor a = *current[u].first;
-                if (get(capacity, a) == 0 && is_residual_edge(a)) {
+                if (boost::get(capacity, a) == 0 && is_residual_edge(a)) {
                   vertex_descriptor v = target(a, g);
-                  if (get(color, v) == ColorTraits::white()) {
-                    put(color, v, ColorTraits::gray());
-                    parent[get(index, v)] = u;
+                  if (boost::get(color, v) == ColorTraits::white()) {
+                    boost::put(color, v, ColorTraits::gray());
+                    parent[boost::get(index, v)] = u;
                     u = v;
                     break;
-                  } else if (get(color, v) == ColorTraits::gray()) {
+                  } else if (boost::get(color, v) == ColorTraits::gray()) {
                     // find minimum flow on the cycle
-                    FlowValue delta = get(residual_capacity, a);
+                    FlowValue delta = boost::get(residual_capacity, a);
                     while (1) {
                       BOOST_USING_STD_MIN();
-                      delta = min BOOST_PREVENT_MACRO_SUBSTITUTION(delta, get(residual_capacity, *current[v].first));
+                      delta = min BOOST_PREVENT_MACRO_SUBSTITUTION(delta, boost::get(residual_capacity, *current[v].first));
                       if (v == u)
                         break;
                       else
@@ -486,9 +486,9 @@ namespace boost {
                     v = u;
                     while (1) {
                       a = *current[v].first;
-                      put(residual_capacity, a, get(residual_capacity, a) - delta);
-                      edge_descriptor rev = get(reverse_edge, a);
-                      put(residual_capacity, rev, get(residual_capacity, rev) + delta);
+                      boost::put(residual_capacity, a, boost::get(residual_capacity, a) - delta);
+                      edge_descriptor rev = boost::get(reverse_edge, a);
+                      boost::put(residual_capacity, rev, boost::get(residual_capacity, rev) + delta);
                       v = target(a, g);
                       if (v == u)
                         break;
@@ -498,10 +498,10 @@ namespace boost {
                     restart = u;
                     for (v = target(*current[u].first, g); v != u; v = target(a, g)){
                       a = *current[v].first;
-                      if (get(color, v) == ColorTraits::white() 
+                      if (boost::get(color, v) == ColorTraits::white() 
                           || is_saturated(a)) {
-                        put(color, target(*current[v].first, g), ColorTraits::white());
-                        if (get(color, v) != ColorTraits::white())
+                        boost::put(color, target(*current[v].first, g), ColorTraits::white());
+                        if (boost::get(color, v) != ColorTraits::white())
                           restart = v;
                       }
                     }
@@ -511,24 +511,24 @@ namespace boost {
                       break;
                     }
                   } // else if (color[v] == ColorTraits::gray())
-                } // if (get(capacity, a) == 0 ...
+                } // if (boost::get(capacity, a) == 0 ...
               } // for out_edges(u, g)  (though "u" changes during loop)
               
               if ( current[u].first == current[u].second ) {
                 // scan of i is complete
-                put(color, u, ColorTraits::black());
+                boost::put(color, u, ColorTraits::black());
                 if (u != src) {
                   if (bos_null) {
                     bos = u;
                     bos_null = false;
                     tos = u;
                   } else {
-                    topo_next[get(index, u)] = tos;
+                    topo_next[boost::get(index, u)] = tos;
                     tos = u;
                   }
                 }
                 if (u != r) {
-                  u = parent[get(index, u)];
+                  u = parent[boost::get(index, u)];
                   ++current[u].first;
                 } else
                   break;
@@ -540,10 +540,10 @@ namespace boost {
         // return excess flows
         // note that the sink is not on the stack
         if (! bos_null) {
-          for (u = tos; u != bos; u = topo_next[get(index, u)]) {
+          for (u = tos; u != bos; u = topo_next[boost::get(index, u)]) {
             boost::tie(ai, a_end) = out_edges(u, g);
-            while (get(excess_flow, u) > 0 && ai != a_end) {
-              if (get(capacity, *ai) == 0 && is_residual_edge(*ai))
+            while (boost::get(excess_flow, u) > 0 && ai != a_end) {
+              if (boost::get(capacity, *ai) == 0 && is_residual_edge(*ai))
                 push_flow(*ai);
               ++ai;
             }
@@ -551,8 +551,8 @@ namespace boost {
           // do the bottom
           u = bos;
           boost::tie(ai, a_end) = out_edges(u, g);
-          while (get(excess_flow, u) > 0 && ai != a_end) {
-            if (get(capacity, *ai) == 0 && is_residual_edge(*ai))
+          while (boost::get(excess_flow, u) > 0 && ai != a_end) {
+            if (boost::get(capacity, *ai) == 0 && is_residual_edge(*ai))
               push_flow(*ai);
             ++ai;
           }
@@ -570,11 +570,11 @@ namespace boost {
         for (boost::tie(u_iter, u_end) = vertices(g); u_iter != u_end; ++u_iter) {
           for (boost::tie(ai, a_end) = out_edges(*u_iter, g); ai != a_end; ++ai) {
             edge_descriptor a = *ai;
-            if (get(capacity, a) > 0)
-              if ((get(residual_capacity, a) + get(residual_capacity, get(reverse_edge, a))
-                   != get(capacity, a) + get(capacity, get(reverse_edge, a)))
-                  || (get(residual_capacity, a) < 0)
-                  || (get(residual_capacity, get(reverse_edge, a)) < 0))
+            if (boost::get(capacity, a) > 0)
+              if ((boost::get(residual_capacity, a) + boost::get(residual_capacity, boost::get(reverse_edge, a))
+                   != boost::get(capacity, a) + boost::get(capacity, boost::get(reverse_edge, a)))
+                  || (boost::get(residual_capacity, a) < 0)
+                  || (boost::get(residual_capacity, boost::get(reverse_edge, a)) < 0))
               return false;
           }
         }
@@ -584,16 +584,16 @@ namespace boost {
         for (boost::tie(u_iter, u_end) = vertices(g); u_iter != u_end; ++u_iter) {
           vertex_descriptor u = *u_iter;
           if (u != src && u != sink) {
-            if (get(excess_flow, u) != 0)
+            if (boost::get(excess_flow, u) != 0)
               return false;
             sum = 0;
             for (boost::tie(ai, a_end) = out_edges(u, g); ai != a_end; ++ai) 
-              if (get(capacity, *ai) > 0)
-                sum -= get(capacity, *ai) - get(residual_capacity, *ai);
+              if (boost::get(capacity, *ai) > 0)
+                sum -= boost::get(capacity, *ai) - boost::get(residual_capacity, *ai);
               else
-                sum += get(residual_capacity, *ai);
+                sum += boost::get(residual_capacity, *ai);
 
-            if (get(excess_flow, u) != sum)
+            if (boost::get(excess_flow, u) != sum)
               return false;
           }
         }
@@ -604,7 +604,7 @@ namespace boost {
       bool is_optimal() {
         // check if mincut is saturated...
         global_distance_update();
-        return get(distance, src) >= n;
+        return boost::get(distance, src) >= n;
       }
 
       void print_statistics(std::ostream& os) const {
@@ -622,9 +622,9 @@ namespace boost {
         out_edge_iterator ei, e_end;
         for (boost::tie(u_iter, u_end) = vertices(g); u_iter != u_end; ++u_iter)
           for (boost::tie(ei, e_end) = out_edges(*u_iter, g); ei != e_end; ++ei)
-            if (get(capacity, *ei) > 0)
+            if (boost::get(capacity, *ei) > 0)
               os << *u_iter << " " << target(*ei, g) << " " 
-                 << (get(capacity, *ei) - get(residual_capacity, *ei)) << std::endl;
+                 << (boost::get(capacity, *ei) - boost::get(residual_capacity, *ei)) << std::endl;
         os << std::endl;
       }
 
@@ -640,17 +640,17 @@ namespace boost {
 
       // will need to use random_access_property_map with these
       std::vector< FlowValue > excess_flow_data;
-      iterator_property_map<typename std::vector<FlowValue>::iterator, VertexIndexMap> excess_flow;
+      boost::iterator_property_map<typename std::vector<FlowValue>::iterator, VertexIndexMap> excess_flow;
       std::vector< std::pair<out_edge_iterator, out_edge_iterator> > current_data;
-      iterator_property_map<
+      boost::iterator_property_map<
         typename std::vector< std::pair<out_edge_iterator, out_edge_iterator> >::iterator,
         VertexIndexMap> current;
       std::vector< distance_size_type > distance_data;
-      iterator_property_map<
+      boost::iterator_property_map<
         typename std::vector< distance_size_type >::iterator,
         VertexIndexMap> distance;
       std::vector< default_color_type > color_data;
-      iterator_property_map<
+      boost::iterator_property_map<
         std::vector< default_color_type >::iterator,
         VertexIndexMap> color;
 
@@ -660,7 +660,7 @@ namespace boost {
 
       LayerArray layers;
       std::vector< list_iterator > layer_list_ptr_data;
-      iterator_property_map<typename std::vector< list_iterator >::iterator, VertexIndexMap> layer_list_ptr;
+      boost::iterator_property_map<typename std::vector< list_iterator >::iterator, VertexIndexMap> layer_list_ptr;
       distance_size_type max_distance;  // maximal distance
       distance_size_type max_active;    // maximal distance with active node
       distance_size_type min_active;    // minimal distance with active node
@@ -685,7 +685,7 @@ namespace boost {
   template <class Graph, 
             class CapacityEdgeMap, class ResidualCapacityEdgeMap,
             class ReverseEdgeMap, class VertexIndexMap>
-  typename property_traits<CapacityEdgeMap>::value_type
+  typename boost::property_traits<CapacityEdgeMap>::value_type
   push_relabel_max_flow
     (Graph& g, 
      typename graph_traits<Graph>::vertex_descriptor src,
@@ -693,7 +693,7 @@ namespace boost {
      CapacityEdgeMap cap, ResidualCapacityEdgeMap res,
      ReverseEdgeMap rev, VertexIndexMap index_map)
   {
-    typedef typename property_traits<CapacityEdgeMap>::value_type FlowValue;
+    typedef typename boost::property_traits<CapacityEdgeMap>::value_type FlowValue;
     
     detail::push_relabel<Graph, CapacityEdgeMap, ResidualCapacityEdgeMap, 
       ReverseEdgeMap, VertexIndexMap, FlowValue>
@@ -728,8 +728,8 @@ namespace boost {
   }
 
   template <class Graph>
-  typename property_traits<
-    typename property_map<Graph, edge_capacity_t>::const_type
+  typename boost::property_traits<
+    typename boost::property_map<Graph, edge_capacity_t>::const_type
   >::value_type
   push_relabel_max_flow
     (Graph& g, 

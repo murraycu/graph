@@ -393,7 +393,7 @@ typename T::ThereReallyIsNoMemberByThisNameInT vertices(T const&);
     BOOST_concept(ReadablePropertyGraph,(G)(X)(Property))
         : Graph<G>
     {
-        typedef typename property_map<G, Property>::const_type const_Map;
+        typedef typename boost::property_map<G, Property>::const_type const_Map;
 
         BOOST_CONCEPT_USAGE(ReadablePropertyGraph)
         {
@@ -408,13 +408,13 @@ typename T::ThereReallyIsNoMemberByThisNameInT vertices(T const&);
         }
         G g;
         X x;
-        typename property_traits<const_Map>::value_type pval;
+        typename boost::property_traits<const_Map>::value_type pval;
     };
 
     BOOST_concept(PropertyGraph,(G)(X)(Property))
         : ReadablePropertyGraph<G, X, Property>
     {
-        typedef typename property_map<G, Property>::type Map;
+        typedef typename boost::property_map<G, Property>::type Map;
         BOOST_CONCEPT_USAGE(PropertyGraph) {
         BOOST_CONCEPT_ASSERT((ReadWritePropertyMapConcept<Map, X>));
 
@@ -425,14 +425,14 @@ typename T::ThereReallyIsNoMemberByThisNameInT vertices(T const&);
         }
         G g;
         X x;
-        typename property_traits<Map>::value_type pval;
+        typename boost::property_traits<Map>::value_type pval;
     };
 
     BOOST_concept(LvaluePropertyGraph,(G)(X)(Property))
         : ReadablePropertyGraph<G, X, Property>
     {
-        typedef typename property_map<G, Property>::type Map;
-        typedef typename property_map<G, Property>::const_type const_Map;
+        typedef typename boost::property_map<G, Property>::type Map;
+        typedef typename boost::property_map<G, Property>::const_type const_Map;
 
         BOOST_CONCEPT_USAGE(LvaluePropertyGraph) {
         BOOST_CONCEPT_ASSERT((LvaluePropertyMapConcept<const_Map, X>));
@@ -442,7 +442,7 @@ typename T::ThereReallyIsNoMemberByThisNameInT vertices(T const&);
         }
         G g;
         X x;
-        typename property_traits<Map>::value_type pval;
+        typename boost::property_traits<Map>::value_type pval;
     };
 
     // The *IndexGraph concepts are "semantic" graph concpepts. These can be
@@ -459,7 +459,7 @@ typename T::ThereReallyIsNoMemberByThisNameInT vertices(T const&);
         BOOST_CONCEPT_USAGE(VertexIndexGraph)
         {
             typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
-            typedef typename property_map<Graph, vertex_index_t>::type Map;
+            typedef typename boost::property_map<Graph, vertex_index_t>::type Map;
             typedef unsigned Index; // This could be Graph::vertex_index_type
             Map m = get(vertex_index, g);
             Index x = get(vertex_index, g, Vertex());
@@ -473,7 +473,7 @@ typename T::ThereReallyIsNoMemberByThisNameInT vertices(T const&);
         }
         void const_constraints(const Graph& g_)
         {
-            typedef typename property_map<Graph, vertex_index_t>::const_type Map;
+            typedef typename boost::property_map<Graph, vertex_index_t>::const_type Map;
             Map m = get(vertex_index, g_);
             ignore_unused_variable_warning(m);
         }
@@ -486,7 +486,7 @@ typename T::ThereReallyIsNoMemberByThisNameInT vertices(T const&);
         BOOST_CONCEPT_USAGE(EdgeIndexGraph)
         {
             typedef typename graph_traits<Graph>::edge_descriptor Edge;
-            typedef typename property_map<Graph, edge_index_t>::type Map;
+            typedef typename boost::property_map<Graph, edge_index_t>::type Map;
             typedef unsigned Index; // This could be Graph::vertex_index_type
             Map m = get(edge_index, g);
             Index x = get(edge_index, g, Edge());
@@ -500,7 +500,7 @@ typename T::ThereReallyIsNoMemberByThisNameInT vertices(T const&);
         }
         void const_constraints(const Graph& g_)
         {
-            typedef typename property_map<Graph, edge_index_t>::const_type Map;
+            typedef typename boost::property_map<Graph, edge_index_t>::const_type Map;
             Map m = get(edge_index, g_);
             ignore_unused_variable_warning(m);
         }

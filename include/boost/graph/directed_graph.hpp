@@ -30,9 +30,9 @@ struct directed_graph_tag { };
  * those operations can invalidate the numbering of vertices.
  */
 template <
-    typename VertexProp = no_property,
-    typename EdgeProp = no_property,
-    typename GraphProp = no_property>
+    typename VertexProp = boost::no_property,
+    typename EdgeProp = boost::no_property,
+    typename GraphProp = boost::no_property>
 class directed_graph
 {
 public:
@@ -45,8 +45,8 @@ public:
 
 public:
     // Embed indices into the vertex type.
-    typedef property<vertex_index_t, unsigned, vertex_property_type> internal_vertex_property;
-    typedef property<edge_index_t, unsigned, edge_property_type> internal_edge_property;
+    typedef boost::property<vertex_index_t, unsigned, vertex_property_type> internal_vertex_property;
+    typedef boost::property<edge_index_t, unsigned, edge_property_type> internal_edge_property;
 public:
     typedef adjacency_list<
         listS, listS, bidirectionalS,
@@ -236,7 +236,7 @@ public:
     remove_vertex_and_renumber_indices(vertex_iterator i)
     {
         vertex_iterator j = next(i), end = vertices(m_graph).second;
-        vertex_index_type n = get(vertex_index, m_graph, *i);
+        vertex_index_type n = boost::get(vertex_index, m_graph, *i);
 
         // remove the offending vertex and renumber everything after
         remove_vertex(*i);
@@ -259,7 +259,7 @@ public:
     remove_edge_and_renumber_indices(edge_iterator i)
     {
         edge_iterator j = next(i), end = edges(m_graph).second;
-        edge_index_type n = get(edge_index, m_graph, *i);
+        edge_index_type n = boost::get(edge_index, m_graph, *i);
 
         // remove the offending edge and renumber everything after
         remove_edge(*i);
@@ -320,8 +320,8 @@ private:
                             vertex_iterator end,
                             vertices_size_type n)
     {
-        typedef typename property_map<graph_type, vertex_index_t>::type IndexMap;
-        IndexMap indices = get(vertex_index, m_graph);
+        typedef typename boost::property_map<graph_type, vertex_index_t>::type IndexMap;
+        IndexMap indices = boost::get(vertex_index, m_graph);
         for( ; i != end; ++i) {
             indices[*i] = n++;
         }
@@ -333,8 +333,8 @@ private:
                         edge_iterator end,
                         vertices_size_type n)
     {
-        typedef typename property_map<graph_type, edge_index_t>::type IndexMap;
-        IndexMap indices = get(edge_index, m_graph);
+        typedef typename boost::property_map<graph_type, edge_index_t>::type IndexMap;
+        IndexMap indices = boost::get(edge_index, m_graph);
         for( ; i != end; ++i) {
             indices[*i] = n++;
         }
@@ -521,17 +521,17 @@ remove_in_edge_if(typename DIRECTED_GRAPH::vertex_descriptor v,
 { return remove_in_edge_if(v, pred, g.impl()); }
 
 template <DIRECTED_GRAPH_PARAMS, typename Property>
-struct property_map<DIRECTED_GRAPH, Property>: property_map<typename DIRECTED_GRAPH::graph_type, Property> {};
+struct property_map<DIRECTED_GRAPH, Property>: boost::property_map<typename DIRECTED_GRAPH::graph_type, Property> {};
 
 template <DIRECTED_GRAPH_PARAMS>
 struct property_map<DIRECTED_GRAPH, vertex_all_t> {
   typedef transform_value_property_map<
             detail::remove_first_property,
-            typename property_map<typename DIRECTED_GRAPH::graph_type, vertex_all_t>::const_type>
+            typename boost::property_map<typename DIRECTED_GRAPH::graph_type, vertex_all_t>::const_type>
     const_type;
   typedef transform_value_property_map<
             detail::remove_first_property,
-            typename property_map<typename DIRECTED_GRAPH::graph_type, vertex_all_t>::type>
+            typename boost::property_map<typename DIRECTED_GRAPH::graph_type, vertex_all_t>::type>
     type;
 };
 
@@ -539,86 +539,86 @@ template <DIRECTED_GRAPH_PARAMS>
 struct property_map<DIRECTED_GRAPH, edge_all_t> {
   typedef transform_value_property_map<
             detail::remove_first_property,
-            typename property_map<typename DIRECTED_GRAPH::graph_type, edge_all_t>::const_type>
+            typename boost::property_map<typename DIRECTED_GRAPH::graph_type, edge_all_t>::const_type>
     const_type;
   typedef transform_value_property_map<
             detail::remove_first_property,
-            typename property_map<typename DIRECTED_GRAPH::graph_type, edge_all_t>::type>
+            typename boost::property_map<typename DIRECTED_GRAPH::graph_type, edge_all_t>::type>
     type;
 };
 
 // PropertyGraph concepts
 template <DIRECTED_GRAPH_PARAMS, typename Property>
-inline typename property_map<DIRECTED_GRAPH, Property>::type
+inline typename boost::property_map<DIRECTED_GRAPH, Property>::type
 get(Property p, DIRECTED_GRAPH& g)
-{ return get(p, g.impl()); }
+{ return boost::get(p, g.impl()); }
 
 template <DIRECTED_GRAPH_PARAMS, typename Property>
-inline typename property_map<DIRECTED_GRAPH, Property>::const_type
+inline typename boost::property_map<DIRECTED_GRAPH, Property>::const_type
 get(Property p, DIRECTED_GRAPH const& g)
-{ return get(p, g.impl()); }
+{ return boost::get(p, g.impl()); }
 
 template <DIRECTED_GRAPH_PARAMS>
-inline typename property_map<DIRECTED_GRAPH, vertex_all_t>::type
+inline typename boost::property_map<DIRECTED_GRAPH, vertex_all_t>::type
 get(vertex_all_t, DIRECTED_GRAPH& g)
-{ return typename property_map<DIRECTED_GRAPH, vertex_all_t>::type(detail::remove_first_property(), get(vertex_all, g.impl())); }
+{ return typename boost::property_map<DIRECTED_GRAPH, vertex_all_t>::type(detail::remove_first_property(), boost::get(vertex_all, g.impl())); }
 
 template <DIRECTED_GRAPH_PARAMS>
-inline typename property_map<DIRECTED_GRAPH, vertex_all_t>::const_type
+inline typename boost::property_map<DIRECTED_GRAPH, vertex_all_t>::const_type
 get(vertex_all_t, DIRECTED_GRAPH const& g)
-{ return typename property_map<DIRECTED_GRAPH, vertex_all_t>::const_type(detail::remove_first_property(), get(vertex_all, g.impl())); }
+{ return typename boost::property_map<DIRECTED_GRAPH, vertex_all_t>::const_type(detail::remove_first_property(), boost::get(vertex_all, g.impl())); }
 
 template <DIRECTED_GRAPH_PARAMS>
-inline typename property_map<DIRECTED_GRAPH, edge_all_t>::type
+inline typename boost::property_map<DIRECTED_GRAPH, edge_all_t>::type
 get(edge_all_t, DIRECTED_GRAPH& g)
-{ return typename property_map<DIRECTED_GRAPH, edge_all_t>::type(detail::remove_first_property(), get(edge_all, g.impl())); }
+{ return typename boost::property_map<DIRECTED_GRAPH, edge_all_t>::type(detail::remove_first_property(), boost::get(edge_all, g.impl())); }
 
 template <DIRECTED_GRAPH_PARAMS>
-inline typename property_map<DIRECTED_GRAPH, edge_all_t>::const_type
+inline typename boost::property_map<DIRECTED_GRAPH, edge_all_t>::const_type
 get(edge_all_t, DIRECTED_GRAPH const& g)
-{ return typename property_map<DIRECTED_GRAPH, edge_all_t>::const_type(detail::remove_first_property(), get(edge_all, g.impl())); }
+{ return typename boost::property_map<DIRECTED_GRAPH, edge_all_t>::const_type(detail::remove_first_property(), boost::get(edge_all, g.impl())); }
 
 template <DIRECTED_GRAPH_PARAMS, typename Property, typename Key>
-inline typename property_traits<
-    typename property_map<
+inline typename boost::property_traits<
+    typename boost::property_map<
         typename DIRECTED_GRAPH::graph_type, Property
     >::const_type
 >::value_type
 get(Property p, DIRECTED_GRAPH const& g, Key const& k)
-{ return get(p, g.impl(), k); }
+{ return boost::get(p, g.impl(), k); }
 
 template <DIRECTED_GRAPH_PARAMS, typename Key>
-inline typename property_traits<
-    typename property_map<
+inline typename boost::property_traits<
+    typename boost::property_map<
         typename DIRECTED_GRAPH::graph_type, vertex_all_t
     >::const_type
 >::value_type
 get(vertex_all_t, DIRECTED_GRAPH const& g, Key const& k)
-{ return get(vertex_all, g.impl(), k).m_base; }
+{ return boost::get(vertex_all, g.impl(), k).m_base; }
 
 template <DIRECTED_GRAPH_PARAMS, typename Key>
-inline typename property_traits<
-    typename property_map<
+inline typename boost::property_traits<
+    typename boost::property_map<
         typename DIRECTED_GRAPH::graph_type, edge_all_t
     >::const_type
 >::value_type
 get(edge_all_t, DIRECTED_GRAPH const& g, Key const& k)
-{ return get(edge_all, g.impl(), k).m_base; }
+{ return boost::get(edge_all, g.impl(), k).m_base; }
 
 template <DIRECTED_GRAPH_PARAMS, typename Property, typename Key, typename Value>
 inline void put(Property p, DIRECTED_GRAPH& g, Key const& k, Value const& v)
-{ put(p, g.impl(), k, v); }
+{ boost::put(p, g.impl(), k, v); }
 
 template <DIRECTED_GRAPH_PARAMS, typename Key, typename Value>
 inline void put(vertex_all_t, DIRECTED_GRAPH& g, Key const& k, Value const& v)
-{ put(vertex_all, g.impl(), k,
-      typename DIRECTED_GRAPH::internal_vertex_property(get(vertex_index, g.impl(), k), v));
+{ boost::put(vertex_all, g.impl(), k,
+      typename DIRECTED_GRAPH::internal_vertex_property(boost::get(vertex_index, g.impl(), k), v));
 }
 
 template <DIRECTED_GRAPH_PARAMS, typename Key, typename Value>
 inline void put(edge_all_t, DIRECTED_GRAPH& g, Key const& k, Value const& v)
-{ put(edge_all, g.impl(), k,
-      typename DIRECTED_GRAPH::internal_vertex_property(get(edge_index, g.impl(), k), v));
+{ boost::put(edge_all, g.impl(), k,
+      typename DIRECTED_GRAPH::internal_vertex_property(boost::get(edge_index, g.impl(), k), v));
 }
 
 template <DIRECTED_GRAPH_PARAMS, class Property>
@@ -634,7 +634,7 @@ get_property(DIRECTED_GRAPH const& g, Property p)
 template <DIRECTED_GRAPH_PARAMS, class Property, class Value>
 void
 set_property(DIRECTED_GRAPH& g, Property p, Value v)
-{ return set_property(g.impl(), p, v); }
+{ return boost::set_property(g.impl(), p, v); }
 
 // Vertex index management
 
@@ -642,7 +642,7 @@ template <DIRECTED_GRAPH_PARAMS>
 inline typename DIRECTED_GRAPH::vertex_index_type
 get_vertex_index(typename DIRECTED_GRAPH::vertex_descriptor v,
                 DIRECTED_GRAPH const& g)
-{ return get(vertex_index, g, v); }
+{ return boost::get(vertex_index, g, v); }
 
 template <DIRECTED_GRAPH_PARAMS>
 typename DIRECTED_GRAPH::vertex_index_type
@@ -664,7 +664,7 @@ remove_vertex_and_renumber_indices(typename DIRECTED_GRAPH::vertex_iterator i,
 template <DIRECTED_GRAPH_PARAMS>
 inline typename DIRECTED_GRAPH::edge_index_type
 get_edge_index(typename DIRECTED_GRAPH::edge_descriptor v, DIRECTED_GRAPH const& g)
-{ return get(edge_index, g, v); }
+{ return boost::get(edge_index, g, v); }
 
 template <DIRECTED_GRAPH_PARAMS>
 typename DIRECTED_GRAPH::edge_index_type

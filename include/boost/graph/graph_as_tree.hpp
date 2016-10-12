@@ -81,7 +81,7 @@ namespace boost {
       template <typename GraphAsTree, typename Property, typename Tag>
       struct bind_ {
         typedef typename GraphAsTree::base_type Graph;
-        typedef property_map<Graph, Tag> PMap;
+        typedef boost::property_map<Graph, Tag> PMap;
         typedef typename PMap::type type;
         typedef typename PMap::const_type const_type;
       };
@@ -91,7 +91,7 @@ namespace boost {
       template <typename GraphAsTree, typename Property, typename Tag>
       struct bind_ {
         typedef typename GraphAsTree::base_type Graph;
-        typedef property_map<Graph, Tag> PMap;
+        typedef boost::property_map<Graph, Tag> PMap;
         typedef typename PMap::type type;
         typedef typename PMap::const_type const_type;
       };
@@ -111,7 +111,7 @@ namespace boost {
 
   template <typename Graph, typename P, typename N, typename C, 
             typename Property>
-  typename property_map<Graph, Property>::type
+  typename boost::property_map<Graph, Property>::type
   get(Property p, graph_as_tree<Graph,P,N,C>& g)
   {
     return get(p, g._g);
@@ -119,7 +119,7 @@ namespace boost {
 
   template <typename Graph, typename P, typename N, typename C, 
             typename Property>
-  typename property_map<Graph, Property>::const_type
+  typename boost::property_map<Graph, Property>::const_type
   get(Property p, const graph_as_tree<Graph,P,N,C>& g)
   {
     const Graph& gref = g._g; // in case GRef is non-const
@@ -128,8 +128,8 @@ namespace boost {
 
   template <typename Graph, typename P, typename N, typename C, 
             typename Property, typename Key>
-  typename property_traits<
-    typename property_map<Graph, Property>::const_type
+  typename boost::property_traits<
+    typename boost::property_map<Graph, Property>::const_type
   >::value_type
   get(Property p, const graph_as_tree<Graph,P,N,C>& g, const Key& k)
   {
@@ -142,7 +142,7 @@ namespace boost {
   put(Property p, const graph_as_tree<Graph,P,N,C>& g, const Key& k,
       const Value& val)
   {
-    put(p, g._g, k, val);
+    boost::put(p, g._g, k, val);
   }
 
 } // namespace boost

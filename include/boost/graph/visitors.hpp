@@ -137,7 +137,7 @@ namespace boost {
     predecessor_recorder(PredecessorMap pa) : m_predecessor(pa) { }
     template <class Edge, class Graph>
     void operator()(Edge e, const Graph& g) {
-      put(m_predecessor, target(e, g), source(e, g));
+      boost::put(m_predecessor, target(e, g), source(e, g));
     }
     PredecessorMap m_predecessor;
   };
@@ -158,7 +158,7 @@ namespace boost {
     edge_predecessor_recorder(PredEdgeMap pa) : m_predecessor(pa) { }
     template <class Edge, class Graph>
     void operator()(Edge e, const Graph& g) {
-      put(m_predecessor, target(e, g), e);
+      boost::put(m_predecessor, target(e, g), e);
     }
     PredEdgeMap m_predecessor;
   };
@@ -181,7 +181,7 @@ namespace boost {
     void operator()(Edge e, const Graph& g) {
       typename graph_traits<Graph>::vertex_descriptor
         u = source(e, g), v = target(e, g);
-      put(m_distance, v, get(m_distance, u) + 1);
+      boost::put(m_distance, v, boost::get(m_distance, u) + 1);
     }
     DistanceMap m_distance;
   };
@@ -203,7 +203,7 @@ namespace boost {
     time_stamper(TimeMap pa, TimeT& t) : m_time_pa(pa), m_time(t) { }
     template <class Vertex, class Graph>
     void operator()(Vertex u, const Graph&) {
-      put(m_time_pa, u, ++m_time);
+      boost::put(m_time_pa, u, ++m_time);
     }
     TimeMap m_time_pa;
     TimeT& m_time;
@@ -226,7 +226,7 @@ namespace boost {
     property_writer(PA pa, OutputIterator out) : m_pa(pa), m_out(out) { }
 
     template <class T, class Graph>
-    void operator()(T x, Graph&) { *m_out++ = get(m_pa, x); }
+    void operator()(T x, Graph&) { *m_out++ = boost::get(m_pa, x); }
     PA m_pa;
     OutputIterator m_out;
   };
@@ -249,7 +249,7 @@ namespace boost {
     typedef EventTag event_filter;
     
     property_put (PropertyMap property_map,
-                  typename property_traits <PropertyMap>::value_type value) :
+                  typename boost::property_traits<PropertyMap>::value_type value) :
       property_map_ (property_map), value_ (value)
     {}
 
@@ -261,7 +261,7 @@ namespace boost {
 
   private:
     PropertyMap property_map_;
-    typename property_traits <PropertyMap>::value_type value_;
+    typename boost::property_traits<PropertyMap>::value_type value_;
   };
 
   /**
@@ -276,7 +276,7 @@ namespace boost {
     template <typename PropertyMap, typename EventTag>
     inline property_put <PropertyMap, EventTag>
     put_property (PropertyMap property_map,
-                  typename property_traits <PropertyMap>::value_type value,
+                  typename boost::property_traits<PropertyMap>::value_type value,
                   EventTag)
     {
       return property_put <PropertyMap, EventTag> (property_map, value);

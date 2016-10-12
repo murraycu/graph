@@ -34,7 +34,7 @@ namespace boost {
   typename graph_traits<Graph>::vertices_size_type
   profile(const Graph& g)
   {
-    return profile(g, get(vertex_index, g));
+    return profile(g, boost::get(vertex_index, g));
   }
  
   

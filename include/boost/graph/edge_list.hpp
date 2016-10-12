@@ -135,9 +135,9 @@ namespace boost {
   };
 
   template <class G, class EI, class T, class D>
-  typename property_map< edge_list_impl<G,EI,T,D>, edge_index_t>::type
+  typename boost::property_map< edge_list_impl<G,EI,T,D>, edge_index_t>::type
   get(edge_index_t, const edge_list_impl<G,EI,T,D>&) {
-    typedef typename property_map< edge_list_impl<G,EI,T,D>,
+    typedef typename boost::property_map< edge_list_impl<G,EI,T,D>,
       edge_index_t>::type EdgeIndexMap;
     return EdgeIndexMap();
   }
@@ -223,9 +223,9 @@ namespace boost {
   };
   template <class G, class EI, class T, class D>
   inline
-  typename property_map< edge_list_impl_ra<G,EI,T,D>, edge_index_t>::type
+  typename boost::property_map< edge_list_impl_ra<G,EI,T,D>, edge_index_t>::type
   get(edge_index_t, const edge_list_impl_ra<G,EI,T,D>&) {
-    typedef typename property_map< edge_list_impl_ra<G,EI,T,D>,
+    typedef typename boost::property_map< edge_list_impl_ra<G,EI,T,D>,
       edge_index_t>::type EdgeIndexMap;
     return EdgeIndexMap();
   }

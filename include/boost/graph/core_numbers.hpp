@@ -123,11 +123,11 @@ namespace boost {
             typename graph_traits<Graph>::vertex_iterator vi,vi_end;
             typename graph_traits<Graph>::out_edge_iterator ei,ei_end;
             for (boost::tie(vi,vi_end) = vertices(g); vi!=vi_end; ++vi) {
-                put(d,*vi,0);
+                boost::put(d,*vi,0);
             }
             for (boost::tie(vi,vi_end) = vertices(g); vi!=vi_end; ++vi) {
                 for (boost::tie(ei,ei_end) = out_edges(*vi,g); ei!=ei_end; ++ei) {
-                    put(d,target(*ei,g),get(d,target(*ei,g))+get(wm,*ei));
+                    boost::put(d,target(*ei,g), boost::get(d,target(*ei,g))+get(wm,*ei));
                 }
             }
         }
@@ -136,11 +136,11 @@ namespace boost {
         template <typename Graph, typename CoreMap,
             typename EdgeWeightMap, typename MutableQueue,
             typename Visitor>
-        typename property_traits<CoreMap>::value_type
+        typename boost::property_traits<CoreMap>::value_type
         core_numbers_impl(Graph& g, CoreMap c, EdgeWeightMap wm,
             MutableQueue& Q, Visitor vis)
         {
-            typename property_traits<CoreMap>::value_type v_cn = 0;
+            typename boost::property_traits<CoreMap>::value_type v_cn = 0;
             typedef typename graph_traits<Graph>::vertex_descriptor vertex;
             while (!Q.empty())
             {
@@ -149,15 +149,15 @@ namespace boost {
                 vertex v = Q.top();
                 vis.examine_vertex(v,g);
                 Q.pop();
-                v_cn = get(c,v);
+                v_cn = boost::get(c,v);
                 typename graph_traits<Graph>::out_edge_iterator oi,oi_end;
                 for (boost::tie(oi,oi_end) = out_edges(v,g); oi!=oi_end; ++oi) {
                     vis.examine_edge(*oi,g);
                     vertex u = target(*oi,g);
                     // if c[u] > c[v], then u is still in the graph,
-                    if (get(c,u) > v_cn) {
+                    if (boost::get(c,u) > v_cn) {
                         // remove the edge
-                        put(c,u,get(c,u)-get(wm,*oi));
+                        boost::put(c,u, boost::get(c,u)-get(wm,*oi));
                         if (Q.contains(u))
                           Q.update(u);
                     }
@@ -169,16 +169,16 @@ namespace boost {
 
         template <typename Graph, typename CoreMap, typename EdgeWeightMap,
             typename IndexMap, typename CoreNumVisitor>
-        typename property_traits<CoreMap>::value_type
+        typename boost::property_traits<CoreMap>::value_type
         core_numbers_dispatch(Graph&g, CoreMap c, EdgeWeightMap wm,
             IndexMap im, CoreNumVisitor vis)
         {
-            typedef typename property_traits<CoreMap>::value_type D;
+            typedef typename boost::property_traits<CoreMap>::value_type D;
             typedef std::less<D> Cmp;
             // build the mutable queue
             typedef typename graph_traits<Graph>::vertex_descriptor vertex;
             std::vector<std::size_t> index_in_heap_data(num_vertices(g));
-            typedef iterator_property_map<std::vector<std::size_t>::iterator, IndexMap>
+            typedef boost::iterator_property_map<std::vector<std::size_t>::iterator, IndexMap>
               index_in_heap_map_type;
             index_in_heap_map_type index_in_heap_map(index_in_heap_data.begin(), im);
             typedef d_ary_heap_indirect<vertex, 4, index_in_heap_map_type, CoreMap, Cmp> MutableQueue;
@@ -195,7 +195,7 @@ namespace boost {
         // with the in degree of each vertex
         template <typename Graph, typename CoreMap, typename PositionMap,
             typename Visitor>
-        typename property_traits<CoreMap>::value_type
+        typename boost::property_traits<CoreMap>::value_type
         core_numbers_impl(Graph& g, CoreMap c, PositionMap pos, Visitor vis)
         {
             typedef typename graph_traits<Graph>::vertices_size_type size_type;
@@ -204,19 +204,19 @@ namespace boost {
             typename graph_traits<Graph>::vertex_iterator vi,vi_end;
 
             // store the vertex core numbers
-            typename property_traits<CoreMap>::value_type v_cn = 0;
+            typename boost::property_traits<CoreMap>::value_type v_cn = 0;
 
             // compute the maximum degree (degrees are in the coremap)
             typename graph_traits<Graph>::degree_size_type max_deg = 0;
             for (boost::tie(vi,vi_end) = vertices(g); vi!=vi_end; ++vi) {
-                max_deg = (std::max<typename graph_traits<Graph>::degree_size_type>)(max_deg, get(c,*vi));
+                max_deg = (std::max<typename graph_traits<Graph>::degree_size_type>)(max_deg, boost::get(c,*vi));
             }
 
             // store the vertices in bins by their degree
             // allocate two extra locations to ease boundary cases
             std::vector<size_type> bin(max_deg+2);
             for (boost::tie(vi,vi_end) = vertices(g); vi!=vi_end; ++vi) {
-                ++bin[get(c,*vi)];
+                ++bin[boost::get(c,*vi)];
             }
 
             // this loop sets bin[d] to the starting position of vertices
@@ -233,10 +233,10 @@ namespace boost {
             std::vector<vertex> vert(num_vertices(g));
             for (boost::tie(vi,vi_end) = vertices(g); vi!=vi_end; ++vi) {
                 vertex v=*vi;
-                size_type p=bin[get(c,v)];
-                put(pos,v,p);
+                size_type p=bin[boost::get(c,v)];
+                boost::put(pos,v,p);
                 vert[p]=v;
-                ++bin[get(c,v)];
+                ++bin[boost::get(c,v)];
             }
             // we ``abused'' bin while placing the vertices, now,
             // we need to restore it
@@ -247,23 +247,23 @@ namespace boost {
             for (size_type i=0; i < num_vertices(g); ++i) {
                 vertex v = vert[i];
                 vis.examine_vertex(v,g);
-                v_cn = get(c,v);
+                v_cn = boost::get(c,v);
                 typename graph_traits<Graph>::out_edge_iterator oi,oi_end;
                 for (boost::tie(oi,oi_end) = out_edges(v,g); oi!=oi_end; ++oi) {
                     vis.examine_edge(*oi,g);
                     vertex u = target(*oi,g);
                     // if c[u] > c[v], then u is still in the graph,
-                    if (get(c,u) > v_cn) {
-                        degree_type deg_u = get(c,u);
-                        degree_type pos_u = get(pos,u);
+                    if (boost::get(c,u) > v_cn) {
+                        degree_type deg_u = boost::get(c,u);
+                        degree_type pos_u = boost::get(pos,u);
                         // w is the first vertex with the same degree as u
                         // (this is the resort operation!)
                         degree_type pos_w = bin[deg_u];
                         vertex w = vert[pos_w];
                         if (u!=v) {
                             // swap u and w
-                            put(pos,u,pos_w);
-                            put(pos,w,pos_u);
+                            boost::put(pos,u,pos_w);
+                            boost::put(pos,w,pos_u);
                             vert[pos_w] = u;
                             vert[pos_u] = w;
                         }
@@ -275,7 +275,7 @@ namespace boost {
                         ++bin[deg_u];
                         // we are removing v from the graph, so u's degree
                         // decreases
-                        put(c,u,get(c,u)-1);
+                        boost::put(c,u, boost::get(c,u)-1);
                     }
                 }
                 vis.finish_vertex(v,g);
@@ -287,23 +287,23 @@ namespace boost {
 
     // non-named parameter version for the unweighted case
     template <typename Graph, typename CoreMap, typename CoreNumVisitor>
-    typename property_traits<CoreMap>::value_type
+    typename boost::property_traits<CoreMap>::value_type
     core_numbers(Graph& g, CoreMap c, CoreNumVisitor vis)
     {
         typedef typename graph_traits<Graph>::vertices_size_type size_type;
         detail::compute_in_degree_map(g,c,
             detail::constant_value_property_map<
-                typename property_traits<CoreMap>::value_type>(1) );
+                typename boost::property_traits<CoreMap>::value_type>(1) );
         return detail::core_numbers_impl(g,c,
-            make_iterator_property_map(
-                std::vector<size_type>(num_vertices(g)).begin(),get(vertex_index, g)),
+            boost::make_iterator_property_map(
+                std::vector<size_type>(num_vertices(g)).begin(), boost::get(vertex_index, g)),
             vis
         );
     }
 
     // non-named paramter version for the unweighted case
     template <typename Graph, typename CoreMap>
-    typename property_traits<CoreMap>::value_type
+    typename boost::property_traits<CoreMap>::value_type
     core_numbers(Graph& g, CoreMap c)
     {
         return core_numbers(g, c, make_core_numbers_visitor(null_visitor()));
@@ -312,7 +312,7 @@ namespace boost {
     // non-named parameter version for the weighted case
     template <typename Graph, typename CoreMap, typename EdgeWeightMap,
         typename VertexIndexMap, typename CoreNumVisitor>
-    typename property_traits<CoreMap>::value_type
+    typename boost::property_traits<CoreMap>::value_type
     core_numbers(Graph& g, CoreMap c, EdgeWeightMap wm, VertexIndexMap vim,
         CoreNumVisitor vis)
     {
@@ -322,17 +322,17 @@ namespace boost {
 
     // non-named parameter version for the weighted case
 //    template <typename Graph, typename CoreMap, typename EdgeWeightMap>
-//    typename property_traits<CoreMap>::value_type
+//    typename boost::property_traits<CoreMap>::value_type
 //    core_numbers(Graph& g, CoreMap c, EdgeWeightMap wm)
 //    {
 //        typedef typename graph_traits<Graph>::vertices_size_type size_type;
 //        detail::compute_in_degree_map(g,c,wm);
-//        return detail::core_numbers_dispatch(g,c,wm,get(vertex_index,g),
+//        return detail::core_numbers_dispatch(g,c,wm, boost::get(vertex_index,g),
 //            make_core_numbers_visitor(null_visitor()));
 //    }
 
     template <typename Graph, typename CoreMap>
-    typename property_traits<CoreMap>::value_type
+    typename boost::property_traits<CoreMap>::value_type
     weighted_core_numbers(Graph& g, CoreMap c)
     {
         return weighted_core_numbers(
@@ -341,9 +341,9 @@ namespace boost {
     }
 
     template <typename Graph, typename CoreMap, typename CoreNumVisitor>
-    typename property_traits<CoreMap>::value_type
+    typename boost::property_traits<CoreMap>::value_type
     weighted_core_numbers(Graph& g, CoreMap c, CoreNumVisitor vis)
-    { return core_numbers(g,c,get(edge_weight,g),get(vertex_index,g),vis); }
+    { return core_numbers(g,c, boost::get(edge_weight,g), boost::get(vertex_index,g),vis); }
 
 } // namespace boost
 

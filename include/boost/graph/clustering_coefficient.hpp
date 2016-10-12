@@ -117,39 +117,39 @@ clustering_coefficient(const Graph& g, Vertex v)
 { return clustering_coefficient<double>(g, v); }
 
 template <typename Graph, typename ClusteringMap>
-inline typename property_traits<ClusteringMap>::value_type
+inline typename boost::property_traits<ClusteringMap>::value_type
 all_clustering_coefficients(const Graph& g, ClusteringMap cm)
 {
     BOOST_CONCEPT_ASSERT(( VertexListGraphConcept<Graph> ));
     typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
     typedef typename graph_traits<Graph>::vertex_iterator VertexIterator;
     BOOST_CONCEPT_ASSERT(( WritablePropertyMapConcept<ClusteringMap,Vertex> ));
-    typedef typename property_traits<ClusteringMap>::value_type Coefficient;
+    typedef typename boost::property_traits<ClusteringMap>::value_type Coefficient;
 
     Coefficient sum(0);
     VertexIterator i, end;
     for(boost::tie(i, end) = vertices(g); i != end; ++i) {
         Coefficient cc = clustering_coefficient<Coefficient>(g, *i);
-        put(cm, *i, cc);
+        boost::put(cm, *i, cc);
         sum += cc;
     }
     return sum / Coefficient(num_vertices(g));
 }
 
 template <typename Graph, typename ClusteringMap>
-inline typename property_traits<ClusteringMap>::value_type
+inline typename boost::property_traits<ClusteringMap>::value_type
 mean_clustering_coefficient(const Graph& g, ClusteringMap cm)
 {
     BOOST_CONCEPT_ASSERT(( VertexListGraphConcept<Graph> ));
     typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
     typedef typename graph_traits<Graph>::vertex_iterator VertexIterator;
     BOOST_CONCEPT_ASSERT(( ReadablePropertyMapConcept<ClusteringMap,Vertex> ));
-    typedef typename property_traits<ClusteringMap>::value_type Coefficient;
+    typedef typename boost::property_traits<ClusteringMap>::value_type Coefficient;
 
     Coefficient cc(0);
     VertexIterator i, end;
     for(boost::tie(i, end) = vertices(g); i != end; ++i) {
-        cc += get(cm, *i);
+        cc += boost::get(cm, *i);
     }
     return cc / Coefficient(num_vertices(g));
 }

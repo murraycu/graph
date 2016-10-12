@@ -150,7 +150,7 @@ namespace graph_detail {
         std::pair<Iterator, bool> x = c.insert(std::make_pair(l, Vertex()));
         if(x.second) {
             x.first->second = add_vertex(g);
-            put(boost::vertex_all, g, x.first->second, p);
+            boost::put(boost::vertex_all, g, x.first->second, p);
         }
         return std::make_pair(x.first->second, x.second);
     }
@@ -662,7 +662,7 @@ namespace graph_detail {
         template <class LabeledGraph, class Property, class Tag>
         struct bind_ {
             typedef typename LabeledGraph::graph_type Graph;
-            typedef property_map<Graph, Tag> PropertyMap;
+            typedef boost::property_map<Graph, Tag> PropertyMap;
             typedef typename PropertyMap::type type;
             typedef typename PropertyMap::const_type const_type;
         };
@@ -672,7 +672,7 @@ namespace graph_detail {
         template <class LabeledGraph, class Property, class Tag>
         struct bind_ {
             typedef typename LabeledGraph::graph_type Graph;
-            typedef property_map<Graph, Tag> PropertyMap;
+            typedef boost::property_map<Graph, Tag> PropertyMap;
             typedef typename PropertyMap::type type;
             typedef typename PropertyMap::const_type const_type;
         };
@@ -693,26 +693,26 @@ struct edge_property_selector<labeled_graph_class_tag> {
 /** @name Property Graph */
 //@{
 template <LABELED_GRAPH_PARAMS, typename Prop>
-inline typename property_map<LABELED_GRAPH, Prop>::type
+inline typename boost::property_map<LABELED_GRAPH, Prop>::type
 get(Prop p, LABELED_GRAPH& g)
-{ return get(p, g.graph()); }
+{ return boost::get(p, g.graph()); }
 
 template <LABELED_GRAPH_PARAMS, typename Prop>
-inline typename property_map<LABELED_GRAPH, Prop>::const_type
+inline typename boost::property_map<LABELED_GRAPH, Prop>::const_type
 get(Prop p, LABELED_GRAPH const& g)
-{ return get(p, g.graph()); }
+{ return boost::get(p, g.graph()); }
 
 template <LABELED_GRAPH_PARAMS, typename Prop, typename Key>
-inline typename property_traits<
-    typename property_map<typename LABELED_GRAPH::graph_type, Prop>::const_type
+inline typename boost::property_traits<
+    typename boost::property_map<typename LABELED_GRAPH::graph_type, Prop>::const_type
 >::value_type
 get(Prop p, LABELED_GRAPH const& g, const Key& k)
-{ return get(p, g.graph(), k); }
+{ return boost::get(p, g.graph(), k); }
 
 template <LABELED_GRAPH_PARAMS, typename Prop, typename Key, typename Value>
 inline void
 put(Prop p, LABELED_GRAPH& g, Key const& k, Value const& v)
-{ put(p, g.graph(), k, v); }
+{ boost::put(p, g.graph(), k, v); }
 //@}
 
 /** @name Mutable Graph */

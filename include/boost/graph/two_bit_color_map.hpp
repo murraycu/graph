@@ -40,7 +40,7 @@ struct color_traits<two_bit_color_type>
 };
 
 
-template<typename IndexMap = identity_property_map>
+template<typename IndexMap = boost::identity_property_map>
 struct two_bit_color_map 
 {
   std::size_t n;
@@ -49,7 +49,7 @@ struct two_bit_color_map
 
   BOOST_STATIC_CONSTANT(int, bits_per_char = std::numeric_limits<unsigned char>::digits);
   BOOST_STATIC_CONSTANT(int, elements_per_char = bits_per_char / 2);
-  typedef typename property_traits<IndexMap>::key_type key_type;
+  typedef typename boost::property_traits<IndexMap>::key_type key_type;
   typedef two_bit_color_type value_type;
   typedef void reference;
   typedef read_write_property_map_tag category;
@@ -65,10 +65,10 @@ struct two_bit_color_map
 template<typename IndexMap>
 inline two_bit_color_type
 get(const two_bit_color_map<IndexMap>& pm, 
-    typename property_traits<IndexMap>::key_type key) 
+    typename boost::property_traits<IndexMap>::key_type key) 
 {
   BOOST_STATIC_CONSTANT(int, elements_per_char = two_bit_color_map<IndexMap>::elements_per_char);
-  typename property_traits<IndexMap>::value_type i = get(pm.index, key);
+  typename boost::property_traits<IndexMap>::value_type i = boost::get(pm.index, key);
   BOOST_ASSERT ((std::size_t)i < pm.n);
   std::size_t byte_num = i / elements_per_char;
   std::size_t bit_position = ((i % elements_per_char) * 2);
@@ -78,11 +78,11 @@ get(const two_bit_color_map<IndexMap>& pm,
 template<typename IndexMap>
 inline void
 put(const two_bit_color_map<IndexMap>& pm, 
-    typename property_traits<IndexMap>::key_type key,
+    typename boost::property_traits<IndexMap>::key_type key,
     two_bit_color_type value)
 {
   BOOST_STATIC_CONSTANT(int, elements_per_char = two_bit_color_map<IndexMap>::elements_per_char);
-  typename property_traits<IndexMap>::value_type i = get(pm.index, key);
+  typename boost::property_traits<IndexMap>::value_type i = boost::get(pm.index, key);
   BOOST_ASSERT ((std::size_t)i < pm.n);
   BOOST_ASSERT (value >= 0 && value < 4);
   std::size_t byte_num = i / elements_per_char;

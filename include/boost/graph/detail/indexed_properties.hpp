@@ -33,21 +33,21 @@ template<typename Derived, typename Property, typename Descriptor, typename Inde
 class indexed_vertex_properties
 {
 public:
-  typedef no_property vertex_property_type;
+  typedef boost::no_property vertex_property_type;
   typedef Property vertex_bundled;
-  typedef iterator_property_map<
+  typedef boost::iterator_property_map<
             typename std::vector<Property>::iterator,
             IndexMap> vertex_map_type;
-  typedef iterator_property_map<
+  typedef boost::iterator_property_map<
             typename std::vector<Property>::const_iterator,
             IndexMap> const_vertex_map_type;
 
   // Directly access a vertex or edge bundle
   Property& operator[](Descriptor v)
-  { return m_vertex_properties[get(vertex_index, derived(), v)]; }
+  { return m_vertex_properties[boost::get(vertex_index, derived(), v)]; }
 
   const Property& operator[](Descriptor v) const
-  { return m_vertex_properties[get(vertex_index, derived(), v)]; }
+  { return m_vertex_properties[boost::get(vertex_index, derived(), v)]; }
 
   vertex_map_type get_vertex_bundle(const IndexMap& index_map = IndexMap()) {
     return vertex_map_type(m_vertex_properties.begin(), index_map);
@@ -111,7 +111,7 @@ class indexed_vertex_properties<Derived, void, Descriptor, IndexMap>
   struct secret {};
 
  public:
-  typedef no_property vertex_property_type;
+  typedef boost::no_property vertex_property_type;
   typedef void vertex_bundled;
   typedef secret vertex_map_type;
   typedef secret const_vertex_map_type;
@@ -137,22 +137,22 @@ template<typename Derived, typename Property, typename Descriptor, typename Inde
 class indexed_edge_properties
 {
 public:
-  typedef no_property edge_property_type;
+  typedef boost::no_property edge_property_type;
   typedef Property edge_bundled;
   typedef Property edge_push_back_type;
-  typedef iterator_property_map<
+  typedef boost::iterator_property_map<
             typename std::vector<Property>::iterator,
             IndexMap> edge_map_type;
-  typedef iterator_property_map<
+  typedef boost::iterator_property_map<
             typename std::vector<Property>::const_iterator,
             IndexMap> const_edge_map_type;
 
   // Directly access a edge or edge bundle
   Property& operator[](Descriptor v)
-  { return m_edge_properties[get(edge_index, derived(), v)]; }
+  { return m_edge_properties[boost::get(edge_index, derived(), v)]; }
 
   const Property& operator[](Descriptor v) const
-  { return m_edge_properties[get(edge_index, derived(), v)]; }
+  { return m_edge_properties[boost::get(edge_index, derived(), v)]; }
 
   edge_map_type get_edge_bundle(const IndexMap& index_map = IndexMap()) {
     return edge_map_type(m_edge_properties.begin(), index_map);
@@ -230,9 +230,9 @@ public: // should be private, but friend templates not portable
 };
 
 struct dummy_no_property_iterator
-: public boost::iterator_facade<dummy_no_property_iterator, no_property, std::random_access_iterator_tag> {
-  mutable no_property prop;
-  no_property& dereference() const {return prop;}
+: public boost::iterator_facade<dummy_no_property_iterator, boost::no_property, std::random_access_iterator_tag> {
+  mutable boost::no_property prop;
+  boost::no_property& dereference() const {return prop;}
   bool equal(const dummy_no_property_iterator&) const {return true;}
   void increment() {}
   void decrement() {}
@@ -246,14 +246,14 @@ class indexed_edge_properties<Derived, void, Descriptor, IndexMap>
   struct secret {};
 
  public:
-  typedef no_property edge_property_type;
+  typedef boost::no_property edge_property_type;
   typedef void edge_bundled;
   typedef void* edge_push_back_type;
   typedef secret edge_map_type;
   typedef secret const_edge_map_type;
 
   secret operator[](secret) { return secret(); }
-  void write_by_index(std::size_t /*idx*/, const no_property& /*prop*/) {}
+  void write_by_index(std::size_t /*idx*/, const boost::no_property& /*prop*/) {}
 
   edge_map_type get_edge_bundle(const IndexMap& = IndexMap()) const {
     return edge_map_type();

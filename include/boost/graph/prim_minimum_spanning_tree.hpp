@@ -35,7 +35,7 @@ namespace boost {
                   const bgl_named_params<P,T,R>& params,
                   Weight)
     {
-      typedef typename property_traits<Weight>::value_type W;
+      typedef typename boost::property_traits<Weight>::value_type W;
       std::less<W> compare;
       detail::_project2nd<W,W> combine;
       dijkstra_shortest_paths(G, s, params.distance_compare(compare).
@@ -54,7 +54,7 @@ namespace boost {
      IndexMap index_map,
      DijkstraVisitor vis)
   {
-    typedef typename property_traits<WeightMap>::value_type W;
+    typedef typename boost::property_traits<WeightMap>::value_type W;
     std::less<W> compare;
     detail::_project2nd<W,W> combine;
     dijkstra_shortest_paths(g, s, predecessor, distance, weight, index_map,
@@ -82,8 +82,8 @@ namespace boost {
   {
     detail::prim_mst_impl
       (g, *vertices(g).first, predecessor_map(p_map).
-       weight_map(get(edge_weight, g)),
-       get(edge_weight, g));
+       weight_map(boost::get(edge_weight, g)),
+       boost::get(edge_weight, g));
   }
 
 } // namespace boost

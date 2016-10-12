@@ -49,7 +49,7 @@ namespace boost {
     typedef bucket_sorter<size_type, Vertex, Degree, ID> BucketSorter;
     
     BucketSorter degree_bucket_sorter(num, num, degree,  
-                                      get(vertex_index,G));
+                                      boost::get(vertex_index,G));
 
     smallest_last_vertex_ordering(G, order, degree, marker, degree_bucket_sorter);
   }
@@ -69,8 +69,8 @@ namespace boost {
     
     typename GraphTraits::vertex_iterator v, vend;
     for (boost::tie(v, vend) = vertices(G); v != vend; ++v) {
-      put(marker, *v, num);
-      put(degree, *v, out_degree(*v, G));
+      boost::put(marker, *v, num);
+      boost::put(degree, *v, out_degree(*v, G));
       degree_buckets.push(*v);
     }
  
@@ -84,28 +84,28 @@ namespace boost {
         minimum_degree_stack = degree_buckets[++minimum_degree];
       
       Vertex node = minimum_degree_stack.top();
-      put(order, current_order, node);
+      boost::put(order, current_order, node);
       
       if ( current_order == 0 ) //find all vertices
         break;
       
       minimum_degree_stack.pop();
-      put(marker, node, 0); //node has been ordered.
+      boost::put(marker, node, 0); //node has been ordered.
       
       typename GraphTraits::adjacency_iterator v, vend;
       for (boost::tie(v,vend) = adjacent_vertices(node, G); v != vend; ++v)
         
-        if ( get(marker,*v) > current_order ) { //*v is unordered vertex
-          put(marker, *v, current_order);  //mark the columns adjacent to node
+        if ( boost::get(marker,*v) > current_order ) { //*v is unordered vertex
+          boost::put(marker, *v, current_order);  //mark the columns adjacent to node
 
           //delete *v from the bucket sorter         
           degree_buckets.remove(*v);
  
           //It is possible minimum degree goes down
           //Here we keep tracking it.
-          put(degree, *v, get(degree, *v) - 1); 
+          boost::put(degree, *v, boost::get(degree, *v) - 1); 
           BOOST_USING_STD_MIN();
-          minimum_degree = min BOOST_PREVENT_MACRO_SUBSTITUTION(minimum_degree, get(degree, *v)); 
+          minimum_degree = min BOOST_PREVENT_MACRO_SUBSTITUTION(minimum_degree, boost::get(degree, *v)); 
           
           //reinsert *v in the bucket sorter with the new degree
           degree_buckets.push(*v);
@@ -123,15 +123,15 @@ namespace boost {
     typedef typename graph_traits<VertexListGraph>::vertex_descriptor vertex_descriptor;
     typedef typename graph_traits<VertexListGraph>::degree_size_type degree_size_type;
     smallest_last_vertex_ordering(G, order,
-                                  make_shared_array_property_map(num_vertices(G), degree_size_type(0), get(vertex_index, G)),
-                                  make_shared_array_property_map(num_vertices(G), (std::size_t)(0), get(vertex_index, G)));
+                                  make_shared_array_property_map(num_vertices(G), degree_size_type(0), boost::get(vertex_index, G)),
+                                  make_shared_array_property_map(num_vertices(G), (std::size_t)(0), boost::get(vertex_index, G)));
   }
 
   template <class VertexListGraph>
   std::vector<typename graph_traits<VertexListGraph>::vertex_descriptor>
   smallest_last_vertex_ordering(const VertexListGraph& G) {
     std::vector<typename graph_traits<VertexListGraph>::vertex_descriptor> o(num_vertices(G));
-    smallest_last_vertex_ordering(G, make_iterator_property_map(o.begin(), typed_identity_property_map<std::size_t>()));
+    smallest_last_vertex_ordering(G, boost::make_iterator_property_map(o.begin(), boost::typed_identity_property_map<std::size_t>()));
     return o;
   }
 }

@@ -40,7 +40,7 @@ namespace boost {
         bucket(_bucket), id(_id) { }
     
     void remove(const value_type& x) {
-      const size_type i = get(id, x);
+      const size_type i = boost::get(id, x);
       const size_type& next_node = next[i];
       const size_type& prev_node = prev[i];
     
@@ -55,7 +55,7 @@ namespace boost {
     }
 
     void push(const value_type& x) {
-      id_to_value[get(id, x)] = x;
+      id_to_value[boost::get(id, x)] = x;
       (*this)[bucket[x]].push(x);
     }
     
@@ -88,7 +88,7 @@ namespace boost {
         : bucket_id(_bucket_id), head(h), next(n), prev(p), value(v) {}
       
       void push(const value_type& x) {
-        const size_type new_head = get(id, x);
+        const size_type new_head = boost::get(id, x);
         const size_type current = head[bucket_id];
         if ( current != invalid_value() )
           prev[current] = new_head;

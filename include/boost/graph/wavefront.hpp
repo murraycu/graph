@@ -63,7 +63,7 @@ namespace boost {
   ith_wavefront(typename graph_traits<Graph>::vertex_descriptor i,
                 const Graph& g)
   {
-    return ith_wavefront(i, g, get(vertex_index, g));
+    return ith_wavefront(i, g, boost::get(vertex_index, g));
   }
 
 
@@ -83,7 +83,7 @@ namespace boost {
   typename graph_traits<Graph>::vertices_size_type
   max_wavefront(const Graph& g)
   {
-    return max_wavefront(g, get(vertex_index, g));
+    return max_wavefront(g, boost::get(vertex_index, g));
   }
 
 
@@ -104,7 +104,7 @@ namespace boost {
   double
   aver_wavefront(const Graph& g)
   {
-    return aver_wavefront(g, get(vertex_index, g));
+    return aver_wavefront(g, boost::get(vertex_index, g));
   }
 
 
@@ -126,7 +126,7 @@ namespace boost {
   double
   rms_wavefront(const Graph& g)
   {
-    return rms_wavefront(g, get(vertex_index, g));
+    return rms_wavefront(g, boost::get(vertex_index, g));
   }
  
   

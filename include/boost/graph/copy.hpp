@@ -106,10 +106,10 @@ namespace boost {
 
       template <typename Edge1, typename Edge2>
       void operator()(const Edge1& e1, Edge2& e2) const {
-        put(edge_all_map2, e2, get(edge_all_map1, add_reverse_edge_descriptor<Edge1, Graph1>::convert(e1)));
+        boost::put(edge_all_map2, e2, get(edge_all_map1, add_reverse_edge_descriptor<Edge1, Graph1>::convert(e1)));
       }
-      typename property_map<Graph1, edge_all_t>::const_type edge_all_map1;
-      mutable typename property_map<Graph2, edge_all_t>::type edge_all_map2;
+      typename boost::property_map<Graph1, edge_all_t>::const_type edge_all_map1;
+      mutable typename boost::property_map<Graph2, edge_all_t>::type edge_all_map2;
     };
     template <typename Graph1, typename Graph2>
     inline edge_copier<Graph1,Graph2>
@@ -126,10 +126,10 @@ namespace boost {
 
       template <typename Vertex1, typename Vertex2>
       void operator()(const Vertex1& v1, Vertex2& v2) const {
-        put(vertex_all_map2, v2, get(vertex_all_map1, v1));
+        boost::put(vertex_all_map2, v2, get(vertex_all_map1, v1));
       }
-      typename property_map<Graph1, vertex_all_t>::const_type vertex_all_map1;
-      mutable typename property_map<Graph2, vertex_all_t>::type
+      typename boost::property_map<Graph1, vertex_all_t>::const_type vertex_all_map1;
+      mutable typename boost::property_map<Graph2, vertex_all_t>::type
         vertex_all_map2;
     };
     template <typename Graph1, typename Graph2>
@@ -160,7 +160,7 @@ namespace boost {
         for (boost::tie(vi, vi_end) = vertices(g_in); vi != vi_end; ++vi) {
           typename graph_traits<MutableGraph>::vertex_descriptor
             new_v = add_vertex(g_out);
-          put(orig2copy, *vi, new_v);
+          boost::put(orig2copy, *vi, new_v);
           copy_vertex(*vi, new_v);
         }
         typename graph_traits<Graph>::edge_iterator ei, ei_end;
@@ -190,7 +190,7 @@ namespace boost {
         for (boost::tie(vi, vi_end) = vertices(g_in); vi != vi_end; ++vi) {
           typename graph_traits<MutableGraph>::vertex_descriptor
             new_v = add_vertex(g_out);
-          put(orig2copy, *vi, new_v);
+          boost::put(orig2copy, *vi, new_v);
           copy_vertex(*vi, new_v);
         }
         for (boost::tie(vi, vi_end) = vertices(g_in); vi != vi_end; ++vi) {
@@ -226,7 +226,7 @@ namespace boost {
         for (boost::tie(vi, vi_end) = vertices(g_in); vi != vi_end; ++vi) {
           typename graph_traits<MutableGraph>::vertex_descriptor
             new_v = add_vertex(g_out);
-          put(orig2copy, *vi, new_v);
+          boost::put(orig2copy, *vi, new_v);
           copy_vertex(*vi, new_v);
         }
         for (boost::tie(vi, vi_end) = vertices(g_in); vi != vi_end; ++vi) {
@@ -234,14 +234,14 @@ namespace boost {
           for (boost::tie(ei, ei_end) = out_edges(*vi, g_in); ei != ei_end; ++ei) {
             typename graph_traits<MutableGraph>::edge_descriptor new_e;
             bool inserted;
-            if (color[get(index_map, target(*ei, g_in))] == Color::white()) {
+            if (color[boost::get(index_map, target(*ei, g_in))] == Color::white()) {
               boost::tie(new_e, inserted) = add_edge(get(orig2copy, source(*ei,g_in)),
                                                      get(orig2copy, target(*ei,g_in)),
                                                      g_out);
               copy_edge(cvt::convert(*ei, g_in), new_e);
             }
           }
-          color[get(index_map, *vi)] = Color::black();
+          color[boost::get(index_map, *vi)] = Color::black();
         }
       }
     };
@@ -349,7 +349,7 @@ namespace boost {
       (g_in, g_out, 
        detail::make_vertex_copier(g_in, g_out), 
        detail::make_edge_copier(g_in, g_out), 
-       make_iterator_property_map(orig2copy.begin(), 
+       boost::make_iterator_property_map(orig2copy.begin(), 
                                   get(vertex_index, g_in), orig2copy[0]),
        get(vertex_index, g_in)
        );
@@ -377,7 +377,7 @@ namespace boost {
        detail::choose_edge_copier(get_param(params, edge_copy_t()), 
                                   g_in, g_out),
        choose_param(get_param(params, orig_to_copy_t()),
-                    make_iterator_property_map
+                    boost::make_iterator_property_map
                     (orig2copy.begin(), 
                      choose_const_pmap(get_param(params, vertex_index), 
                                  g_in, vertex_index), orig2copy[0])),
@@ -399,7 +399,7 @@ namespace boost {
       typename graph_traits<NewGraph>::vertex_descriptor copy_one_vertex(Vertex u) const {
         typename graph_traits<NewGraph>::vertex_descriptor
           new_u = add_vertex(g_out);
-        put(orig2copy, u, new_u);
+        boost::put(orig2copy, u, new_u);
         copy_vertex(u, new_u);
         return new_u;
       }
@@ -479,7 +479,7 @@ namespace boost {
        detail::choose_edge_copier(get_param(params, edge_copy_t()), 
                                   g_in, g_out),
        choose_param(get_param(params, orig_to_copy_t()),
-                    make_iterator_property_map
+                    boost::make_iterator_property_map
                     (orig2copy.begin(), 
                      choose_pmap(get_param(params, vertex_index), 
                                  g_in, vertex_index), orig2copy[0])),
@@ -500,7 +500,7 @@ namespace boost {
       (g_in, src, g_out,
        make_vertex_copier(g_in, g_out), 
        make_edge_copier(g_in, g_out), 
-       make_iterator_property_map(orig2copy.begin(), 
+       boost::make_iterator_property_map(orig2copy.begin(), 
                                   get(vertex_index, g_in), orig2copy[0]),
        bgl_named_params<char,char>('x') // dummy param object
        );

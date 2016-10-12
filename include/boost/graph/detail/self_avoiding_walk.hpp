@@ -49,14 +49,14 @@ namespace boost {
   /* Define a vertex property which has a triangle inside. Triangle is
     represented by a triple.  */
   struct triangle_tag { enum { num = 100 }; };
-  typedef property<triangle_tag,Triple> triangle_property;
+  typedef boost::property<triangle_tag,Triple> triangle_property;
 
   /* Define an edge property with a line. A line is represented by a
     pair.  This is not required for SAW though.
   */
   struct line_tag { enum { num = 101 }; };
   template <class T> struct line_property
-    : public property<line_tag, std::pair<T,T> > { };
+    : public boost::property<line_tag, std::pair<T,T> > { };
 
   /*Precondition: Points in a Triangle are in order */
   template <class Triangle, class Line>

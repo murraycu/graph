@@ -29,7 +29,7 @@ namespace boost {
     template <class ComponentsMap>
     class components_recorder : public dfs_visitor<>
     {
-      typedef typename property_traits<ComponentsMap>::value_type comp_type;
+      typedef typename boost::property_traits<ComponentsMap>::value_type comp_type;
     public:
       components_recorder(ComponentsMap c, 
                           comp_type& c_count)
@@ -44,7 +44,7 @@ namespace boost {
       }
       template <class Vertex, class Graph>
       void discover_vertex(Vertex u, Graph&) {
-        put(m_component, u, m_count);
+        boost::put(m_component, u, m_count);
       }
     protected:
       ComponentsMap m_component;
@@ -57,7 +57,7 @@ namespace boost {
   // graph using a single application of depth first search.
 
   template <class Graph, class ComponentMap, class P, class T, class R>
-  inline typename property_traits<ComponentMap>::value_type
+  inline typename boost::property_traits<ComponentMap>::value_type
   connected_components(const Graph& g, ComponentMap c, 
                        const bgl_named_params<P, T, R>& params
                        BOOST_GRAPH_ENABLE_IF_MODELS_PARM(Graph, vertex_list_graph_tag))
@@ -69,7 +69,7 @@ namespace boost {
     typedef typename boost::graph_traits<Graph>::directed_category directed;
     BOOST_STATIC_ASSERT((boost::is_same<directed, undirected_tag>::value));
 
-    typedef typename property_traits<ComponentMap>::value_type comp_type;
+    typedef typename boost::property_traits<ComponentMap>::value_type comp_type;
     // c_count initialized to "nil" (with nil represented by (max)())
     comp_type c_count((std::numeric_limits<comp_type>::max)());
     detail::components_recorder<ComponentMap> vis(c, c_count);
@@ -78,7 +78,7 @@ namespace boost {
   }
 
   template <class Graph, class ComponentMap>
-  inline typename property_traits<ComponentMap>::value_type
+  inline typename boost::property_traits<ComponentMap>::value_type
   connected_components(const Graph& g, ComponentMap c
                        BOOST_GRAPH_ENABLE_IF_MODELS_PARM(Graph, vertex_list_graph_tag))
   {
@@ -89,7 +89,7 @@ namespace boost {
     // typedef typename boost::graph_traits<Graph>::directed_category directed;
     // BOOST_STATIC_ASSERT((boost::is_same<directed, undirected_tag>::value));
 
-    typedef typename property_traits<ComponentMap>::value_type comp_type;
+    typedef typename boost::property_traits<ComponentMap>::value_type comp_type;
     // c_count initialized to "nil" (with nil represented by (max)())
     comp_type c_count((std::numeric_limits<comp_type>::max)());
     detail::components_recorder<ComponentMap> vis(c, c_count);

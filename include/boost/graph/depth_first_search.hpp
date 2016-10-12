@@ -117,7 +117,7 @@ namespace boost {
       typedef typename graph_traits<IncidenceGraph>::vertex_descriptor Vertex;
       typedef typename graph_traits<IncidenceGraph>::edge_descriptor Edge;
       BOOST_CONCEPT_ASSERT(( ReadWritePropertyMapConcept<ColorMap, Vertex> ));
-      typedef typename property_traits<ColorMap>::value_type ColorValue;
+      typedef typename boost::property_traits<ColorMap>::value_type ColorValue;
       BOOST_CONCEPT_ASSERT(( ColorValueConcept<ColorValue> ));
       typedef color_traits<ColorValue> Color;
       typedef typename graph_traits<IncidenceGraph>::out_edge_iterator Iter;
@@ -130,7 +130,7 @@ namespace boost {
       // Possible optimization for vector
       //stack.reserve(num_vertices(g));
 
-      put(color, u, Color::gray());
+      boost::put(color, u, Color::gray());
       vis.discover_vertex(u, g);
       boost::tie(ei, ei_end) = out_edges(u, g);
       if (func(u, g)) {
@@ -153,13 +153,13 @@ namespace boost {
         while (ei != ei_end) {
           Vertex v = target(*ei, g);
           vis.examine_edge(*ei, g);
-          ColorValue v_color = get(color, v);
+          ColorValue v_color = boost::get(color, v);
           if (v_color == Color::white()) {
             vis.tree_edge(*ei, g);
             src_e = *ei;
             stack.push_back(std::make_pair(u, std::make_pair(src_e, std::make_pair(++ei, ei_end))));
             u = v;
-            put(color, u, Color::gray());
+            boost::put(color, u, Color::gray());
             vis.discover_vertex(u, g);
             boost::tie(ei, ei_end) = out_edges(u, g);
             if (func(u, g)) {
@@ -175,7 +175,7 @@ namespace boost {
             ++ei;
           }
         }
-        put(color, u, Color::black());
+        boost::put(color, u, Color::black());
         vis.finish_vertex(u, g);
       }
     }
@@ -194,24 +194,24 @@ namespace boost {
       BOOST_CONCEPT_ASSERT(( DFSVisitorConcept<DFSVisitor, IncidenceGraph> ));
       typedef typename graph_traits<IncidenceGraph>::vertex_descriptor Vertex;
       BOOST_CONCEPT_ASSERT(( ReadWritePropertyMapConcept<ColorMap, Vertex> ));
-      typedef typename property_traits<ColorMap>::value_type ColorValue;
+      typedef typename boost::property_traits<ColorMap>::value_type ColorValue;
       BOOST_CONCEPT_ASSERT(( ColorValueConcept<ColorValue> ));
       typedef color_traits<ColorValue> Color;
       typename graph_traits<IncidenceGraph>::out_edge_iterator ei, ei_end;
 
-      put(color, u, Color::gray());          vis.discover_vertex(u, g);
+      boost::put(color, u, Color::gray());          vis.discover_vertex(u, g);
 
       if (!func(u, g))
         for (boost::tie(ei, ei_end) = out_edges(u, g); ei != ei_end; ++ei) {
           Vertex v = target(*ei, g);           vis.examine_edge(*ei, g);
-          ColorValue v_color = get(color, v);
+          ColorValue v_color = boost::get(color, v);
           if (v_color == Color::white()) {     vis.tree_edge(*ei, g);
           depth_first_visit_impl(g, v, vis, color, func);
           } else if (v_color == Color::gray()) vis.back_edge(*ei, g);
           else                                 vis.forward_or_cross_edge(*ei, g);
           call_finish_edge(vis, *ei, g);
         }
-      put(color, u, Color::black());         vis.finish_vertex(u, g);
+      boost::put(color, u, Color::black());         vis.finish_vertex(u, g);
     }
 
 #endif
@@ -225,13 +225,13 @@ namespace boost {
   {
     typedef typename graph_traits<VertexListGraph>::vertex_descriptor Vertex;
     BOOST_CONCEPT_ASSERT(( DFSVisitorConcept<DFSVisitor, VertexListGraph> ));
-    typedef typename property_traits<ColorMap>::value_type ColorValue;
+    typedef typename boost::property_traits<ColorMap>::value_type ColorValue;
     typedef color_traits<ColorValue> Color;
 
     typename graph_traits<VertexListGraph>::vertex_iterator ui, ui_end;
     for (boost::tie(ui, ui_end) = vertices(g); ui != ui_end; ++ui) {
       Vertex u = implicit_cast<Vertex>(*ui);
-      put(color, u, Color::white()); vis.initialize_vertex(u, g);
+      boost::put(color, u, Color::white()); vis.initialize_vertex(u, g);
     }
 
     if (start_vertex != detail::get_default_starting_vertex(g)){ vis.start_vertex(start_vertex, g);
@@ -241,7 +241,7 @@ namespace boost {
 
     for (boost::tie(ui, ui_end) = vertices(g); ui != ui_end; ++ui) {
       Vertex u = implicit_cast<Vertex>(*ui);
-      ColorValue u_color = get(color, u);
+      ColorValue u_color = boost::get(color, u);
       if (u_color == Color::white()) {       vis.start_vertex(u, g);
         detail::depth_first_visit_impl(g, u, vis, color, detail::nontruth2());
       }

@@ -55,18 +55,18 @@ namespace boost {
         typedef typename boost::property_traits<ParityMap>::value_type parity_type;
         typedef typename boost::property_traits<InternalParityMap>::value_type internal_parity_type;
 
-        put(m_parity, u, internal_parity_type(0));
-        put(m_bestParity, u, parity_type(0));
+        boost::put(m_parity, u, internal_parity_type(0));
+        boost::put(m_bestParity, u, parity_type(0));
       }
 
       template < typename Edge, typename Graph >
       void examine_edge(Edge e, const Graph & g)
       {
-        weight_type w = get(m_weightMap, e);
+        weight_type w = boost::get(m_weightMap, e);
 
         // if the target of e is already marked then decrease cutweight
         // otherwise, increase it
-        if (get(m_parity, boost::target(e, g))) {
+        if (boost::get(m_parity, boost::target(e, g))) {
           m_cutweight -= w;
         } else {
           m_cutweight += w;
@@ -79,12 +79,12 @@ namespace boost {
         typedef typename boost::property_traits<InternalParityMap>::value_type internal_parity_type;
 
         ++m_visited;
-        put(m_parity, u, internal_parity_type(1));
+        boost::put(m_parity, u, internal_parity_type(1));
 
         if (m_cutweight < m_bestWeight && m_visited < num_vertices(g)) {
           m_bestWeight = m_cutweight;
           BGL_FORALL_VERTICES_T(i, g, Graph) {
-            put(m_bestParity,i, get(m_parity,i));
+            boost::put(m_bestParity,i, boost::get(m_parity,i));
           }
         }
       }
@@ -240,7 +240,7 @@ namespace graph {
 
       return stoer_wagner_min_cut(g, weights,
                                   parities, assignments, pq,
-                                  get(vertex_index, g));
+                                  boost::get(vertex_index, g));
     }
 } // end `namespace graph`
 } // end `namespace boost`

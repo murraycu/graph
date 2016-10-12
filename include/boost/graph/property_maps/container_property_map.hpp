@@ -19,9 +19,9 @@ namespace boost
     template <typename Graph, typename Key, typename Container>
     struct container_property_map
         : public boost::put_get_helper<
-                typename iterator_property_map<
+                typename boost::iterator_property_map<
                         typename Container::iterator,
-                        typename property_map<
+                        typename boost::property_map<
                                 Graph,
                                 typename detail::choose_indexer<Graph, Key>::index_type
                             >::type
@@ -31,9 +31,9 @@ namespace boost
     {
         typedef typename detail::choose_indexer<Graph, Key>::indexer_type indexer_type;
         typedef typename indexer_type::index_type index_type;
-        typedef iterator_property_map<
+        typedef boost::iterator_property_map<
                 typename Container::iterator,
-                typename property_map<Graph, index_type>::type
+                typename boost::property_map<Graph, index_type>::type
             > map_type;
         typedef typename map_type::key_type key_type;
         typedef typename map_type::value_type value_type;

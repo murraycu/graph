@@ -40,7 +40,7 @@ namespace boost
 //     }
 
 namespace detail {
-    // Note that this assumes T == property_traits<DistanceMap>::value_type
+    // Note that this assumes T == boost::property_traits<DistanceMap>::value_type
     // and that the args and return of combine are also T.
     template <typename Graph,
                 typename DistanceMap,
@@ -68,8 +68,8 @@ namespace detail {
         VertexIterator i, end;
         for(boost::tie(i, end) = vertices(g); i != end; ++i) {
             Vertex v = *i;
-            if(get(dist, v) != DistanceNumbers::infinity()) {
-                ret = combine(ret, get(dist, v));
+            if(boost::get(dist, v) != DistanceNumbers::infinity()) {
+                ret = combine(ret, boost::get(dist, v));
             }
             else {
                 ret = DistanceNumbers::infinity();

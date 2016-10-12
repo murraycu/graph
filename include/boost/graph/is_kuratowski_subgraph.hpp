@@ -118,7 +118,7 @@ namespace boost
     typedef typename graph_traits<Graph>::vertices_size_type v_size_t;
     typedef typename std::vector<vertex_t> v_list_t;
     typedef typename v_list_t::iterator v_list_iterator_t;
-    typedef iterator_property_map
+    typedef boost::iterator_property_map
       <typename std::vector<v_list_t>::iterator, VertexIndexMap> 
       vertex_to_v_list_map_t;
 
@@ -288,7 +288,7 @@ namespace boost
         jtr_end = neighbors[*itr].end();
         for(jtr = neighbors[*itr].begin(); jtr != jtr_end; ++jtr)
           {
-            if (get(vm,*itr) < get(vm,*jtr))
+            if (boost::get(vm,*itr) < boost::get(vm,*jtr))
               {
                 add_edge(contracted_vertex_map[*itr],
                          contracted_vertex_map[*jtr],
@@ -320,7 +320,7 @@ namespace boost
                               ForwardIterator end
                               )
   {
-    return is_kuratowski_subgraph(g, begin, end, get(vertex_index,g));
+    return is_kuratowski_subgraph(g, begin, end, boost::get(vertex_index,g));
   }
 
 

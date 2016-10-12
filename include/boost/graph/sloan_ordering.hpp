@@ -109,17 +109,17 @@ namespace boost {
                            ColorMap color, 
                            DegreeMap degree)
   {
-    typedef typename property_traits<DegreeMap>::value_type Degree;
+    typedef typename boost::property_traits<DegreeMap>::value_type Degree;
     typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
     typedef typename std::vector< typename graph_traits<Graph>::vertices_size_type>::iterator vec_iter;
     typedef typename graph_traits<Graph>::vertices_size_type size_type;
     
-    typedef typename property_map<Graph, vertex_index_t>::const_type VertexID;
+    typedef typename boost::property_map<Graph, vertex_index_t>::const_type VertexID;
     
     s = *(vertices(G).first);
     Vertex e = s;
     Vertex i;
-    Degree my_degree = get(degree, s ); 
+    Degree my_degree = boost::get(degree, s ); 
     Degree dummy, h_i, h_s, w_i, w_e;
     bool new_start = true;
     Degree maximum_degree = 0;
@@ -128,10 +128,10 @@ namespace boost {
     std::vector<typename graph_traits<Graph>::vertices_size_type> dist(num_vertices(G), 0);
 
     //Wrap a property_map_iterator around the std::iterator
-    boost::iterator_property_map<vec_iter, VertexID, size_type, size_type&> dist_pmap(dist.begin(), get(vertex_index, G));
+    boost::iterator_property_map<vec_iter, VertexID, size_type, size_type&> dist_pmap(dist.begin(), boost::get(vertex_index, G));
     
     //Creating a property_map for the indices of a vertex
-    typename property_map<Graph, vertex_index_t>::type index_map = get(vertex_index, G);
+    typename boost::property_map<Graph, vertex_index_t>::type index_map = boost::get(vertex_index, G);
     
     //Creating a priority queue
     typedef indirect_cmp<DegreeMap, std::greater<Degree> > Compare;
@@ -143,7 +143,7 @@ namespace boost {
     typename graph_traits<Graph>::vertex_iterator ui, ui_end;
     for (boost::tie(ui, ui_end) = vertices(G); ui != ui_end; ++ui)
     {
-      dummy = get(degree, *ui);
+      dummy = boost::get(degree, *ui);
       
       if(dummy < my_degree)
       {
@@ -184,7 +184,7 @@ namespace boost {
       std::vector<bool> shrink_trace(maximum_degree, false);
       for (boost::tie(ui, ui_end) = vertices(G); ui != ui_end; ++ui)
       {
-        dummy = get(degree, *ui);
+        dummy = boost::get(degree, *ui);
         
         if( (dist[index_map[*ui]] == h_s ) && ( !shrink_trace[ dummy ] ) )
         {
@@ -264,22 +264,22 @@ namespace boost {
                  Weight W1, 
                  Weight W2)
   {
-    //typedef typename property_traits<DegreeMap>::value_type Degree;
-    typedef typename property_traits<PriorityMap>::value_type Degree;
-    typedef typename property_traits<ColorMap>::value_type ColorValue;
+    //typedef typename boost::property_traits<DegreeMap>::value_type Degree;
+    typedef typename boost::property_traits<PriorityMap>::value_type Degree;
+    typedef typename boost::property_traits<ColorMap>::value_type ColorValue;
     typedef color_traits<ColorValue> Color;
     typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
     typedef typename std::vector<typename graph_traits<Graph>::vertices_size_type>::iterator vec_iter;
     typedef typename graph_traits<Graph>::vertices_size_type size_type;
 
-    typedef typename property_map<Graph, vertex_index_t>::const_type VertexID;
+    typedef typename boost::property_map<Graph, vertex_index_t>::const_type VertexID;
 
     
     //Creating a std-vector for storing the distance from the end vertex in it
     typename std::vector<typename graph_traits<Graph>::vertices_size_type> dist(num_vertices(g), 0);
     
     //Wrap a property_map_iterator around the std::iterator
-    boost::iterator_property_map<vec_iter, VertexID, size_type, size_type&> dist_pmap(dist.begin(), get(vertex_index, g)); 
+    boost::iterator_property_map<vec_iter, VertexID, size_type, size_type&> dist_pmap(dist.begin(), boost::get(vertex_index, g)); 
     
     breadth_first_search
       (g, e, visitor
@@ -289,16 +289,16 @@ namespace boost {
        );
     
     //Creating a property_map for the indices of a vertex
-    typename property_map<Graph, vertex_index_t>::type index_map = get(vertex_index, g);
+    typename boost::property_map<Graph, vertex_index_t>::type index_map = boost::get(vertex_index, g);
     
     //Sets the color and priority to their initial status
     Degree cdeg;    
     typename graph_traits<Graph>::vertex_iterator ui, ui_end;
     for (boost::tie(ui, ui_end) = vertices(g); ui != ui_end; ++ui)
     {
-        put(color, *ui, Color::white());
+        boost::put(color, *ui, Color::white());
         cdeg=get(degree, *ui)+1;
-        put(priority, *ui, W1*dist[index_map[*ui]]-W2*cdeg );  
+        boost::put(priority, *ui, W1*dist[index_map[*ui]]-W2*cdeg );  
     }
     
     //Priority list
@@ -310,7 +310,7 @@ namespace boost {
     typename graph_traits<Graph>::out_edge_iterator ei, ei_end, ei2, ei2_end;
     Vertex u, v, w;
 
-    put(color, s, Color::green());      //Sets the color of the starting vertex to gray
+    boost::put(color, s, Color::green());      //Sets the color of the starting vertex to gray
     priority_list.push_front(s);                 //Puts s into the priority_list
     
     while ( !priority_list.empty() ) 
@@ -320,18 +320,18 @@ namespace boost {
       u = priority_list.front();           //Accesses the last element in the priority list
       priority_list.pop_front();               //Removes the last element in the priority list
       
-      if(get(color, u) == Color::green() )
+      if(boost::get(color, u) == Color::green() )
       {
         //for-loop over all out-edges of vertex u
         for (boost::tie(ei, ei_end) = out_edges(u, g); ei != ei_end; ++ei) 
         {
           v = target(*ei, g);
           
-          put( priority, v, get(priority, v) + W2 ); //updates the priority
+          boost::put( priority, v, boost::get(priority, v) + W2 ); //updates the priority
           
-          if (get(color, v) == Color::white() )      //test if the vertex is inactive
+          if (boost::get(color, v) == Color::white() )      //test if the vertex is inactive
           {
-            put(color, v, Color::green() );        //giving the vertex a preactive status
+            boost::put(color, v, Color::green() );        //giving the vertex a preactive status
             priority_list.push_front(v);                     //writing the vertex in the priority_queue
           }           
         }
@@ -339,29 +339,29 @@ namespace boost {
       
       //Here starts step 8
       *permutation++ = u;                      //Puts u to the first position in the permutation-vector
-      put(color, u, Color::black() );          //Gives u an inactive status
+      boost::put(color, u, Color::black() );          //Gives u an inactive status
       
       //for loop over all the adjacent vertices of u
       for (boost::tie(ei, ei_end) = out_edges(u, g); ei != ei_end; ++ei) {
         
         v = target(*ei, g);     
         
-        if (get(color, v) == Color::green() ) {      //tests if the vertex is inactive
+        if (boost::get(color, v) == Color::green() ) {      //tests if the vertex is inactive
           
-          put(color, v, Color::red() );        //giving the vertex an active status
-          put(priority, v, get(priority, v)+W2);  //updates the priority        
+          boost::put(color, v, Color::red() );        //giving the vertex an active status
+          boost::put(priority, v, boost::get(priority, v)+W2);  //updates the priority        
           
           //for loop over alll adjacent vertices of v
           for (boost::tie(ei2, ei2_end) = out_edges(v, g); ei2 != ei2_end; ++ei2) {
             w = target(*ei2, g);
             
-            if(get(color, w) != Color::black() ) {     //tests if vertex is postactive
+            if(boost::get(color, w) != Color::black() ) {     //tests if vertex is postactive
               
-              put(priority, w, get(priority, w)+W2);  //updates the priority
+              boost::put(priority, w, boost::get(priority, w)+W2);  //updates the priority
               
-              if(get(color, w) == Color::white() ){
+              if(boost::get(color, w) == Color::white() ){
                 
-                put(color, w, Color::green() );   // gives the vertex a preactive status
+                boost::put(color, w, Color::green() );   // gives the vertex a preactive status
                 priority_list.push_front(w);           // puts the vertex into the priority queue
                 
               } //end if

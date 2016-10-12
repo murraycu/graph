@@ -165,10 +165,10 @@ namespace boost
         if (drawing[source_v].y > drawing[target_v].y)
           std::swap(source_v, target_v);
 
-        active_map_key_t key(get(drawing, source_v).y,
-                             get(drawing, target_v).y,
-                             get(drawing, source_v).x,
-                             get(drawing, target_v).x
+        active_map_key_t key(boost::get(drawing, source_v).y,
+                             boost::get(drawing, target_v).y,
+                             boost::get(drawing, source_v).x,
+                             boost::get(drawing, target_v).x
                              );
 
         active_map_iterator_t a_itr = active_edges.find(key);
@@ -242,7 +242,7 @@ namespace boost
   template <typename Graph, typename GridPositionMap>
   bool is_straight_line_drawing(const Graph& g, GridPositionMap drawing)
   {
-    return is_straight_line_drawing(g, drawing, get(vertex_index,g));
+    return is_straight_line_drawing(g, drawing, boost::get(vertex_index,g));
   }
 
 }

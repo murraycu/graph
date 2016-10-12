@@ -74,7 +74,7 @@ template <class Graph,
           class DistanceMap,
           class IndexMap>
 class bk_max_flow {
-  typedef typename property_traits<EdgeCapacityMap>::value_type tEdgeVal;
+  typedef typename boost::property_traits<EdgeCapacityMap>::value_type tEdgeVal;
   typedef graph_traits<Graph> tGraphTraits;
   typedef typename tGraphTraits::vertex_iterator vertex_iterator;
   typedef typename tGraphTraits::vertex_descriptor vertex_descriptor;
@@ -82,9 +82,9 @@ class bk_max_flow {
   typedef typename tGraphTraits::edge_iterator edge_iterator;
   typedef typename tGraphTraits::out_edge_iterator out_edge_iterator;
   typedef boost::queue<vertex_descriptor> tQueue;                               //queue of vertices, used in adoption-stage
-  typedef typename property_traits<ColorMap>::value_type tColorValue;
+  typedef typename boost::property_traits<ColorMap>::value_type tColorValue;
   typedef color_traits<tColorValue> tColorTraits;
-  typedef typename property_traits<DistanceMap>::value_type tDistanceVal;
+  typedef typename boost::property_traits<DistanceMap>::value_type tDistanceVal;
 
     public:
       bk_max_flow(Graph& g,
@@ -126,14 +126,14 @@ class bk_max_flow {
         // the residual capacity equal to the capacity
         edge_iterator ei, e_end;
         for(boost::tie(ei, e_end) = edges(m_g); ei != e_end; ++ei) {
-          put(m_res_cap_map, *ei, get(m_cap_map, *ei));
-          BOOST_ASSERT(get(m_rev_edge_map, get(m_rev_edge_map, *ei)) == *ei); //check if the reverse edge map is build up properly
+          boost::put(m_res_cap_map, *ei, boost::get(m_cap_map, *ei));
+          BOOST_ASSERT(boost::get(m_rev_edge_map, boost::get(m_rev_edge_map, *ei)) == *ei); //check if the reverse edge map is build up properly
         }
         //init the search trees with the two terminals
         set_tree(m_source, tColorTraits::black());
         set_tree(m_sink, tColorTraits::white());
-        put(m_time_map, m_source, 1);
-        put(m_time_map, m_sink, 1);
+        boost::put(m_time_map, m_source, 1);
+        boost::put(m_time_map, m_sink, 1);
       }
 
       tEdgeVal max_flow(){
@@ -169,8 +169,8 @@ class bk_max_flow {
           edge_descriptor from_source = *ei;
           vertex_descriptor current_node = target(from_source, m_g);
           if(current_node == m_sink){
-            tEdgeVal cap = get(m_res_cap_map, from_source);
-            put(m_res_cap_map, from_source, 0);
+            tEdgeVal cap = boost::get(m_res_cap_map, from_source);
+            boost::put(m_res_cap_map, from_source, 0);
             m_flow += cap;
             continue;
           }
@@ -178,52 +178,52 @@ class bk_max_flow {
           bool is_there;
           boost::tie(to_sink, is_there) = lookup_edge(current_node, m_sink, m_g);
           if(is_there){
-            tEdgeVal cap_from_source = get(m_res_cap_map, from_source);
-            tEdgeVal cap_to_sink = get(m_res_cap_map, to_sink);
+            tEdgeVal cap_from_source = boost::get(m_res_cap_map, from_source);
+            tEdgeVal cap_to_sink = boost::get(m_res_cap_map, to_sink);
             if(cap_from_source > cap_to_sink){
               set_tree(current_node, tColorTraits::black());
               add_active_node(current_node);
               set_edge_to_parent(current_node, from_source);
-              put(m_dist_map, current_node, 1);
-              put(m_time_map, current_node, 1);
+              boost::put(m_dist_map, current_node, 1);
+              boost::put(m_time_map, current_node, 1);
               // add stuff to flow and update residuals. we dont need to
               // update reverse_edges, as incoming/outgoing edges to/from
               // source/sink don't count for max-flow
-              put(m_res_cap_map, from_source, get(m_res_cap_map, from_source) - cap_to_sink);
-              put(m_res_cap_map, to_sink, 0);
+              boost::put(m_res_cap_map, from_source, boost::get(m_res_cap_map, from_source) - cap_to_sink);
+              boost::put(m_res_cap_map, to_sink, 0);
               m_flow += cap_to_sink;
             } else if(cap_to_sink > 0){
               set_tree(current_node, tColorTraits::white());
               add_active_node(current_node);
               set_edge_to_parent(current_node, to_sink);
-              put(m_dist_map, current_node, 1);
-              put(m_time_map, current_node, 1);
+              boost::put(m_dist_map, current_node, 1);
+              boost::put(m_time_map, current_node, 1);
               // add stuff to flow and update residuals. we dont need to update
               // reverse_edges, as incoming/outgoing edges to/from source/sink
               // don't count for max-flow
-              put(m_res_cap_map, to_sink, get(m_res_cap_map, to_sink) - cap_from_source);
-              put(m_res_cap_map, from_source, 0);
+              boost::put(m_res_cap_map, to_sink, boost::get(m_res_cap_map, to_sink) - cap_from_source);
+              boost::put(m_res_cap_map, from_source, 0);
               m_flow += cap_from_source;
             }
-          } else if(get(m_res_cap_map, from_source)){
+          } else if(boost::get(m_res_cap_map, from_source)){
             // there is no sink connect, so we can't augment this path, but to
             // avoid adding m_source to the active nodes, we just activate this
             // node and set the approciate things
             set_tree(current_node, tColorTraits::black());
             set_edge_to_parent(current_node, from_source);
-            put(m_dist_map, current_node, 1);
-            put(m_time_map, current_node, 1);
+            boost::put(m_dist_map, current_node, 1);
+            boost::put(m_time_map, current_node, 1);
             add_active_node(current_node);
           }
         }
         for(boost::tie(ei, e_end) = out_edges(m_sink, m_g); ei != e_end; ++ei){
-          edge_descriptor to_sink = get(m_rev_edge_map, *ei);
+          edge_descriptor to_sink = boost::get(m_rev_edge_map, *ei);
           vertex_descriptor current_node = source(to_sink, m_g);
-          if(get(m_res_cap_map, to_sink)){
+          if(boost::get(m_res_cap_map, to_sink)){
             set_tree(current_node, tColorTraits::white());
             set_edge_to_parent(current_node, to_sink);
-            put(m_dist_map, current_node, 1);
-            put(m_time_map, current_node, 1);
+            boost::put(m_dist_map, current_node, 1);
+            boost::put(m_time_map, current_node, 1);
             add_active_node(current_node);
           }
         }
@@ -253,21 +253,21 @@ class bk_max_flow {
             }
             for(; m_last_grow_edge_it != m_last_grow_edge_end; ++m_last_grow_edge_it) {
               edge_descriptor out_edge = *m_last_grow_edge_it;
-              if(get(m_res_cap_map, out_edge) > 0){ //check if we have capacity left on this edge
+              if(boost::get(m_res_cap_map, out_edge) > 0){ //check if we have capacity left on this edge
                 vertex_descriptor other_node = target(out_edge, m_g);
                 if(get_tree(other_node) == tColorTraits::gray()){ //it's a free node
                   set_tree(other_node, tColorTraits::black()); //aquire other node to our search tree
                   set_edge_to_parent(other_node, out_edge);   //set us as parent
-                  put(m_dist_map, other_node, get(m_dist_map, current_node) + 1);  //and update the distance-heuristic
-                  put(m_time_map, other_node, get(m_time_map, current_node));
+                  boost::put(m_dist_map, other_node, boost::get(m_dist_map, current_node) + 1);  //and update the distance-heuristic
+                  boost::put(m_time_map, other_node, boost::get(m_time_map, current_node));
                   add_active_node(other_node);
                 } else if(get_tree(other_node) == tColorTraits::black()) {
                   // we do this to get shorter paths. check if we are nearer to
                   // the source as its parent is
                   if(is_closer_to_terminal(current_node, other_node)){
                     set_edge_to_parent(other_node, out_edge);
-                    put(m_dist_map, other_node, get(m_dist_map, current_node) + 1);
-                    put(m_time_map, other_node, get(m_time_map, current_node));
+                    boost::put(m_dist_map, other_node, boost::get(m_dist_map, current_node) + 1);
+                    boost::put(m_time_map, other_node, boost::get(m_time_map, current_node));
                   }
                 } else{
                   BOOST_ASSERT(get_tree(other_node)==tColorTraits::white());
@@ -286,21 +286,21 @@ class bk_max_flow {
               boost::tie(m_last_grow_edge_it, m_last_grow_edge_end) = out_edges(current_node, m_g);
             }
             for(; m_last_grow_edge_it != m_last_grow_edge_end; ++m_last_grow_edge_it){
-              edge_descriptor in_edge = get(m_rev_edge_map, *m_last_grow_edge_it);
-              if(get(m_res_cap_map, in_edge) > 0){ //check if there is capacity left
+              edge_descriptor in_edge = boost::get(m_rev_edge_map, *m_last_grow_edge_it);
+              if(boost::get(m_res_cap_map, in_edge) > 0){ //check if there is capacity left
                 vertex_descriptor other_node = source(in_edge, m_g);
                 if(get_tree(other_node) == tColorTraits::gray()){ //it's a free node
                   set_tree(other_node, tColorTraits::white());      //aquire that node to our search tree
                   set_edge_to_parent(other_node, in_edge);          //set us as parent
                   add_active_node(other_node);                      //activate that node
-                  put(m_dist_map, other_node, get(m_dist_map, current_node) + 1); //set its distance
-                  put(m_time_map, other_node, get(m_time_map, current_node));//and time
+                  boost::put(m_dist_map, other_node, boost::get(m_dist_map, current_node) + 1); //set its distance
+                  boost::put(m_time_map, other_node, boost::get(m_time_map, current_node));//and time
                 } else if(get_tree(other_node) == tColorTraits::white()){
                   if(is_closer_to_terminal(current_node, other_node)){
                     //we are closer to the sink than its parent is, so we "adopt" him
                     set_edge_to_parent(other_node, in_edge);
-                    put(m_dist_map, other_node, get(m_dist_map, current_node) + 1);
-                    put(m_time_map, other_node, get(m_time_map, current_node));
+                    boost::put(m_dist_map, other_node, boost::get(m_dist_map, current_node) + 1);
+                    boost::put(m_time_map, other_node, boost::get(m_time_map, current_node));
                   }
                 } else{
                   BOOST_ASSERT(get_tree(other_node)==tColorTraits::black());
@@ -341,18 +341,18 @@ class bk_max_flow {
         //now we push the found flow through the path
         //for each edge we saturate we have to look for the verts that belong to that edge, one of them becomes an orphans
         //now process the connecting edge
-        put(m_res_cap_map, e, get(m_res_cap_map, e) - bottleneck);
-        BOOST_ASSERT(get(m_res_cap_map, e) >= 0);
-        put(m_res_cap_map, get(m_rev_edge_map, e), get(m_res_cap_map, get(m_rev_edge_map, e)) + bottleneck);
+        boost::put(m_res_cap_map, e, boost::get(m_res_cap_map, e) - bottleneck);
+        BOOST_ASSERT(boost::get(m_res_cap_map, e) >= 0);
+        boost::put(m_res_cap_map, boost::get(m_rev_edge_map, e), boost::get(m_res_cap_map, boost::get(m_rev_edge_map, e)) + bottleneck);
 
         //now we follow the path back to the source
         vertex_descriptor current_node = source(e, m_g);
         while(current_node != m_source){
           edge_descriptor pred = get_edge_to_parent(current_node);
-          put(m_res_cap_map, pred, get(m_res_cap_map, pred) - bottleneck);
-          BOOST_ASSERT(get(m_res_cap_map, pred) >= 0);
-          put(m_res_cap_map, get(m_rev_edge_map, pred), get(m_res_cap_map, get(m_rev_edge_map, pred)) + bottleneck);
-          if(get(m_res_cap_map, pred) == 0){
+          boost::put(m_res_cap_map, pred, boost::get(m_res_cap_map, pred) - bottleneck);
+          BOOST_ASSERT(boost::get(m_res_cap_map, pred) >= 0);
+          boost::put(m_res_cap_map, boost::get(m_rev_edge_map, pred), boost::get(m_res_cap_map, boost::get(m_rev_edge_map, pred)) + bottleneck);
+          if(boost::get(m_res_cap_map, pred) == 0){
             set_no_parent(current_node);
             m_orphans.push_front(current_node);
           }
@@ -362,10 +362,10 @@ class bk_max_flow {
         current_node = target(e, m_g);
         while(current_node != m_sink){
           edge_descriptor pred = get_edge_to_parent(current_node);
-          put(m_res_cap_map, pred, get(m_res_cap_map, pred) - bottleneck);
-          BOOST_ASSERT(get(m_res_cap_map, pred) >= 0);
-          put(m_res_cap_map, get(m_rev_edge_map, pred), get(m_res_cap_map, get(m_rev_edge_map, pred)) + bottleneck);
-          if(get(m_res_cap_map, pred) == 0){
+          boost::put(m_res_cap_map, pred, boost::get(m_res_cap_map, pred) - bottleneck);
+          BOOST_ASSERT(boost::get(m_res_cap_map, pred) >= 0);
+          boost::put(m_res_cap_map, boost::get(m_rev_edge_map, pred), boost::get(m_res_cap_map, boost::get(m_rev_edge_map, pred)) + bottleneck);
+          if(boost::get(m_res_cap_map, pred) == 0){
             set_no_parent(current_node);
             m_orphans.push_front(current_node);
           }
@@ -381,19 +381,19 @@ class bk_max_flow {
        */
       inline tEdgeVal find_bottleneck(edge_descriptor e){
         BOOST_USING_STD_MIN();
-        tEdgeVal minimum_cap = get(m_res_cap_map, e);
+        tEdgeVal minimum_cap = boost::get(m_res_cap_map, e);
         vertex_descriptor current_node = source(e, m_g);
         //first go back in the source tree
         while(current_node != m_source){
           edge_descriptor pred = get_edge_to_parent(current_node);
-          minimum_cap = min BOOST_PREVENT_MACRO_SUBSTITUTION(minimum_cap, get(m_res_cap_map, pred));
+          minimum_cap = min BOOST_PREVENT_MACRO_SUBSTITUTION(minimum_cap, boost::get(m_res_cap_map, pred));
           current_node = source(pred, m_g);
         }
         //then go forward in the sink-tree
         current_node = target(e, m_g);
         while(current_node != m_sink){
           edge_descriptor pred = get_edge_to_parent(current_node);
-          minimum_cap = min BOOST_PREVENT_MACRO_SUBSTITUTION(minimum_cap, get(m_res_cap_map, pred));
+          minimum_cap = min BOOST_PREVENT_MACRO_SUBSTITUTION(minimum_cap, boost::get(m_res_cap_map, pred));
           current_node = target(pred, m_g);
         }
         return minimum_cap;
@@ -421,13 +421,13 @@ class bk_max_flow {
             edge_descriptor new_parent_edge;
             out_edge_iterator ei, e_end;
             for(boost::tie(ei, e_end) = out_edges(current_node, m_g); ei != e_end; ++ei){
-              const edge_descriptor in_edge = get(m_rev_edge_map, *ei);
+              const edge_descriptor in_edge = boost::get(m_rev_edge_map, *ei);
               BOOST_ASSERT(target(in_edge, m_g) == current_node); //we should be the target of this edge
-              if(get(m_res_cap_map, in_edge) > 0){
+              if(boost::get(m_res_cap_map, in_edge) > 0){
                 vertex_descriptor other_node = source(in_edge, m_g);
                 if(get_tree(other_node) == tColorTraits::black() && has_source_connect(other_node)){
-                  if(get(m_dist_map, other_node) < min_distance){
-                    min_distance = get(m_dist_map, other_node);
+                  if(boost::get(m_dist_map, other_node) < min_distance){
+                    min_distance = boost::get(m_dist_map, other_node);
                     new_parent_edge = in_edge;
                   }
                 }
@@ -435,15 +435,15 @@ class bk_max_flow {
             }
             if(min_distance != (std::numeric_limits<tDistanceVal>::max)()){
               set_edge_to_parent(current_node, new_parent_edge);
-              put(m_dist_map, current_node, min_distance + 1);
-              put(m_time_map, current_node, m_time);
+              boost::put(m_dist_map, current_node, min_distance + 1);
+              boost::put(m_time_map, current_node, m_time);
             } else{
-              put(m_time_map, current_node, 0);
+              boost::put(m_time_map, current_node, 0);
               for(boost::tie(ei, e_end) = out_edges(current_node, m_g); ei != e_end; ++ei){
-                edge_descriptor in_edge = get(m_rev_edge_map, *ei);
+                edge_descriptor in_edge = boost::get(m_rev_edge_map, *ei);
                 vertex_descriptor other_node = source(in_edge, m_g);
                 if(get_tree(other_node) == tColorTraits::black() && other_node != m_source){
-                  if(get(m_res_cap_map, in_edge) > 0){
+                  if(boost::get(m_res_cap_map, in_edge) > 0){
                     add_active_node(other_node);
                   }
                   if(has_parent(other_node) && source(get_edge_to_parent(other_node), m_g) == current_node){
@@ -465,26 +465,26 @@ class bk_max_flow {
             tDistanceVal min_distance = (std::numeric_limits<tDistanceVal>::max)();
             for(boost::tie(ei, e_end) = out_edges(current_node, m_g); ei != e_end; ++ei){
               const edge_descriptor out_edge = *ei;
-              if(get(m_res_cap_map, out_edge) > 0){
+              if(boost::get(m_res_cap_map, out_edge) > 0){
                 const vertex_descriptor other_node = target(out_edge, m_g);
                 if(get_tree(other_node) == tColorTraits::white() && has_sink_connect(other_node))
-                  if(get(m_dist_map, other_node) < min_distance){
-                    min_distance = get(m_dist_map, other_node);
+                  if(boost::get(m_dist_map, other_node) < min_distance){
+                    min_distance = boost::get(m_dist_map, other_node);
                     new_parent_edge = out_edge;
                   }
               }
             }
             if(min_distance != (std::numeric_limits<tDistanceVal>::max)()){
               set_edge_to_parent(current_node, new_parent_edge);
-              put(m_dist_map, current_node, min_distance + 1);
-              put(m_time_map, current_node, m_time);
+              boost::put(m_dist_map, current_node, min_distance + 1);
+              boost::put(m_time_map, current_node, m_time);
             } else{
-              put(m_time_map, current_node, 0);
+              boost::put(m_time_map, current_node, 0);
               for(boost::tie(ei, e_end) = out_edges(current_node, m_g); ei != e_end; ++ei){
                 const edge_descriptor out_edge = *ei;
                 const vertex_descriptor other_node = target(out_edge, m_g);
                 if(get_tree(other_node) == tColorTraits::white() && other_node != m_sink){
-                  if(get(m_res_cap_map, out_edge) > 0){
+                  if(boost::get(m_res_cap_map, out_edge) > 0){
                     add_active_node(other_node);
                   }
                   if(has_parent(other_node) && target(get_edge_to_parent(other_node), m_g) == current_node){
@@ -512,7 +512,7 @@ class bk_max_flow {
       //if it has no parent, this node can't be active (if its not source or sink)
       if(!has_parent(v) && v != m_source && v != m_sink){
             m_active_nodes.pop();
-            put(m_in_active_list_map, v, false);
+            boost::put(m_in_active_list_map, v, false);
           } else{
             BOOST_ASSERT(get_tree(v) == tColorTraits::black() || get_tree(v) == tColorTraits::white());
             return v;
@@ -525,13 +525,13 @@ class bk_max_flow {
        */
       inline void add_active_node(vertex_descriptor v){
         BOOST_ASSERT(get_tree(v) != tColorTraits::gray());
-        if(get(m_in_active_list_map, v)){
+        if(boost::get(m_in_active_list_map, v)){
           if (m_last_grow_vertex == v) {
               m_last_grow_vertex = graph_traits<Graph>::null_vertex();
           }
           return;
         } else{
-          put(m_in_active_list_map, v, true);
+          boost::put(m_in_active_list_map, v, true);
           m_active_nodes.push(v);
         }
       }
@@ -542,7 +542,7 @@ class bk_max_flow {
       inline void finish_node(vertex_descriptor v){
         BOOST_ASSERT(m_active_nodes.front() == v);
         m_active_nodes.pop();
-        put(m_in_active_list_map, v, false);
+        boost::put(m_in_active_list_map, v, false);
         m_last_grow_vertex = graph_traits<Graph>::null_vertex();
       }
 
@@ -560,7 +560,7 @@ class bk_max_flow {
        * white() for sink tree, gray() for no tree
        */
       inline tColorValue get_tree(vertex_descriptor v) const {
-        return get(m_tree_map, v);
+        return boost::get(m_tree_map, v);
       }
 
       /**
@@ -568,30 +568,30 @@ class bk_max_flow {
        * for sink tree, gray() for no tree
        */
       inline void set_tree(vertex_descriptor v, tColorValue t){
-        put(m_tree_map, v, t);
+        boost::put(m_tree_map, v, t);
       }
 
       /**
        * returns edge to parent vertex of v;
        */
       inline edge_descriptor get_edge_to_parent(vertex_descriptor v) const{
-        return get(m_pre_map, v);
+        return boost::get(m_pre_map, v);
       }
 
       /**
        * returns true if the edge stored in m_pre_map[v] is a valid entry
        */
       inline bool has_parent(vertex_descriptor v) const{
-        return get(m_has_parent_map, v);
+        return boost::get(m_has_parent_map, v);
       }
 
       /**
        * sets edge to parent vertex of v;
        */
       inline void set_edge_to_parent(vertex_descriptor v, edge_descriptor f_edge_to_parent){
-        BOOST_ASSERT(get(m_res_cap_map, f_edge_to_parent) > 0);
-        put(m_pre_map, v, f_edge_to_parent);
-        put(m_has_parent_map, v, true);
+        BOOST_ASSERT(boost::get(m_res_cap_map, f_edge_to_parent) > 0);
+        boost::put(m_pre_map, v, f_edge_to_parent);
+        boost::put(m_has_parent_map, v, true);
       }
 
       /**
@@ -599,7 +599,7 @@ class bk_max_flow {
        * entry an additional map)
        */
       inline void set_no_parent(vertex_descriptor v){
-        put(m_has_parent_map, v, false);
+        boost::put(m_has_parent_map, v, false);
       }
 
       /**
@@ -611,13 +611,13 @@ class bk_max_flow {
         tDistanceVal current_distance = 0;
         vertex_descriptor current_vertex = v;
         while(true){
-          if(get(m_time_map, current_vertex) == m_time){
+          if(boost::get(m_time_map, current_vertex) == m_time){
             //we found a node which was already checked this round. use it for distance calculations
-            current_distance += get(m_dist_map, current_vertex);
+            current_distance += boost::get(m_dist_map, current_vertex);
             break;
           }
           if(current_vertex == m_sink){
-            put(m_time_map, m_sink, m_time);
+            boost::put(m_time_map, m_sink, m_time);
             break;
           }
           if(has_parent(current_vertex)){
@@ -630,10 +630,10 @@ class bk_max_flow {
           }
         }
         current_vertex=v;
-        while(get(m_time_map, current_vertex) != m_time){
-          put(m_dist_map, current_vertex, current_distance);
+        while(boost::get(m_time_map, current_vertex) != m_time){
+          boost::put(m_dist_map, current_vertex, current_distance);
           --current_distance;
-          put(m_time_map, current_vertex, m_time);
+          boost::put(m_time_map, current_vertex, m_time);
           current_vertex = target(get_edge_to_parent(current_vertex), m_g);
         }
         return true;
@@ -648,13 +648,13 @@ class bk_max_flow {
         tDistanceVal current_distance = 0;
         vertex_descriptor current_vertex = v;
         while(true){
-          if(get(m_time_map, current_vertex) == m_time){
+          if(boost::get(m_time_map, current_vertex) == m_time){
             //we found a node which was already checked this round. use it for distance calculations
-            current_distance += get(m_dist_map, current_vertex);
+            current_distance += boost::get(m_dist_map, current_vertex);
             break;
           }
           if(current_vertex == m_source){
-            put(m_time_map, m_source, m_time);
+            boost::put(m_time_map, m_source, m_time);
             break;
           }
           if(has_parent(current_vertex)){
@@ -667,10 +667,10 @@ class bk_max_flow {
           }
         }
         current_vertex=v;
-        while(get(m_time_map, current_vertex) != m_time){
-            put(m_dist_map, current_vertex, current_distance);
+        while(boost::get(m_time_map, current_vertex) != m_time){
+            boost::put(m_dist_map, current_vertex, current_distance);
             --current_distance;
-            put(m_time_map, current_vertex, m_time);
+            boost::put(m_time_map, current_vertex, m_time);
             current_vertex = source(get_edge_to_parent(current_vertex), m_g);
         }
         return true;
@@ -681,8 +681,8 @@ class bk_max_flow {
        */
       inline bool is_closer_to_terminal(vertex_descriptor p, vertex_descriptor q){
         //checks the timestamps first, to build no cycles, and after that the real distance
-        return (get(m_time_map, q) <= get(m_time_map, p) &&
-                get(m_dist_map, q) > get(m_dist_map, p)+1);
+        return (boost::get(m_time_map, q) <= boost::get(m_time_map, p) &&
+                boost::get(m_dist_map, q) > boost::get(m_dist_map, p)+1);
       }
 
       ////////
@@ -701,16 +701,16 @@ class bk_max_flow {
 
       tQueue m_active_nodes;
       std::vector<bool> m_in_active_list_vec;
-      iterator_property_map<std::vector<bool>::iterator, IndexMap> m_in_active_list_map;
+      boost::iterator_property_map<std::vector<bool>::iterator, IndexMap> m_in_active_list_map;
 
       std::list<vertex_descriptor> m_orphans;
       tQueue m_child_orphans; // we use a second queuqe for child orphans, as they are FIFO processed
 
       std::vector<bool> m_has_parent_vec;
-      iterator_property_map<std::vector<bool>::iterator, IndexMap> m_has_parent_map;
+      boost::iterator_property_map<std::vector<bool>::iterator, IndexMap> m_has_parent_map;
 
       std::vector<long> m_time_vec; //timestamp of each node, used for sink/source-path calculations
-      iterator_property_map<std::vector<long>::iterator, IndexMap> m_time_map;
+      boost::iterator_property_map<std::vector<long>::iterator, IndexMap> m_time_map;
       tEdgeVal m_flow;
       long m_time;
       vertex_descriptor m_last_grow_vertex;
@@ -731,7 +731,7 @@ template<class Graph,
          class ColorMap,
          class DistanceMap,
          class IndexMap>
-typename property_traits<CapacityEdgeMap>::value_type
+typename boost::property_traits<CapacityEdgeMap>::value_type
 boykov_kolmogorov_max_flow(Graph& g,
                            CapacityEdgeMap cap,
                            ResidualCapacityEdgeMap res_cap,
@@ -776,7 +776,7 @@ template<class Graph,
          class ResidualCapacityEdgeMap,
          class ReverseEdgeMap,
          class IndexMap>
-typename property_traits<CapacityEdgeMap>::value_type
+typename boost::property_traits<CapacityEdgeMap>::value_type
 boykov_kolmogorov_max_flow(Graph& g,
                            CapacityEdgeMap cap,
                            ResidualCapacityEdgeMap res_cap,
@@ -792,9 +792,9 @@ boykov_kolmogorov_max_flow(Graph& g,
   return
     boykov_kolmogorov_max_flow(
       g, cap, res_cap, rev,
-      make_iterator_property_map(predecessor_vec.begin(), idx),
-      make_iterator_property_map(color_vec.begin(), idx),
-      make_iterator_property_map(distance_vec.begin(), idx),
+      boost::make_iterator_property_map(predecessor_vec.begin(), idx),
+      boost::make_iterator_property_map(color_vec.begin(), idx),
+      boost::make_iterator_property_map(distance_vec.begin(), idx),
       idx, src, sink);
 }
 
@@ -809,7 +809,7 @@ template<class Graph,
          class ReverseEdgeMap,
          class ColorMap,
          class IndexMap>
-typename property_traits<CapacityEdgeMap>::value_type
+typename boost::property_traits<CapacityEdgeMap>::value_type
 boykov_kolmogorov_max_flow(Graph& g,
                            CapacityEdgeMap cap,
                            ResidualCapacityEdgeMap res_cap,
@@ -825,9 +825,9 @@ boykov_kolmogorov_max_flow(Graph& g,
   return
     boykov_kolmogorov_max_flow(
       g, cap, res_cap, rev,
-      make_iterator_property_map(predecessor_vec.begin(), idx),
+      boost::make_iterator_property_map(predecessor_vec.begin(), idx),
       color,
-      make_iterator_property_map(distance_vec.begin(), idx),
+      boost::make_iterator_property_map(distance_vec.begin(), idx),
       idx, src, sink);
 }
 
@@ -835,7 +835,7 @@ boykov_kolmogorov_max_flow(Graph& g,
  * named-parameter version, some given
  */
 template<class Graph, class P, class T, class R>
-typename property_traits<typename property_map<Graph, edge_capacity_t>::const_type>::value_type
+typename boost::property_traits<typename boost::property_map<Graph, edge_capacity_t>::const_type>::value_type
 boykov_kolmogorov_max_flow(Graph& g,
                            typename graph_traits<Graph>::vertex_descriptor src,
                            typename graph_traits<Graph>::vertex_descriptor sink,
@@ -858,7 +858,7 @@ boykov_kolmogorov_max_flow(Graph& g,
  * named-parameter version, none given
  */
 template<class Graph>
-typename property_traits<typename property_map<Graph, edge_capacity_t>::const_type>::value_type
+typename boost::property_traits<typename boost::property_map<Graph, edge_capacity_t>::const_type>::value_type
 boykov_kolmogorov_max_flow(Graph& g,
                            typename graph_traits<Graph>::vertex_descriptor src,
                            typename graph_traits<Graph>::vertex_descriptor sink)

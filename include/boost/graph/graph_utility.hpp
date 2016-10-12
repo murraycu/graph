@@ -321,16 +321,16 @@ namespace boost {
   // is x a descendant of y?
   template <typename ParentMap>
   inline bool is_descendant
-  (typename property_traits<ParentMap>::value_type x,
-   typename property_traits<ParentMap>::value_type y,
+  (typename boost::property_traits<ParentMap>::value_type x,
+   typename boost::property_traits<ParentMap>::value_type y,
    ParentMap parent) 
   {
-    if (get(parent, x) == x) // x is the root of the tree
+    if (boost::get(parent, x) == x) // x is the root of the tree
       return false;
-    else if (get(parent, x) == y)
+    else if (boost::get(parent, x) == y)
       return true;
     else
-      return is_descendant(get(parent, x), y, parent);
+      return is_descendant(boost::get(parent, x), y, parent);
   }
 
   // is y reachable from x?
@@ -341,7 +341,7 @@ namespace boost {
      const IncidenceGraph& g,
      VertexColorMap color) // should start out white for every vertex
   {
-    typedef typename property_traits<VertexColorMap>::value_type ColorValue;
+    typedef typename boost::property_traits<VertexColorMap>::value_type ColorValue;
     dfs_visitor<> vis;
     depth_first_visit(g, x, vis, color);
     return get(color, y) != color_traits<ColorValue>::white();
@@ -352,7 +352,7 @@ namespace boost {
   template <typename VertexListGraph, typename VertexColorMap>
   inline bool is_connected(const VertexListGraph& g, VertexColorMap color)
   {
-    typedef typename property_traits<VertexColorMap>::value_type ColorValue;
+    typedef typename boost::property_traits<VertexColorMap>::value_type ColorValue;
     typedef color_traits<ColorValue> Color;
     typename graph_traits<VertexListGraph>::vertex_iterator 
       ui, ui_end, vi, vi_end, ci, ci_end;
@@ -360,7 +360,7 @@ namespace boost {
       for (boost::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
         if (*ui != *vi) {
           for (boost::tie(ci, ci_end) = vertices(g); ci != ci_end; ++ci) 
-            put(color, *ci, Color::white());
+            boost::put(color, *ci, Color::white());
           if (! is_reachable(*ui, *vi, g, color))
             return false;
         }
@@ -407,7 +407,7 @@ namespace boost {
       template <typename Edge>
       void operator() (Edge stay, Edge away)
       {
-        put(ep, stay, get(ep, stay) + get(ep, away));
+        boost::put(ep, stay, get(ep, stay) + get(ep, away));
       }
       EdgeProperty  ep;
     };
@@ -415,10 +415,10 @@ namespace boost {
     // Same as above: edge property is capacity here
     template <typename Graph>
     struct add_removed_edge_capacity
-      : add_removed_edge_property<typename property_map<Graph, edge_capacity_t>::type>
+      : add_removed_edge_property<typename boost::property_map<Graph, edge_capacity_t>::type>
     {
-      typedef add_removed_edge_property<typename property_map<Graph, edge_capacity_t>::type> base;
-      add_removed_edge_capacity(Graph& g) : base(get(edge_capacity, g)) {}
+      typedef add_removed_edge_property<typename boost::property_map<Graph, edge_capacity_t>::type> base;
+      add_removed_edge_capacity(Graph& g) : base(boost::get(edge_capacity, g)) {}
     };    
 
     template <typename Graph>
@@ -450,14 +450,14 @@ namespace boost {
   void copy_vertex_property(PropertyIn p_in, PropertyOut p_out, Graph& g)
   {
     BGL_FORALL_VERTICES_T(u, g, Graph)
-      put(p_out, u, get(p_in, g));
+      boost::put(p_out, u, get(p_in, g));
   }
 
   template <class PropertyIn, class PropertyOut, class Graph>
   void copy_edge_property(PropertyIn p_in, PropertyOut p_out, Graph& g)
   {
     BGL_FORALL_EDGES_T(e, g, Graph)
-      put(p_out, e, get(p_in, g));
+      boost::put(p_out, e, get(p_in, g));
   }
 
   // Return true if property_map1 and property_map2 differ
@@ -471,7 +471,7 @@ namespace boost {
    const Graph& graph) {
   
     BGL_FORALL_VERTICES_T(vertex, graph, Graph) {
-      if (get(property_map1, vertex) !=
+      if (boost::get(property_map1, vertex) !=
           get(property_map2, vertex)) {
 
         return (true);

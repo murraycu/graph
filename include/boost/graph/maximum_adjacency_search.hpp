@@ -125,15 +125,15 @@ namespace boost {
      // initialize `assignments` (all vertices are initially
      // assigned to themselves)
      BGL_FORALL_VERTICES_T(v, g, Graph) {
-       put(assignments, v, v);
+       boost::put(assignments, v, v);
      }
 
       typename KeyedUpdatablePriorityQueue::key_map keys = pq.keys();
 
       // set number of visited neighbors for all vertices to 0
       BGL_FORALL_VERTICES_T(v, g, Graph) {
-        if (v == get(assignments, v)) { // foreach u \in V do
-          put(keys, v, weight_type(0));          vis.initialize_vertex(v, g);
+        if (v == boost::get(assignments, v)) { // foreach u \in V do
+          boost::put(keys, v, weight_type(0));          vis.initialize_vertex(v, g);
 
           pq.push(v);
         }
@@ -141,7 +141,7 @@ namespace boost {
       BOOST_ASSERT(pq.size() >= 2);
 
       // Give the starting vertex high priority
-      put(keys, start, get(keys, start) + num_vertices(g) + 1);
+      boost::put(keys, start, boost::get(keys, start) + num_vertices(g) + 1);
       pq.update(start);
 
       // start traversing the graph
@@ -149,16 +149,16 @@ namespace boost {
       weight_type w;
       while (!pq.empty()) { // while PQ \neq {} do
         const vertex_descriptor u = pq.top(); // u = extractmax(PQ)
-        w = get(keys, u);                        vis.start_vertex(u, g);
+        w = boost::get(keys, u);                        vis.start_vertex(u, g);
         pq.pop();                  //            vis.start_vertex(u, g);
 
         BGL_FORALL_OUTEDGES_T(u, e, g, Graph) { // foreach (u, v) \in E do
                                                  vis.examine_edge(e, g);
 
-          const vertex_descriptor v = get(assignments, target(e, g));
+          const vertex_descriptor v = boost::get(assignments, target(e, g));
 
           if (pq.contains(v)) { // if v \in PQ then
-            put(keys, v, get(keys, v) + get(weights, e)); // increasekey(PQ, v, wA(v) + w(u, v))
+            boost::put(keys, v, boost::get(keys, v) + boost::get(weights, e)); // increasekey(PQ, v, wA(v) + w(u, v))
             pq.update(v);
           }
         }
@@ -167,14 +167,14 @@ namespace boost {
         for (assignedVertexIt = assignedVertices.begin(); assignedVertexIt != assignedVertexEnd; ++assignedVertexIt) {
           const vertex_descriptor uPrime = *assignedVertexIt;
 
-          if (get(assignments, uPrime) == u) {
+          if (boost::get(assignments, uPrime) == u) {
             BGL_FORALL_OUTEDGES_T(uPrime, e, g, Graph) { // foreach (u, v) \in E do
                                                  vis.examine_edge(e, g);
 
-              const vertex_descriptor v = get(assignments, target(e, g));
+              const vertex_descriptor v = boost::get(assignments, target(e, g));
 
               if (pq.contains(v)) { // if v \in PQ then
-                put(keys, v, get(keys, v) + get(weights, e)); // increasekey(PQ, v, wA(v) + w(u, v))
+                boost::put(keys, v, boost::get(keys, v) + boost::get(weights, e)); // increasekey(PQ, v, wA(v) + w(u, v))
                 pq.update(v);
               }
             }
@@ -268,7 +268,7 @@ maximum_adjacency_search(const Graph& g, WeightMap weights, MASVisitor vis, cons
 
           boost::maximum_adjacency_search
                (g,
-                get(edge_weight, g),
+                boost::get(edge_weight, g),
                 params [ _visitor | make_mas_visitor(null_visitor())],
                 params [ _root_vertex | *vertices(g).first],
                 params [ _vertex_assignment_map | boost::detail::make_property_map_from_arg_pack_gen<boost::graph::keywords::tag::vertex_assignment_map, vertex_descriptor>(vertex_descriptor())(g, params)],

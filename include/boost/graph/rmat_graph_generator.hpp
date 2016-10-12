@@ -76,7 +76,7 @@ generate_permutation_vector(RandomGenerator& gen, std::vector<T>& vertexPermutat
 
 template <typename RandomGenerator, typename T>
 std::pair<T,T>
-generate_edge(shared_ptr<uniform_01<RandomGenerator> > prob, T n,
+generate_edge(shared_ptr<boost::uniform_01<RandomGenerator> > prob, T n,
               unsigned int SCALE, double a, double b, double c, double d)
 {
   T u = 0, v = 0;
@@ -213,7 +213,7 @@ namespace boost {
   private:
 
     // Parameters
-    boost::shared_ptr<uniform_01<RandomGenerator> > gen;
+    boost::shared_ptr<boost::uniform_01<RandomGenerator> > gen;
     vertices_size_type n;
     double a, b, c, d;
     int edge;
@@ -328,7 +328,7 @@ namespace boost {
   private:
 
     // Parameters
-    boost::shared_ptr<uniform_01<RandomGenerator> > gen;
+    boost::shared_ptr<boost::uniform_01<RandomGenerator> > gen;
     bool permute_vertices;
 
     // Internal data structures
@@ -442,7 +442,7 @@ namespace boost {
   private:
 
     // Parameters
-    boost::shared_ptr<uniform_01<RandomGenerator> > gen;
+    boost::shared_ptr<boost::uniform_01<RandomGenerator> > gen;
 
     // Internal data structures
     std::vector<value_type> values;
@@ -576,7 +576,7 @@ namespace boost {
   private:
 
     // Parameters
-    boost::shared_ptr<uniform_01<RandomGenerator> > gen;
+    boost::shared_ptr<boost::uniform_01<RandomGenerator> > gen;
     bool             bidirectional;
 
     // Internal data structures

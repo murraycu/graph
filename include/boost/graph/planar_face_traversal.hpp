@@ -65,7 +65,7 @@ namespace boost
     typedef typename graph_traits<Graph>::vertex_iterator vertex_iterator_t;
     typedef typename graph_traits<Graph>::edge_iterator edge_iterator_t;
     typedef typename 
-      property_traits<PlanarEmbedding>::value_type embedding_value_t;
+      boost::property_traits<PlanarEmbedding>::value_type embedding_value_t;
     typedef typename embedding_value_t::const_iterator embedding_iterator_t;
 
     typedef typename 
@@ -98,7 +98,7 @@ namespace boost
     visitor.begin_traversal();
 
     // Initialize the next_edge property map. This map is initialized from the
-    // PlanarEmbedding so that get(next_edge, e)[v] is the edge that comes
+    // PlanarEmbedding so that boost::get(next_edge, e)[v] is the edge that comes
     // after e in the clockwise embedding around vertex v.
 
     for(boost::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
@@ -109,9 +109,9 @@ namespace boost
         for(pi = pi_begin; pi != pi_end; ++pi)
           {
             edge_t e(*pi);
-            std::map<vertex_t, edge_t> m = get(next_edge, e);
+            std::map<vertex_t, edge_t> m = boost::get(next_edge, e);
             m[v] = boost::next(pi) == pi_end ? *pi_begin : *boost::next(pi);
-            put(next_edge, e, m);
+            boost::put(next_edge, e, m);
           } 
       }
 
@@ -152,7 +152,7 @@ namespace boost
           {
 
             vertex_t v(*vi);
-            std::set<vertex_t> e_visited = get(visited, e);
+            std::set<vertex_t> e_visited = boost::get(visited, e);
             typename std::set<vertex_t>::iterator e_visited_found 
               = e_visited.find(v);
             
@@ -164,10 +164,10 @@ namespace boost
                 visitor.next_vertex(v);
                 visitor.next_edge(e);
                 e_visited.insert(v);
-                put(visited, e, e_visited);
+                boost::put(visited, e, e_visited);
                 v = source(e,g) == v ? target(e,g) : source(e,g);
-                e = get(next_edge, e)[v];
-                e_visited = get(visited, e);
+                e = boost::get(next_edge, e)[v];
+                e_visited = boost::get(visited, e);
               }
             
             if (e_visited_found == e_visited.end())
@@ -202,7 +202,7 @@ namespace boost
                                     Visitor& visitor
                                     )
   {
-    planar_face_traversal(g, embedding, visitor, get(edge_index, g));
+    planar_face_traversal(g, embedding, visitor, boost::get(edge_index, g));
   }
 
 

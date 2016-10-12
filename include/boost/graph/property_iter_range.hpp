@@ -30,8 +30,8 @@ namespace boost {
 
   template <class Graph, class PropertyTag>
   class graph_property_iter_range {
-    typedef typename property_map<Graph, PropertyTag>::type map_type;
-    typedef typename property_map<Graph, PropertyTag>::const_type 
+    typedef typename boost::property_map<Graph, PropertyTag>::type map_type;
+    typedef typename boost::property_map<Graph, PropertyTag>::const_type 
       const_map_type;
     typedef typename property_kind<PropertyTag>::type Kind;
     typedef typename mpl::if_c<boost::is_same<Kind, vertex_property_tag>::value,

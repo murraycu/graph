@@ -51,15 +51,15 @@ namespace boost {
         typename graph_traits<CondensationGraph>::edge_descriptor e;
         bool inserted;
         boost::tie(e, inserted) = add_edge(s, t, cg);
-        put(edge_mult_map, e, 1);
+        boost::put(edge_mult_map, e, 1);
         ++i;
         while (i < adj.size()) {
           if (adj[i] == t)
-            put(edge_mult_map, e, get(edge_mult_map, e) + 1);
+            boost::put(edge_mult_map, e, boost::get(edge_mult_map, e) + 1);
           else {
             t = adj[i];
             boost::tie(e, inserted) = add_edge(s, t, cg);
-            put(edge_mult_map, e, 1);
+            boost::put(edge_mult_map, e, 1);
           }
           ++i;
         }

@@ -47,11 +47,11 @@ namespace boost {
 
     typename graph_traits<VertexListGraph>::vertex_iterator ui, ui_end;
     for (boost::tie(ui, ui_end) = vertices(g); ui != ui_end; ++ui) {
-      put(distance, *ui, inf);
-      put(pred, *ui, *ui);
+      boost::put(distance, *ui, inf);
+      boost::put(pred, *ui, *ui);
     }
 
-    put(distance, s, zero);
+    boost::put(distance, s, zero);
     vis.discover_vertex(s, g);
     typename std::vector<Vertex>::reverse_iterator i;
     for (i = rev_topo_order.rbegin(); i != rev_topo_order.rend(); ++i) {
@@ -86,7 +86,7 @@ namespace boost {
        DistanceMap distance, WeightMap weight, ColorMap color, IndexMap /*id*/,
        DijkstraVisitor vis, const Params& params)
     {
-      typedef typename property_traits<DistanceMap>::value_type D;
+      typedef typename boost::property_traits<DistanceMap>::value_type D;
       dummy_property_map p_map;
       D inf =
         choose_param(get_param(params, distance_inf_t()), 
@@ -113,7 +113,7 @@ namespace boost {
        DistanceMap distance, WeightMap weight, ColorMap color, IndexMap id,
        DijkstraVisitor vis, const Params& params)
     {
-      typedef typename property_traits<WeightMap>::value_type T;
+      typedef typename boost::property_traits<WeightMap>::value_type T;
       typename std::vector<T>::size_type n;
       n = is_default_param(distance) ? num_vertices(g) : 1;
       std::vector<T> distance_map(n);
@@ -123,11 +123,11 @@ namespace boost {
       dag_sp_dispatch2
         (g, s, 
          choose_param(distance, 
-                      make_iterator_property_map(distance_map.begin(), id,
+                      boost::make_iterator_property_map(distance_map.begin(), id,
                                                  distance_map[0])),
          weight, 
          choose_param(color,
-                      make_iterator_property_map(color_map.begin(), id, 
+                      boost::make_iterator_property_map(color_map.begin(), id, 
                                                  color_map[0])),
          id, vis, params);
     }

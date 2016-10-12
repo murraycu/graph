@@ -72,7 +72,7 @@ namespace boost
       return;
     typedef typename graph_traits < Graph >::vertex_descriptor vertex;
     typedef typename graph_traits < Graph >::vertex_iterator vertex_iterator;
-    typedef typename property_traits < VertexIndexMap >::value_type size_type;
+    typedef typename boost::property_traits< VertexIndexMap >::value_type size_type;
     typedef typename graph_traits <
       Graph >::adjacency_iterator adjacency_iterator;
 
@@ -85,7 +85,7 @@ namespace boost
 
     typedef size_type cg_vertex;
     std::vector < cg_vertex > component_number_vec(num_vertices(g));
-    iterator_property_map < cg_vertex *, VertexIndexMap, cg_vertex, cg_vertex& >
+    boost::iterator_property_map < cg_vertex *, VertexIndexMap, cg_vertex, cg_vertex& >
       component_number(&component_number_vec[0], index_map);
 
     int num_scc = strong_components(g, component_number,
@@ -256,13 +256,13 @@ namespace boost
   {
     if (num_vertices(g) == 0)
       return;
-    typedef typename property_map<Graph, vertex_index_t>::const_type
+    typedef typename boost::property_map<Graph, vertex_index_t>::const_type
       VertexIndexMap;
-    VertexIndexMap index_map = get(vertex_index, g);
+    VertexIndexMap index_map = boost::get(vertex_index, g);
 
     typedef typename graph_traits<GraphTC>::vertex_descriptor tc_vertex;
     std::vector<tc_vertex> to_tc_vec(num_vertices(g));
-    iterator_property_map < tc_vertex *, VertexIndexMap, tc_vertex, tc_vertex&>
+    boost::iterator_property_map < tc_vertex *, VertexIndexMap, tc_vertex, tc_vertex&>
       g_to_tc_map(&to_tc_vec[0], index_map);
 
     transitive_closure(g, tc, g_to_tc_map, index_map);
@@ -283,7 +283,7 @@ namespace boost
 
       transitive_closure
         (g, tc,
-         choose_param(g_to_tc_map, make_iterator_property_map
+         choose_param(g_to_tc_map, boost::make_iterator_property_map
                       (to_tc_vec.begin(), index_map, to_tc_vec[0])),
          index_map);
     }

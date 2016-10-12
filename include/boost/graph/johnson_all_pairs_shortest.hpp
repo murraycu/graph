@@ -44,7 +44,7 @@ namespace boost {
                DistanceZero zero)
   {
     typedef graph_traits<VertexAndEdgeListGraph> Traits1;
-    typedef typename property_traits<Weight>::value_type DT;
+    typedef typename boost::property_traits<Weight>::value_type DT;
     BOOST_CONCEPT_ASSERT(( BasicMatrixConcept<DistanceMatrix,
       typename Traits1::vertices_size_type, DT> ));
 
@@ -52,20 +52,20 @@ namespace boost {
     bool is_undirected = boost::is_same<DirCat, undirected_tag>::value;
 
     typedef adjacency_list<vecS, vecS, directedS, 
-      property< vertex_distance_t, DT>,
-      property< edge_weight_t, DT, 
-      property< edge_weight2_t, DT > > > Graph2;
+      boost::property< vertex_distance_t, DT>,
+      boost::property< edge_weight_t, DT, 
+      boost::property< edge_weight2_t, DT > > > Graph2;
     typedef graph_traits<Graph2> Traits2;
 
     Graph2 g2(num_vertices(g1) + 1);
-    typename property_map<Graph2, edge_weight_t>::type 
-      w = get(edge_weight, g2);
-    typename property_map<Graph2, edge_weight2_t>::type 
-      w_hat = get(edge_weight2, g2);
-    typename property_map<Graph2, vertex_distance_t>::type 
-      d = get(vertex_distance, g2);
-    typedef typename property_map<Graph2, vertex_index_t>::type VertexID2;
-    VertexID2 id2 = get(vertex_index, g2);
+    typename boost::property_map<Graph2, edge_weight_t>::type 
+      w = boost::get(edge_weight, g2);
+    typename boost::property_map<Graph2, edge_weight2_t>::type 
+      w_hat = boost::get(edge_weight2, g2);
+    typename boost::property_map<Graph2, vertex_distance_t>::type 
+      d = boost::get(vertex_distance, g2);
+    typedef typename boost::property_map<Graph2, vertex_index_t>::type VertexID2;
+    VertexID2 id2 = boost::get(vertex_index, g2);
 
     // Construct g2 where V[g2] = V[g1] U {s}
     //   and  E[g2] = E[g1] U {(s,v)| v in V[g1]}
@@ -77,20 +77,20 @@ namespace boost {
       int i = 1;
       for (boost::tie(v, v_end) = vertices(g1); v != v_end; ++v, ++i) {
         typename Traits2::edge_descriptor e; bool z;
-        boost::tie(e, z) = add_edge(s, get(id1, *v) + 1, g2);
-        put(w, e, zero);
+        boost::tie(e, z) = add_edge(s, boost::get(id1, *v) + 1, g2);
+        boost::put(w, e, zero);
         verts1[i] = *v;
       }
       typename Traits1::edge_iterator e, e_end;
       for (boost::tie(e, e_end) = edges(g1); e != e_end; ++e) {
         typename Traits2::edge_descriptor e2; bool z;
-        boost::tie(e2, z) = add_edge(get(id1, source(*e, g1)) + 1, 
-                                     get(id1, target(*e, g1)) + 1, g2);
-        put(w, e2, get(w1, *e));
+        boost::tie(e2, z) = add_edge(boost::get(id1, source(*e, g1)) + 1, 
+                                     boost::get(id1, target(*e, g1)) + 1, g2);
+        boost::put(w, e2, boost::get(w1, *e));
         if (is_undirected) {
-          boost::tie(e2, z) = add_edge(get(id1, target(*e, g1)) + 1, 
-                                       get(id1, source(*e, g1)) + 1, g2);
-          put(w, e2, get(w1, *e));
+          boost::tie(e2, z) = add_edge(boost::get(id1, target(*e, g1)) + 1, 
+                                       boost::get(id1, source(*e, g1)) + 1, g2);
+          boost::put(w, e2, boost::get(w1, *e));
         }
       }
     }
@@ -99,21 +99,21 @@ namespace boost {
     shared_array_property_map<DT,VertexID2> h(num_vertices(g2), id2);
 
     for (boost::tie(v, v_end) = vertices(g2); v != v_end; ++v)
-      put(d, *v, inf);
+      boost::put(d, *v, inf);
 
-    put(d, s, zero);
+    boost::put(d, s, zero);
     // Using the non-named parameter versions of bellman_ford and
     // dijkstra for portability reasons.
     dummy_property_map pred; bellman_visitor<> bvis;
     if (bellman_ford_shortest_paths
         (g2, num_vertices(g2), w, pred, d, combine, compare, bvis)) {
       for (boost::tie(v, v_end) = vertices(g2); v != v_end; ++v)
-        put(h, *v, get(d, *v));
+        boost::put(h, *v, boost::get(d, *v));
       // Reweight the edges to remove negatives
       for (boost::tie(e, e_end) = edges(g2); e != e_end; ++e) {
         typename Traits2::vertex_descriptor a = source(*e, g2),
           b = target(*e, g2);
-        put(w_hat, *e, combine((get(h, a) - get(h, b)), get(w, *e)));
+        boost::put(w_hat, *e, combine((boost::get(h, a) - boost::get(h, b)), boost::get(w, *e)));
       }
       for (boost::tie(u, u_end) = vertices(g2); u != u_end; ++u) {
         dijkstra_visitor<> dvis;
@@ -121,7 +121,7 @@ namespace boost {
           (g2, *u, pred, d, w_hat, id2, compare, combine, inf, zero,dvis);
         for (boost::tie(v, v_end) = vertices(g2); v != v_end; ++v) {
           if (*u != s && *v != s) {
-            D[get(id2, *u)-1][get(id2, *v)-1] = combine((get(h, *v) - get(h, *u)), get(d, *v));
+            D[boost::get(id2, *u)-1][boost::get(id2, *v)-1] = combine((boost::get(h, *v) - boost::get(h, *u)), boost::get(d, *v));
           }
         }
       }
@@ -137,7 +137,7 @@ namespace boost {
                DistanceMatrix& D,
                VertexID id1, Weight w1, DistanceZero zero)
   {
-    typedef typename property_traits<Weight>::value_type WT;
+    typedef typename boost::property_traits<Weight>::value_type WT;
     return johnson_all_pairs_shortest_paths(g1, D, id1, w1, 
                                             std::less<WT>(),
                                             closed_plus<WT>(),
@@ -156,7 +156,7 @@ namespace boost {
                      const bgl_named_params<P, T, R>& params,
                      Weight w, VertexID id)
     {
-      typedef typename property_traits<Weight>::value_type WT;
+      typedef typename boost::property_traits<Weight>::value_type WT;
       
       return johnson_all_pairs_shortest_paths
         (g, D, id, w,
@@ -193,7 +193,7 @@ namespace boost {
   {
     bgl_named_params<int,int> params(1);
     return detail::johnson_dispatch
-      (g, D, params, get(edge_weight, g), get(vertex_index, g));
+      (g, D, params, boost::get(edge_weight, g), boost::get(vertex_index, g));
   }
 
 } // namespace boost

@@ -77,7 +77,7 @@ namespace boost {
     
     void const_constraints(const Q& cq) {
       km = cq.keys();
-      k = get(km, g_ct);
+      k = boost::get(km, g_ct);
     }
     
     static const typename Buffer<Q>::value_type g_ct;

@@ -38,20 +38,20 @@ namespace boost {
 // basic property input
 
 template<class Tag, class Value, class Next>
-std::istream& operator >> ( std::istream& in, property<Tag,Value,Next>& p )
+std::istream& operator >> ( std::istream& in, boost::property<Tag,Value,Next>& p )
 {
         in >> p.m_value >> p.m_base; // houpla !!
         return in;
 }
 
 template<class Tag, class Value>
-std::istream& operator >> ( std::istream& in, property<Tag,Value,no_property>& p )
+std::istream& operator >> ( std::istream& in, boost::property<Tag,Value,no_property>& p )
 {
         in >> p.m_value;
         return in;
 }
 
-inline std::istream& operator >> ( std::istream& in, no_property& )
+inline std::istream& operator >> ( std::istream& in, boost::no_property& )
 {
         return in;
 }
@@ -63,14 +63,14 @@ inline std::istream& operator >> ( std::istream& in, no_property& )
 // get a single property tagged Stag
 template<class Tag, class Value, class Next, class V, class Stag>
 void get
-( property<Tag,Value,Next>& p, const V& v, Stag s )
+( boost::property<Tag,Value,Next>& p, const V& v, Stag s )
 {
         get( p.m_base,v,s );
 }
 
 template<class Value, class Next, class V, class Stag>
 void get
-( property<Stag,Value,Next>& p, const V& v, Stag )
+( boost::property<Stag,Value,Next>& p, const V& v, Stag )
 {
         p.m_value = v;
 }
@@ -79,7 +79,7 @@ void get
 template<class Tag, class Value, class Next, 
         class Stag, class Svalue, class Snext>
 void getSubset
-( property<Tag,Value,Next>& p, const property<Stag,Svalue,Snext>& s )
+( boost::property<Tag,Value,Next>& p, const boost::property<Stag,Svalue,Snext>& s )
 {
         get( p, s.m_value, Stag() );
         getSubset( p, s.m_base );
@@ -88,13 +88,13 @@ void getSubset
 template<class Tag, class Value, class Next, 
         class Stag, class Svalue>
 void getSubset
-( property<Tag,Value,Next>& p, const property<Stag,Svalue,no_property>& s)
+( boost::property<Tag,Value,Next>& p, const boost::property<Stag,Svalue,no_property>& s)
 {
         get( p, s.m_value, Stag() );
 }
 
 inline void getSubset
-( no_property&, const no_property& )
+( boost::no_property&, const boost::no_property& )
 {
 }
 
@@ -106,7 +106,7 @@ void getSubset(T& p, const U& s)
 }
 
 template<typename T>
-void getSubset(T&, const no_property&)
+void getSubset(T&, const boost::no_property&)
 {
 }
 
@@ -215,7 +215,7 @@ struct PropertyPrinter
         template<class Val>
         PropertyPrinter& operator () ( std::ostream& out, const Val& v )
         {
-                typename property_map<Graph,Tag>::const_type ps = get(Tag(), *graph);
+                typename boost::property_map<Graph,Tag>::const_type ps = get(Tag(), *graph);
                 out << ps[ v ] <<" ";
                 PropertyPrinter<Graph,Next> print(*graph);
                 print(out, v);
@@ -241,14 +241,14 @@ private:
 };
 
 template<class Graph, typename Tag, typename Value, typename Next>
-struct PropertyPrinter<Graph, property<Tag, Value, Next> >
+struct PropertyPrinter<Graph, boost::property<Tag, Value, Next> >
 {
         PropertyPrinter( const Graph& g ):graph(&g){}
         
         template<class Val>
         PropertyPrinter& operator () ( std::ostream& out, const Val& v )
         {
-                typename property_map<Graph,Tag>::const_type ps = get(Tag(), *graph);
+                typename boost::property_map<Graph,Tag>::const_type ps = get(Tag(), *graph);
                 out << ps[ v ] <<" ";
                 PropertyPrinter<Graph,Next> print(*graph);
                 print(out, v);
@@ -260,7 +260,7 @@ private:
 #endif
 
 template<class Graph>
-struct PropertyPrinter<Graph, no_property>
+struct PropertyPrinter<Graph, boost::no_property>
 {
         PropertyPrinter( const Graph& ){}
 

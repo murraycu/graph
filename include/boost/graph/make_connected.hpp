@@ -32,7 +32,7 @@ namespace boost
     typedef typename graph_traits<Graph>::vertex_iterator vertex_iterator_t;
     typedef typename graph_traits<Graph>::vertex_descriptor vertex_t;
     typedef typename graph_traits<Graph>::vertices_size_type v_size_t;
-    typedef iterator_property_map< typename std::vector<v_size_t>::iterator,
+    typedef boost::iterator_property_map< typename std::vector<v_size_t>::iterator,
                                    VertexIndexMap
                                   > vertex_to_v_size_map_t;
 
@@ -88,7 +88,7 @@ namespace boost
   template <typename Graph>
   inline void make_connected(Graph& g)
   {
-    make_connected(g, get(vertex_index,g));
+    make_connected(g, boost::get(vertex_index,g));
   }
 
 

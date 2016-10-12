@@ -62,7 +62,7 @@ namespace detail { namespace graph {
       vertex_descriptor v = source(e, g), w = target(e, g);
       incoming[w].clear();
       incoming[w].push_back(e);
-      put(path_count, w, get(path_count, v));
+      boost::put(path_count, w, get(path_count, v));
     }
 
     /**
@@ -73,15 +73,15 @@ namespace detail { namespace graph {
      */
     void edge_not_relaxed(edge_descriptor e, const Graph& g) 
     {
-      typedef typename property_traits<WeightMap>::value_type weight_type;
-      typedef typename property_traits<DistanceMap>::value_type distance_type;
+      typedef typename boost::property_traits<WeightMap>::value_type weight_type;
+      typedef typename boost::property_traits<DistanceMap>::value_type distance_type;
       vertex_descriptor v = source(e, g), w = target(e, g);
-      distance_type d_v = get(distance, v), d_w = get(distance, w);
-      weight_type w_e = get(weight, e);
+      distance_type d_v = boost::get(distance, v), d_w = boost::get(distance, w);
+      weight_type w_e = boost::get(weight, e);
 
       closed_plus<distance_type> combine;
       if (d_w == combine(d_v, w_e)) {
-        put(path_count, w, get(path_count, w) + get(path_count, v));
+        boost::put(path_count, w, get(path_count, w) + get(path_count, v));
         incoming[w].push_back(e);
       }
     }
@@ -177,9 +177,9 @@ namespace detail { namespace graph {
       {
         vertex_descriptor v = source(e, g);
         vertex_descriptor w = target(e, g);
-        put(distance, w, get(distance, v) + 1);
+        boost::put(distance, w, get(distance, v) + 1);
         
-        put(path_count, w, get(path_count, v));
+        boost::put(path_count, w, get(path_count, v));
         incoming[w].push_back(e);
       }
 
@@ -193,8 +193,8 @@ namespace detail { namespace graph {
       {
         vertex_descriptor v = source(e, g);
         vertex_descriptor w = target(e, g);
-        if (get(distance, w) == get(distance, v) + 1) {
-          put(path_count, w, get(path_count, w) + get(path_count, v));
+        if (boost::get(distance, w) == boost::get(distance, v) + 1) {
+          boost::put(path_count, w, get(path_count, w) + get(path_count, v));
           incoming[w].push_back(e);
         }
       }
@@ -227,7 +227,7 @@ namespace detail { namespace graph {
         colors(num_vertices(g), color_traits<default_color_type>::white());
       boost::queue<vertex_descriptor> Q;
       breadth_first_visit(g, s, Q, visitor, 
-                          make_iterator_property_map(colors.begin(), 
+                          boost::make_iterator_property_map(colors.begin(), 
                                                      vertex_index));
     }
   };
@@ -244,10 +244,10 @@ namespace detail { namespace graph {
   void 
   init_centrality_map(std::pair<Iter, Iter> keys, Centrality centrality_map)
   {
-    typedef typename property_traits<Centrality>::value_type 
+    typedef typename boost::property_traits<Centrality>::value_type 
       centrality_type;
     while (keys.first != keys.second) {
-      put(centrality_map, *keys.first, centrality_type(0));
+      boost::put(centrality_map, *keys.first, centrality_type(0));
       ++keys.first;
     }
   }
@@ -262,7 +262,7 @@ namespace detail { namespace graph {
   template<typename CentralityMap, typename Key, typename T>
   inline void 
   update_centrality(CentralityMap centrality_map, Key k, const T& x)
-  { put(centrality_map, k, get(centrality_map, k) + x); }
+  { boost::put(centrality_map, k, get(centrality_map, k) + x); }
 
   template<typename Iter>
   inline void 
@@ -273,9 +273,9 @@ namespace detail { namespace graph {
   divide_centrality_by_two(std::pair<Iter, Iter> keys, 
                            CentralityMap centrality_map)
   {
-    typename property_traits<CentralityMap>::value_type two(2);
+    typename boost::property_traits<CentralityMap>::value_type two(2);
     while (keys.first != keys.second) {
-      put(centrality_map, *keys.first, get(centrality_map, *keys.first) / two);
+      boost::put(centrality_map, *keys.first, get(centrality_map, *keys.first) / two);
       ++keys.first;
     }
   }
@@ -309,10 +309,10 @@ namespace detail { namespace graph {
       vertex_iterator w, w_end;
       for (boost::tie(w, w_end) = vertices(g); w != w_end; ++w) {
         incoming[*w].clear();
-        put(path_count, *w, 0);
-        put(dependency, *w, 0);
+        boost::put(path_count, *w, 0);
+        boost::put(dependency, *w, 0);
       }
-      put(path_count, *s, 1);
+      boost::put(path_count, *s, 1);
       
       // Execute the shortest paths algorithm. This will be either
       // Dijkstra's algorithm or a customized breadth-first search,
@@ -324,19 +324,19 @@ namespace detail { namespace graph {
         vertex_descriptor w = ordered_vertices.top();
         ordered_vertices.pop();
         
-        typedef typename property_traits<IncomingMap>::value_type
+        typedef typename boost::property_traits<IncomingMap>::value_type
           incoming_type;
         typedef typename incoming_type::iterator incoming_iterator;
-        typedef typename property_traits<DependencyMap>::value_type 
+        typedef typename boost::property_traits<DependencyMap>::value_type 
           dependency_type;
         
         for (incoming_iterator vw = incoming[w].begin();
              vw != incoming[w].end(); ++vw) {
           vertex_descriptor v = source(*vw, g);
-          dependency_type factor = dependency_type(get(path_count, v))
-            / dependency_type(get(path_count, w));
+          dependency_type factor = dependency_type(boost::get(path_count, v))
+            / dependency_type(boost::get(path_count, w));
           factor *= (dependency_type(1) + get(dependency, w));
-          put(dependency, v, get(dependency, v) + factor);
+          boost::put(dependency, v, get(dependency, v) + factor);
           update_centrality(edge_centrality_map, *vw, factor);
         }
         
@@ -425,7 +425,7 @@ namespace detail { namespace graph {
                                         dummy_property_map>::value),
                                          EdgeCentralityMap, 
                                CentralityMap>::type a_centrality_map;
-    typedef typename property_traits<a_centrality_map>::value_type 
+    typedef typename boost::property_traits<a_centrality_map>::value_type 
       centrality_type;
 
     typename graph_traits<Graph>::vertices_size_type V = num_vertices(g);
@@ -437,10 +437,10 @@ namespace detail { namespace graph {
 
     brandes_betweenness_centrality(
       g, centrality, edge_centrality_map,
-      make_iterator_property_map(incoming.begin(), vertex_index),
-      make_iterator_property_map(distance.begin(), vertex_index),
-      make_iterator_property_map(dependency.begin(), vertex_index),
-      make_iterator_property_map(path_count.begin(), vertex_index),
+      boost::make_iterator_property_map(incoming.begin(), vertex_index),
+      boost::make_iterator_property_map(distance.begin(), vertex_index),
+      boost::make_iterator_property_map(dependency.begin(), vertex_index),
+      boost::make_iterator_property_map(path_count.begin(), vertex_index),
       vertex_index,
       weight_map);
   }
@@ -460,7 +460,7 @@ namespace detail { namespace graph {
                                         dummy_property_map>::value),
                                          EdgeCentralityMap, 
                                CentralityMap>::type a_centrality_map;
-    typedef typename property_traits<a_centrality_map>::value_type 
+    typedef typename boost::property_traits<a_centrality_map>::value_type 
       centrality_type;
 
     typename graph_traits<Graph>::vertices_size_type V = num_vertices(g);
@@ -472,10 +472,10 @@ namespace detail { namespace graph {
 
     brandes_betweenness_centrality(
       g, centrality, edge_centrality_map,
-      make_iterator_property_map(incoming.begin(), vertex_index),
-      make_iterator_property_map(distance.begin(), vertex_index),
-      make_iterator_property_map(dependency.begin(), vertex_index),
-      make_iterator_property_map(path_count.begin(), vertex_index),
+      boost::make_iterator_property_map(incoming.begin(), vertex_index),
+      boost::make_iterator_property_map(distance.begin(), vertex_index),
+      boost::make_iterator_property_map(dependency.begin(), vertex_index),
+      boost::make_iterator_property_map(path_count.begin(), vertex_index),
       vertex_index);
   }
 
@@ -573,26 +573,26 @@ void
 relative_betweenness_centrality(const Graph& g, CentralityMap centrality)
 {
   typedef typename graph_traits<Graph>::vertex_iterator vertex_iterator;
-  typedef typename property_traits<CentralityMap>::value_type centrality_type;
+  typedef typename boost::property_traits<CentralityMap>::value_type centrality_type;
 
   typename graph_traits<Graph>::vertices_size_type n = num_vertices(g);
   centrality_type factor = centrality_type(2)/centrality_type(n*n - 3*n + 2);
   vertex_iterator v, v_end;
   for (boost::tie(v, v_end) = vertices(g); v != v_end; ++v) {
-    put(centrality, *v, factor * get(centrality, *v));
+    boost::put(centrality, *v, factor * get(centrality, *v));
   }
 }
 
 // Compute the central point dominance of a graph.
 template<typename Graph, typename CentralityMap>
-typename property_traits<CentralityMap>::value_type
+typename boost::property_traits<CentralityMap>::value_type
 central_point_dominance(const Graph& g, CentralityMap centrality
                         BOOST_GRAPH_ENABLE_IF_MODELS_PARM(Graph,vertex_list_graph_tag))
 {
   using std::max;
 
   typedef typename graph_traits<Graph>::vertex_iterator vertex_iterator;
-  typedef typename property_traits<CentralityMap>::value_type centrality_type;
+  typedef typename boost::property_traits<CentralityMap>::value_type centrality_type;
 
   typename graph_traits<Graph>::vertices_size_type n = num_vertices(g);
 

@@ -48,25 +48,25 @@ namespace boost {
     {
       typename graph_traits<Graph>::edge_descriptor e;
       typename graph_traits<Graph>::vertex_descriptor u;
-      typedef typename property_traits<ResCapMap>::value_type FlowValue;
+      typedef typename boost::property_traits<ResCapMap>::value_type FlowValue;
 
       // find minimum residual capacity along the augmenting path
       FlowValue delta = (std::numeric_limits<FlowValue>::max)();
-      e = get(p, sink);
+      e = boost::get(p, sink);
       do {
         BOOST_USING_STD_MIN();
-        delta = min BOOST_PREVENT_MACRO_SUBSTITUTION(delta, get(residual_capacity, e));
+        delta = min BOOST_PREVENT_MACRO_SUBSTITUTION(delta, boost::get(residual_capacity, e));
         u = source(e, g);
-        e = get(p, u);
+        e = boost::get(p, u);
       } while (u != src);
 
       // push delta units of flow along the augmenting path
-      e = get(p, sink);
+      e = boost::get(p, sink);
       do {
-        put(residual_capacity, e, get(residual_capacity, e) - delta);
-        put(residual_capacity, get(reverse_edge, e), get(residual_capacity, get(reverse_edge, e)) + delta);
+        boost::put(residual_capacity, e, boost::get(residual_capacity, e) - delta);
+        boost::put(residual_capacity, boost::get(reverse_edge, e), boost::get(residual_capacity, boost::get(reverse_edge, e)) + delta);
         u = source(e, g);
-        e = get(p, u);
+        e = boost::get(p, u);
       } while (u != src);
     }
 
@@ -75,7 +75,7 @@ namespace boost {
   template <class Graph, 
             class CapacityEdgeMap, class ResidualCapacityEdgeMap,
             class ReverseEdgeMap, class ColorMap, class PredEdgeMap>
-  typename property_traits<CapacityEdgeMap>::value_type
+  typename boost::property_traits<CapacityEdgeMap>::value_type
   edmonds_karp_max_flow
     (Graph& g, 
      typename graph_traits<Graph>::vertex_descriptor src,
@@ -87,29 +87,29 @@ namespace boost {
      PredEdgeMap pred)
   {
     typedef typename graph_traits<Graph>::vertex_descriptor vertex_t;
-    typedef typename property_traits<ColorMap>::value_type ColorValue;
+    typedef typename boost::property_traits<ColorMap>::value_type ColorValue;
     typedef color_traits<ColorValue> Color;
     
     typename graph_traits<Graph>::vertex_iterator u_iter, u_end;
     typename graph_traits<Graph>::out_edge_iterator ei, e_end;
     for (boost::tie(u_iter, u_end) = vertices(g); u_iter != u_end; ++u_iter)
       for (boost::tie(ei, e_end) = out_edges(*u_iter, g); ei != e_end; ++ei)
-        put(res, *ei, get(cap, *ei));
+        boost::put(res, *ei, boost::get(cap, *ei));
     
-    put(color, sink, Color::gray());
-    while (get(color, sink) != Color::white()) {
+    boost::put(color, sink, Color::gray());
+    while (boost::get(color, sink) != Color::white()) {
       boost::queue<vertex_t> Q;
       breadth_first_search
         (detail::residual_graph(g, res), src, Q,
          make_bfs_visitor(record_edge_predecessors(pred, on_tree_edge())),
          color);
-      if (get(color, sink) != Color::white())
+      if (boost::get(color, sink) != Color::white())
         detail::augment(g, src, sink, pred, res, rev);
     } // while
     
-    typename property_traits<CapacityEdgeMap>::value_type flow = 0;
+    typename boost::property_traits<CapacityEdgeMap>::value_type flow = 0;
     for (boost::tie(ei, e_end) = out_edges(src, g); ei != e_end; ++ei)
-      flow += (get(cap, *ei) - get(res, *ei));
+      flow += (boost::get(cap, *ei) - boost::get(res, *ei));
     return flow;
   } // edmonds_karp_max_flow()
   
@@ -161,7 +161,7 @@ namespace boost {
            choose_pmap(get_param(params, edge_residual_capacity), 
                        g, edge_residual_capacity),
            choose_const_pmap(get_param(params, edge_reverse), g, edge_reverse),
-           make_iterator_property_map(color_vec.begin(), choose_const_pmap
+           boost::make_iterator_property_map(color_vec.begin(), choose_const_pmap
                                       (get_param(params, vertex_index),
                                        g, vertex_index), color_vec[0]),
            pred);
@@ -208,7 +208,7 @@ namespace boost {
         typedef typename get_param_type< vertex_color_t, bgl_named_params<P,T,R> >::type C;
         return edmonds_karp_dispatch2<C>::apply
           (g, src, sink, 
-           make_iterator_property_map(pred_vec.begin(), choose_const_pmap
+           boost::make_iterator_property_map(pred_vec.begin(), choose_const_pmap
                                       (get_param(params, vertex_index),
                                        g, vertex_index), pred_vec[0]),
            params, 
@@ -232,8 +232,8 @@ namespace boost {
   }
 
   template <class Graph>
-  typename property_traits<
-    typename property_map<Graph, edge_capacity_t>::const_type
+  typename boost::property_traits<
+    typename boost::property_map<Graph, edge_capacity_t>::const_type
   >::value_type
   edmonds_karp_max_flow
     (Graph& g,

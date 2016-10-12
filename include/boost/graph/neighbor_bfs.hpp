@@ -141,10 +141,10 @@ namespace boost {
       BOOST_CONCEPT_ASSERT(( 
         NeighborBFSVisitorConcept<BFSVisitor, BidirectionalGraph> ));
       BOOST_CONCEPT_ASSERT(( ReadWritePropertyMapConcept<ColorMap, Vertex> ));
-      typedef typename property_traits<ColorMap>::value_type ColorValue;
+      typedef typename boost::property_traits<ColorMap>::value_type ColorValue;
       typedef color_traits<ColorValue> Color;
       
-      put(color, s, Color::gray());
+      boost::put(color, s, Color::gray());
       vis.discover_vertex(s, g);
       Q.push(s);
       while (! Q.empty()) {
@@ -157,10 +157,10 @@ namespace boost {
           Edge e = *ei;
           vis.examine_out_edge(e, g);
           Vertex v = target(e, g);
-          ColorValue v_color = get(color, v);
+          ColorValue v_color = boost::get(color, v);
           if (v_color == Color::white()) {
             vis.tree_out_edge(e, g);
-            put(color, v, Color::gray());
+            boost::put(color, v, Color::gray());
             vis.discover_vertex(v, g);
             Q.push(v);
           } else {
@@ -178,10 +178,10 @@ namespace boost {
           Edge e = *in_ei;
           vis.examine_in_edge(e, g);
           Vertex v = source(e, g);
-          ColorValue v_color = get(color, v);
+          ColorValue v_color = boost::get(color, v);
           if (v_color == Color::white()) {
             vis.tree_in_edge(e, g);
-            put(color, v, Color::gray());
+            boost::put(color, v, Color::gray());
             vis.discover_vertex(v, g);
             Q.push(v);
           } else {
@@ -193,7 +193,7 @@ namespace boost {
           }
         } // for in-edges
 
-        put(color, u, Color::black());
+        boost::put(color, u, Color::black());
         vis.finish_vertex(u, g);
       } // while
     }
@@ -214,11 +214,11 @@ namespace boost {
       typedef boost::queue<Vertex> queue_t;
       queue_t Q;
       // Initialization
-      typedef typename property_traits<ColorMap>::value_type ColorValue;
+      typedef typename boost::property_traits<ColorMap>::value_type ColorValue;
       typedef color_traits<ColorValue> Color;
       typename boost::graph_traits<VertexListGraph>::vertex_iterator i, i_end;
       for (boost::tie(i, i_end) = vertices(g); i != i_end; ++i) {
-        put(color, *i, Color::white());
+        boost::put(color, *i, Color::white());
         vis.initialize_vertex(*i, g);
       }
       neighbor_bfs_impl
@@ -263,7 +263,7 @@ namespace boost {
         
         neighbor_bfs_helper
           (g, s, 
-           make_iterator_property_map
+           boost::make_iterator_property_map
            (color_vec.begin(), 
             choose_const_pmap(get_param(params, vertex_index), 
                               g, vertex_index), color_vec[0]),

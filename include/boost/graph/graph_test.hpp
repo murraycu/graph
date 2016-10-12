@@ -35,8 +35,8 @@ namespace boost {
     typedef typename graph_traits<Graph>::degree_size_type deg_size_t;
     typedef typename graph_traits<Graph>::edges_size_type e_size_t;
     typedef typename graph_traits<Graph>::out_edge_iterator out_edge_iter;
-    typedef typename property_map<Graph, vertex_index_t>::type index_map_t;
-    typedef iterator_property_map<typename std::vector<vertex_t>::iterator,
+    typedef typename boost::property_map<Graph, vertex_index_t>::type index_map_t;
+    typedef boost::iterator_property_map<typename std::vector<vertex_t>::iterator,
       index_map_t,vertex_t,vertex_t&> IsoMap;
 
     struct ignore_vertex {
@@ -210,7 +210,7 @@ namespace boost {
     {
       Graph cpy;
       std::vector<vertex_t> iso_vec(num_vertices(g));
-      IsoMap iso_map(iso_vec.begin(), get(vertex_index, g));
+      IsoMap iso_map(iso_vec.begin(), boost::get(vertex_index, g));
       copy_graph(g, cpy, orig_to_copy(iso_map));
 
       BOOST_CHECK((verify_isomorphism(g, cpy, iso_map)));
@@ -231,7 +231,7 @@ namespace boost {
     {
       Graph cpy;
       std::vector<vertex_t> iso_vec(num_vertices(g));
-      IsoMap iso_map(iso_vec.begin(), get(vertex_index, g));
+      IsoMap iso_map(iso_vec.begin(), boost::get(vertex_index, g));
       copy_graph(g, cpy, orig_to_copy(iso_map));
 
       bool parallel_edge_exists = container_contains(adjacent_vertices(u, g), v);
@@ -272,7 +272,7 @@ namespace boost {
     {
       Graph cpy;
       std::vector<vertex_t> iso_vec(num_vertices(g));
-      IsoMap iso_map(iso_vec.begin(), get(vertex_index, g));
+      IsoMap iso_map(iso_vec.begin(), boost::get(vertex_index, g));
       copy_graph(g, cpy, orig_to_copy(iso_map));
 
       deg_size_t occurances = count(adjacent_vertices(u, g), v);
@@ -289,7 +289,7 @@ namespace boost {
     {
       Graph cpy;
       std::vector<vertex_t> iso_vec(num_vertices(g));
-      IsoMap iso_map(iso_vec.begin(), get(vertex_index, g));
+      IsoMap iso_map(iso_vec.begin(), boost::get(vertex_index, g));
       copy_graph(g, cpy, orig_to_copy(iso_map));
 
       vertex_t u = source(e, g), v = target(e, g);
@@ -308,7 +308,7 @@ namespace boost {
     {
       Graph cpy;
       std::vector<vertex_t> iso_vec(num_vertices(g));
-      IsoMap iso_map(iso_vec.begin(), get(vertex_index, g));
+      IsoMap iso_map(iso_vec.begin(), boost::get(vertex_index, g));
       copy_graph(g, cpy, orig_to_copy(iso_map));
 
       clear_vertex(v, g);
@@ -327,8 +327,8 @@ namespace boost {
     void test_readable_vertex_property_graph
       (const std::vector<PropVal>& vertex_prop, PropertyTag tag, const Graph& g)
     {
-      typedef typename property_map<Graph, PropertyTag>::const_type const_Map;
-      const_Map pmap = get(tag, g);
+      typedef typename boost::property_map<Graph, PropertyTag>::const_type const_Map;
+      const_Map pmap = boost::get(tag, g);
       typename std::vector<PropVal>::const_iterator i = vertex_prop.begin();
 
   for (typename boost::graph_traits<Graph>::vertex_iterator 
@@ -338,8 +338,8 @@ namespace boost {
          bgl_first_9 != bgl_last_9 ? (v = *bgl_first_9, true) : false;
          ++bgl_first_9) {
       //BGL_FORALL_VERTICES_T(v, g, Graph) {
-        typename property_traits<const_Map>::value_type 
-          pval1 = get(pmap, v), pval2 = get(tag, g, v);
+        typename boost::property_traits<const_Map>::value_type 
+          pval1 = boost::get(pmap, v), pval2 = boost::get(tag, g, v);
         BOOST_CHECK(pval1 == pval2);
         BOOST_CHECK(pval1 == *i++);
       }
@@ -349,8 +349,8 @@ namespace boost {
     void test_vertex_property_graph
       (const std::vector<PropVal>& vertex_prop, PropertyTag tag, Graph& g)
     {
-      typedef typename property_map<Graph, PropertyTag>::type PMap;
-      PMap pmap = get(tag, g);
+      typedef typename boost::property_map<Graph, PropertyTag>::type PMap;
+      PMap pmap = boost::get(tag, g);
       typename std::vector<PropVal>::const_iterator i = vertex_prop.begin();
   for (typename boost::graph_traits<Graph>::vertex_iterator 
            bgl_first_9 = vertices(g).first, bgl_last_9 = vertices(g).second;
@@ -359,16 +359,16 @@ namespace boost {
          bgl_first_9 != bgl_last_9 ? (v = *bgl_first_9, true) : false;
          ++bgl_first_9)
       //      BGL_FORALL_VERTICES_T(v, g, Graph)
-        put(pmap, v, *i++);
+        boost::put(pmap, v, *i++);
 
       test_readable_vertex_property_graph(vertex_prop, tag, g);
 
       BGL_FORALL_VERTICES_T(v, g, Graph)
-        put(pmap, v, vertex_prop[0]);
+        boost::put(pmap, v, vertex_prop[0]);
       
       typename std::vector<PropVal>::const_iterator j = vertex_prop.begin();
       BGL_FORALL_VERTICES_T(v, g, Graph)
-        put(tag, g, v, *j++);
+        boost::put(tag, g, v, *j++);
       
       test_readable_vertex_property_graph(vertex_prop, tag, g);      
     }

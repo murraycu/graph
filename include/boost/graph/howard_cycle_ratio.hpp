@@ -358,7 +358,7 @@ namespace boost {
       void improve_policy(vertex_t s, edge_t new_edge)
       {
         vertex_t t = target(m_policy[s], m_g);
-        typename property_traits<VertexIndexMap>::value_type ti = m_vim[t];
+        typename boost::property_traits<VertexIndexMap>::value_type ti = m_vim[t];
         m_inelc[ti].erase( std::find(m_inelc[ti].begin(), m_inelc[ti].end(), s));
         m_policy[s] = new_edge;
         t = target(new_edge, m_g);
@@ -577,11 +577,11 @@ maximum_cycle_mean(const Graph &g, VertexIndexMap vim,
                    FloatTraits ft = FloatTraits())
 {
     typedef typename remove_const<
-        typename property_traits<EdgeWeightMap>::value_type
+        typename boost::property_traits<EdgeWeightMap>::value_type
     >::type Weight;
     typename std::vector<Weight> ed_w2(boost::num_edges(g), 1);
     return maximum_cycle_ratio(g, vim, ewm,
-                               make_iterator_property_map(ed_w2.begin(), eim),
+                               boost::make_iterator_property_map(ed_w2.begin(), eim),
                                pcc, ft);
 }
 
@@ -611,11 +611,11 @@ minimum_cycle_mean(const Graph &g, VertexIndexMap vim,
                    FloatTraits ft = FloatTraits())
 {
     typedef typename remove_const<
-        typename property_traits<EdgeWeightMap>::value_type
+        typename boost::property_traits<EdgeWeightMap>::value_type
     >::type Weight;
     typename std::vector<Weight> ed_w2(boost::num_edges(g), 1);
     return minimum_cycle_ratio(g, vim, ewm,
-                               make_iterator_property_map(ed_w2.begin(), eim),
+                               boost::make_iterator_property_map(ed_w2.begin(), eim),
                                pcc, ft);
 }
 

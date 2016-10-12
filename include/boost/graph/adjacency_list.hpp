@@ -254,9 +254,9 @@ namespace boost {
   template <class OutEdgeListS = vecS, // a Sequence or an AssociativeContainer
             class VertexListS = vecS, // a Sequence or a RandomAccessContainer
             class DirectedS = directedS,
-            class VertexProperty = no_property,
-            class EdgeProperty = no_property,
-            class GraphProperty = no_property,
+            class VertexProperty = boost::no_property,
+            class EdgeProperty = boost::no_property,
+            class GraphProperty = boost::no_property,
             class EdgeListS = listS>
   class adjacency_list
     : public detail::adj_list_gen<

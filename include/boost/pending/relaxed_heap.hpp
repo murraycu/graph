@@ -29,7 +29,7 @@ namespace boost {
 
 template<typename IndexedType,
          typename Compare = std::less<IndexedType>,
-         typename ID = identity_property_map>
+         typename ID = boost::identity_property_map>
 class relaxed_heap
 {
   struct group;
@@ -143,13 +143,13 @@ public:
 
   void push(const value_type& x)
   {
-    groups[get(id, x)] = x;
+    groups[boost::get(id, x)] = x;
     update(x);
   }
 
   void update(const value_type& x)
   {
-    group* a = &index_to_group[get(id, x) / log_n];
+    group* a = &index_to_group[boost::get(id, x) / log_n];
     if (!a->value
         || *a->value == x
         || compare(x, *a->value)) {
@@ -162,8 +162,8 @@ public:
 
   void remove(const value_type& x)
   {
-    group* a = &index_to_group[get(id, x) / log_n];
-    assert(groups[get(id, x)]);
+    group* a = &index_to_group[boost::get(id, x) / log_n];
+    assert(groups[boost::get(id, x)]);
     a->value = x;
     a->kind = smallest_key;
     promote(a);
@@ -192,7 +192,7 @@ public:
   }
 
   bool contains(const value_type& x) const {
-    return static_cast<bool>(groups[get(id, x)]);
+    return static_cast<bool>(groups[boost::get(id, x)]);
   }
 
   void pop()
@@ -209,13 +209,13 @@ public:
       assert(x->value != none);
 
       // Find x's group
-      size_type start = get(id, *x->value) - get(id, *x->value) % log_n;
+      size_type start = boost::get(id, *x->value) - boost::get(id, *x->value) % log_n;
       size_type end = start + log_n;
       if (end > groups.size()) end = groups.size();
 
       // Remove the smallest value from the group, and find the new
       // smallest value.
-      groups[get(id, *x->value)].reset();
+      groups[boost::get(id, *x->value)].reset();
       x->value.reset();
       x->kind = largest_key;
       for (size_type i = start; i < end; ++i) {
@@ -288,7 +288,7 @@ public:
         if (end > groups.size()) end = groups.size();
         while (start != end) {
           if (groups[start]) {
-            out << " " << get(id, *groups[start]);
+            out << " " << boost::get(id, *groups[start]);
             if (*groups[start] == *c->value) out << "(*)";
           }
           ++start;

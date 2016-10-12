@@ -120,8 +120,8 @@ namespace boost {
     }
 
     for (boost::tie(i, end) = edges(g); i != end; ++i)
-      if (compare(combine(get(distance, source(*i, g)), get(weight, *i)),
-                  get(distance, target(*i,g))))
+      if (compare(combine(boost::get(distance, source(*i, g)), boost::get(weight, *i)),
+                  boost::get(distance, target(*i,g))))
       {
         v.edge_not_minimized(*i, g);
         return false;
@@ -143,15 +143,15 @@ namespace boost {
        Size N, WeightMap weight, PredecessorMap pred, DistanceMap distance,
        const bgl_named_params<P, T, R>& params)
     {
-      typedef typename property_traits<DistanceMap>::value_type D;
+      typedef typename boost::property_traits<DistanceMap>::value_type D;
       bellman_visitor<> null_vis;
-      typedef typename property_traits<WeightMap>::value_type weight_type;
+      typedef typename boost::property_traits<WeightMap>::value_type weight_type;
       typename graph_traits<VertexAndEdgeListGraph>::vertex_iterator v, v_end;
       for (boost::tie(v, v_end) = vertices(g); v != v_end; ++v) {
-        put(distance, *v, (std::numeric_limits<weight_type>::max)());
-        put(pred, *v, *v);
+        boost::put(distance, *v, (std::numeric_limits<weight_type>::max)());
+        boost::put(pred, *v, *v);
       }
-      put(distance, s, weight_type(0));
+      boost::put(distance, s, weight_type(0));
       return bellman_ford_shortest_paths
                (g, N, weight, pred, distance,
                 choose_param(get_param(params, distance_combine_t()),
@@ -173,7 +173,7 @@ namespace boost {
        Size N, WeightMap weight, PredecessorMap pred, DistanceMap distance,
        const bgl_named_params<P, T, R>& params)
     {
-      typedef typename property_traits<DistanceMap>::value_type D;
+      typedef typename boost::property_traits<DistanceMap>::value_type D;
       bellman_visitor<> null_vis;
       return bellman_ford_shortest_paths
                (g, N, weight, pred, distance,

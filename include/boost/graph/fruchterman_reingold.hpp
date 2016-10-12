@@ -91,7 +91,7 @@ struct all_force_pairs
 template<typename Topology, typename PositionMap>
 struct grid_force_pairs
 {
-  typedef typename property_traits<PositionMap>::value_type Point;
+  typedef typename boost::property_traits<PositionMap>::value_type Point;
   BOOST_STATIC_ASSERT (Point::dimensions == 2);
   typedef typename Topology::point_difference_type point_difference_type;
 
@@ -118,9 +118,9 @@ struct grid_force_pairs
     vertex_iterator v, v_end;
     for (boost::tie(v, v_end) = vertices(g); v != v_end; ++v) {
       std::size_t column =
-        std::size_t((get(position, *v)[0] + topology.extent()[0] / 2) / two_k);
+        std::size_t((boost::get(position, *v)[0] + topology.extent()[0] / 2) / two_k);
       std::size_t row    =
-        std::size_t((get(position, *v)[1] + topology.extent()[1] / 2) / two_k);
+        std::size_t((boost::get(position, *v)[1] + topology.extent()[1] / 2) / two_k);
 
       if (column >= columns) column = columns - 1;
       if (row >= rows) row = rows - 1;
@@ -153,7 +153,7 @@ struct grid_force_pairs
                   = buckets[other_row * columns + other_column];
                 for (v = other_bucket.begin(); v != other_bucket.end(); ++v) {
                   double dist =
-                    topology.distance(get(position, *u), get(position, *v));
+                    topology.distance(boost::get(position, *u), boost::get(position, *v));
                   if (dist < two_k) apply_force(*u, *v);
                 }
               }
@@ -185,10 +185,10 @@ scale_graph(const Graph& g, PositionMap position, const Topology& topology,
   typedef typename Topology::point_difference_type point_difference_type;
 
   // Find min/max ranges
-  Point min_point = get(position, *vertices(g).first), max_point = min_point;
+  Point min_point = boost::get(position, *vertices(g).first), max_point = min_point;
   BGL_FORALL_VERTICES_T(v, g, Graph) {
-    min_point = topology.pointwise_min(min_point, get(position, v));
-    max_point = topology.pointwise_max(max_point, get(position, v));
+    min_point = topology.pointwise_min(min_point, boost::get(position, v));
+    max_point = topology.pointwise_max(max_point, boost::get(position, v));
   }
 
   Point old_origin = topology.move_position_toward(min_point, 0.5, max_point);
@@ -198,9 +198,9 @@ scale_graph(const Graph& g, PositionMap position, const Topology& topology,
 
   // Scale to bounding box provided
   BGL_FORALL_VERTICES_T(v, g, Graph) {
-    point_difference_type relative_loc = topology.difference(get(position, v), old_origin);
+    point_difference_type relative_loc = topology.difference(boost::get(position, v), old_origin);
     relative_loc = (relative_loc / old_size) * new_size;
-    put(position, v, topology.adjust(new_origin, relative_loc));
+    boost::put(position, v, topology.adjust(new_origin, relative_loc));
   }
 }
 
@@ -212,9 +212,9 @@ namespace detail {
                      const typename Topology::point_type& p2)
   {
     double too_close = topology.norm(topology.extent()) / 10000.;
-    if (topology.distance(get(pm, v), p2) < too_close) {
-      put(pm, v, 
-          topology.move_position_toward(get(pm, v), 1./200,
+    if (topology.distance(boost::get(pm, v), p2) < too_close) {
+      boost::put(pm, v, 
+          topology.move_position_toward(boost::get(pm, v), 1./200,
                                         topology.random_point()));
     }
   }
@@ -240,10 +240,10 @@ namespace detail {
       if (u != v) {
         // When the vertices land on top of each other, move the
         // first vertex away from the boundaries.
-        maybe_jitter_point(topology, position, u, get(position, v));
+        maybe_jitter_point(topology, position, u, boost::get(position, v));
 
-        double dist = topology.distance(get(position, u), get(position, v));
-        typename Topology::point_difference_type dispv = get(displacement, v);
+        double dist = topology.distance(boost::get(position, u), boost::get(position, v));
+        typename Topology::point_difference_type dispv = boost::get(displacement, v);
         if (dist == 0.) {
           for (std::size_t i = 0; i < Point::dimensions; ++i) {
             dispv[i] += 0.01;
@@ -251,9 +251,9 @@ namespace detail {
         } else {
           double fr = repulsive_force(u, v, k, dist, g);
           dispv += (fr / dist) *
-                   topology.difference(get(position, v), get(position, u));
+                   topology.difference(boost::get(position, v), boost::get(position, u));
         }
-        put(displacement, v, dispv);
+        boost::put(displacement, v, dispv);
       }
     }
 
@@ -299,7 +299,7 @@ fruchterman_reingold_force_directed_layout
     // Calculate repulsive forces
     vertex_iterator v, v_end;
     for (boost::tie(v, v_end) = vertices(g); v != v_end; ++v)
-      put(displacement, *v, typename Topology::point_difference_type());
+      boost::put(displacement, *v, typename Topology::point_difference_type());
     force_pairs(g, apply_force);
 
     // Calculate attractive forces
@@ -310,15 +310,15 @@ fruchterman_reingold_force_directed_layout
 
       // When the vertices land on top of each other, move the
       // first vertex away from the boundaries.
-      ::boost::detail::maybe_jitter_point(topology, position, u, get(position, v));
+      ::boost::detail::maybe_jitter_point(topology, position, u, boost::get(position, v));
 
       typename Topology::point_difference_type delta =
-        topology.difference(get(position, v), get(position, u));
-      double dist = topology.distance(get(position, u), get(position, v));
+        topology.difference(boost::get(position, v), boost::get(position, u));
+      double dist = topology.distance(boost::get(position, u), boost::get(position, v));
       double fa = attractive_force(*e, k, dist, g);
 
-      put(displacement, v, get(displacement, v) - (fa / dist) * delta);
-      put(displacement, u, get(displacement, u) + (fa / dist) * delta);
+      boost::put(displacement, v, boost::get(displacement, v) - (fa / dist) * delta);
+      boost::put(displacement, u, boost::get(displacement, u) + (fa / dist) * delta);
     }
 
     if (double temp = cool()) {
@@ -326,9 +326,9 @@ fruchterman_reingold_force_directed_layout
       BGL_FORALL_VERTICES_T (v, g, Graph) {
         BOOST_USING_STD_MIN();
         BOOST_USING_STD_MAX();
-        double disp_size = topology.norm(get(displacement, v));
-        put(position, v, topology.adjust(get(position, v), get(displacement, v) * (min BOOST_PREVENT_MACRO_SUBSTITUTION (disp_size, temp) / disp_size)));
-        put(position, v, topology.bound(get(position, v)));
+        double disp_size = topology.norm(boost::get(displacement, v));
+        boost::put(position, v, topology.adjust(boost::get(position, v), boost::get(displacement, v) * (min BOOST_PREVENT_MACRO_SUBSTITUTION (disp_size, temp) / disp_size)));
+        boost::put(position, v, topology.bound(boost::get(position, v)));
       }
     } else {
       break;
@@ -384,7 +384,7 @@ namespace detail {
       fruchterman_reingold_force_directed_layout
         (g, position, topology, attractive_force, repulsive_force,
          force_pairs, cool,
-         make_iterator_property_map
+         boost::make_iterator_property_map
          (displacements.begin(),
           choose_const_pmap(get_param(params, vertex_index), g,
                             vertex_index),

@@ -51,17 +51,17 @@ namespace boost {
     typedef typename boost::property_traits<ColorMap>::value_type color_t;
     typedef boost::color_traits<color_t> color_gen;
     
-    BOOST_ASSERT (get(color, s) == color_gen::white());
+    BOOST_ASSERT (boost::get(color, s) == color_gen::white());
     path.clear();
     path.push_back(s);
-    put(color, s, color_gen::gray());
+    boost::put(color, s, color_gen::gray());
     while (true) {
       edge_descriptor e = next_edge(s, g);
       vertex_descriptor t = target(e, g);
-      color_t t_color = get(color, t);
+      color_t t_color = boost::get(color, t);
       if (t_color == color_gen::white()) {
         path.push_back(t);
-        put(color, t, color_gen::gray());
+        boost::put(color, t, color_gen::gray());
         s = t;
       } else if (t_color == color_gen::gray()) {
         // Found a loop; delete from path from the first occurrence of t to the
@@ -70,7 +70,7 @@ namespace boost {
         BOOST_ASSERT (it != path.end());
         ++it;
         for (typename std::vector<vertex_descriptor>::iterator j = it; j != path.end(); ++j) {
-          put(color, *j, color_gen::white());
+          boost::put(color, *j, color_gen::white());
         }
         path.erase(it, path.end());
         s = t;

@@ -117,8 +117,8 @@ namespace boost {
       class BinaryFunction, class BinaryPredicate>
     struct dijkstra_bfs_visitor
     {
-      typedef typename property_traits<DistanceMap>::value_type D;
-      typedef typename property_traits<WeightMap>::value_type W;
+      typedef typename boost::property_traits<DistanceMap>::value_type D;
+      typedef typename boost::property_traits<WeightMap>::value_type W;
 
       dijkstra_bfs_visitor(UniformCostVisitor vis, UpdatableQueue& Q,
                            WeightMap w, PredecessorMap p, DistanceMap d,
@@ -138,7 +138,7 @@ namespace boost {
       }
       template <class Edge, class Graph>
       void gray_target(Edge e, Graph& g) {
-        D old_distance = get(m_distance, target(e, g));
+        D old_distance = boost::get(m_distance, target(e, g));
 
         bool decreased = relax(e, g, m_weight, m_predecessor, m_distance,
                                m_combine, m_compare);
@@ -179,7 +179,7 @@ namespace boost {
         //    m_combine be able to take a distance and a weight (in that order)
         //    and return a distance.
 
-        // W e_weight = get(m_weight, e);
+        // W e_weight = boost::get(m_weight, e);
         // sd_plus_ew = source_dist + e_weight.
         // D sd_plus_ew = m_combine(source_dist, e_weight);
         // sd_plus_2ew = source_dist + 2 * e_weight.
@@ -221,7 +221,7 @@ namespace boost {
       static type build(const Graph& g, const IndexMap& index, boost::scoped_array<Value>& array_holder) {
         array_holder.reset(new Value[num_vertices(g)]);
         std::fill(array_holder.get(), array_holder.get() + num_vertices(g), Value());
-        return make_iterator_property_map(array_holder.get(), index);
+        return boost::make_iterator_property_map(array_holder.get(), index);
       }
     };
 
@@ -460,17 +460,17 @@ namespace boost {
      Compare compare, Combine combine, DistInf inf, DistZero zero,
      DijkstraVisitor vis, ColorMap color)
   {
-    typedef typename property_traits<ColorMap>::value_type ColorValue;
+    typedef typename boost::property_traits<ColorMap>::value_type ColorValue;
     typedef color_traits<ColorValue> Color;
     typename graph_traits<VertexListGraph>::vertex_iterator ui, ui_end;
     for (boost::tie(ui, ui_end) = vertices(g); ui != ui_end; ++ui) {
       vis.initialize_vertex(*ui, g);
-      put(distance, *ui, inf);
-      put(predecessor, *ui, *ui);
-      put(color, *ui, Color::white());
+      boost::put(distance, *ui, inf);
+      boost::put(predecessor, *ui, *ui);
+      boost::put(color, *ui, Color::white());
     }
     for (SourceInputIter it = s_begin; it != s_end; ++it) {
-      put(distance, *it, zero);
+      boost::put(distance, *it, zero);
     }
 
     dijkstra_shortest_paths_no_init(g, s_begin, s_end, predecessor, distance,
@@ -553,7 +553,7 @@ namespace boost {
       // Default for predecessor map
       dummy_property_map p_map;
 
-      typedef typename property_traits<DistanceMap>::value_type D;
+      typedef typename boost::property_traits<DistanceMap>::value_type D;
       D inf = choose_param(get_param(params, distance_inf_t()),
                            (std::numeric_limits<D>::max)());
 
@@ -583,13 +583,13 @@ namespace boost {
        const Params& params)
     {
       // Default for distance map
-      typedef typename property_traits<WeightMap>::value_type D;
+      typedef typename boost::property_traits<WeightMap>::value_type D;
       typename std::vector<D>::size_type
         n = is_default_param(distance) ? num_vertices(g) : 1;
       std::vector<D> distance_map(n);
 
       detail::dijkstra_dispatch2
-        (g, s, choose_param(distance, make_iterator_property_map
+        (g, s, choose_param(distance, boost::make_iterator_property_map
                             (distance_map.begin(), index_map,
                              distance_map[0])),
          weight, index_map, params);

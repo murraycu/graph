@@ -72,7 +72,7 @@ namespace boost
           >
           planarity_tester(args[graph], 
                            args[vertex_index_map | 
-                                get(vertex_index, args[graph])
+                                boost::get(vertex_index, args[graph])
                                 ]
                            );
 
@@ -99,7 +99,7 @@ namespace boost
         typedef typename parameter::binding
           < ArgumentPack, 
             tag::vertex_index_map,
-            typename property_map<graph_t, vertex_index_t>::type
+            typename boost::property_map<graph_t, vertex_index_t>::type
           >::type vertex_index_map_t;
       
         boyer_myrvold_impl 
@@ -110,7 +110,7 @@ namespace boost
           >
           planarity_tester(args[graph], 
                            args[vertex_index_map | 
-                                get(vertex_index, args[graph])
+                                boost::get(vertex_index, args[graph])
                                 ]
                            );
 
@@ -147,7 +147,7 @@ namespace boost
         typedef typename parameter::binding
           < ArgumentPack, 
           tag::vertex_index_map,
-          typename property_map<graph_t, vertex_index_t>::type
+          typename boost::property_map<graph_t, vertex_index_t>::type
           >::type  vertex_index_map_t;
 
         boyer_myrvold_impl
@@ -162,7 +162,7 @@ namespace boost
           >
           planarity_tester(args[graph], 
                            args[vertex_index_map | 
-                                get(vertex_index, args[graph])
+                                boost::get(vertex_index, args[graph])
                                 ]
                            );
 
@@ -195,7 +195,7 @@ namespace boost
         typedef typename parameter::binding
           < ArgumentPack, 
           tag::vertex_index_map, 
-          typename property_map<graph_t, vertex_index_t>::type
+          typename boost::property_map<graph_t, vertex_index_t>::type
           >::type vertex_index_map_t;
         
         boyer_myrvold_impl
@@ -210,7 +210,7 @@ namespace boost
           >
           planarity_tester(args[graph], 
                            args[vertex_index_map | 
-                                get(vertex_index, args[graph])
+                                boost::get(vertex_index, args[graph])
                                 ]
                            );
 
@@ -223,7 +223,7 @@ namespace boost
           {
             planarity_tester.extract_kuratowski_subgraph
               (args[kuratowski_subgraph], 
-               args[edge_index_map | get(edge_index, args[graph])]
+               args[edge_index_map | boost::get(edge_index, args[graph])]
                );          
             return false;
           } 

@@ -104,12 +104,12 @@ namespace boost {
       stored_edge.second = ep;
     }
 
-    inline const no_property& get_edge_property(const char&) {
-      static no_property s_prop;
+    inline const boost::no_property& get_edge_property(const char&) {
+      static boost::no_property s_prop;
       return s_prop;
     }
-    inline no_property& get_edge_property(char&) {
-      static no_property s_prop;
+    inline boost::no_property& get_edge_property(char&) {
+      static boost::no_property s_prop;
       return s_prop;
     }
     template <typename EdgeProxy, typename EdgeProperty>
@@ -469,9 +469,9 @@ namespace boost {
   //=========================================================================
   // Adjacency Matrix Class
   template <typename Directed = directedS,
-            typename VertexProperty = no_property,
-            typename EdgeProperty = no_property,
-            typename GraphProperty = no_property,
+            typename VertexProperty = boost::no_property,
+            typename EdgeProperty = boost::no_property,
+            typename GraphProperty = boost::no_property,
             typename Allocator = std::allocator<bool> >
   class adjacency_matrix {
     typedef adjacency_matrix self;
@@ -1031,9 +1031,9 @@ namespace boost {
             typename Prop>
   struct adj_mat_pm_helper<D, VP, EP, GP, A, Prop, vertex_property_tag> {
     typedef typename graph_traits<adjacency_matrix<D, VP, EP, GP, A> >::vertex_descriptor arg_type;
-    typedef typed_identity_property_map<arg_type> vi_map_type;
-    typedef iterator_property_map<typename std::vector<VP>::iterator, vi_map_type> all_map_type;
-    typedef iterator_property_map<typename std::vector<VP>::const_iterator, vi_map_type> all_map_const_type;
+    typedef boost::typed_identity_property_map<arg_type> vi_map_type;
+    typedef boost::iterator_property_map<typename std::vector<VP>::iterator, vi_map_type> all_map_type;
+    typedef boost::iterator_property_map<typename std::vector<VP>::const_iterator, vi_map_type> all_map_const_type;
     typedef transform_value_property_map<
               detail::lookup_one_property_f<VP, Prop>,
               all_map_type>
@@ -1042,8 +1042,8 @@ namespace boost {
               detail::lookup_one_property_f<const VP, Prop>,
               all_map_const_type>
       const_type;
-    typedef typename property_traits<type>::reference single_nonconst_type;
-    typedef typename property_traits<const_type>::reference single_const_type;
+    typedef typename boost::property_traits<type>::reference single_nonconst_type;
+    typedef typename boost::property_traits<const_type>::reference single_const_type;
 
     static type get_nonconst(adjacency_matrix<D, VP, EP, GP, A>& g, Prop prop) {
       return type(prop, all_map_type(g.m_vertex_properties.begin(), vi_map_type()));
@@ -1114,30 +1114,30 @@ namespace boost {
 
   template <typename D, typename VP, typename EP, typename GP, typename A,
             typename Tag>
-  typename property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::type
+  typename boost::property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::type
   get(Tag tag, adjacency_matrix<D, VP, EP, GP, A>& g) {
-    return property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::get_nonconst(g, tag);
+    return boost::property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::get_nonconst(g, tag);
   }
 
   template <typename D, typename VP, typename EP, typename GP, typename A,
             typename Tag>
-  typename property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::const_type
+  typename boost::property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::const_type
   get(Tag tag, const adjacency_matrix<D, VP, EP, GP, A>& g) {
-    return property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::get_const(g, tag);
+    return boost::property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::get_const(g, tag);
   }
 
   template <typename D, typename VP, typename EP, typename GP, typename A,
             typename Tag>
-  typename property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::single_nonconst_type
-  get(Tag tag, adjacency_matrix<D, VP, EP, GP, A>& g, typename property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::arg_type a) {
-    return property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::get_nonconst_one(g, tag, a);
+  typename boost::property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::single_nonconst_type
+  get(Tag tag, adjacency_matrix<D, VP, EP, GP, A>& g, typename boost::property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::arg_type a) {
+    return boost::property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::get_nonconst_one(g, tag, a);
   }
 
   template <typename D, typename VP, typename EP, typename GP, typename A,
             typename Tag>
-  typename property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::single_const_type
-  get(Tag tag, const adjacency_matrix<D, VP, EP, GP, A>& g, typename property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::arg_type a) {
-    return property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::get_const_one(g, tag, a);
+  typename boost::property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::single_const_type
+  get(Tag tag, const adjacency_matrix<D, VP, EP, GP, A>& g, typename boost::property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::arg_type a) {
+    return boost::property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::get_const_one(g, tag, a);
   }
 
   template <typename D, typename VP, typename EP, typename GP, typename A,
@@ -1145,9 +1145,9 @@ namespace boost {
   void
   put(Tag tag,
       adjacency_matrix<D, VP, EP, GP, A>& g,
-      typename property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::arg_type a,
-      typename property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::single_const_type val) {
-    property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::get_nonconst_one(g, tag, a) = val;
+      typename boost::property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::arg_type a,
+      typename boost::property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::single_const_type val) {
+    boost::property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::get_nonconst_one(g, tag, a) = val;
   }
 
   // O(1)
@@ -1181,14 +1181,14 @@ namespace boost {
   template <typename D, typename VP, typename EP, typename GP, typename A>
   struct property_map<adjacency_matrix<D, VP, EP, GP, A>, vertex_index_t> {
     typedef typename adjacency_matrix<D, VP, EP, GP, A>::vertex_descriptor Vertex;
-    typedef typed_identity_property_map<Vertex> type;
+    typedef boost::typed_identity_property_map<Vertex> type;
     typedef type const_type;
   };
 
   template <typename D, typename VP, typename EP, typename GP, typename A>
-  typename property_map<adjacency_matrix<D, VP, EP, GP, A>, vertex_index_t>::const_type
+  typename boost::property_map<adjacency_matrix<D, VP, EP, GP, A>, vertex_index_t>::const_type
   get(vertex_index_t, adjacency_matrix<D, VP, EP, GP, A>&) {
-    return typename property_map<adjacency_matrix<D, VP, EP, GP, A>, vertex_index_t>::const_type();
+    return typename boost::property_map<adjacency_matrix<D, VP, EP, GP, A>, vertex_index_t>::const_type();
   }
 
   template <typename D, typename VP, typename EP, typename GP, typename A>
@@ -1200,9 +1200,9 @@ namespace boost {
   }
 
   template <typename D, typename VP, typename EP, typename GP, typename A>
-  typename property_map<adjacency_matrix<D, VP, EP, GP, A>, vertex_index_t>::const_type
+  typename boost::property_map<adjacency_matrix<D, VP, EP, GP, A>, vertex_index_t>::const_type
   get(vertex_index_t, const adjacency_matrix<D, VP, EP, GP, A>&) {
-    return typename property_map<adjacency_matrix<D, VP, EP, GP, A>, vertex_index_t>::const_type();
+    return typename boost::property_map<adjacency_matrix<D, VP, EP, GP, A>, vertex_index_t>::const_type();
   }
 
   template <typename D, typename VP, typename EP, typename GP, typename A>

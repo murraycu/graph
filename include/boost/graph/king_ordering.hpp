@@ -49,8 +49,8 @@ namespace boost {
         unsigned i = 0;
         
         for(i = index_begin; i != Qptr->size(); ++i){
-          colors[get(vertex_map, (*Qptr)[i])] = 1;
-          Qlocation[get(vertex_map, (*Qptr)[i])] = i;
+          colors[boost::get(vertex_map, (*Qptr)[i])] = 1;
+          Qlocation[boost::get(vertex_map, (*Qptr)[i])] = i;
         }
 
         i = 0;
@@ -60,14 +60,14 @@ namespace boost {
           w = (*Qptr)[index_begin+i];
           for (boost::tie(ei, ei_end) = out_edges(w, g); ei != ei_end; ++ei) {
             v = target(*ei, g);
-            put(degree, v, get(degree, v) - 1);
+            boost::put(degree, v, boost::get(degree, v) - 1);
     
-            if (colors[get(vertex_map, v)] == 1) {
-              percolate_up<Vertex>(get(vertex_map, v), i);            
+            if (colors[boost::get(vertex_map, v)] == 1) {
+              percolate_up<Vertex>(boost::get(vertex_map, v), i);            
             }
           }
           
-          colors[get(vertex_map, w)] = 0;
+          colors[boost::get(vertex_map, w)] = 0;
           i++;
         }
       }
@@ -109,7 +109,7 @@ namespace boost {
         bool valid = (right_child < heap_last) ? false : true;
         
         //pick smallest child of drifter, and keep in mind there might only be left child
-        int smallest_child = (valid && get(degree, (*Qptr)[left_child]) > get(degree,(*Qptr)[right_child])) ? 
+        int smallest_child = (valid && boost::get(degree, (*Qptr)[left_child]) > boost::get(degree,(*Qptr)[right_child])) ? 
           right_child : left_child;
         
         while(valid && smallest_child < heap_last && comp((*Qptr)[drifter], (*Qptr)[smallest_child])){
@@ -130,7 +130,7 @@ namespace boost {
 
           valid = (right_child < heap_last) ? false : true;
 
-          smallest_child = (valid && get(degree, (*Qptr)[left_child]) > get(degree,(*Qptr)[right_child])) ? 
+          smallest_child = (valid && boost::get(degree, (*Qptr)[left_child]) > boost::get(degree,(*Qptr)[right_child])) ? 
             right_child : left_child;
         }
 
@@ -191,11 +191,11 @@ namespace boost {
                 ColorMap color, DegreeMap degree,
                 VertexIndexMap index_map)
   {
-    typedef typename property_traits<DegreeMap>::value_type ds_type;
-    typedef typename property_traits<ColorMap>::value_type ColorValue;
+    typedef typename boost::property_traits<DegreeMap>::value_type ds_type;
+    typedef typename boost::property_traits<ColorMap>::value_type ColorValue;
     typedef color_traits<ColorValue> Color;
     typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
-    typedef iterator_property_map<typename std::vector<ds_type>::iterator, VertexIndexMap, ds_type, ds_type&> PseudoDegreeMap;
+    typedef boost::iterator_property_map<typename std::vector<ds_type>::iterator, VertexIndexMap, ds_type, ds_type&> PseudoDegreeMap;
     typedef indirect_cmp<PseudoDegreeMap, std::less<ds_type> > Compare;
     typedef typename boost::sparse::sparse_ordering_queue<Vertex> queue;
     typedef typename detail::bfs_king_visitor<OutputIterator, queue, Compare,             
@@ -210,8 +210,8 @@ namespace boost {
     // Copy degree to pseudo_degree
     // initialize the color map
     for (boost::tie(ui, ui_end) = vertices(g); ui != ui_end; ++ui){
-      put(pseudo_degree, *ui, get(degree, *ui));
-      put(color, *ui, Color::white());
+      boost::put(pseudo_degree, *ui, boost::get(degree, *ui));
+      boost::put(color, *ui, Color::white());
     }
     
     Compare comp(pseudo_degree);
@@ -264,17 +264,17 @@ namespace boost {
       return permutation;
 
     typedef typename boost::graph_traits<Graph>::vertex_descriptor Vertex;
-    typedef typename property_traits<ColorMap>::value_type ColorValue;
+    typedef typename boost::property_traits<ColorMap>::value_type ColorValue;
     typedef color_traits<ColorValue> Color;
 
     std::deque<Vertex>      vertex_queue;
 
     // Mark everything white
-    BGL_FORALL_VERTICES_T(v, G, Graph) put(color, v, Color::white());
+    BGL_FORALL_VERTICES_T(v, G, Graph) boost::put(color, v, Color::white());
 
     // Find one vertex from each connected component 
     BGL_FORALL_VERTICES_T(v, G, Graph) {
-      if (get(color, v) == Color::white()) {
+      if (boost::get(color, v) == Color::white()) {
         depth_first_visit(G, v, dfs_visitor<>(), color);
         vertex_queue.push_back(v);
       }
@@ -300,7 +300,7 @@ namespace boost {
 
     std::vector<default_color_type> colors(num_vertices(G));
     return king_ordering(G, permutation, 
-                         make_iterator_property_map(&colors[0], index_map,
+                         boost::make_iterator_property_map(&colors[0], index_map,
                                                     colors[0]),
                          make_out_degree_map(G), index_map);
   }
@@ -308,7 +308,7 @@ namespace boost {
   template<typename Graph, typename OutputIterator>
   inline OutputIterator 
   king_ordering(const Graph& G, OutputIterator permutation)
-  { return king_ordering(G, permutation, get(vertex_index, G)); }
+  { return king_ordering(G, permutation, boost::get(vertex_index, G)); }
 
 } // namespace boost
 

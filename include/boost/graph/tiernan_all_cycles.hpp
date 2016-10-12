@@ -143,7 +143,7 @@ namespace detail
         // the path from u to v is closed if v can be found in the list
         // of closed vertices associated with u.
         typedef typename ClosedMatrix::const_reference Row;
-        Row r = closed[get(vertex_index, g, u)];
+        Row r = closed[boost::get(vertex_index, g, u)];
         if(find(r.begin(), r.end(), v) != r.end()) {
             return true;
         }
@@ -172,7 +172,7 @@ namespace detail
         // 2. the vertex v cannot already be in the path
         // 3. the vertex v cannot be closed to the vertex u
 
-        bool indices = get(vertex_index, g, p.front()) < get(vertex_index, g, v);
+        bool indices = boost::get(vertex_index, g, p.front()) < boost::get(vertex_index, g, v);
         bool path = !is_vertex_in_path(g, v, p);
         bool closed = !is_path_closed(g, u, v, m);
         return indices && path && closed;
@@ -255,8 +255,8 @@ namespace detail
             // reset the closure for the last vertex of the path and
             // indicate that the last vertex in p is now closed to
             // the next-to-last vertex in p
-            closed[get(vertex_index, g, last)].clear();
-            closed[get(vertex_index, g, prev)].push_back(last);
+            closed[boost::get(vertex_index, g, last)].clear();
+            closed[boost::get(vertex_index, g, prev)].push_back(last);
             return true;
         }
         else {

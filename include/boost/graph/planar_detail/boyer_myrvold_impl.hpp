@@ -49,16 +49,16 @@ namespace boost
     template <typename Vertex, typename Graph>
     void start_vertex(const Vertex& u, Graph&)
     {
-      put(parent, u, u);
-      put(least_ancestor, u, count);
+      boost::put(parent, u, u);
+      boost::put(least_ancestor, u, count);
     }
 
 
     template <typename Vertex, typename Graph>
     void discover_vertex(const Vertex& u, Graph&)
     {
-      put(low, u, count);
-      put(df_number, u, count);
+      boost::put(low, u, count);
+      boost::put(df_number, u, count);
       ++count;
     }
 
@@ -69,9 +69,9 @@ namespace boost
       vertex_t s(source(e,g));
       vertex_t t(target(e,g));
 
-      put(parent, t, s);
-      put(df_edge, t, e);
-      put(least_ancestor, t, get(df_number, s));
+      boost::put(parent, t, s);
+      boost::put(df_edge, t, e);
+      boost::put(least_ancestor, t, boost::get(df_number, s));
     }
 
     template <typename Edge, typename Graph>
@@ -84,17 +84,17 @@ namespace boost
       vertex_t t(target(e,g));
       BOOST_USING_STD_MIN();
 
-      if ( t != get(parent, s) ) {
-        v_size_t s_low_df_number = get(low, s);
-        v_size_t t_df_number = get(df_number, t);
-        v_size_t s_least_ancestor_df_number = get(least_ancestor, s);
+      if ( t != boost::get(parent, s) ) {
+        v_size_t s_low_df_number = boost::get(low, s);
+        v_size_t t_df_number = boost::get(df_number, t);
+        v_size_t s_least_ancestor_df_number = boost::get(least_ancestor, s);
 
-        put(low, s,
+        boost::put(low, s,
             min BOOST_PREVENT_MACRO_SUBSTITUTION(s_low_df_number,
                                                  t_df_number)
             );
 
-        put(least_ancestor, s,
+        boost::put(least_ancestor, s,
             min BOOST_PREVENT_MACRO_SUBSTITUTION(s_least_ancestor_df_number,
                                                  t_df_number
                                                  )
@@ -108,14 +108,14 @@ namespace boost
     {
       typedef typename graph_traits<Graph>::vertices_size_type v_size_t;
 
-      Vertex u_parent = get(parent, u);
-      v_size_t u_parent_lowpoint = get(low, u_parent);
-      v_size_t u_lowpoint = get(low, u);
+      Vertex u_parent = boost::get(parent, u);
+      v_size_t u_parent_lowpoint = boost::get(low, u_parent);
+      v_size_t u_lowpoint = boost::get(low, u);
       BOOST_USING_STD_MIN();
 
       if (u_parent != u)
         {
-          put(low, u_parent,
+          boost::put(low, u_parent,
               min BOOST_PREVENT_MACRO_SUBSTITUTION(u_lowpoint,
                                                    u_parent_lowpoint
                                                    )
@@ -166,7 +166,7 @@ namespace boost
     template <typename T>
     struct map_vertex_to_
     {
-      typedef iterator_property_map
+      typedef boost::iterator_property_map
           <typename std::vector<T>::iterator, VertexIndexMap> type;
     };
 
@@ -1204,7 +1204,7 @@ namespace boost
       vertex_t x = kuratowski_x;
       vertex_t y = kuratowski_y;
 
-      typedef iterator_property_map
+      typedef boost::iterator_property_map
         <typename std::vector<bool>::iterator, EdgeIndexMap>
         edge_to_bool_map_t;
 

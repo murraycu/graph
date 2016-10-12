@@ -117,10 +117,10 @@ namespace boost {
     struct astar_bfs_visitor
     {
 
-      typedef typename property_traits<CostMap>::value_type C;
-      typedef typename property_traits<ColorMap>::value_type ColorValue;
+      typedef typename boost::property_traits<CostMap>::value_type C;
+      typedef typename boost::property_traits<ColorMap>::value_type ColorValue;
       typedef color_traits<ColorValue> Color;
-      typedef typename property_traits<DistanceMap>::value_type distance_type;
+      typedef typename boost::property_traits<DistanceMap>::value_type distance_type;
 
       astar_bfs_visitor(AStarHeuristic h, UniformCostVisitor vis,
                         UpdatableQueue& Q, PredecessorMap p,
@@ -150,7 +150,7 @@ namespace boost {
       }
       template <class Edge, class Graph>
       void examine_edge(Edge e, const Graph& g) {
-        if (m_compare(get(m_weight, e), m_zero))
+        if (m_compare(boost::get(m_weight, e), m_zero))
           BOOST_THROW_EXCEPTION(negative_edge());
         m_vis.examine_edge(e, g);
       }
@@ -168,8 +168,8 @@ namespace boost {
 
         if(m_decreased) {
           m_vis.edge_relaxed(e, g);
-          put(m_cost, target(e, g),
-              m_combine(get(m_distance, target(e, g)),
+          boost::put(m_cost, target(e, g),
+              m_combine(boost::get(m_distance, target(e, g)),
                         m_h(target(e, g))));
         } else
           m_vis.edge_not_relaxed(e, g);
@@ -184,8 +184,8 @@ namespace boost {
                 m_combine, m_compare);
 
         if(m_decreased) {
-          put(m_cost, target(e, g),
-              m_combine(get(m_distance, target(e, g)),
+          boost::put(m_cost, target(e, g),
+              m_combine(boost::get(m_distance, target(e, g)),
                         m_h(target(e, g))));
           m_Q.update(target(e, g));
           m_vis.edge_relaxed(e, g);
@@ -203,11 +203,11 @@ namespace boost {
 
         if(m_decreased) {
           m_vis.edge_relaxed(e, g);
-          put(m_cost, target(e, g),
-              m_combine(get(m_distance, target(e, g)),
+          boost::put(m_cost, target(e, g),
+              m_combine(boost::get(m_distance, target(e, g)),
                         m_h(target(e, g))));
           m_Q.push(target(e, g));
-          put(m_color, target(e, g), Color::gray());
+          boost::put(m_color, target(e, g), Color::gray());
           m_vis.black_target(e, g);
         } else
           m_vis.edge_not_relaxed(e, g);
@@ -295,7 +295,7 @@ namespace boost {
   {
     typedef typename graph_traits<VertexListGraph>::vertex_descriptor
       Vertex;
-    typedef typename property_traits<DistanceMap>::value_type Distance;
+    typedef typename boost::property_traits<DistanceMap>::value_type Distance;
     typedef d_ary_heap_indirect<
               std::pair<Distance, Vertex>,
               4,
@@ -309,7 +309,7 @@ namespace boost {
       compare);
 
     vis.discover_vertex(s, g);
-    Q.push(std::make_pair(get(cost, s), s));
+    Q.push(std::make_pair(boost::get(cost, s), s));
     while (!Q.empty()) {
       Vertex v;
       Distance v_rank;
@@ -319,17 +319,17 @@ namespace boost {
       BGL_FORALL_OUTEDGES_T(v, e, g, VertexListGraph) {
         Vertex w = target(e, g);
         vis.examine_edge(e, g);
-        Distance e_weight = get(weight, e);
+        Distance e_weight = boost::get(weight, e);
         if (compare(e_weight, zero))
           BOOST_THROW_EXCEPTION(negative_edge());
         bool decreased =
           relax(e, g, weight, predecessor, distance,
                 combine, compare);
-        Distance w_d = combine(get(distance, v), e_weight);
+        Distance w_d = combine(boost::get(distance, v), e_weight);
         if (decreased) {
           vis.edge_relaxed(e, g);
-          Distance w_rank = combine(get(distance, w), h(w));
-          put(cost, w, w_rank);
+          Distance w_rank = combine(boost::get(distance, w), h(w));
+          boost::put(cost, w, w_rank);
           vis.discover_vertex(w, g);
           Q.push(std::make_pair(w_rank, w));
         } else {
@@ -360,18 +360,18 @@ namespace boost {
      CostInf inf, CostZero zero)
   {
 
-    typedef typename property_traits<ColorMap>::value_type ColorValue;
+    typedef typename boost::property_traits<ColorMap>::value_type ColorValue;
     typedef color_traits<ColorValue> Color;
     typename graph_traits<VertexListGraph>::vertex_iterator ui, ui_end;
     for (boost::tie(ui, ui_end) = vertices(g); ui != ui_end; ++ui) {
-      put(color, *ui, Color::white());
-      put(distance, *ui, inf);
-      put(cost, *ui, inf);
-      put(predecessor, *ui, *ui);
+      boost::put(color, *ui, Color::white());
+      boost::put(distance, *ui, inf);
+      boost::put(cost, *ui, inf);
+      boost::put(predecessor, *ui, *ui);
       vis.initialize_vertex(*ui, g);
     }
-    put(distance, s, zero);
-    put(cost, s, h(s));
+    boost::put(distance, s, zero);
+    boost::put(cost, s, h(s));
 
     astar_search_no_init
       (g, s, h, vis, predecessor, cost, distance, weight,
@@ -399,13 +399,13 @@ namespace boost {
 
     typename graph_traits<VertexListGraph>::vertex_iterator ui, ui_end;
     for (boost::tie(ui, ui_end) = vertices(g); ui != ui_end; ++ui) {
-      put(distance, *ui, inf);
-      put(cost, *ui, inf);
-      put(predecessor, *ui, *ui);
+      boost::put(distance, *ui, inf);
+      boost::put(cost, *ui, inf);
+      boost::put(predecessor, *ui, *ui);
       vis.initialize_vertex(*ui, g);
     }
-    put(distance, s, zero);
-    put(cost, s, h(s));
+    boost::put(distance, s, zero);
+    boost::put(cost, s, h(s));
 
     astar_search_no_init_tree
       (g, s, h, vis, predecessor, cost, distance, weight,

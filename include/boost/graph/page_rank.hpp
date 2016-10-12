@@ -38,32 +38,32 @@ struct n_iterations
 namespace detail {
   template<typename Graph, typename RankMap, typename RankMap2>
   void page_rank_step(const Graph& g, RankMap from_rank, RankMap2 to_rank,
-                      typename property_traits<RankMap>::value_type damping,
+                      typename boost::property_traits<RankMap>::value_type damping,
                       incidence_graph_tag)
   {
-    typedef typename property_traits<RankMap>::value_type rank_type;
+    typedef typename boost::property_traits<RankMap>::value_type rank_type;
 
     // Set new rank maps 
-    BGL_FORALL_VERTICES_T(v, g, Graph) put(to_rank, v, rank_type(1 - damping));
+    BGL_FORALL_VERTICES_T(v, g, Graph) boost::put(to_rank, v, rank_type(1 - damping));
 
     BGL_FORALL_VERTICES_T(u, g, Graph) {
-      rank_type u_rank_out = damping * get(from_rank, u) / out_degree(u, g);
+      rank_type u_rank_out = damping * boost::get(from_rank, u) / out_degree(u, g);
       BGL_FORALL_ADJ_T(u, v, g, Graph)
-        put(to_rank, v, get(to_rank, v) + u_rank_out);
+        boost::put(to_rank, v, boost::get(to_rank, v) + u_rank_out);
     }
   }
 
   template<typename Graph, typename RankMap, typename RankMap2>
   void page_rank_step(const Graph& g, RankMap from_rank, RankMap2 to_rank,
-                      typename property_traits<RankMap>::value_type damping,
+                      typename boost::property_traits<RankMap>::value_type damping,
                       bidirectional_graph_tag)
   {
-    typedef typename property_traits<RankMap>::value_type damping_type;
+    typedef typename boost::property_traits<RankMap>::value_type damping_type;
     BGL_FORALL_VERTICES_T(v, g, Graph) {
-      typename property_traits<RankMap>::value_type rank(0);
+      typename boost::property_traits<RankMap>::value_type rank(0);
       BGL_FORALL_INEDGES_T(v, e, g, Graph)
-        rank += get(from_rank, source(e, g)) / out_degree(source(e, g), g);
-      put(to_rank, v, (damping_type(1) - damping) + damping * rank);
+        rank += boost::get(from_rank, source(e, g)) / out_degree(source(e, g), g);
+      boost::put(to_rank, v, (damping_type(1) - damping) + damping * rank);
     }
   }
 } // end namespace detail
@@ -71,15 +71,15 @@ namespace detail {
 template<typename Graph, typename RankMap, typename Done, typename RankMap2>
 void
 page_rank(const Graph& g, RankMap rank_map, Done done, 
-          typename property_traits<RankMap>::value_type damping,
+          typename boost::property_traits<RankMap>::value_type damping,
           typename graph_traits<Graph>::vertices_size_type n,
           RankMap2 rank_map2
           BOOST_GRAPH_ENABLE_IF_MODELS_PARM(Graph, vertex_list_graph_tag))
 {
-  typedef typename property_traits<RankMap>::value_type rank_type;
+  typedef typename boost::property_traits<RankMap>::value_type rank_type;
 
   rank_type initial_rank = rank_type(rank_type(1) / n);
-  BGL_FORALL_VERTICES_T(v, g, Graph) put(rank_map, v, initial_rank);
+  BGL_FORALL_VERTICES_T(v, g, Graph) boost::put(rank_map, v, initial_rank);
 
   bool to_map_2 = true;
   while ((to_map_2 && !done(rank_map, g)) ||
@@ -95,27 +95,27 @@ page_rank(const Graph& g, RankMap rank_map, Done done,
   }
 
   if (!to_map_2) {
-    BGL_FORALL_VERTICES_T(v, g, Graph) put(rank_map, v, get(rank_map2, v));
+    BGL_FORALL_VERTICES_T(v, g, Graph) boost::put(rank_map, v, boost::get(rank_map2, v));
   }
 }
 
 template<typename Graph, typename RankMap, typename Done>
 void
 page_rank(const Graph& g, RankMap rank_map, Done done, 
-          typename property_traits<RankMap>::value_type damping,
+          typename boost::property_traits<RankMap>::value_type damping,
           typename graph_traits<Graph>::vertices_size_type n)
 {
-  typedef typename property_traits<RankMap>::value_type rank_type;
+  typedef typename boost::property_traits<RankMap>::value_type rank_type;
 
   std::vector<rank_type> ranks2(num_vertices(g));
   page_rank(g, rank_map, done, damping, n,
-            make_iterator_property_map(ranks2.begin(), get(vertex_index, g)));
+            boost::make_iterator_property_map(ranks2.begin(), boost::get(vertex_index, g)));
 }
 
 template<typename Graph, typename RankMap, typename Done>
 inline void
 page_rank(const Graph& g, RankMap rank_map, Done done, 
-          typename property_traits<RankMap>::value_type damping = 0.85)
+          typename boost::property_traits<RankMap>::value_type damping = 0.85)
 {
   page_rank(g, rank_map, done, damping, num_vertices(g));
 }

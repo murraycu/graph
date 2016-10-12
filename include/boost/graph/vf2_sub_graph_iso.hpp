@@ -57,8 +57,8 @@ namespace boost {
       
       // Print (sub)graph isomorphism map
       BGL_FORALL_VERTICES_T(v, graph1_, Graph1) 
-        std::cout << '(' << get(vertex_index_t(), graph1_, v) << ", " 
-                  << get(vertex_index_t(), graph2_, get(f, v)) << ") ";
+        std::cout << '(' << boost::get(vertex_index_t(), graph1_, v) << ", " 
+                  << boost::get(vertex_index_t(), graph2_, boost::get(f, v)) << ") ";
       
       std::cout << std::endl;
       
@@ -91,13 +91,13 @@ namespace boost {
       IndexMapOther index_map_other_;
       
       std::vector<vertex_other_type> core_vec_;
-      typedef iterator_property_map<typename std::vector<vertex_other_type>::iterator,
+      typedef boost::iterator_property_map<typename std::vector<vertex_other_type>::iterator,
                                     IndexMapThis, vertex_other_type, 
                                     vertex_other_type&> core_map_type;
       core_map_type core_;
     
       std::vector<size_type> in_vec_, out_vec_;
-      typedef iterator_property_map<typename std::vector<size_type>::iterator,
+      typedef boost::iterator_property_map<typename std::vector<size_type>::iterator,
                                     IndexMapThis, size_type, size_type&> in_out_map_type;
       in_out_map_type in_, out_;
 
@@ -116,13 +116,13 @@ namespace boost {
           term_in_count_(0), term_out_count_(0), term_both_count_(0), core_count_(0) {
 
         core_vec_.resize(num_vertices(graph_this_), graph_traits<GraphOther>::null_vertex());
-        core_ = make_iterator_property_map(core_vec_.begin(), index_map_this_);
+        core_ = boost::make_iterator_property_map(core_vec_.begin(), index_map_this_);
 
         in_vec_.resize(num_vertices(graph_this_), 0);
-        in_ = make_iterator_property_map(in_vec_.begin(), index_map_this_);
+        in_ = boost::make_iterator_property_map(in_vec_.begin(), index_map_this_);
 
         out_vec_.resize(num_vertices(graph_this_), 0);
-        out_ = make_iterator_property_map(out_vec_.begin(), index_map_this_);
+        out_ = boost::make_iterator_property_map(out_vec_.begin(), index_map_this_);
       }
 
       // Adds a vertex pair to the state of graph graph_this
@@ -130,28 +130,28 @@ namespace boost {
 
         ++core_count_;
 
-        put(core_, v_this, v_other);
+        boost::put(core_, v_this, v_other);
 
         if (!get(in_, v_this)) {   
-          put(in_, v_this, core_count_);
+          boost::put(in_, v_this, core_count_);
           ++term_in_count_;
-          if (get(out_, v_this))
+          if (boost::get(out_, v_this))
             ++term_both_count_;
         }
 
         if (!get(out_, v_this)) {   
-          put(out_, v_this, core_count_);
+          boost::put(out_, v_this, core_count_);
           ++term_out_count_;
-          if (get(in_, v_this))
+          if (boost::get(in_, v_this))
             ++term_both_count_;
         }
 
         BGL_FORALL_INEDGES_T(v_this, e, graph_this_, GraphThis) {
           vertex_this_type w = source(e, graph_this_);
           if (!get(in_, w)) {
-            put(in_, w, core_count_);
+            boost::put(in_, w, core_count_);
             ++term_in_count_;
-            if (get(out_, w))
+            if (boost::get(out_, w))
               ++term_both_count_;
           }
         }
@@ -159,9 +159,9 @@ namespace boost {
         BGL_FORALL_OUTEDGES_T(v_this, e, graph_this_, GraphThis) {
           vertex_this_type w = target(e, graph_this_);
           if (!get(out_, w)) {
-            put(out_, w, core_count_);
+            boost::put(out_, w, core_count_);
             ++term_out_count_;
-            if (get(in_, w))
+            if (boost::get(in_, w))
               ++term_both_count_;                        
           }
         }
@@ -173,40 +173,40 @@ namespace boost {
         
         if (!core_count_) return;
         
-        if (get(in_, v_this) == core_count_) {
-          put(in_, v_this, 0);
+        if (boost::get(in_, v_this) == core_count_) {
+          boost::put(in_, v_this, 0);
           --term_in_count_;
-          if (get(out_, v_this))
+          if (boost::get(out_, v_this))
             --term_both_count_;
         }
 
         BGL_FORALL_INEDGES_T(v_this, e, graph_this_, GraphThis) {
           vertex_this_type w = source(e, graph_this_);
-          if (get(in_, w) == core_count_) {
-            put(in_, w, 0);
+          if (boost::get(in_, w) == core_count_) {
+            boost::put(in_, w, 0);
             --term_in_count_;
-            if (get(out_, w))
+            if (boost::get(out_, w))
               --term_both_count_;
           }
         }
 
-        if (get(out_, v_this) == core_count_) {
-          put(out_, v_this, 0);
+        if (boost::get(out_, v_this) == core_count_) {
+          boost::put(out_, v_this, 0);
           --term_out_count_;
-          if (get(in_, v_this))
+          if (boost::get(in_, v_this))
             --term_both_count_;
         }
 
         BGL_FORALL_OUTEDGES_T(v_this, e, graph_this_, GraphThis) {
           vertex_this_type w = target(e, graph_this_);
-          if (get(out_, w) == core_count_) {
-            put(out_, w, 0);
+          if (boost::get(out_, w) == core_count_) {
+            boost::put(out_, w, 0);
             --term_out_count_;
-            if (get(in_, w))
+            if (boost::get(in_, w))
               --term_both_count_;
           }
         }
-        put(core_, v_this, graph_traits<GraphOther>::null_vertex());
+        boost::put(core_, v_this, graph_traits<GraphOther>::null_vertex());
 
         --core_count_;
         
@@ -219,8 +219,8 @@ namespace boost {
 
       // Returns true if vertex belongs to the in-terminal set
       bool term_in(const vertex_this_type& v) const {
-        return (get(in_, v) > 0) &&
-               (get(core_, v) == graph_traits<GraphOther>::null_vertex());
+        return (boost::get(in_, v) > 0) &&
+               (boost::get(core_, v) == graph_traits<GraphOther>::null_vertex());
       }
             
       // Returns true if the out-terminal set is not empty  
@@ -230,8 +230,8 @@ namespace boost {
 
       // Returns true if vertex belongs to the out-terminal set
       bool term_out(const vertex_this_type& v) const {
-        return (get(out_, v) > 0) && 
-               (get(core_, v) == graph_traits<GraphOther>::null_vertex());
+        return (boost::get(out_, v) > 0) && 
+               (boost::get(core_, v) == graph_traits<GraphOther>::null_vertex());
       }
 
       // Returns true of both (in- and out-terminal) sets are not empty
@@ -241,14 +241,14 @@ namespace boost {
 
       // Returns true if vertex belongs to both (in- and out-terminal) sets
       bool term_both(const vertex_this_type& v) const {
-        return (get(in_, v) > 0) && (get(out_, v) > 0) && 
-               (get(core_, v) == graph_traits<GraphOther>::null_vertex());
+        return (boost::get(in_, v) > 0) && (boost::get(out_, v) > 0) && 
+               (boost::get(core_, v) == graph_traits<GraphOther>::null_vertex());
       }
 
       // Returns true if vertex belongs to the core map, i.e. it is in the 
       // present mapping
       bool in_core(const vertex_this_type& v) const {
-        return get(core_, v) != graph_traits<GraphOther>::null_vertex();
+        return boost::get(core_, v) != graph_traits<GraphOther>::null_vertex();
       }
 
       // Returns the number of vertices in the mapping
@@ -258,7 +258,7 @@ namespace boost {
 
       // Returns the image (in graph_other) of vertex v (in graph_this)
       vertex_other_type core(const vertex_this_type& v) const {
-        return get(core_, v);
+        return boost::get(core_, v);
       }
 
       // Returns the mapping
@@ -268,12 +268,12 @@ namespace boost {
 
       // Returns the "time" (or depth) when vertex was added to the in-terminal set
       size_type in_depth(const vertex_this_type& v) const {
-        return get(in_, v);
+        return boost::get(in_, v);
       }
 
       // Returns the "time" (or depth) when vertex was added to the out-terminal set
       size_type out_depth(const vertex_this_type& v) const {
-        return get(out_, v);
+        return boost::get(out_, v);
       }            
 
       // Returns the terminal set counts
@@ -789,10 +789,10 @@ namespace boost {
       boost::range::sort(order, vertex_in_out_degree_cmp<Graph>(graph));
 
       std::vector<size_type> freq_vec(num_vertices(graph), 0);
-      typedef iterator_property_map<typename std::vector<size_type>::iterator,
+      typedef boost::iterator_property_map<typename std::vector<size_type>::iterator,
                                     IndexMap, size_type, size_type&> frequency_map_type;
                 
-      frequency_map_type freq = make_iterator_property_map(freq_vec.begin(), index_map);
+      frequency_map_type freq = boost::make_iterator_property_map(freq_vec.begin(), index_map);
 
       typedef typename VertexOrder::iterator order_iterator;
 
@@ -853,11 +853,11 @@ namespace boost {
         
       // Property map requirements
       BOOST_CONCEPT_ASSERT(( ReadablePropertyMapConcept<IndexMapSmall, vertex_small_type> ));
-      typedef typename property_traits<IndexMapSmall>::value_type IndexMapSmallValue;
+      typedef typename boost::property_traits<IndexMapSmall>::value_type IndexMapSmallValue;
       BOOST_STATIC_ASSERT(( is_convertible<IndexMapSmallValue, size_type_small>::value ));
         
       BOOST_CONCEPT_ASSERT(( ReadablePropertyMapConcept<IndexMapLarge, vertex_large_type> ));
-      typedef typename property_traits<IndexMapLarge>::value_type IndexMapLargeValue;
+      typedef typename boost::property_traits<IndexMapLarge>::value_type IndexMapLargeValue;
       BOOST_STATIC_ASSERT(( is_convertible<IndexMapLargeValue, size_type_large>::value ));
 
       // Edge & vertex requirements
@@ -908,7 +908,7 @@ namespace boost {
     std::vector<typename graph_traits<Graph>::vertex_descriptor> vertex_order;
     std::copy(vertices(graph).first, vertices(graph).second, std::back_inserter(vertex_order));
 
-    detail::sort_vertices(graph, get(vertex_index, graph), vertex_order);
+    detail::sort_vertices(graph, boost::get(vertex_index, graph), vertex_order);
     return vertex_order;
   }
 
@@ -947,7 +947,7 @@ namespace boost {
   bool vf2_subgraph_mono(const GraphSmall& graph_small, const GraphLarge& graph_large, 
                          SubGraphIsoMapCallback user_callback) {
     return vf2_subgraph_mono(graph_small, graph_large, user_callback, 
-                             get(vertex_index, graph_small), get(vertex_index, graph_large),
+                             boost::get(vertex_index, graph_small), boost::get(vertex_index, graph_large),
                              vertex_order_by_mult(graph_small),
                              always_equivalent(), always_equivalent());
   }
@@ -1014,7 +1014,7 @@ namespace boost {
                         SubGraphIsoMapCallback user_callback) {
 
     return vf2_subgraph_iso(graph_small, graph_large, user_callback, 
-                            get(vertex_index, graph_small), get(vertex_index, graph_large),
+                            boost::get(vertex_index, graph_small), boost::get(vertex_index, graph_large),
                             vertex_order_by_mult(graph_small),
                             always_equivalent(), always_equivalent());
   }
@@ -1086,11 +1086,11 @@ namespace boost {
         
     // Property map requirements
     BOOST_CONCEPT_ASSERT(( ReadablePropertyMapConcept<IndexMap1, vertex1_type> ));
-    typedef typename property_traits<IndexMap1>::value_type IndexMap1Value;
+    typedef typename boost::property_traits<IndexMap1>::value_type IndexMap1Value;
     BOOST_STATIC_ASSERT(( is_convertible<IndexMap1Value, size_type1>::value ));
         
     BOOST_CONCEPT_ASSERT(( ReadablePropertyMapConcept<IndexMap2, vertex2_type> ));
-    typedef typename property_traits<IndexMap2>::value_type IndexMap2Value;
+    typedef typename boost::property_traits<IndexMap2>::value_type IndexMap2Value;
     BOOST_STATIC_ASSERT(( is_convertible<IndexMap2Value, size_type2>::value ));
 
     // Edge & vertex requirements
@@ -1139,7 +1139,7 @@ namespace boost {
                      GraphIsoMapCallback user_callback) {
     
     return vf2_graph_iso(graph1, graph2, user_callback, 
-                         get(vertex_index, graph1), get(vertex_index, graph2),
+                         boost::get(vertex_index, graph1), boost::get(vertex_index, graph2),
                          vertex_order_by_mult(graph1),
                          always_equivalent(), always_equivalent());
   }
@@ -1194,7 +1194,7 @@ namespace boost {
       typename graph_traits<Graph2>::vertex_descriptor s2, t2;
       
       s1 = source(e1, graph1); t1 = target(e1, graph1);
-      s2 = get(f, s1); t2 = get(f, t1);
+      s2 = boost::get(f, s1); t2 = boost::get(f, t1);
       
       if (!vertex_comp(s1, s2) || !vertex_comp(t1, t2))
         return false;

@@ -233,24 +233,24 @@ namespace boost {
         boost::less_than_comparable1< stored_edge<Vertex> > >
     {
     public:
-      typedef no_property property_type;
+      typedef boost::no_property property_type;
       inline stored_edge() { }
-      inline stored_edge(Vertex target, const no_property& = no_property())
+      inline stored_edge(Vertex target, const boost::no_property& = boost::no_property())
         : m_target(target) { }
       inline Vertex& get_target() const { return m_target; }
-      inline const no_property& get_property() const { return s_prop; }
+      inline const boost::no_property& get_property() const { return s_prop; }
       inline bool operator==(const stored_edge& x) const
         { return m_target == x.get_target(); }
       inline bool operator<(const stored_edge& x) const
         { return m_target < x.get_target(); }
       //protected: need to add hash<> as a friend
-      static no_property s_prop;
+      static boost::no_property s_prop;
       // Sometimes target not used as key in the set, and in that case
       // it is ok to change the target.
       mutable Vertex m_target;
     };
     template <class Vertex>
-    no_property stored_edge<Vertex>::s_prop;
+    boost::no_property stored_edge<Vertex>::s_prop;
 
 #if defined(BOOST_NO_CXX11_RVALUE_REFERENCES) || defined(BOOST_NO_CXX11_SMART_PTR)
     template <class Vertex, class Property>
@@ -535,7 +535,7 @@ namespace boost {
       template <class edge_descriptor, class EdgeList, class StoredProperty>
       inline void
       remove_directed_edge_dispatch(edge_descriptor e, EdgeList& el,
-                                    no_property&)
+                                    boost::no_property&)
       {
         for (typename EdgeList::iterator i = el.begin();
              i != el.end(); ++i)
@@ -791,14 +791,14 @@ namespace boost {
         static void
         apply(edge_descriptor e,
               undirected_graph_helper<Config>& g_,
-              no_property&)
+              boost::no_property&)
         {
           typedef typename Config::global_edgelist_selector EdgeListS;
           BOOST_STATIC_ASSERT((!boost::is_same<EdgeListS, vecS>::value));
 
           typedef typename Config::graph_type graph_type;
           graph_type& g = static_cast<graph_type&>(g_);
-          no_property* p = (no_property*)e.get_property();
+          boost::no_property* p = (no_property*)e.get_property();
           typename Config::OutEdgeList& out_el = g.out_edge_list(source(e, g));
           typename Config::OutEdgeList::iterator out_i = out_el.begin();
           typename Config::EdgeIter edge_iter_to_erase;

@@ -43,13 +43,13 @@ namespace boost
     typedef typename graph_traits<Graph>::edge_descriptor edge_t;
     typedef typename graph_traits<Graph>::adjacency_iterator
       adjacency_iterator_t;
-    typedef typename property_traits<PlanarEmbedding>::value_type 
+    typedef typename boost::property_traits<PlanarEmbedding>::value_type 
       embedding_value_t;
     typedef typename embedding_value_t::const_iterator embedding_iterator_t;
-    typedef iterator_property_map
+    typedef boost::iterator_property_map
       <typename std::vector<vertex_t>::iterator, VertexIndexMap> 
       vertex_to_vertex_map_t;
-    typedef iterator_property_map
+    typedef boost::iterator_property_map
       <typename std::vector<std::size_t>::iterator, VertexIndexMap> 
       vertex_to_size_t_map_t;
     
@@ -203,7 +203,7 @@ namespace boost
                                  OutputIterator ordering
                                  )
   {
-    planar_canonical_ordering(g, embedding, ordering, get(vertex_index,g));
+    planar_canonical_ordering(g, embedding, ordering, boost::get(vertex_index,g));
   }
  
 

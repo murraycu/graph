@@ -129,7 +129,7 @@ namespace boost
             d[source(*first, g)][target(*first, g)],
             compare);
       } else 
-        d[source(*first, g)][target(*first, g)] = get(w, *first);
+        d[source(*first, g)][target(*first, g)] = boost::get(w, *first);
     }
     
     bool is_undirected = boost::is_same<typename 
@@ -146,7 +146,7 @@ namespace boost
               d[target(*first, g)][source(*first, g)],
               compare);
         else 
-          d[target(*first, g)][source(*first, g)] = get(w, *first);
+          d[target(*first, g)][source(*first, g)] = boost::get(w, *first);
       }
     }
     
@@ -163,7 +163,7 @@ namespace boost
       DistanceMatrix& d, WeightMap /*w*/, 
       const bgl_named_params<P, T, R>& params)
     {
-      typedef typename property_traits<WeightMap>::value_type WM;
+      typedef typename boost::property_traits<WeightMap>::value_type WM;
       WM inf =
         choose_param(get_param(params, distance_inf_t()), 
           std::numeric_limits<WM>::max BOOST_PREVENT_MACRO_SUBSTITUTION());
@@ -186,7 +186,7 @@ namespace boost
       DistanceMatrix& d, WeightMap w, 
       const bgl_named_params<P, T, R>& params)
     {
-      typedef typename property_traits<WeightMap>::value_type WM;
+      typedef typename boost::property_traits<WeightMap>::value_type WM;
     
       WM inf =
         choose_param(get_param(params, distance_inf_t()), 

@@ -168,7 +168,7 @@ class mutate_graph_impl : public mutate_graph
     class put_property
     {
     public:
-        put_property(const std::string& name, dynamic_properties& dp, const Key& key,
+        put_property(const std::string& name, boost::dynamic_properties& dp, const Key& key,
                      const std::string& value, const std::string& value_type,
                      const char** type_names, bool& type_found)
             : m_name(name), m_dp(dp), m_key(key), m_value(value),
@@ -179,13 +179,13 @@ class mutate_graph_impl : public mutate_graph
         {
             if (m_value_type == m_type_names[mpl::find<ValueVector,Value>::type::pos::value])
             {
-                put(m_name, m_dp, m_key, boost::lexical_cast<Value>(m_value));
+                boost::put(m_name, m_dp, m_key, boost::lexical_cast<Value>(m_value));
                 m_type_found = true;
             }
         }
     private:
         const std::string& m_name;
-        dynamic_properties& m_dp;
+        boost::dynamic_properties& m_dp;
         const Key& m_key;
         const std::string& m_value;
         const std::string& m_value_type;
@@ -195,7 +195,7 @@ class mutate_graph_impl : public mutate_graph
 
 protected:
     MutableGraph& m_g;
-    dynamic_properties& m_dp;
+    boost::dynamic_properties& m_dp;
     typedef mpl::vector<bool, int, long, float, double, std::string> value_types;
     static const char* m_type_names[];
 };
@@ -208,7 +208,7 @@ read_graphml(std::istream& in, mutate_graph& g, size_t desired_idx);
 
 template<typename MutableGraph>
 void
-read_graphml(std::istream& in, MutableGraph& g, dynamic_properties& dp, size_t desired_idx = 0)
+read_graphml(std::istream& in, MutableGraph& g, boost::dynamic_properties& dp, size_t desired_idx = 0)
 {
     mutate_graph_impl<MutableGraph> mg(g,dp);
     read_graphml(in, mg, desired_idx);
@@ -236,7 +236,7 @@ private:
 template <typename Graph, typename VertexIndexMap>
 void
 write_graphml(std::ostream& out, const Graph& g, VertexIndexMap vertex_index,
-              const dynamic_properties& dp, bool ordered_vertices=false)
+              const boost::dynamic_properties& dp, bool ordered_vertices=false)
 {
     typedef typename graph_traits<Graph>::directed_category directed_category;
     typedef typename graph_traits<Graph>::edge_descriptor edge_descriptor;
@@ -259,7 +259,7 @@ write_graphml(std::ostream& out, const Graph& g, VertexIndexMap vertex_index,
     int key_count = 0;
 
     // Output keys
-    for (dynamic_properties::const_iterator i = dp.begin(); i != dp.end(); ++i)
+    for (boost::dynamic_properties::const_iterator i = dp.begin(); i != dp.end(); ++i)
     {
         std::string key_id = "key" + boost::lexical_cast<std::string>(key_count++);
         if (i->second->key() == typeid(Graph*))
@@ -285,7 +285,7 @@ write_graphml(std::ostream& out, const Graph& g, VertexIndexMap vertex_index,
         << " parse.edgeids=\"canonical\" parse.order=\"nodesfirst\">\n";
 
     // Output graph data
-    for (dynamic_properties::const_iterator i = dp.begin(); i != dp.end(); ++i)
+    for (boost::dynamic_properties::const_iterator i = dp.begin(); i != dp.end(); ++i)
     {
         if (i->second->key() == typeid(Graph*))
         {
@@ -300,9 +300,9 @@ write_graphml(std::ostream& out, const Graph& g, VertexIndexMap vertex_index,
     vertex_iterator v, v_end;
     for (boost::tie(v, v_end) = vertices(g); v != v_end; ++v)
     {
-        out << "    <node id=\"n" << get(vertex_index, *v) << "\">\n";
+        out << "    <node id=\"n" << boost::get(vertex_index, *v) << "\">\n";
         // Output data
-        for (dynamic_properties::const_iterator i = dp.begin(); i != dp.end(); ++i)
+        for (boost::dynamic_properties::const_iterator i = dp.begin(); i != dp.end(); ++i)
         {
             if (i->second->key() == typeid(vertex_descriptor))
             {
@@ -319,11 +319,11 @@ write_graphml(std::ostream& out, const Graph& g, VertexIndexMap vertex_index,
     for (boost::tie(e, e_end) = edges(g); e != e_end; ++e)
     {
         out << "    <edge id=\"e" << edge_count++ << "\" source=\"n"
-            << get(vertex_index, source(*e, g)) << "\" target=\"n"
-            << get(vertex_index, target(*e, g)) << "\">\n";
+            << boost::get(vertex_index, source(*e, g)) << "\" target=\"n"
+            << boost::get(vertex_index, target(*e, g)) << "\">\n";
 
         // Output data
-        for (dynamic_properties::const_iterator i = dp.begin(); i != dp.end(); ++i)
+        for (boost::dynamic_properties::const_iterator i = dp.begin(); i != dp.end(); ++i)
         {
             if (i->second->key() == typeid(edge_descriptor))
             {
@@ -341,10 +341,10 @@ write_graphml(std::ostream& out, const Graph& g, VertexIndexMap vertex_index,
 
 template <typename Graph>
 void
-write_graphml(std::ostream& out, const Graph& g, const dynamic_properties& dp,
+write_graphml(std::ostream& out, const Graph& g, const boost::dynamic_properties& dp,
               bool ordered_vertices=false)
 {
-    write_graphml(out, g, get(vertex_index, g), dp, ordered_vertices);
+    write_graphml(out, g, boost::get(vertex_index, g), dp, ordered_vertices);
 }
 
 } // boost namespace

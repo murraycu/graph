@@ -40,7 +40,7 @@ namespace boost {
      DijkstraVisitor visitor)
   {
     typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
-    typedef typename property_traits<DistanceMap>::value_type Distance;
+    typedef typename boost::property_traits<DistanceMap>::value_type Distance;
     
     typedef indirect_cmp<DistanceMap, DistanceCompare> DistanceIndirectCompare;
     DistanceIndirectCompare
@@ -83,7 +83,7 @@ namespace boost {
       visitor.examine_vertex(min_vertex, graph);
   
       // Check if any other vertices can be reached
-      Distance min_vertex_distance = get(distance_map, min_vertex);
+      Distance min_vertex_distance = boost::get(distance_map, min_vertex);
       
       if (!distance_compare(min_vertex_distance, distance_infinity)) {
         // This is the minimum vertex, so all other vertices are unreachable
@@ -95,13 +95,13 @@ namespace boost {
         visitor.examine_edge(current_edge, graph);
         
         // Check if the edge has a negative weight
-        if (distance_compare(get(weight_map, current_edge), distance_zero)) {
+        if (distance_compare(boost::get(weight_map, current_edge), distance_zero)) {
           boost::throw_exception(negative_edge());
         }
   
         // Extract the neighboring vertex and get its distance
         Vertex neighbor_vertex = target(current_edge, graph);
-        Distance neighbor_vertex_distance = get(distance_map, neighbor_vertex);
+        Distance neighbor_vertex_distance = boost::get(distance_map, neighbor_vertex);
         bool is_neighbor_undiscovered = 
           !distance_compare(neighbor_vertex_distance, distance_infinity);
 
@@ -152,14 +152,14 @@ namespace boost {
       visitor.initialize_vertex(current_vertex, graph);
       
       // Default all distances to infinity
-      put(distance_map, current_vertex, distance_infinity);
+      boost::put(distance_map, current_vertex, distance_infinity);
   
       // Default all vertex predecessors to the vertex itself
-      put(predecessor_map, current_vertex, current_vertex);
+      boost::put(predecessor_map, current_vertex, current_vertex);
     }
   
     // Set distance for start_vertex to zero
-    put(distance_map, start_vertex, distance_zero);
+    boost::put(distance_map, start_vertex, distance_zero);
   
     // Pass everything on to the no_init version
     dijkstra_shortest_paths_no_color_map_no_init(graph,
@@ -184,7 +184,7 @@ namespace boost {
       // Default for predecessor map
       dummy_property_map predecessor_map;
 
-      typedef typename property_traits<DistanceMap>::value_type DistanceType;
+      typedef typename boost::property_traits<DistanceMap>::value_type DistanceType;
       DistanceType inf =
         choose_param(get_param(params, distance_inf_t()),
                      (std::numeric_limits<DistanceType>::max)());
@@ -213,7 +213,7 @@ namespace boost {
        IndexMap index_map, const Params& params)
     {
       // Default for distance map
-      typedef typename property_traits<WeightMap>::value_type DistanceType;
+      typedef typename boost::property_traits<WeightMap>::value_type DistanceType;
       typename std::vector<DistanceType>::size_type
         vertex_count = is_default_param(distance_map) ? num_vertices(graph) : 1;
         
@@ -221,7 +221,7 @@ namespace boost {
 
       detail::dijkstra_no_color_map_dispatch2
         (graph, start_vertex, choose_param(distance_map,
-         make_iterator_property_map(default_distance_map.begin(), index_map,
+         boost::make_iterator_property_map(default_distance_map.begin(), index_map,
                                     default_distance_map[0])),
          weight_map, index_map, params);
     }

@@ -42,7 +42,7 @@ namespace boost {
       void finish_vertex(Vertex, Graph&) {
         using std::sort;
 
-        typedef typename property_traits<DegreeMap>::value_type ds_type;
+        typedef typename boost::property_traits<DegreeMap>::value_type ds_type;
 
         typedef indirect_cmp<DegreeMap, std::less<ds_type> > Compare;
         Compare comp(degree);
@@ -78,7 +78,7 @@ namespace boost {
     typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
     typedef typename boost::sparse::sparse_ordering_queue<Vertex> queue;
     typedef typename detail::bfs_rcm_visitor<OutputIterator, queue, DegreeMap> Visitor;
-    typedef typename property_traits<ColorMap>::value_type ColorValue;
+    typedef typename boost::property_traits<ColorMap>::value_type ColorValue;
     typedef color_traits<ColorValue> Color;
 
 
@@ -92,7 +92,7 @@ namespace boost {
     // Copy degree to pseudo_degree
     // initialize the color map
     for (boost::tie(ui, ui_end) = vertices(g); ui != ui_end; ++ui){
-      put(color, *ui, Color::white());
+      boost::put(color, *ui, Color::white());
     }
 
 
@@ -136,17 +136,17 @@ namespace boost {
       return permutation;
 
     typedef typename boost::graph_traits<Graph>::vertex_descriptor Vertex;
-    typedef typename property_traits<ColorMap>::value_type ColorValue;
+    typedef typename boost::property_traits<ColorMap>::value_type ColorValue;
     typedef color_traits<ColorValue> Color;
 
     std::deque<Vertex>      vertex_queue;
 
     // Mark everything white
-    BGL_FORALL_VERTICES_T(v, G, Graph) put(color, v, Color::white());
+    BGL_FORALL_VERTICES_T(v, G, Graph) boost::put(color, v, Color::white());
 
     // Find one vertex from each connected component 
     BGL_FORALL_VERTICES_T(v, G, Graph) {
-      if (get(color, v) == Color::white()) {
+      if (boost::get(color, v) == Color::white()) {
         depth_first_visit(G, v, dfs_visitor<>(), color);
         vertex_queue.push_back(v);
       }
@@ -172,7 +172,7 @@ namespace boost {
     
     std::vector<default_color_type> colors(num_vertices(G));
     return cuthill_mckee_ordering(G, permutation, 
-                                  make_iterator_property_map(&colors[0], 
+                                  boost::make_iterator_property_map(&colors[0], 
                                                              index_map,
                                                              colors[0]),
                                   make_out_degree_map(G));
@@ -181,7 +181,7 @@ namespace boost {
   template<typename Graph, typename OutputIterator>
   inline OutputIterator 
   cuthill_mckee_ordering(const Graph& G, OutputIterator permutation)
-  { return cuthill_mckee_ordering(G, permutation, get(vertex_index, G)); }
+  { return cuthill_mckee_ordering(G, permutation, boost::get(vertex_index, G)); }
 } // namespace boost
 
 

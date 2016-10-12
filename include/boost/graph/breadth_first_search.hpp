@@ -66,29 +66,29 @@ namespace boost {
     typedef typename GTraits::vertex_descriptor Vertex;
     BOOST_CONCEPT_ASSERT(( BFSVisitorConcept<BFSVisitor, IncidenceGraph> ));
     BOOST_CONCEPT_ASSERT(( ReadWritePropertyMapConcept<ColorMap, Vertex> ));
-    typedef typename property_traits<ColorMap>::value_type ColorValue;
+    typedef typename boost::property_traits<ColorMap>::value_type ColorValue;
     typedef color_traits<ColorValue> Color;
     typename GTraits::out_edge_iterator ei, ei_end;
 
     for (; sources_begin != sources_end; ++sources_begin) {
       Vertex s = *sources_begin;
-      put(color, s, Color::gray());           vis.discover_vertex(s, g);
+      boost::put(color, s, Color::gray());           vis.discover_vertex(s, g);
       Q.push(s);
     }
     while (! Q.empty()) {
       Vertex u = Q.top(); Q.pop();            vis.examine_vertex(u, g);
       for (boost::tie(ei, ei_end) = out_edges(u, g); ei != ei_end; ++ei) {
         Vertex v = target(*ei, g);            vis.examine_edge(*ei, g);
-        ColorValue v_color = get(color, v);
+        ColorValue v_color = boost::get(color, v);
         if (v_color == Color::white()) {      vis.tree_edge(*ei, g);
-          put(color, v, Color::gray());       vis.discover_vertex(v, g);
+          boost::put(color, v, Color::gray());       vis.discover_vertex(v, g);
           Q.push(v);
         } else {                              vis.non_tree_edge(*ei, g);
           if (v_color == Color::gray())       vis.gray_target(*ei, g);
           else                                vis.black_target(*ei, g);
         }
       } // end for
-      put(color, u, Color::black());          vis.finish_vertex(u, g);
+      boost::put(color, u, Color::black());          vis.finish_vertex(u, g);
     } // end while
   } // breadth_first_visit
 
@@ -114,12 +114,12 @@ namespace boost {
      Buffer& Q, BFSVisitor vis, ColorMap color)
   {
     // Initialization
-    typedef typename property_traits<ColorMap>::value_type ColorValue;
+    typedef typename boost::property_traits<ColorMap>::value_type ColorValue;
     typedef color_traits<ColorValue> Color;
     typename boost::graph_traits<VertexListGraph>::vertex_iterator i, i_end;
     for (boost::tie(i, i_end) = vertices(g); i != i_end; ++i) {
       vis.initialize_vertex(*i, g);
-      put(color, *i, Color::white());
+      boost::put(color, *i, Color::white());
     }
     breadth_first_visit(g, sources_begin, sources_end, Q, vis, color);
   }

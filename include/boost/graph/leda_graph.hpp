@@ -726,12 +726,12 @@ namespace boost {
   };
   template <class vtype, class etype>
   inline leda_graph_id_map
-  get(vertex_index_t, const leda::GRAPH<vtype, etype>& g) {
+  boost::get(vertex_index_t, const leda::GRAPH<vtype, etype>& g) {
     return leda_graph_id_map();
   }
   template <class vtype, class etype>
   inline leda_graph_id_map
-  get(edge_index_t, const leda::GRAPH<vtype, etype>& g) {
+  boost::get(edge_index_t, const leda::GRAPH<vtype, etype>& g) {
     return leda_graph_id_map();
   }
 
@@ -783,16 +783,16 @@ namespace boost {
     };
   };  
   template <class vtype, class etype >
-  inline typename property_map< leda::GRAPH<vtype, etype>, vertex_all_t>::type
-  get(vertex_all_t, leda::GRAPH<vtype, etype>& g) {
-    typedef typename property_map< leda::GRAPH<vtype, etype>, vertex_all_t>::type 
+  inline typename boost::property_map< leda::GRAPH<vtype, etype>, vertex_all_t>::type
+  boost::get(vertex_all_t, leda::GRAPH<vtype, etype>& g) {
+    typedef typename boost::property_map< leda::GRAPH<vtype, etype>, vertex_all_t>::type 
       pmap_type;
     return pmap_type(&g);
   }
   template <class vtype, class etype >
-  inline typename property_map< leda::GRAPH<vtype, etype>, vertex_all_t>::const_type
-  get(vertex_all_t, const leda::GRAPH<vtype, etype>& g) {
-    typedef typename property_map< leda::GRAPH<vtype, etype>, 
+  inline typename boost::property_map< leda::GRAPH<vtype, etype>, vertex_all_t>::const_type
+  boost::get(vertex_all_t, const leda::GRAPH<vtype, etype>& g) {
+    typedef typename boost::property_map< leda::GRAPH<vtype, etype>, 
       vertex_all_t>::const_type pmap_type;
     return pmap_type(&g);
   }
@@ -807,16 +807,16 @@ namespace boost {
     };
   };
   template <class vtype, class etype >
-  inline typename property_map< leda::GRAPH<vtype, etype>, edge_all_t>::type
-  get(edge_all_t, leda::GRAPH<vtype, etype>& g) {
-    typedef typename property_map< leda::GRAPH<vtype, etype>, edge_all_t>::type 
+  inline typename boost::property_map< leda::GRAPH<vtype, etype>, edge_all_t>::type
+  boost::get(edge_all_t, leda::GRAPH<vtype, etype>& g) {
+    typedef typename boost::property_map< leda::GRAPH<vtype, etype>, edge_all_t>::type 
       pmap_type;
     return pmap_type(&g);
   }
   template <class vtype, class etype >
-  inline typename property_map< leda::GRAPH<vtype, etype>, edge_all_t>::const_type
-  get(edge_all_t, const leda::GRAPH<vtype, etype>& g) {
-    typedef typename property_map< leda::GRAPH<vtype, etype>, 
+  inline typename boost::property_map< leda::GRAPH<vtype, etype>, edge_all_t>::const_type
+  boost::get(edge_all_t, const leda::GRAPH<vtype, etype>& g) {
+    typedef typename boost::property_map< leda::GRAPH<vtype, etype>, 
       edge_all_t>::const_type pmap_type;
     return pmap_type(&g);
   }
@@ -883,18 +883,18 @@ namespace boost {
   typename boost::property_traits<
     typename boost::property_map<leda::GRAPH<vtype, etype>,PropertyTag>::const_type
    >::value_type
-  get(PropertyTag p, const leda::GRAPH<vtype, etype>& g, const Key& key) {
-    return get(get(p, g), key);
+  boost::get(PropertyTag p, const leda::GRAPH<vtype, etype>& g, const Key& key) {
+    return boost::get(boost::get(p, g), key);
   }
 
   template <class vtype, class etype, class PropertyTag, class Key,class Value>
   inline void
-  put(PropertyTag p, leda::GRAPH<vtype, etype>& g, 
+  boost::put(PropertyTag p, leda::GRAPH<vtype, etype>& g, 
       const Key& key, const Value& value)
   {
-    typedef typename property_map<leda::GRAPH<vtype, etype>, PropertyTag>::type Map;
-    Map pmap = get(p, g);
-    put(pmap, key, value);
+    typedef typename boost::property_map<leda::GRAPH<vtype, etype>, PropertyTag>::type Map;
+    Map pmap = boost::get(p, g);
+    boost::put(pmap, key, value);
   }
 
    // property map interface to the LEDA edge_array class

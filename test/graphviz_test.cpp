@@ -76,7 +76,7 @@ bool test_graph(std::istream& dotfile, graph_t& graph,
                 WeightMap weight) {
 
   // Construct a graph and set up the dynamic_property_maps.
-  boost::dynamic_properties dp(ignore_other_properties);
+  boost::dynamic_properties dp(boost::ignore_other_properties);
   dp.property(node_id,name);
   dp.property("mass",mass);
   dp.property("weight",weight);

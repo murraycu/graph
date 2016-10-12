@@ -102,20 +102,20 @@ namespace boost {
           data(_num, - (std::numeric_limits<value_type>::max)()),
           id(index_map) {}
       
-      void mark_done(Vertex node) { data[get(id, node)] = done(); }
+      void mark_done(Vertex node) { data[boost::get(id, node)] = done(); }
       
-      bool is_done(Vertex node) { return data[get(id, node)] == done(); }
+      bool is_done(Vertex node) { return data[boost::get(id, node)] == done(); }
       
-      void mark_tagged(Vertex node) { data[get(id, node)] = tag; }
+      void mark_tagged(Vertex node) { data[boost::get(id, node)] = tag; }
       
-      void mark_multiple_tagged(Vertex node) { data[get(id, node)] = multiple_tag; }
+      void mark_multiple_tagged(Vertex node) { data[boost::get(id, node)] = multiple_tag; }
   
-      bool is_tagged(Vertex node) const { return data[get(id, node)] >= tag; }
+      bool is_tagged(Vertex node) const { return data[boost::get(id, node)] >= tag; }
 
-      bool is_not_tagged(Vertex node) const { return data[get(id, node)] < tag; }
+      bool is_not_tagged(Vertex node) const { return data[boost::get(id, node)] < tag; }
 
       bool is_multiple_tagged(Vertex node) const 
-        { return data[get(id, node)] >= multiple_tag; }
+        { return data[boost::get(id, node)] >= multiple_tag; }
 
       void increment_tag() {
         const size_type num = data.size();
@@ -164,14 +164,14 @@ namespace boost {
     public:
       Numbering(Iterator _data, number_type _max_num, VertexIndexMap id) 
         : num(1), data(_data), max_num(_max_num), id(id) {}
-      void operator()(Vertex node) { data[get(id, node)] = -num; }
+      void operator()(Vertex node) { data[boost::get(id, node)] = -num; }
       bool all_done(number_type i = 0) const { return num + i > max_num; }
       void increment(number_type i = 1) { num += i; }
       bool is_numbered(Vertex node) const {
-        return data[get(id, node)] < 0;
+        return data[boost::get(id, node)] < 0;
       }
       void indistinguishable(Vertex i, Vertex j) {
-        data[get(id, i)] = - (get(id, j) + offset);
+        data[boost::get(id, i)] = - (boost::get(id, j) + offset);
       }
     };
 
@@ -182,11 +182,11 @@ namespace boost {
       typedef typename std::vector<value_type>::size_type size_type;
       degreelists_marker(size_type n, VertexIndexMap id)
         : marks(n, 0), id(id) {}
-      void mark_need_update(Vertex i) { marks[get(id, i)] = 1;  }
-      bool need_update(Vertex i) { return marks[get(id, i)] == 1; }
-      bool outmatched_or_done (Vertex i) { return marks[get(id, i)] == -1; }
-      void mark(Vertex i) { marks[get(id, i)] = -1; }
-      void unmark(Vertex i) { marks[get(id, i)] = 0; }
+      void mark_need_update(Vertex i) { marks[boost::get(id, i)] = 1;  }
+      bool need_update(Vertex i) { return marks[boost::get(id, i)] == 1; }
+      bool outmatched_or_done (Vertex i) { return marks[boost::get(id, i)] == -1; }
+      void mark(Vertex i) { marks[boost::get(id, i)] = -1; }
+      void unmark(Vertex i) { marks[boost::get(id, i)] = 0; }
     private:
       std::vector<value_type> marks;
       VertexIndexMap id;
@@ -210,7 +210,7 @@ namespace boost {
           return true;
         marker->mark_tagged(dist);
         if (numbering.is_numbered(dist)) {
-          neighbor_elements->push(get(id, dist));
+          neighbor_elements->push(boost::get(id, dist));
           return true;
         }
         return false;
@@ -258,8 +258,8 @@ namespace boost {
         diff_t;
       typedef typename Traits::vertex_descriptor vertex_t;
       typedef typename Traits::adjacency_iterator adj_iter;
-      typedef iterator_property_map<vertex_t*, 
-        identity_property_map, vertex_t, vertex_t&> IndexVertexMap;
+      typedef boost::iterator_property_map<vertex_t*, 
+        boost::identity_property_map, vertex_t, vertex_t&> IndexVertexMap;
       typedef detail::Stacks<diff_t> Workspace;
       typedef bucket_sorter<size_type, vertex_t, DegreeMap, VertexIndexMap> 
         DegreeLists;
@@ -317,7 +317,7 @@ namespace boost {
         // Initialize degreelists.  Degreelists organizes the nodes
         // according to their degree.
         for (boost::tie(v, vend) = vertices(G); v != vend; ++v) {
-          put(degree, *v, out_degree(*v, G));
+          boost::put(degree, *v, out_degree(*v, G));
           degreelists.push(*v);
         }
       }
@@ -362,7 +362,7 @@ namespace boost {
               break;
 
             const vertex_t node = list_min_degree.top();
-            const size_type node_id = get(vertex_index_map, node);
+            const size_type node_id = boost::get(vertex_index_map, node);
             list_min_degree.pop();
             numbering(node);
 
@@ -407,7 +407,7 @@ namespace boost {
         while (!element_neighbor.empty()) {
           // element absorb
           size_type e_id = element_neighbor.top();
-          vertex_t element = get(index_vertex_map, e_id);
+          vertex_t element = boost::get(index_vertex_map, e_id);
           adj_iter i, i_end;
           for (boost::tie(i, i_end) = adjacent_vertices(element, G); i != i_end; ++i){
             vertex_t i_node = *i;
@@ -454,11 +454,11 @@ namespace boost {
           typename Workspace::stack q2list = work_space.make_stack();
           typename Workspace::stack qxlist = work_space.make_stack();
 
-          vertex_t current = get(index_vertex_map, llist.top());
+          vertex_t current = boost::get(index_vertex_map, llist.top());
           adj_iter i, ie;
           for (boost::tie(i,ie) = adjacent_vertices(current, G); i != ie; ++i) {
             vertex_t i_node = *i;
-            const size_type i_id = get(vertex_index_map, i_node);
+            const size_type i_id = boost::get(vertex_index_map, i_node);
             if (supernode_size[i_node] != 0) {
               deg0 += supernode_size[i_node];
               marker.mark_multiple_tagged(i_node);
@@ -473,7 +473,7 @@ namespace boost {
 
           while (!q2list.empty()) {
             const size_type u_id = q2list.top();
-            vertex_t u_node = get(index_vertex_map, u_id);
+            vertex_t u_node = boost::get(index_vertex_map, u_id);
             // if u_id is outmatched by others, no need to update degree
             if (degree_lists_marker.outmatched_or_done(u_node)) {
               q2list.pop();
@@ -526,7 +526,7 @@ namespace boost {
 
           while (!qxlist.empty()) {
             const size_type u_id = qxlist.top();
-            const vertex_t u_node = get(index_vertex_map, u_id);
+            const vertex_t u_node = boost::get(index_vertex_map, u_id);
 
             // if u_id is outmatched by others, no need to update degree
             if (degree_lists_marker.outmatched_or_done(u_node)) {
@@ -577,10 +577,10 @@ namespace boost {
         // collect the permutation info
         size_type i;
         for (i = 0; i < n; ++i) {
-          diff_t size = supernode_size[get(index_vertex_map, i)];
+          diff_t size = supernode_size[boost::get(index_vertex_map, i)];
           if ( size <= 0 ) {
             prev[i] = next[i];
-            supernode_size[get(index_vertex_map, i)]
+            supernode_size[boost::get(index_vertex_map, i)]
               = next[i] + 1;  // record the supernode info
           } else
             prev[i] = - next[i];

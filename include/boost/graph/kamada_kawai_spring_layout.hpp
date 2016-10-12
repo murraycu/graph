@@ -63,7 +63,7 @@ namespace boost {
            ui != end; ++ui) {
         vertex_iterator vi = ui;
         for (++vi; vi != end; ++vi) {
-          T dij = distance[get(index, *ui)][get(index, *vi)];
+          T dij = distance[boost::get(index, *ui)][boost::get(index, *vi)];
           if (dij > result) result = dij;
         }
       }
@@ -136,7 +136,7 @@ namespace boost {
              typename SpringStrengthMatrix, typename PartialDerivativeMap>
     struct kamada_kawai_spring_layout_impl
     {
-      typedef typename property_traits<WeightMap>::value_type weight_type;
+      typedef typename boost::property_traits<WeightMap>::value_type weight_type;
       typedef typename Topology::point_type Point;
       typedef typename Topology::point_difference_type point_difference_type;
       typedef point_difference_type deriv_type;
@@ -175,8 +175,8 @@ namespace boost {
         if (i != m) {
           point_difference_type diff = topology.difference(position[m], position[i]);
           weight_type dist = topology.norm(diff);
-          result = spring_strength[get(index, m)][get(index, i)] 
-            * (diff - distance[get(index, m)][get(index, i)]/dist*diff);
+          result = spring_strength[boost::get(index, m)][boost::get(index, i)] 
+            * (diff - distance[boost::get(index, m)][boost::get(index, i)]/dist*diff);
         }
 
         return result;
@@ -226,13 +226,13 @@ namespace boost {
         for (ui = vertices(g).first, end = vertices(g).second; ui != end; ++ui) {
           vertex_iterator vi = ui;
           for (++vi; vi != end; ++vi) {
-            weight_type dij = distance[get(index, *ui)][get(index, *vi)];
+            weight_type dij = distance[boost::get(index, *ui)][boost::get(index, *vi)];
             if (dij == (std::numeric_limits<weight_type>::max)())
               return false;
-            distance[get(index, *ui)][get(index, *vi)] = edge_length * dij;
-            distance[get(index, *vi)][get(index, *ui)] = edge_length * dij;
-            spring_strength[get(index, *ui)][get(index, *vi)] = K/(dij*dij);
-            spring_strength[get(index, *vi)][get(index, *ui)] = K/(dij*dij);
+            distance[boost::get(index, *ui)][boost::get(index, *vi)] = edge_length * dij;
+            distance[boost::get(index, *vi)][boost::get(index, *ui)] = edge_length * dij;
+            spring_strength[boost::get(index, *ui)][boost::get(index, *vi)] = K/(dij*dij);
+            spring_strength[boost::get(index, *vi)][boost::get(index, *ui)] = K/(dij*dij);
           }
         }
         
@@ -242,7 +242,7 @@ namespace boost {
 
         for (ui = vertices(g).first, end = vertices(g).second; ui != end; ++ui) {
           deriv_type deriv = compute_partial_derivatives(*ui);
-          put(partial_derivatives, *ui, deriv);
+          boost::put(partial_derivatives, *ui, deriv);
 
           weight_type delta = topology.norm(deriv);
 
@@ -260,7 +260,7 @@ namespace boost {
           std::vector<deriv_type> p_partials(num_vertices(g));
           for (ui = vertices(g).first, end = vertices(g).second; ui != end; ++ui) {
             vertex_descriptor i = *ui;
-            p_partials[get(index, i)] = compute_partial_derivative(i, p);
+            p_partials[boost::get(index, i)] = compute_partial_derivative(i, p);
           }
 
           do {
@@ -270,8 +270,8 @@ namespace boost {
               vertex_iterator vi = ui;
               for (++vi; vi != end; ++vi) {
                 double dist = topology.distance(position[*ui], position[*vi]);
-                weight_type k_ij = spring_strength[get(index,*ui)][get(index,*vi)];
-                weight_type l_ij = distance[get(index, *ui)][get(index, *vi)];
+                weight_type k_ij = spring_strength[boost::get(index,*ui)][boost::get(index,*vi)];
+                weight_type l_ij = distance[boost::get(index, *ui)][boost::get(index, *vi)];
                 E += .5 * k_ij * (dist - l_ij) * (dist - l_ij);
               }
             }
@@ -292,8 +292,8 @@ namespace boost {
                 weight_type dist = topology.norm(diff);
                 weight_type dist_squared = dist * dist;
                 weight_type inv_dist_cubed = 1. / (dist_squared * dist);
-                weight_type k_mi = spring_strength[get(index,p)][get(index,i)];
-                weight_type l_mi = distance[get(index, p)][get(index, i)];
+                weight_type k_mi = spring_strength[boost::get(index,p)][boost::get(index,i)];
+                weight_type l_mi = distance[boost::get(index, p)][boost::get(index, i)];
                 for (std::size_t i = 0; i < Point::dimensions; ++i) {
                   for (std::size_t j = 0; j < Point::dimensions; ++j) {
                     if (i == j) {
@@ -307,7 +307,7 @@ namespace boost {
               }
             }
 
-            deriv_type dE_d = get(partial_derivatives, p);
+            deriv_type dE_d = boost::get(partial_derivatives, p);
 
             // Solve dE_d_d * delta = -dE_d to get delta
             point_difference_type delta = -linear_solver<Point::dimensions>::solve(dE_d_d, dE_d);
@@ -317,7 +317,7 @@ namespace boost {
 
             // Recompute partial derivatives and delta_p
             deriv_type deriv = compute_partial_derivatives(p);
-            put(partial_derivatives, p, deriv);
+            boost::put(partial_derivatives, p, deriv);
 
             delta_p = topology.norm(deriv);
           } while (!done(delta_p, p, g, false));
@@ -325,14 +325,14 @@ namespace boost {
           // Select new p by updating each partial derivative and delta
           vertex_descriptor old_p = p;
           for (ui = vertices(g).first, end = vertices(g).second; ui != end; ++ui) {
-            deriv_type old_deriv_p = p_partials[get(index, *ui)];
+            deriv_type old_deriv_p = p_partials[boost::get(index, *ui)];
             deriv_type old_p_partial = 
               compute_partial_derivative(*ui, old_p);
-            deriv_type deriv = get(partial_derivatives, *ui);
+            deriv_type deriv = boost::get(partial_derivatives, *ui);
 
             deriv += old_p_partial - old_deriv_p;
 
-            put(partial_derivatives, *ui, deriv);
+            boost::put(partial_derivatives, *ui, deriv);
             weight_type delta = topology.norm(deriv);
 
             if (delta > delta_p) {
@@ -469,7 +469,7 @@ namespace boost {
    *
    * \param index (IN) is a mapping from vertices to index values
    * between 0 and @c num_vertices(g). The default is @c
-   * get(vertex_index,g).
+   * boost::get(vertex_index,g).
    *
    * \param distance (UTIL/OUT) will be used to store the distance
    * from every vertex to every other vertex, which is computed in the
@@ -504,7 +504,7 @@ namespace boost {
     const Topology& topology,
     detail::graph::edge_or_side<EdgeOrSideLength, T> edge_or_side_length,
     Done done,
-    typename property_traits<WeightMap>::value_type spring_constant,
+    typename boost::property_traits<WeightMap>::value_type spring_constant,
     VertexIndexMap index,
     DistanceMatrix distance,
     SpringStrengthMatrix spring_strength,
@@ -538,10 +538,10 @@ namespace boost {
     const Topology& topology,
     detail::graph::edge_or_side<EdgeOrSideLength, T> edge_or_side_length,
     Done done,
-    typename property_traits<WeightMap>::value_type spring_constant,
+    typename boost::property_traits<WeightMap>::value_type spring_constant,
     VertexIndexMap index)
   {
-    typedef typename property_traits<WeightMap>::value_type weight_type;
+    typedef typename boost::property_traits<WeightMap>::value_type weight_type;
 
     typename graph_traits<Graph>::vertices_size_type n = num_vertices(g);
     typedef std::vector<weight_type> weight_vec;
@@ -555,7 +555,7 @@ namespace boost {
         g, position, weight, topology, edge_or_side_length, done, spring_constant, index,
         distance.begin(),
         spring_strength.begin(),
-        make_iterator_property_map(partial_derivatives.begin(), index,
+        boost::make_iterator_property_map(partial_derivatives.begin(), index,
                                    typename Topology::point_difference_type()));
   }
 
@@ -572,11 +572,11 @@ namespace boost {
     const Topology& topology,
     detail::graph::edge_or_side<EdgeOrSideLength, T> edge_or_side_length,
     Done done,
-    typename property_traits<WeightMap>::value_type spring_constant)
+    typename boost::property_traits<WeightMap>::value_type spring_constant)
   {
     return kamada_kawai_spring_layout(g, position, weight, topology, edge_or_side_length,
                                       done, spring_constant, 
-                                      get(vertex_index, g));
+                                      boost::get(vertex_index, g));
   }
 
   /**
@@ -593,7 +593,7 @@ namespace boost {
     detail::graph::edge_or_side<EdgeOrSideLength, T> edge_or_side_length,
     Done done)
   {
-    typedef typename property_traits<WeightMap>::value_type weight_type;
+    typedef typename boost::property_traits<WeightMap>::value_type weight_type;
     return kamada_kawai_spring_layout(g, position, weight, topology, edge_or_side_length,
                                       done, weight_type(1)); 
   }
@@ -611,11 +611,11 @@ namespace boost {
     const Topology& topology,
     detail::graph::edge_or_side<EdgeOrSideLength, T> edge_or_side_length)
   {
-    typedef typename property_traits<WeightMap>::value_type weight_type;
+    typedef typename boost::property_traits<WeightMap>::value_type weight_type;
     return kamada_kawai_spring_layout(g, position, weight, topology, edge_or_side_length,
                                       layout_tolerance<weight_type>(),
                                       weight_type(1.0), 
-                                      get(vertex_index, g));
+                                      boost::get(vertex_index, g));
   }
 } // end namespace boost
 

@@ -228,21 +228,21 @@ namespace boost { // should use a different namespace for this
   };
   
   template <typename G, typename P, typename V>
-  typename property_map<property_graph_archetype<G, P, V>, P>::type
+  typename boost::property_map<property_graph_archetype<G, P, V>, P>::type
   get(P, property_graph_archetype<G, P, V>&) {
-    typename property_map<property_graph_archetype<G, P, V>, P>::type pmap;
+    typename boost::property_map<property_graph_archetype<G, P, V>, P>::type pmap;
     return pmap;
   }
 
   template <typename G, typename P, typename V>
-  typename property_map<property_graph_archetype<G, P, V>, P>::const_type
+  typename boost::property_map<property_graph_archetype<G, P, V>, P>::const_type
   get(P, const property_graph_archetype<G, P, V>&) {
-    typename property_map<property_graph_archetype<G, P, V>, P>::const_type pmap;
+    typename boost::property_map<property_graph_archetype<G, P, V>, P>::const_type pmap;
     return pmap;
   }
 
   template <typename G, typename P, typename K, typename V>
-  typename property_traits<typename property_map<property_graph_archetype<G, P, V>, P>::const_type>::value_type
+  typename boost::property_traits<typename boost::property_map<property_graph_archetype<G, P, V>, P>::const_type>::value_type
   get(P p, const property_graph_archetype<G, P, V>& g, K k) {
     return get( get(p, g), k);
   }
@@ -253,8 +253,8 @@ namespace boost { // should use a different namespace for this
       const Key& key, const V& value)
   {
     typedef typename boost::property_map<property_graph_archetype<G, P, V>, P>::type Map;
-    Map pmap = get(p, g);
-    put(pmap, key, value);
+    Map pmap = boost::get(p, g);
+    boost::put(pmap, key, value);
   }
 
   struct color_value_archetype {

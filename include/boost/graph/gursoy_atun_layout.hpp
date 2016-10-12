@@ -73,13 +73,13 @@ struct update_position_visitor {
     using std::pow;
 #endif
 
-    if (get(node_distance, v) > distance_limit)
+    if (boost::get(node_distance, v) > distance_limit)
       BOOST_THROW_EXCEPTION(over_distance_limit());
     Point old_position = get(position_map, v);
     double distance = get(node_distance, v);
     double fraction = 
       learning_constant * pow(falloff_ratio, distance * distance);
-    put(position_map, v,
+    boost::put(position_map, v,
         space.move_position_toward(old_position, fraction, input_vector));
   }
 };
@@ -162,8 +162,8 @@ gursoy_atun_step
   double min_distance = 0.0;
   bool min_distance_unset = true;
   for (boost::tie(i, iend) = vertices(graph); i != iend; ++i) {
-    double this_distance = space.distance(get(position, *i), input_vector);
-    put(distance_from_input, *i, this_distance);
+    double this_distance = space.distance(boost::get(position, *i), input_vector);
+    boost::put(distance_from_input, *i, this_distance);
     if (min_distance_unset || this_distance < min_distance) {
       min_distance = this_distance;
       min_distance_loc = *i;
@@ -254,7 +254,7 @@ void gursoy_atun_layout(const VertexListAndIncidenceGraph& graph,
     vertex_iterator;
   vertex_iterator i, iend;
   for (boost::tie(i, iend) = vertices(graph); i != iend; ++i) {
-    put(position, *i, space.random_point());
+    boost::put(position, *i, space.random_point());
   }
   gursoy_atun_refine(graph, space,
                      position, nsteps,

@@ -267,7 +267,7 @@ namespace boost
                                         ord_begin, 
                                         ord_end, 
                                         drawing, 
-                                        get(vertex_index,g)
+                                        boost::get(vertex_index,g)
                                         );
   }
 

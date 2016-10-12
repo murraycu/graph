@@ -47,10 +47,10 @@ namespace boost {
       bool is_undirected = boost::is_same<DirCat, undirected_tag>::value;
       typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
       Vertex u = source(e, g), v = target(e, g);
-      typedef typename property_traits<DistanceMap>::value_type D;
-      typedef typename property_traits<WeightMap>::value_type W;
-      const D d_u = get(d, u);
-      const D d_v = get(d, v);
+      typedef typename boost::property_traits<DistanceMap>::value_type D;
+      typedef typename boost::property_traits<WeightMap>::value_type W;
+      const D d_u = boost::get(d, u);
+      const D d_v = boost::get(d, v);
       const W& w_e = get(w, e);
       
       // The seemingly redundant comparisons after the distance puts are to
@@ -58,17 +58,17 @@ namespace boost {
       // lead to relax() returning true when the distance did not actually
       // change.
       if ( compare(combine(d_u, w_e), d_v) ) {
-        put(d, v, combine(d_u, w_e));
-        if (compare(get(d, v), d_v)) {
-          put(p, v, u);
+        boost::put(d, v, combine(d_u, w_e));
+        if (compare(boost::get(d, v), d_v)) {
+          boost::put(p, v, u);
           return true;
         } else {
           return false;
         }
       } else if (is_undirected && compare(combine(d_v, w_e), d_u)) {
-        put(d, u, combine(d_v, w_e));
-        if (compare(get(d, u), d_u)) {
-          put(p, u, v);
+        boost::put(d, u, combine(d_v, w_e));
+        if (compare(boost::get(d, u), d_u)) {
+          boost::put(p, u, v);
           return true;
         } else {
           return false;
@@ -82,7 +82,7 @@ namespace boost {
     bool relax(typename graph_traits<Graph>::edge_descriptor e,
                const Graph& g, WeightMap w, PredecessorMap p, DistanceMap d)
     {
-      typedef typename property_traits<DistanceMap>::value_type D;
+      typedef typename boost::property_traits<DistanceMap>::value_type D;
       typedef closed_plus<D> Combine;
       typedef std::less<D> Compare;
       return relax(e, g, w, p, d, Combine(), Compare());

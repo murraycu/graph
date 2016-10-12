@@ -86,16 +86,16 @@ namespace boost {
   template <typename Graph, typename WeightMap, typename RandomNumGen>
   typename graph_traits<Graph>::edge_descriptor
   weighted_random_out_edge(Graph& g, typename graph_traits<Graph>::vertex_descriptor src, WeightMap weight, RandomNumGen& gen) {
-    typedef typename property_traits<WeightMap>::value_type weight_type;
+    typedef typename boost::property_traits<WeightMap>::value_type weight_type;
     weight_type weight_sum(0);
-    BGL_FORALL_OUTEDGES_T(src, e, g, Graph) {weight_sum += get(weight, e);}
+    BGL_FORALL_OUTEDGES_T(src, e, g, Graph) {weight_sum += boost::get(weight, e);}
     typedef boost::uniform_real<> ur_type;
     ur_type ur(0, weight_sum);
     boost::variate_generator<RandomNumGen&, ur_type>
       variate(gen, ur);
     weight_type chosen_weight = variate();
     BGL_FORALL_OUTEDGES_T(src, e, g, Graph) {
-      weight_type w = get(weight, e);
+      weight_type w = boost::get(weight, e);
       if (chosen_weight < w) {
         return e;
       } else {
@@ -229,7 +229,7 @@ namespace boost {
     void randomize_property(G& g, RandomGenerator& rg,
                             Property, vertex_property_tag)
     {
-      typename property_map<G, Property>::type pm = get(Property(), g);
+      typename boost::property_map<G, Property>::type pm = boost::get(Property(), g);
       typename graph_traits<G>::vertex_iterator vi, ve;
       for (boost::tie(vi, ve) = vertices(g); vi != ve; ++vi) {
         pm[*vi] = rg();
@@ -240,7 +240,7 @@ namespace boost {
     void randomize_property(G& g, RandomGenerator& rg,
                             Property, edge_property_tag)
     {
-      typename property_map<G, Property>::type pm = get(Property(), g);
+      typename boost::property_map<G, Property>::type pm = boost::get(Property(), g);
       typename graph_traits<G>::edge_iterator ei, ee;
       for (boost::tie(ei, ee) = edges(g); ei != ee; ++ei) {
         pm[*ei] = rg();

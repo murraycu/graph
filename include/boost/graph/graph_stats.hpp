@@ -108,11 +108,11 @@ std::map<unsigned long, double> weight_degree_dist( Graph& g ) {
   std::map<unsigned long, double> dist, n;
   typedef typename graph_traits<Graph>::adjacency_iterator a_iterator_type;
   typedef typename graph_traits<Graph>::vertex_descriptor vertex_type;
-  typedef typename property_map<Graph, edge_weight_t>::const_type edge_map_type;
-  typedef typename property_traits<edge_map_type>::value_type 
+  typedef typename boost::property_map<Graph, edge_weight_t>::const_type edge_map_type;
+  typedef typename boost::property_traits<edge_map_type>::value_type 
     edge_weight_type;
 
-  typename property_map<Graph, edge_weight_t>::type  em = get( edge_weight, g );
+  typename boost::property_map<Graph, edge_weight_t>::type  em = boost::get( edge_weight, g );
   
   BGL_FORALL_VERTICES_T( v, g, Graph ) {
       edge_weight_type tmp = 0;

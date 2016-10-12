@@ -309,8 +309,9 @@ public:
 #endif // BOOST_GRAPH_NO_BUNDLED_PROPERTIES
 
     //  private:
-    typedef typename property_map<Graph, edge_index_t>::type EdgeIndexMap;
-    typedef typename property_traits<EdgeIndexMap>::value_type edge_index_type;
+    typedef typename boost::property_map<Graph, edge_index_t>::type EdgeIndexMap;
+    typedef typename boost::property_traits<EdgeIndexMap>::value_type edge_index_type;
+    BOOST_STATIC_ASSERT((!boost::is_same<edge_index_type,
                         boost::detail::error_property_not_found>::value));
 
 private:
@@ -772,11 +773,11 @@ void remove_vertex(typename subgraph<G>::vertex_descriptor u, subgraph<G>& g)
 template <typename GraphPtr, typename PropertyMap, typename Tag>
 class subgraph_global_property_map
     : public put_get_helper<
-        typename property_traits<PropertyMap>::reference,
+        typename boost::property_traits<PropertyMap>::reference,
         subgraph_global_property_map<GraphPtr, PropertyMap, Tag>
     >
 {
-    typedef property_traits<PropertyMap> Traits;
+    typedef boost::property_traits<PropertyMap> Traits;
 public:
     typedef typename mpl::if_<is_const<typename remove_pointer<GraphPtr>::type>,
                               readable_property_map_tag,
@@ -811,11 +812,11 @@ public:
 template <typename GraphPtr, typename PropertyMap, typename Tag>
 class subgraph_local_property_map
     : public put_get_helper<
-        typename property_traits<PropertyMap>::reference,
+        typename boost::property_traits<PropertyMap>::reference,
         subgraph_local_property_map<GraphPtr, PropertyMap, Tag>
     >
 {
-    typedef property_traits<PropertyMap> Traits;
+    typedef boost::property_traits<PropertyMap> Traits;
 public:
     typedef typename mpl::if_<is_const<typename remove_pointer<GraphPtr>::type>,
                               readable_property_map_tag,
@@ -865,8 +866,8 @@ namespace detail {
             typedef SubGraph* SubGraphPtr;
             typedef const SubGraph* const_SubGraphPtr;
             typedef typename extract_lg_tag<Tag>::type TagType;
-            typedef typename property_map<Graph, TagType>::type PMap;
-            typedef typename property_map<Graph, TagType>::const_type const_PMap;
+            typedef typename boost::property_map<Graph, TagType>::type PMap;
+            typedef typename boost::property_map<Graph, TagType>::const_type const_PMap;
         public:
             typedef subgraph_global_property_map<SubGraphPtr, PMap, TagType> type;
             typedef subgraph_global_property_map<const_SubGraphPtr, const_PMap, TagType>
@@ -881,8 +882,8 @@ namespace detail {
             typedef SubGraph* SubGraphPtr;
             typedef const SubGraph* const_SubGraphPtr;
             typedef typename extract_lg_tag<Tag>::type TagType;
-            typedef typename property_map<Graph, TagType>::type PMap;
-            typedef typename property_map<Graph, TagType>::const_type const_PMap;
+            typedef typename boost::property_map<Graph, TagType>::type PMap;
+            typedef typename boost::property_map<Graph, TagType>::const_type const_PMap;
         public:
             typedef subgraph_local_property_map<SubGraphPtr, PMap, TagType> type;
             typedef subgraph_local_property_map<const_SubGraphPtr, const_PMap, TagType>
@@ -961,32 +962,32 @@ struct edge_property_selector<subgraph_tag> {
 // get(p, g), get(p, g, k), and put(p, g, k, v)
 // ==================================================
 template <typename G, typename Property>
-typename property_map<subgraph<G>, Property>::type
+typename boost::property_map<subgraph<G>, Property>::type
 get(Property p, subgraph<G>& g) {
-    typedef typename property_map< subgraph<G>, Property>::type PMap;
+    typedef typename boost::property_map< subgraph<G>, Property>::type PMap;
     return PMap(&g, p);
 }
 
 template <typename G, typename Property>
-typename property_map<subgraph<G>, Property>::const_type
+typename boost::property_map<subgraph<G>, Property>::const_type
 get(Property p, const subgraph<G>& g) {
-    typedef typename property_map< subgraph<G>, Property>::const_type PMap;
+    typedef typename boost::property_map< subgraph<G>, Property>::const_type PMap;
     return PMap(&g, p);
 }
 
 template <typename G, typename Property, typename Key>
-typename property_traits<
-    typename property_map<subgraph<G>, Property>::const_type
+typename boost::property_traits<
+    typename boost::property_map<subgraph<G>, Property>::const_type
 >::value_type
 get(Property p, const subgraph<G>& g, const Key& k) {
-    typedef typename property_map< subgraph<G>, Property>::const_type PMap;
+    typedef typename boost::property_map< subgraph<G>, Property>::const_type PMap;
     PMap pmap(&g, p);
     return pmap[k];
 }
 
 template <typename G, typename Property, typename Key, typename Value>
 void put(Property p, subgraph<G>& g, const Key& k, const Value& val) {
-    typedef typename property_map< subgraph<G>, Property>::type PMap;
+    typedef typename boost::property_map< subgraph<G>, Property>::type PMap;
     PMap pmap(&g, p);
     pmap[k] = val;
 }
@@ -996,18 +997,18 @@ void put(Property p, subgraph<G>& g, const Key& k, const Value& val) {
 // NOTE: get(global(p), g, k) and put(global(p), g, k, v) not supported
 // ==================================================
 template <typename G, typename Property>
-typename property_map<subgraph<G>, global_property<Property> >::type
+typename boost::property_map<subgraph<G>, global_property<Property> >::type
 get(global_property<Property> p, subgraph<G>& g) {
-    typedef typename property_map<
+    typedef typename boost::property_map<
         subgraph<G>, global_property<Property>
     >::type Map;
     return Map(&g, p.value);
 }
 
 template <typename G, typename Property>
-typename property_map<subgraph<G>, global_property<Property> >::const_type
+typename boost::property_map<subgraph<G>, global_property<Property> >::const_type
 get(global_property<Property> p, const subgraph<G>& g) {
-    typedef typename property_map<
+    typedef typename boost::property_map<
         subgraph<G>, global_property<Property>
     >::const_type Map;
     return Map(&g, p.value);
@@ -1018,18 +1019,18 @@ get(global_property<Property> p, const subgraph<G>& g) {
 // NOTE: get(local(p), g, k) and put(local(p), g, k, v) not supported
 // ==================================================
 template <typename G, typename Property>
-typename property_map<subgraph<G>, local_property<Property> >::type
+typename boost::property_map<subgraph<G>, local_property<Property> >::type
 get(local_property<Property> p, subgraph<G>& g) {
-    typedef typename property_map<
+    typedef typename boost::property_map<
         subgraph<G>, local_property<Property>
     >::type Map;
     return Map(&g, p.value);
 }
 
 template <typename G, typename Property>
-typename property_map<subgraph<G>, local_property<Property> >::const_type
+typename boost::property_map<subgraph<G>, local_property<Property> >::const_type
 get(local_property<Property> p, const subgraph<G>& g) {
-    typedef typename property_map<
+    typedef typename boost::property_map<
         subgraph<G>, local_property<Property>
     >::const_type Map;
     return Map(&g, p.value);

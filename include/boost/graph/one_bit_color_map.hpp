@@ -38,7 +38,7 @@ struct color_traits<one_bit_color_type>
 };
 
 
-template<typename IndexMap = identity_property_map>
+template<typename IndexMap = boost::identity_property_map>
 struct one_bit_color_map 
 {
   BOOST_STATIC_CONSTANT(int, bits_per_char = std::numeric_limits<unsigned char>::digits);
@@ -46,7 +46,7 @@ struct one_bit_color_map
   IndexMap index;
   shared_array<unsigned char> data;
 
-  typedef typename property_traits<IndexMap>::key_type key_type;
+  typedef typename boost::property_traits<IndexMap>::key_type key_type;
   typedef one_bit_color_type value_type;
   typedef void reference;
   typedef read_write_property_map_tag category;
@@ -62,10 +62,10 @@ struct one_bit_color_map
 template<typename IndexMap>
 inline one_bit_color_type
 get(const one_bit_color_map<IndexMap>& pm, 
-    typename property_traits<IndexMap>::key_type key) 
+    typename boost::property_traits<IndexMap>::key_type key) 
 {
   BOOST_STATIC_CONSTANT(int, bits_per_char = one_bit_color_map<IndexMap>::bits_per_char);
-  typename property_traits<IndexMap>::value_type i = get(pm.index, key);
+  typename boost::property_traits<IndexMap>::value_type i = boost::get(pm.index, key);
   BOOST_ASSERT ((std::size_t)i < pm.n);
   return one_bit_color_type((pm.data.get()[i / bits_per_char] >> (i % bits_per_char)) & 1);
 }
@@ -73,11 +73,11 @@ get(const one_bit_color_map<IndexMap>& pm,
 template<typename IndexMap>
 inline void
 put(const one_bit_color_map<IndexMap>& pm, 
-    typename property_traits<IndexMap>::key_type key,
+    typename boost::property_traits<IndexMap>::key_type key,
     one_bit_color_type value)
 {
   BOOST_STATIC_CONSTANT(int, bits_per_char = one_bit_color_map<IndexMap>::bits_per_char);
-  typename property_traits<IndexMap>::value_type i = get(pm.index, key);
+  typename boost::property_traits<IndexMap>::value_type i = boost::get(pm.index, key);
   BOOST_ASSERT ((std::size_t)i < pm.n);
   BOOST_ASSERT (value >= 0 && value < 2);
   std::size_t byte_num = i / bits_per_char;

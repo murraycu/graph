@@ -45,7 +45,7 @@ namespace boost
     for(boost::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
       {
         vertex_descriptor_t v = *vi;
-        if (get(mate,v) != graph_traits<Graph>::null_vertex() 
+        if (boost::get(mate,v) != graph_traits<Graph>::null_vertex() 
             && get(vm,v) < get(vm,get(mate,v)))
         ++size_of_matching;
       }
@@ -76,8 +76,8 @@ namespace boost
     for( boost::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
       {
         vertex_descriptor_t v = *vi;
-        if (get(mate,v) != graph_traits<Graph>::null_vertex() 
-            && v != get(mate,get(mate,v)))
+        if (boost::get(mate,v) != graph_traits<Graph>::null_vertex() 
+            && v != boost::get(mate,get(mate,v)))
         return false;
       }    
     return true;
@@ -187,7 +187,7 @@ namespace boost
     {
       vertex_iterator_t vi, vi_end;
       for(boost::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
-        mate[*vi] = get(arg_mate, *vi);
+        mate[*vi] = boost::get(arg_mate, *vi);
     }
 
 
@@ -367,7 +367,7 @@ namespace boost
     {
       vertex_iterator_t vi,vi_end;
       for(boost::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
-        put(pm, *vi, mate[*vi]);
+        boost::put(pm, *vi, mate[*vi]);
     }
 
 
@@ -378,7 +378,7 @@ namespace boost
     {
       vertex_iterator_t vi,vi_end;
       for(boost::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
-        put(pm, *vi, vertex_state[origin[ds.find_set(*vi)]]);
+        boost::put(pm, *vi, vertex_state[origin[ds.find_set(*vi)]]);
     }
 
 
@@ -536,7 +536,7 @@ namespace boost
     {
       vertex_iterator_t vi, vi_end;
       for(boost::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
-        put(mate, *vi, graph_traits<Graph>::null_vertex());
+        boost::put(mate, *vi, graph_traits<Graph>::null_vertex());
             
       edge_iterator_t ei, ei_end;
       for( boost::tie(ei, ei_end) = edges(g); ei != ei_end; ++ei)
@@ -545,12 +545,12 @@ namespace boost
         vertex_descriptor_t u = source(e,g);
         vertex_descriptor_t v = target(e,g);
       
-        if (u != v && get(mate,u) == get(mate,v))  
+        if (u != v && get(mate,u) == boost::get(mate,v))  
         //only way equality can hold is if
         //   mate[u] == mate[v] == null_vertex
         {
-          put(mate,u,v);
-          put(mate,v,u);
+          boost::put(mate,u,v);
+          boost::put(mate,v,u);
         }
       }    
     }
@@ -614,7 +614,7 @@ namespace boost
       directed_edges_vector_t edge_list;
       vertex_iterator_t vi, vi_end;
       for(boost::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
-        put(mate, *vi, graph_traits<Graph>::null_vertex());
+        boost::put(mate, *vi, graph_traits<Graph>::null_vertex());
 
       edge_iterator_t ei, ei_end;
       for(boost::tie(ei, ei_end) = edges(g); ei != ei_end; ++ei)
@@ -637,11 +637,11 @@ namespace boost
       //construct the extra greedy matching
       for(typename directed_edges_vector_t::const_iterator itr = edge_list.begin(); itr != edge_list.end(); ++itr)
       {
-        if (get(mate,itr->first) == get(mate,itr->second)) 
+        if (boost::get(mate,itr->first) == boost::get(mate,itr->second)) 
         //only way equality can hold is if mate[itr->first] == mate[itr->second] == null_vertex
         {
-          put(mate, itr->first, itr->second);
-          put(mate, itr->second, itr->first);
+          boost::put(mate, itr->first, itr->second);
+          boost::put(mate, itr->second, itr->first);
         }
       }    
     }
@@ -659,7 +659,7 @@ namespace boost
     {
       vertex_iterator_t vi, vi_end;
       for(boost::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
-        put(mate, *vi, graph_traits<Graph>::null_vertex());
+        boost::put(mate, *vi, graph_traits<Graph>::null_vertex());
     }
   };
   

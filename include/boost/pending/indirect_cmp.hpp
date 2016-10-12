@@ -40,8 +40,8 @@ namespace boost {
     template <class A, class B>
     inline bool 
     operator()(const A& u, const B& v) const {
-      const T& du = get(d, u);
-      const T& dv = get(d, v);
+      const T& du = boost::get(d, u);
+      const T& dv = boost::get(d, v);
       return cmp(du, dv);
     }
   protected:
@@ -67,7 +67,7 @@ namespace boost {
       : d(df) { }
 
     inline T operator()(const K& u) const {
-      return get(d, u);
+      return boost::get(d, u);
     }
   protected:
     ReadablePropertyMap d;

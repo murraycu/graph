@@ -27,7 +27,7 @@ random_graph_layout
   const Topology& topology)
 {
   BGL_FORALL_VERTICES_T(v, g, Graph) {
-    put(position_map, v, topology.random_point());
+    boost::put(position_map, v, topology.random_point());
   }
 }
 

@@ -224,20 +224,20 @@ namespace boost {
 
   template <typename Graph>
   attributes_writer
-    <typename property_map<Graph, edge_attribute_t>::const_type>
+    <typename boost::property_map<Graph, edge_attribute_t>::const_type>
   make_edge_attributes_writer(const Graph& g)
   {
-    typedef typename property_map<Graph, edge_attribute_t>::const_type
+    typedef typename boost::property_map<Graph, edge_attribute_t>::const_type
       EdgeAttributeMap;
     return attributes_writer<EdgeAttributeMap>(get(edge_attribute, g));
   }
 
   template <typename Graph>
   attributes_writer
-    <typename property_map<Graph, vertex_attribute_t>::const_type>
+    <typename boost::property_map<Graph, vertex_attribute_t>::const_type>
   make_vertex_attributes_writer(const Graph& g)
   {
-    typedef typename property_map<Graph, vertex_attribute_t>::const_type
+    typedef typename boost::property_map<Graph, vertex_attribute_t>::const_type
       VertexAttributeMap;
     return attributes_writer<VertexAttributeMap>(get(vertex_attribute, g));
   }
@@ -441,17 +441,17 @@ namespace boost {
   // This interface has not worked for a long time
   typedef std::map<std::string, std::string> GraphvizAttrList;
 
-  typedef property<vertex_attribute_t, GraphvizAttrList>
+  typedef boost::property<vertex_attribute_t, GraphvizAttrList>
           GraphvizVertexProperty;
 
-  typedef property<edge_attribute_t, GraphvizAttrList,
-                   property<edge_index_t, int> >
+  typedef boost::property<edge_attribute_t, GraphvizAttrList,
+                   boost::property<edge_index_t, int> >
           GraphvizEdgeProperty;
 
-  typedef property<graph_graph_attribute_t, GraphvizAttrList,
-                   property<graph_vertex_attribute_t, GraphvizAttrList,
-                   property<graph_edge_attribute_t, GraphvizAttrList,
-                   property<graph_name_t, std::string> > > >
+  typedef boost::property<graph_graph_attribute_t, GraphvizAttrList,
+                   boost::property<graph_vertex_attribute_t, GraphvizAttrList,
+                   boost::property<graph_edge_attribute_t, GraphvizAttrList,
+                   boost::property<graph_name_t, std::string> > > >
           GraphvizGraphProperty;
 
   typedef subgraph<adjacency_list<vecS,
@@ -481,13 +481,13 @@ namespace boost {
   class dynamic_properties_writer
   {
   public:
-    dynamic_properties_writer(const dynamic_properties& dp) : dp(&dp) { }
+    dynamic_properties_writer(const boost::dynamic_properties& dp) : dp(&dp) { }
 
     template<typename Descriptor>
     void operator()(std::ostream& out, Descriptor key) const
     {
       bool first = true;
-      for (dynamic_properties::const_iterator i = dp->begin();
+      for (boost::dynamic_properties::const_iterator i = dp->begin();
            i != dp->end(); ++i) {
         if (typeid(key) == i->second->key()) {
           if (first) out << " [";
@@ -502,13 +502,13 @@ namespace boost {
     }
 
   private:
-    const dynamic_properties* dp;
+    const boost::dynamic_properties* dp;
   };
 
   class dynamic_vertex_properties_writer
   {
   public:
-    dynamic_vertex_properties_writer(const dynamic_properties& dp,
+    dynamic_vertex_properties_writer(const boost::dynamic_properties& dp,
                                      const std::string& node_id)
       : dp(&dp), node_id(&node_id) { }
 
@@ -516,7 +516,7 @@ namespace boost {
     void operator()(std::ostream& out, Descriptor key) const
     {
       bool first = true;
-      for (dynamic_properties::const_iterator i = dp->begin();
+      for (boost::dynamic_properties::const_iterator i = dp->begin();
            i != dp->end(); ++i) {
         if (typeid(key) == i->second->key()
             && i->first != *node_id) {
@@ -532,7 +532,7 @@ namespace boost {
     }
 
   private:
-    const dynamic_properties* dp;
+    const boost::dynamic_properties* dp;
     const std::string* node_id;
   };
 
@@ -540,11 +540,11 @@ namespace boost {
   class dynamic_graph_properties_writer
   {
   public:
-    dynamic_graph_properties_writer(const dynamic_properties& dp, const Graph& g) : g(&g), dp(&dp) { }
+    dynamic_graph_properties_writer(const boost::dynamic_properties& dp, const Graph& g) : g(&g), dp(&dp) { }
 
     void operator()(std::ostream& out) const
     {
-      for (dynamic_properties::const_iterator i = dp->begin();
+      for (boost::dynamic_properties::const_iterator i = dp->begin();
            i != dp->end(); ++i) {
         if (typeid(Graph*) == i->second->key()) {
           // const_cast here is to match interface used in read_graphviz
@@ -555,7 +555,7 @@ namespace boost {
 
   private:
     const Graph* g;
-    const dynamic_properties* dp;
+    const boost::dynamic_properties* dp;
   };
 
   namespace graph { namespace detail {
@@ -570,11 +570,11 @@ namespace boost {
 
       node_id_property_map() {}
 
-      node_id_property_map(const dynamic_properties& dp,
+      node_id_property_map(const boost::dynamic_properties& dp,
                            const std::string& node_id)
         : dp(&dp), node_id(&node_id) { }
 
-      const dynamic_properties* dp;
+      const boost::dynamic_properties* dp;
       const std::string* node_id;
     };
 
@@ -589,7 +589,7 @@ namespace boost {
   template<typename Graph>
   inline void
   write_graphviz_dp(std::ostream& out, const Graph& g,
-                    const dynamic_properties& dp,
+                    const boost::dynamic_properties& dp,
                     const std::string& node_id = "node_id"
                     BOOST_GRAPH_ENABLE_IF_MODELS_PARM(Graph,vertex_list_graph_tag))
   {
@@ -601,7 +601,7 @@ namespace boost {
   template<typename Graph, typename VertexID>
   void
   write_graphviz_dp(std::ostream& out, const Graph& g,
-                    const dynamic_properties& dp, const std::string& node_id,
+                    const boost::dynamic_properties& dp, const std::string& node_id,
                     VertexID id
                     BOOST_GRAPH_ENABLE_IF_MODELS_PARM(Graph,vertex_list_graph_tag))
   {
@@ -719,7 +719,7 @@ class mutate_graph_impl : public mutate_graph
   typedef typename graph_traits<MutableGraph>::edge_descriptor   bgl_edge_t;
 
  public:
-  mutate_graph_impl(MutableGraph& graph, dynamic_properties& dp,
+  mutate_graph_impl(MutableGraph& graph, boost::dynamic_properties& dp,
                     std::string node_id_prop)
     : graph_(graph), dp_(dp), node_id_prop_(node_id_prop) { }
 
@@ -742,7 +742,7 @@ class mutate_graph_impl : public mutate_graph
     bgl_nodes.insert(std::make_pair(node, v));
 
     // node_id_prop_ allows the caller to see the real id names for nodes.
-    put(node_id_prop_, dp_, v, node);
+    boost::put(node_id_prop_, dp_, v, node);
   }
 
   void
@@ -762,20 +762,20 @@ class mutate_graph_impl : public mutate_graph
   void
   set_node_property(const id_t& key, const node_t& node, const id_t& value)
   {
-    put(key, dp_, bgl_nodes[node], value);
+    boost::put(key, dp_, bgl_nodes[node], value);
   }
 
   void
   set_edge_property(const id_t& key, const edge_t& edge, const id_t& value)
   {
-    put(key, dp_, bgl_edges[edge], value);
+    boost::put(key, dp_, bgl_edges[edge], value);
   }
 
   void
   set_graph_property(const id_t& key, const id_t& value)
   {
     /* RG: pointer to graph prevents copying */
-    put(key, dp_, &graph_, value);
+    boost::put(key, dp_, &graph_, value);
   }
 
   void finish_building_graph() {}
@@ -783,7 +783,7 @@ class mutate_graph_impl : public mutate_graph
 
  protected:
   MutableGraph& graph_;
-  dynamic_properties& dp_;
+  boost::dynamic_properties& dp_;
   std::string node_id_prop_;
   std::map<node_t, bgl_vertex_t> bgl_nodes;
   std::map<edge_t, bgl_edge_t> bgl_edges;
@@ -804,19 +804,19 @@ class mutate_graph_impl<compressed_sparse_row_graph<Directed, VertexProperty, Ed
   typedef typename graph_traits<CSRGraph>::edge_descriptor    edge_descriptor;
 
  public:
-  mutate_graph_impl(CSRGraph& graph, dynamic_properties& dp,
+  mutate_graph_impl(CSRGraph& graph, boost::dynamic_properties& dp,
                     std::string node_id_prop)
     : graph_(graph), dp_(dp), vertex_count(0), node_id_prop_(node_id_prop) { }
 
   ~mutate_graph_impl() {}
 
   void finish_building_graph() {
-    typedef compressed_sparse_row_graph<directedS, no_property, bgl_edge_t, GraphProperty, Vertex, EdgeIndex> TempCSRGraph;
+    typedef compressed_sparse_row_graph<directedS, boost::no_property, bgl_edge_t, GraphProperty, Vertex, EdgeIndex> TempCSRGraph;
     TempCSRGraph temp(edges_are_unsorted_multi_pass,
                       edges_to_add.begin(), edges_to_add.end(),
                       counting_iterator<bgl_edge_t>(0),
                       vertex_count);
-    set_property(temp, graph_all, get_property(graph_, graph_all));
+    boost::set_property(temp, graph_all, get_property(graph_, graph_all));
     graph_.assign(temp); // Copies structure, not properties
     std::vector<edge_descriptor> edge_permutation_from_sorting(num_edges(temp));
     BGL_FORALL_EDGES_T(e, temp, TempCSRGraph) {
@@ -824,11 +824,11 @@ class mutate_graph_impl<compressed_sparse_row_graph<Directed, VertexProperty, Ed
     }
     typedef boost::tuple<id_t, bgl_vertex_t, id_t> v_prop;
     BOOST_FOREACH(const v_prop& t, vertex_props) {
-      put(boost::get<0>(t), dp_, boost::get<1>(t), boost::get<2>(t));
+      boost::put(boost::get<0>(t), dp_, boost::get<1>(t), boost::get<2>(t));
     }
     typedef boost::tuple<id_t, bgl_edge_t, id_t> e_prop;
     BOOST_FOREACH(const e_prop& t, edge_props) {
-      put(boost::get<0>(t), dp_, edge_permutation_from_sorting[boost::get<1>(t)], boost::get<2>(t));
+      boost::put(boost::get<0>(t), dp_, edge_permutation_from_sorting[boost::get<1>(t)], boost::get<2>(t));
     }
   }
 
@@ -876,13 +876,13 @@ class mutate_graph_impl<compressed_sparse_row_graph<Directed, VertexProperty, Ed
   set_graph_property(const id_t& key, const id_t& value)
   {
     /* RG: pointer to graph prevents copying */
-    put(key, dp_, &graph_, value);
+    boost::put(key, dp_, &graph_, value);
   }
 
 
  protected:
   CSRGraph& graph_;
-  dynamic_properties& dp_;
+  boost::dynamic_properties& dp_;
   bgl_vertex_t vertex_count;
   std::string node_id_prop_;
   std::vector<boost::tuple<id_t, bgl_vertex_t, id_t> > vertex_props;
@@ -909,7 +909,7 @@ namespace boost {
 template <typename MutableGraph>
 bool read_graphviz(const std::string& data,
                    MutableGraph& graph,
-                   dynamic_properties& dp,
+                   boost::dynamic_properties& dp,
                    std::string const& node_id = "node_id") {
 #ifdef BOOST_GRAPH_USE_SPIRIT_PARSER
   return read_graphviz_spirit(data.begin(), data.end(), graph, dp, node_id);
@@ -923,7 +923,7 @@ template <typename InputIterator, typename MutableGraph>
 bool read_graphviz(InputIterator user_first,
                    InputIterator user_last,
                    MutableGraph& graph,
-                   dynamic_properties& dp,
+                   boost::dynamic_properties& dp,
                    std::string const& node_id = "node_id") {
 #ifdef BOOST_GRAPH_USE_SPIRIT_PARSER
   typedef InputIterator is_t;
@@ -941,7 +941,7 @@ bool read_graphviz(InputIterator user_first,
 // Parse the passed stream as a GraphViz dot file.
 template <typename MutableGraph>
 bool read_graphviz(std::istream& in, MutableGraph& graph,
-                   dynamic_properties& dp,
+                   boost::dynamic_properties& dp,
                    std::string const& node_id = "node_id")
 {
   typedef std::istream_iterator<char> is_t;

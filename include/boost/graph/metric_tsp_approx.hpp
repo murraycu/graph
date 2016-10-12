@@ -87,7 +87,7 @@ namespace boost
     void metric_tsp_approx_tour(VertexListGraph& g, OutputIterator o)
     {
         metric_tsp_approx_from_vertex(g, *vertices(g).first,
-            get(edge_weight, g), get(vertex_index, g),
+            boost::get(edge_weight, g), boost::get(vertex_index, g),
             tsp_tour_visitor<OutputIterator>(o));
     }
 
@@ -103,8 +103,8 @@ namespace boost
         typename graph_traits<VertexListGraph>::vertex_descriptor start,
         OutputIterator o)
     {
-        metric_tsp_approx_from_vertex(g, start, get(edge_weight, g),
-            get(vertex_index, g), tsp_tour_visitor<OutputIterator>(o));
+        metric_tsp_approx_from_vertex(g, start, boost::get(edge_weight, g),
+            boost::get(vertex_index, g), tsp_tour_visitor<OutputIterator>(o));
     }
 
     template<typename VertexListGraph, typename WeightMap,
@@ -113,7 +113,7 @@ namespace boost
     typename graph_traits<VertexListGraph>::vertex_descriptor start,
         WeightMap w, OutputIterator o)
     {
-        metric_tsp_approx_from_vertex(g, start, w, get(vertex_index, g),
+        metric_tsp_approx_from_vertex(g, start, w, boost::get(vertex_index, g),
             tsp_tour_visitor<OutputIterator>(o));
     }
 
@@ -121,7 +121,7 @@ namespace boost
     void metric_tsp_approx(VertexListGraph& g, TSPVertexVisitor vis)
     {
         metric_tsp_approx_from_vertex(g, *vertices(g).first,
-            get(edge_weight, g), get(vertex_index, g), vis);
+            boost::get(edge_weight, g), boost::get(vertex_index, g), vis);
     }
 
     template<typename VertexListGraph, typename Weightmap,
@@ -130,7 +130,7 @@ namespace boost
         TSPVertexVisitor vis)
     {
         metric_tsp_approx_from_vertex(g, *vertices(g).first, w,
-            get(vertex_index, g), vis);
+            boost::get(vertex_index, g), vis);
     }
 
     template<typename VertexListGraph, typename WeightMap,
@@ -147,7 +147,7 @@ namespace boost
     typename graph_traits<VertexListGraph>::vertex_descriptor start,
         WeightMap w, TSPVertexVisitor vis)
     {
-        metric_tsp_approx_from_vertex(g, start, w, get(vertex_index, g), vis);
+        metric_tsp_approx_from_vertex(g, start, w, boost::get(vertex_index, g), vis);
     }
 
     template <
@@ -172,18 +172,18 @@ namespace boost
         typedef typename graph_traits<VertexListGraph>::vertex_iterator GVItr;
 
         // We build a custom graph in this algorithm.
-        typedef adjacency_list <vecS, vecS, directedS, no_property, no_property > MSTImpl;
+        typedef adjacency_list <vecS, vecS, directedS, boost::no_property, boost::no_property > MSTImpl;
         typedef graph_traits<MSTImpl>::vertex_descriptor Vertex;
         typedef graph_traits<MSTImpl>::vertex_iterator VItr;
 
         // And then re-cast it as a tree.
-        typedef iterator_property_map<vector<Vertex>::iterator, property_map<MSTImpl, vertex_index_t>::type> ParentMap;
+        typedef boost::iterator_property_map<vector<Vertex>::iterator, boost::property_map<MSTImpl, vertex_index_t>::type> ParentMap;
         typedef graph_as_tree<MSTImpl, ParentMap> Tree;
         typedef tree_traits<Tree>::node_descriptor Node;
 
         // A predecessor map.
         typedef vector<GVertex> PredMap;
-        typedef iterator_property_map<typename PredMap::iterator, VertexIndexMap> PredPMap;
+        typedef boost::iterator_property_map<typename PredMap::iterator, VertexIndexMap> PredPMap;
 
         PredMap preds(num_vertices(g));
         PredPMap pred_pmap(preds.begin(), indexmap);
@@ -209,8 +209,8 @@ namespace boost
         // Build a tree abstraction over the MST.
         vector<Vertex> parent(num_vertices(mst));
         Tree t(mst, *vertices(mst).first,
-            make_iterator_property_map(parent.begin(),
-            get(vertex_index, mst)));
+            boost::make_iterator_property_map(parent.begin(),
+            boost::get(vertex_index, mst)));
 
         // Create tour using a preorder traversal of the mst
         vector<Node> tour;
@@ -222,7 +222,7 @@ namespace boost
             curr != tvis.end(); ++curr)
         {
             // TODO: This is will be O(n^2) if vertex storage of g != vecS.
-            GVertex v = *next(g_verts.first, get(vertex_index, mst)[*curr]);
+            GVertex v = *next(g_verts.first, boost::get(vertex_index, mst)[*curr]);
             vis.visit_vertex(v, g);
         }
 

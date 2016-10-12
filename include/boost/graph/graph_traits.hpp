@@ -266,17 +266,17 @@ namespace boost {
     struct graph_property_type
       : boost::mpl::eval_if<detail::has_graph_property_type<G>,
                             detail::get_graph_property_type<G>,
-                            no_property> {};
+                            boost::no_property> {};
     template <typename G>
     struct edge_property_type
       : boost::mpl::eval_if<detail::has_edge_property_type<G>,
                             detail::get_edge_property_type<G>,
-                            no_property> {};
+                            boost::no_property> {};
     template <typename G>
     struct vertex_property_type
       : boost::mpl::eval_if<detail::has_vertex_property_type<G>,
                             detail::get_vertex_property_type<G>,
-                            no_property> {};
+                            boost::no_property> {};
 
     template<typename G>
     struct graph_bundle_type {
@@ -318,7 +318,7 @@ namespace boost {
       // A helper metafunction for determining whether or not a type is
       // bundled.
       template <typename T>
-      struct is_no_bundle : mpl::bool_<boost::is_same<T, no_property>::value>
+      struct is_no_bundle : mpl::bool_<boost::is_same<T, boost::no_property>::value>
       { };
     } // namespace graph_detail
 

@@ -26,8 +26,8 @@ namespace boost {
     vertices_size_type b = 0;
     typename graph_traits<Graph>::out_edge_iterator e, end;
     for (boost::tie(e, end) = out_edges(i, g); e != end; ++e) {
-      int f_i = get(index, i);
-      int f_j = get(index, target(*e, g));
+      int f_i = boost::get(index, i);
+      int f_j = boost::get(index, target(*e, g));
       b = max BOOST_PREVENT_MACRO_SUBSTITUTION (b, vertices_size_type(abs(f_i - f_j)));
     }
     return b;
@@ -38,7 +38,7 @@ namespace boost {
   ith_bandwidth(typename graph_traits<Graph>::vertex_descriptor i,
                 const Graph& g)
   {
-    return ith_bandwidth(i, g, get(vertex_index, g));
+    return ith_bandwidth(i, g, boost::get(vertex_index, g));
   }
 
   template <typename Graph, typename VertexIndexMap>
@@ -51,8 +51,8 @@ namespace boost {
     vertices_size_type b = 0;
     typename graph_traits<Graph>::edge_iterator i, end;
     for (boost::tie(i, end) = edges(g); i != end; ++i) {
-      int f_i = get(index, source(*i, g));
-      int f_j = get(index, target(*i, g));
+      int f_i = boost::get(index, source(*i, g));
+      int f_j = boost::get(index, target(*i, g));
       b = max BOOST_PREVENT_MACRO_SUBSTITUTION (b, vertices_size_type(abs(f_i - f_j)));
     }
     return b;
@@ -62,7 +62,7 @@ namespace boost {
   typename graph_traits<Graph>::vertices_size_type
   bandwidth(const Graph& g)
   {
-    return bandwidth(g, get(vertex_index, g));
+    return bandwidth(g, boost::get(vertex_index, g));
   }
 
   template <typename Graph, typename VertexIndexMap>
@@ -74,8 +74,8 @@ namespace boost {
     size_type sum = 0;
     typename graph_traits<Graph>::edge_iterator i, end;
     for (boost::tie(i, end) = edges(g); i != end; ++i) {
-      diff_t f_u = get(index_map, source(*i, g));
-      diff_t f_v = get(index_map, target(*i, g));
+      diff_t f_u = boost::get(index_map, source(*i, g));
+      diff_t f_v = boost::get(index_map, target(*i, g));
       using namespace std; // to call abs() unqualified
       sum += abs(f_u - f_v);
     }

@@ -33,7 +33,7 @@ namespace boost {
     is_residual_edge(ResidualCapacityEdgeMap rcap) : m_rcap(rcap) { }
     template <typename Edge>
     bool operator()(const Edge& e) const {
-      return 0 < get(m_rcap, e);
+      return 0 < boost::get(m_rcap, e);
     }
     ResidualCapacityEdgeMap m_rcap;
   };
@@ -462,17 +462,17 @@ namespace boost {
   
   template <typename G, typename EP, typename VP, typename Property>
   struct property_map<filtered_graph<G, EP, VP>, Property>
-    : property_map<G, Property> {};
+    : boost::property_map<G, Property> {};
 
   template <typename G, typename EP, typename VP, typename Property>
-  typename property_map<G, Property>::type
+  typename boost::property_map<G, Property>::type
   get(Property p, filtered_graph<G, EP, VP>& g)
   {
     return get(p, const_cast<G&>(g.m_g));
   }
 
   template <typename G, typename EP, typename VP,typename Property>
-  typename property_map<G, Property>::const_type
+  typename boost::property_map<G, Property>::const_type
   get(Property p, const filtered_graph<G, EP, VP>& g)
   {
     return get(p, (const G&)g.m_g);
@@ -492,7 +492,7 @@ namespace boost {
   put(Property p, const filtered_graph<G, EP, VP>& g, const Key& k,
       const Value& val)
   {
-    put(p, const_cast<G&>(g.m_g), k, val);
+    boost::put(p, const_cast<G&>(g.m_g), k, val);
   }
 
   //===========================================================================
@@ -547,7 +547,7 @@ namespace boost {
     
     template <typename Key>
     bool operator()(const Key& key) const {
-      return (get(m_property_map, key));
+      return (boost::get(m_property_map, key));
     }
     
   private :

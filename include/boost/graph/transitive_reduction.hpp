@@ -41,7 +41,7 @@ BOOST_CONCEPT_REQUIRES(
                       ((ReadablePropertyMapConcept< VertexIndexMap,
                           typename graph_traits<Graph>::vertex_descriptor >))
                       ((Integer< typename
-                          property_traits< VertexIndexMap >::value_type >))
+                          boost::property_traits< VertexIndexMap >::value_type >))
                       ((LvaluePropertyMapConcept< G_to_TR_VertexMap,
                           typename graph_traits<Graph>::vertex_descriptor >)),
                        (void))
@@ -58,7 +58,7 @@ transitive_reduction(const Graph& g, GraphTR& tr,
 
     std::vector<size_type> topo_number_storage(num_vertices(g));
 
-    iterator_property_map<size_type*, VertexIndexMap,
+    boost::iterator_property_map<size_type*, VertexIndexMap,
     size_type, size_type&> topo_number( &topo_number_storage[0], g_index_map );
 
     {

@@ -26,7 +26,7 @@ namespace boost {
 
 template <class T, 
           class Compare = std::less<T>,
-          class ID = identity_property_map>
+          class ID = boost::identity_property_map>
 class fibonacci_heap
 {
   typedef typename boost::property_traits<ID>::value_type size_type;
@@ -39,7 +39,7 @@ public:
 
   fibonacci_heap(size_type n, 
                  const Compare& cmp, 
-                 const ID& id = identity_property_map())
+                 const ID& id = boost::identity_property_map())
     : _key(n), _left(n), _right(n), _p(n), _mark(n), _degree(n),
       _n(0), _root(n), _id(id), _compare(cmp), _child(n),
 #if defined(BOOST_MSVC) || defined(__ICL) // need a new macro?
@@ -51,7 +51,7 @@ public:
   // 33
   void push(const T& d) {
     ++_n;
-    size_type v = get(_id, d);
+    size_type v = boost::get(_id, d);
     _key[v] = d;
     _p[v] = nil();
     _degree[v] = 0;
@@ -173,7 +173,7 @@ public:
 
   // 34
   void update(const T& d) {
-    size_type v = get(_id, d);
+    size_type v = boost::get(_id, d);
     assert(!_compare(_key[v], d));
     _key[v] = d;
     size_type p = _p[v];

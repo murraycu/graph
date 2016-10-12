@@ -58,9 +58,9 @@ namespace boost {
       BOOST_CONCEPT_ASSERT(( ReadWritePropertyMapConcept<Rank, Vertex> ));
       BOOST_CONCEPT_ASSERT(( ReadWritePropertyMapConcept<Parent, Vertex> ));
       BOOST_CONCEPT_ASSERT(( ReadablePropertyMapConcept<Weight, Edge> ));
-      typedef typename property_traits<Weight>::value_type W_value;
-      typedef typename property_traits<Rank>::value_type R_value;
-      typedef typename property_traits<Parent>::value_type P_value;
+      typedef typename boost::property_traits<Weight>::value_type W_value;
+      typedef typename boost::property_traits<Rank>::value_type R_value;
+      typedef typename boost::property_traits<Parent>::value_type P_value;
       BOOST_CONCEPT_ASSERT(( ComparableConcept<W_value> ));
       BOOST_CONCEPT_ASSERT(( ConvertibleConcept<P_value, Vertex> ));
       BOOST_CONCEPT_ASSERT(( IntegerConcept<R_value> ));
@@ -110,9 +110,9 @@ namespace boost {
 
     detail::kruskal_mst_impl
       (g, spanning_tree_edges, 
-       make_iterator_property_map(rank_map.begin(), get(vertex_index, g), rank_map[0]),
-       make_iterator_property_map(pred_map.begin(), get(vertex_index, g), pred_map[0]),
-       get(edge_weight, g));
+       boost::make_iterator_property_map(rank_map.begin(), boost::get(vertex_index, g), rank_map[0]),
+       boost::make_iterator_property_map(pred_map.begin(), boost::get(vertex_index, g), pred_map[0]),
+       boost::get(edge_weight, g));
   }
 
   template <class Graph, class OutputIterator, class P, class T, class R>
@@ -136,12 +136,12 @@ namespace boost {
       (g, spanning_tree_edges, 
        choose_param
        (get_param(params, vertex_rank), 
-        make_iterator_property_map
+        boost::make_iterator_property_map
         (rank_map.begin(), 
          choose_pmap(get_param(params, vertex_index), g, vertex_index), rank_map[0])),
        choose_param
        (get_param(params, vertex_predecessor), 
-        make_iterator_property_map
+        boost::make_iterator_property_map
         (pred_map.begin(), 
          choose_const_pmap(get_param(params, vertex_index), g, vertex_index), 
          pred_map[0])),

@@ -37,7 +37,7 @@ namespace boost {
       if (free_color == (std::numeric_limits<color_t>::max)())
         return false;
       BGL_FORALL_OUTEDGES_T(u, e, g, Graph) {
-        if (get(color, e) == free_color) {
+        if (boost::get(color, e) == free_color) {
           return false;
         }
       }
@@ -59,7 +59,7 @@ namespace boost {
         extended = false;
         BGL_FORALL_OUTEDGES_T(x, e, g, Graph) {
           vertex_t v = target(e, g);
-          if (is_free(g, color, fan.back(), get(color, e)) &&
+          if (is_free(g, color, fan.back(), boost::get(color, e)) &&
               std::find(fan.begin(), fan.end(), v) == fan.end()) {
             fan.push_back(v);
             extended = true;
@@ -88,9 +88,9 @@ namespace boost {
                    typename boost::property_traits<ColorMap>::value_type c,
                    typename boost::property_traits<ColorMap>::value_type d)
     {
-      put(color, eold, d);
+      boost::put(color, eold, d);
       BGL_FORALL_OUTEDGES_T(x, e, g, Graph) {
-        if (get(color, e) == d && e != eold) {
+        if (boost::get(color, e) == d && e != eold) {
           invert_cd_path(g, color, target(e, g), e, d, c);
           return;
         }
@@ -106,7 +106,7 @@ namespace boost {
                    typename boost::property_traits<ColorMap>::value_type d)
     {
       BGL_FORALL_OUTEDGES_T(x, e, g, Graph) {
-        if (get(color, e) == d) {
+        if (boost::get(color, e) == d) {
           invert_cd_path(g, color, target(e, g), e, d, c);
           return;
         }
@@ -128,7 +128,7 @@ namespace boost {
       edge_t previous = edge(x, *begin, g).first;
       for (begin++; begin != end; begin++) {
         edge_t current = edge(x, *begin, g).first;
-        put(color, previous, get(color, current));
+        boost::put(color, previous, boost::get(color, current));
         previous = current;
       }
     }
@@ -172,7 +172,7 @@ namespace boost {
                                   fan.end(),
                                   find_free_in_fan<Graph, ColorMap>(g, color, d));
     rotate_fan(g, color, x, fan.begin(), w + 1);
-    put(color, edge(x, *w, g).first, d);
+    boost::put(color, edge(x, *w, g).first, d);
     return (std::max)(c, d);
   }
 
@@ -183,7 +183,7 @@ namespace boost {
   {
     typedef typename boost::property_traits<ColorMap>::value_type color_t;
     BGL_FORALL_EDGES_T(e, g, Graph) {
-      put(color, e, (std::numeric_limits<color_t>::max)());
+      boost::put(color, e, (std::numeric_limits<color_t>::max)());
     }
     color_t colors = 0;
     BGL_FORALL_EDGES_T(e, g, Graph) {

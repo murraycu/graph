@@ -39,10 +39,10 @@ namespace boost
     typedef typename std::vector<vertex_t> vertex_vector_t;
     typedef typename std::vector<v_size_t> v_size_vector_t;
     typedef typename std::vector<degree_size_t> degree_size_vector_t;
-    typedef iterator_property_map
+    typedef boost::iterator_property_map
       < typename v_size_vector_t::iterator, VertexIndexMap > 
       vertex_to_v_size_map_t;
-    typedef iterator_property_map
+    typedef boost::iterator_property_map
       < typename degree_size_vector_t::iterator, VertexIndexMap > 
       vertex_to_degree_size_map_t;
     typedef typename vertex_vector_t::iterator face_iterator;
@@ -63,7 +63,7 @@ namespace boost
     {
       vertex_iterator_t vi, vi_end;
       for(boost::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
-        put(degree, *vi, out_degree(*vi, g));
+        boost::put(degree, *vi, out_degree(*vi, g));
     }
 
     template <typename Vertex>
@@ -96,7 +96,7 @@ namespace boost
       face_iterator fi_end = vertices_on_face.end();
       for(face_iterator fi = vertices_on_face.begin(); fi != fi_end; ++fi)
         {
-          degree_size_t deg = get(degree,*fi);
+          degree_size_t deg = boost::get(degree,*fi);
           if (deg < min_degree)
             {
               min_degree_vertex_itr = fi;
@@ -121,7 +121,7 @@ namespace boost
           ai != ai_end; ++ai
           )
         {
-          put(marked, *ai, timestamp);
+          boost::put(marked, *ai, timestamp);
         }
 
       typename vertex_vector_t::iterator marked_neighbor 
@@ -134,7 +134,7 @@ namespace boost
           fi != fi_end; ++fi
           )
         {
-          if (get(marked, *fi) == timestamp)
+          if (boost::get(marked, *fi) == timestamp)
             {
               marked_neighbor = fi;
               break;
@@ -181,8 +181,8 @@ namespace boost
         {
           vertex_t v(*fi);
           add_edge_visitor.visit_vertex_pair(anchor, v, g);
-          put(degree, anchor, get(degree, anchor) + 1);
-          put(degree, v, get(degree, v) + 1);
+          boost::put(degree, anchor, boost::get(degree, anchor) + 1);
+          boost::put(degree, v, boost::get(degree, v) + 1);
         }
     }
 
@@ -249,7 +249,7 @@ namespace boost
                            VertexIndexMap vm
                            )
   {
-    make_maximal_planar(g, embedding, vm, get(edge_index,g));
+    make_maximal_planar(g, embedding, vm, boost::get(edge_index,g));
   }
 
 
@@ -262,7 +262,7 @@ namespace boost
                            PlanarEmbedding embedding
                            )
   {
-    make_maximal_planar(g, embedding, get(vertex_index,g));
+    make_maximal_planar(g, embedding, boost::get(vertex_index,g));
   }
 
 

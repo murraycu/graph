@@ -133,9 +133,9 @@ namespace boost {
 #if !defined(BOOST_NO_MEMBER_TEMPLATE_FRIENDS)
     template <class Ref> friend class sgb_edge_length_map;
     template <class Tag, class Ref> friend class sgb_edge_util_map;
-    friend long get(edge_length_t, const sgb_graph_ptr&, const sgb_edge& key);
-    friend long get(edge_length_t, const sgb_const_graph_ptr&, const sgb_edge& key);
-    friend void put(edge_length_t, sgb_graph_ptr&, const sgb_edge& key, long value);
+    friend long boost::get(edge_length_t, const sgb_graph_ptr&, const sgb_edge& key);
+    friend long boost::get(edge_length_t, const sgb_const_graph_ptr&, const sgb_edge& key);
+    friend void boost::put(edge_length_t, sgb_graph_ptr&, const sgb_edge& key, long value);
   protected:
 #endif
     Arc* _arc;
@@ -253,7 +253,7 @@ namespace boost {
   protected:
     sgb_graph_ptr _g;
   };
-  inline sgb_vertex_id_map get(vertex_index_t, sgb_graph_ptr g) {
+  inline sgb_vertex_id_map boost::get(vertex_index_t, sgb_graph_ptr g) {
     return sgb_vertex_id_map(g);
   }
 
@@ -268,7 +268,7 @@ namespace boost {
     typedef Vertex* key_type;
     char* operator[](Vertex* v) const { return v->name; }
   };
-  inline sgb_vertex_name_map get(vertex_name_t, sgb_graph_ptr) {
+  inline sgb_vertex_name_map boost::get(vertex_name_t, sgb_graph_ptr) {
     return sgb_vertex_name_map();
   }
 
@@ -387,27 +387,27 @@ namespace boost {
   };
 
   inline sgb_edge_length_map<const long&>
-  get(edge_length_t, const sgb_graph_ptr&) { 
+  boost::get(edge_length_t, const sgb_graph_ptr&) { 
     return sgb_edge_length_map<const long&>(); 
   }
   inline sgb_edge_length_map<const long&>
-  get(edge_length_t, const sgb_const_graph_ptr&) { 
+  boost::get(edge_length_t, const sgb_const_graph_ptr&) { 
     return sgb_edge_length_map<const long&>(); 
   }
   inline sgb_edge_length_map<long&>
-  get(edge_length_t, sgb_graph_ptr&) { 
+  boost::get(edge_length_t, sgb_graph_ptr&) { 
     return sgb_edge_length_map<long&>(); 
   }
   inline long
-  get(edge_length_t, const sgb_graph_ptr&, const sgb_edge& key) {
+  boost::get(edge_length_t, const sgb_graph_ptr&, const sgb_edge& key) {
     return key._arc->len;
   }
   inline long
-  get(edge_length_t, const sgb_const_graph_ptr&, const sgb_edge& key) {
+  boost::get(edge_length_t, const sgb_const_graph_ptr&, const sgb_edge& key) {
     return key._arc->len;
   }
   inline void
-  put(edge_length_t, sgb_graph_ptr&, const sgb_edge& key, long value)
+  boost::put(edge_length_t, sgb_graph_ptr&, const sgb_edge& key, long value)
   {
     key._arc->len = value;
   }
@@ -476,34 +476,34 @@ namespace boost {
 #define SGB_UTIL_ACCESSOR(KIND,X) \
   template <class T> \
   inline sgb_##KIND##_util_map< X##_property<T>, T&> \
-  get(X##_property<T>, sgb_graph_ptr&) { \
+  boost::get(X##_property<T>, sgb_graph_ptr&) { \
     return sgb_##KIND##_util_map< X##_property<T>, T&>(); \
   } \
   template <class T> \
   inline sgb_##KIND##_util_map< X##_property<T>, const T&> \
-  get(X##_property<T>, const sgb_graph_ptr&) { \
+  boost::get(X##_property<T>, const sgb_graph_ptr&) { \
     return sgb_##KIND##_util_map< X##_property<T>, const T&>(); \
   } \
   template <class T> \
   inline sgb_##KIND##_util_map< X##_property<T>, const T&> \
-  get(X##_property<T>, const sgb_const_graph_ptr&) { \
+  boost::get(X##_property<T>, const sgb_const_graph_ptr&) { \
     return sgb_##KIND##_util_map< X##_property<T>, const T&>(); \
   } \
   template <class T, class Key> \
   inline typename \
   sgb_##KIND##_util_map< X##_property<T>, const T&>::value_type \
-  get(X##_property<T>, const sgb_graph_ptr&, const Key& key) { \
+  boost::get(X##_property<T>, const sgb_graph_ptr&, const Key& key) { \
     return sgb_##KIND##_util_map< X##_property<T>, const T&>()[key]; \
   } \
   template <class T, class Key> \
   inline typename \
   sgb_##KIND##_util_map< X##_property<T>, const T&>::value_type \
-  get(X##_property<T>, const sgb_const_graph_ptr&, const Key& key) { \
+  boost::get(X##_property<T>, const sgb_const_graph_ptr&, const Key& key) { \
     return sgb_##KIND##_util_map< X##_property<T>, const T&>()[key]; \
   } \
   template <class T, class Key, class Value> \
   inline  void \
-  put(X##_property<T>, sgb_graph_ptr&, const Key& key, const Value& value) { \
+  boost::put(X##_property<T>, sgb_graph_ptr&, const Key& key, const Value& value) { \
     sgb_##KIND##_util_map< X##_property<T>, T&>()[key] = value; \
   }
 

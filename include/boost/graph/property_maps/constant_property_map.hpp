@@ -76,7 +76,7 @@ struct constant_writable_property_map {
         : m_value(copy.m_value)
     { }
 
-    friend Value get(const constant_writable_property_map& me, Key) {return me.m_value;}
+    friend Value boost::get(const constant_writable_property_map& me, Key) {return me.m_value;}
     friend void put(const constant_writable_property_map&, Key, Value) {}
 
     value_type m_value;

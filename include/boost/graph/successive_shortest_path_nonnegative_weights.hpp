@@ -32,18 +32,18 @@ namespace detail {
     
 template <class Graph, class Weight, class Distance, class Reversed>
 class MapReducedWeight : 
-    public put_get_helper<typename property_traits<Weight>::value_type, MapReducedWeight<Graph, Weight, Distance, Reversed> > {
+    public put_get_helper<typename boost::property_traits<Weight>::value_type, MapReducedWeight<Graph, Weight, Distance, Reversed> > {
     typedef graph_traits<Graph> gtraits;
 public:
     typedef boost::readable_property_map_tag category;
-    typedef typename property_traits<Weight>::value_type value_type;
+    typedef typename boost::property_traits<Weight>::value_type value_type;
     typedef value_type reference;
     typedef typename gtraits::edge_descriptor key_type;
     MapReducedWeight(const Graph & g, Weight w, Distance d, Reversed r) : 
         g_(g), weight_(w), distance_(d), rev_(r) {}
 
     reference operator[](key_type v) const {
-        return get(distance_, source(v, g_)) - get(distance_,target(v, g_)) + get(weight_, v); 
+        return boost::get(distance_, source(v, g_)) - boost::get(distance_,target(v, g_)) + boost::get(weight_, v); 
     }
 private:
     const Graph & g_;
@@ -79,16 +79,16 @@ void successive_shortest_path_nonnegative_weights(
     typedef typename graph_traits<Graph>::edge_descriptor edge_descriptor;
     
     BGL_FORALL_EDGES_T(e, g, Graph) {
-        put(residual_capacity, e, get(capacity, e));
+        boost::put(residual_capacity, e, boost::get(capacity, e));
     }
 
     BGL_FORALL_VERTICES_T(v, g, Graph) {
-        put(distance_prev, v, 0);
+        boost::put(distance_prev, v, 0);
     }
 
     while(true) {
         BGL_FORALL_VERTICES_T(v, g, Graph) {
-            put(pred, v, edge_descriptor());
+            boost::put(pred, v, edge_descriptor());
         }
         dijkstra_shortest_paths(gres, s, 
                 weight_map(detail::make_mapReducedWeight(gres, weight, distance_prev, rev)).
@@ -96,12 +96,12 @@ void successive_shortest_path_nonnegative_weights(
                 vertex_index_map(index).
                 visitor(make_dijkstra_visitor(record_edge_predecessors(pred, on_edge_relaxed()))));
 
-        if(get(pred, t) == edge_descriptor()) {
+        if(boost::get(pred, t) == edge_descriptor()) {
             break;
         }
 
         BGL_FORALL_VERTICES_T(v, g, Graph) {
-            put(distance_prev, v, get(distance_prev, v) + get(distance, v));
+            boost::put(distance_prev, v, boost::get(distance_prev, v) + boost::get(distance, v));
         }
 
         detail::augment(g, s, t, pred, residual_capacity, rev);
@@ -141,12 +141,12 @@ void successive_shortest_path_nonnegative_weights_dispatch3(
         Pred pred,
         Distance dist,
         param_not_found) {
-    typedef typename property_traits<Weight>::value_type D;
+    typedef typename boost::property_traits<Weight>::value_type D;
 
     std::vector<D> d_map(num_vertices(g));
 
     successive_shortest_path_nonnegative_weights(g, s, t, capacity, residual_capacity, weight, rev, index, pred, dist,
-                             make_iterator_property_map(d_map.begin(), index));
+                             boost::make_iterator_property_map(d_map.begin(), index));
 }
 
 template <class Graph, class P, class T, class R, class Capacity, class ResidualCapacity, class Weight, class Reversed, class Pred, class Distance, class VertexIndex>
@@ -179,12 +179,12 @@ void successive_shortest_path_nonnegative_weights_dispatch2(
         Pred pred,
         param_not_found, 
         const bgl_named_params<P, T, R>& params) {
-    typedef typename property_traits<Weight>::value_type D;
+    typedef typename boost::property_traits<Weight>::value_type D;
 
     std::vector<D> d_map(num_vertices(g));
 
     successive_shortest_path_nonnegative_weights_dispatch3(g, s, t, capacity, residual_capacity, weight, rev, index, pred,
-            make_iterator_property_map(d_map.begin(), index),
+            boost::make_iterator_property_map(d_map.begin(), index),
             get_param(params, vertex_distance2));
 }
 
@@ -221,7 +221,7 @@ void successive_shortest_path_nonnegative_weights_dispatch1(
     std::vector<edge_descriptor> pred_vec(num_vertices(g));
 
     successive_shortest_path_nonnegative_weights_dispatch2(g, s, t, capacity, residual_capacity, weight, rev, index, 
-            make_iterator_property_map(pred_vec.begin(), index),
+            boost::make_iterator_property_map(pred_vec.begin(), index),
             get_param(params, vertex_distance), params); 
 }
 

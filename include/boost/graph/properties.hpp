@@ -148,15 +148,15 @@ namespace boost {
     struct dummy_edge_property_selector {
       template <class Graph, class Property, class Tag>
       struct bind_ {
-        typedef identity_property_map type;
-        typedef identity_property_map const_type;
+        typedef boost::identity_property_map type;
+        typedef boost::identity_property_map const_type;
       };
     };
     struct dummy_vertex_property_selector {
       template <class Graph, class Property, class Tag>
       struct bind_ {
-        typedef identity_property_map type;
-        typedef identity_property_map const_type;
+        typedef boost::identity_property_map type;
+        typedef boost::identity_property_map const_type;
       };
     };
 
@@ -219,9 +219,9 @@ namespace boost {
   // shortcut for accessing the value type of the property map
   template <class Graph, class Property>
   class property_map_value {
-    typedef typename property_map<Graph, Property>::const_type PMap;
+    typedef typename boost::property_map<Graph, Property>::const_type PMap;
   public:
-    typedef typename property_traits<PMap>::value_type type;
+    typedef typename boost::property_traits<PMap>::value_type type;
   };
 
   template <class Graph, class Property>
@@ -269,15 +269,15 @@ namespace boost {
   // graph.
   template <class PropertyGraph, class RandomAccessIterator>
   inline
-  iterator_property_map<
+  boost::iterator_property_map<
     RandomAccessIterator,
-    typename property_map<PropertyGraph, vertex_index_t>::type,
+    typename boost::property_map<PropertyGraph, vertex_index_t>::type,
     typename std::iterator_traits<RandomAccessIterator>::value_type,
     typename std::iterator_traits<RandomAccessIterator>::reference
   >
   make_iterator_vertex_map(RandomAccessIterator iter, const PropertyGraph& g)
   {
-    return make_iterator_property_map(iter, get(vertex_index, g));
+    return boost::make_iterator_property_map(iter, boost::get(vertex_index, g));
   }
 
   // Use this next function when vertex_descriptor is known to be an
@@ -285,23 +285,23 @@ namespace boost {
   //
   template <class RandomAccessIterator>
   inline
-  iterator_property_map<
+  boost::iterator_property_map<
     RandomAccessIterator,
-    identity_property_map,
+    boost::identity_property_map,
     typename std::iterator_traits<RandomAccessIterator>::value_type,
     typename std::iterator_traits<RandomAccessIterator>::reference
   >
   make_iterator_vertex_map(RandomAccessIterator iter)
   {
-    return make_iterator_property_map(iter, identity_property_map());
+    return boost::make_iterator_property_map(iter, boost::identity_property_map());
   }
 #endif
 
   template <class PropertyGraph, class RandomAccessContainer>
   inline
-  iterator_property_map<
+  boost::iterator_property_map<
     typename RandomAccessContainer::iterator,
-    typename property_map<PropertyGraph, vertex_index_t>::type,
+    typename boost::property_map<PropertyGraph, vertex_index_t>::type,
     typename RandomAccessContainer::value_type,
     typename RandomAccessContainer::reference
   >
@@ -312,9 +312,9 @@ namespace boost {
   }
 
   template <class RandomAccessContainer> inline
-  iterator_property_map<
+  boost::iterator_property_map<
     typename RandomAccessContainer::iterator,
-    identity_property_map,
+    boost::identity_property_map,
     typename RandomAccessContainer::value_type,
     typename RandomAccessContainer::reference
   >

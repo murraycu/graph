@@ -26,7 +26,7 @@ namespace boost
     template <typename Item>
     bool operator() (Item x, Item y) const
     {
-      return get(itrm, x) < get(itrm, y);
+      return boost::get(itrm, x) < boost::get(itrm, y);
     }
     
   private:
@@ -37,7 +37,7 @@ namespace boost
 
   template <typename TupleType, 
             int N, 
-            typename PropertyMapWrapper = identity_property_map>
+            typename PropertyMapWrapper = boost::identity_property_map>
   struct property_map_tuple_adaptor :
     public put_get_helper< typename PropertyMapWrapper::value_type,
                            property_map_tuple_adaptor
@@ -57,7 +57,7 @@ namespace boost
 
     inline value_type operator[](const key_type& x) const
     {
-      return get(m_wrapper_map, get<n>(x));
+      return boost::get(m_wrapper_map, get<n>(x));
     }
 
     static const int n = N;
@@ -92,14 +92,14 @@ namespace boost
         ForwardIterator max_by_rank = std::max_element(begin, end, cmp);
         if (max_by_rank == end)
           return;
-        range = get(rank, *max_by_rank) + 1;
+        range = boost::get(rank, *max_by_rank) + 1;
       }
 
     vector_of_vectors_t temp_values(range);
 
     for(ForwardIterator itr = begin; itr != end; ++itr)
       {
-        temp_values[get(rank, *itr)].push_back(*itr);
+        temp_values[boost::get(rank, *itr)].push_back(*itr);
       }
 
     ForwardIterator orig_seq_itr = begin;
@@ -134,7 +134,7 @@ namespace boost
                    ForwardIterator end 
                    )  
   {
-    bucket_sort(begin, end, identity_property_map());
+    bucket_sort(begin, end, boost::identity_property_map());
   }
   
 

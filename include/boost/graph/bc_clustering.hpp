@@ -110,7 +110,7 @@ betweenness_centrality_clustering(MutableGraph& g, Done done,
                                   EdgeCentralityMap edge_centrality,
                                   VertexIndexMap vertex_index)
 {
-  typedef typename property_traits<EdgeCentralityMap>::value_type
+  typedef typename boost::property_traits<EdgeCentralityMap>::value_type
     centrality_type;
 
   if (has_no_edges(g)) return;
@@ -126,7 +126,7 @@ betweenness_centrality_clustering(MutableGraph& g, Done done,
                                    .vertex_index_map(vertex_index));
     auto edges_iters = edges(g);
     auto e = *max_element(edges_iters.first, edges_iters.second, cmp);
-    is_done = done(get(edge_centrality, e), e, g);
+    is_done = done(boost::get(edge_centrality, e), e, g);
     if (!is_done) remove_edge(e, g);
   } while (!is_done && !has_no_edges(g));
 }
@@ -153,7 +153,7 @@ betweenness_centrality_clustering(MutableGraph& g, Done done)
   typedef typename Done::centrality_type centrality_type;
   std::vector<centrality_type> edge_centrality(num_edges(g));
   betweenness_centrality_clustering(g, done, 
-    make_iterator_property_map(edge_centrality.begin(), get(edge_index, g)),
+    boost::make_iterator_property_map(edge_centrality.begin(), boost::get(edge_index, g)),
     get(vertex_index, g));
 }
 

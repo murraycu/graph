@@ -34,8 +34,8 @@ namespace boost {
               typename Stack>
     class tarjan_scc_visitor : public dfs_visitor<> 
     {
-      typedef typename property_traits<ComponentMap>::value_type comp_type;
-      typedef typename property_traits<DiscoverTime>::value_type time_type;
+      typedef typename boost::property_traits<ComponentMap>::value_type comp_type;
+      typedef typename boost::property_traits<DiscoverTime>::value_type time_type;
     public:
       tarjan_scc_visitor(ComponentMap comp_map, RootMap r, DiscoverTime d, 
                          comp_type& c_, Stack& s_)
@@ -45,9 +45,9 @@ namespace boost {
       template <typename Graph>
       void discover_vertex(typename graph_traits<Graph>::vertex_descriptor v,
                            const Graph&) {
-        put(root, v, v);
-        put(comp, v, (std::numeric_limits<comp_type>::max)());
-        put(discover_time, v, dfs_time++);
+        boost::put(root, v, v);
+        boost::put(comp, v, (std::numeric_limits<comp_type>::max)());
+        boost::put(discover_time, v, dfs_time++);
         s.push(v);
       }
       template <typename Graph>
@@ -57,14 +57,14 @@ namespace boost {
         typename graph_traits<Graph>::out_edge_iterator ei, ei_end;
         for (boost::tie(ei, ei_end) = out_edges(v, g); ei != ei_end; ++ei) {
           w = target(*ei, g);
-          if (get(comp, w) == (std::numeric_limits<comp_type>::max)())
-            put(root, v, this->min_discover_time(get(root,v), get(root,w)));
+          if (boost::get(comp, w) == (std::numeric_limits<comp_type>::max)())
+            boost::put(root, v, this->min_discover_time(boost::get(root,v), boost::get(root,w)));
         }
-        if (get(root, v) == v) {
+        if (boost::get(root, v) == v) {
           do {
             w = s.top(); s.pop();
-            put(comp, w, c);
-	    put(root, w, v);
+            boost::put(comp, w, c);
+	    boost::put(root, w, v);
           } while (w != v);
           ++c;
         }
@@ -72,7 +72,7 @@ namespace boost {
     private:
       template <typename Vertex>
       Vertex min_discover_time(Vertex u, Vertex v) {
-        return get(discover_time, u) < get(discover_time,v) ? u : v;
+        return boost::get(discover_time, u) < boost::get(discover_time,v) ? u : v;
       }
 
       comp_type& c;
@@ -85,7 +85,7 @@ namespace boost {
     
     template <class Graph, class ComponentMap, class RootMap,
               class DiscoverTime, class P, class T, class R>
-    typename property_traits<ComponentMap>::value_type
+    typename boost::property_traits<ComponentMap>::value_type
     strong_components_impl
       (const Graph& g,    // Input
        ComponentMap comp, // Output
@@ -97,11 +97,11 @@ namespace boost {
       typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
       BOOST_CONCEPT_ASSERT(( ReadWritePropertyMapConcept<ComponentMap, Vertex> ));
       BOOST_CONCEPT_ASSERT(( ReadWritePropertyMapConcept<RootMap, Vertex> ));
-      typedef typename property_traits<RootMap>::value_type RootV;
+      typedef typename boost::property_traits<RootMap>::value_type RootV;
       BOOST_CONCEPT_ASSERT(( ConvertibleConcept<RootV, Vertex> ));
       BOOST_CONCEPT_ASSERT(( ReadWritePropertyMapConcept<DiscoverTime, Vertex> ));
 
-      typename property_traits<ComponentMap>::value_type total = 0;
+      typename boost::property_traits<ComponentMap>::value_type total = 0;
 
       std::stack<Vertex> s;
       detail::tarjan_scc_visitor<ComponentMap, RootMap, DiscoverTime, 
@@ -119,7 +119,7 @@ namespace boost {
     template <class DiscoverTimeMap>
     struct strong_comp_dispatch2 {
       template <class Graph, class ComponentMap, class RootMap, class P, class T, class R>
-      inline static typename property_traits<ComponentMap>::value_type
+      inline static typename boost::property_traits<ComponentMap>::value_type
       apply(const Graph& g,
             ComponentMap comp,
             RootMap r_map,
@@ -135,7 +135,7 @@ namespace boost {
     struct strong_comp_dispatch2<param_not_found> {
       template <class Graph, class ComponentMap, class RootMap,
                 class P, class T, class R>
-      inline static typename property_traits<ComponentMap>::value_type
+      inline static typename boost::property_traits<ComponentMap>::value_type
       apply(const Graph& g,
             ComponentMap comp,
             RootMap r_map,
@@ -147,7 +147,7 @@ namespace boost {
         std::vector<size_type> time_vec(n);
         return strong_components_impl
           (g, comp, r_map,
-           make_iterator_property_map(time_vec.begin(), choose_const_pmap
+           boost::make_iterator_property_map(time_vec.begin(), choose_const_pmap
                                       (get_param(params, vertex_index),
                                        g, vertex_index), time_vec[0]),
            params);
@@ -156,7 +156,7 @@ namespace boost {
 
     template <class Graph, class ComponentMap, class RootMap,
               class P, class T, class R, class DiscoverTimeMap>
-    inline typename property_traits<ComponentMap>::value_type
+    inline typename boost::property_traits<ComponentMap>::value_type
     scc_helper2(const Graph& g,
                 ComponentMap comp,
                 RootMap r_map,
@@ -170,7 +170,7 @@ namespace boost {
     struct strong_comp_dispatch1 {
 
       template <class Graph, class ComponentMap, class P, class T, class R>
-      inline static typename property_traits<ComponentMap>::value_type
+      inline static typename boost::property_traits<ComponentMap>::value_type
       apply(const Graph& g,
             ComponentMap comp,
             const bgl_named_params<P, T, R>& params,
@@ -184,7 +184,7 @@ namespace boost {
 
       template <class Graph, class ComponentMap, 
                 class P, class T, class R>
-      inline static typename property_traits<ComponentMap>::value_type
+      inline static typename boost::property_traits<ComponentMap>::value_type
       apply(const Graph& g,
             ComponentMap comp,
             const bgl_named_params<P, T, R>& params,
@@ -196,7 +196,7 @@ namespace boost {
         std::vector<Vertex> root_vec(n);
         return scc_helper2
           (g, comp, 
-           make_iterator_property_map(root_vec.begin(), choose_const_pmap
+           boost::make_iterator_property_map(root_vec.begin(), choose_const_pmap
                                       (get_param(params, vertex_index),
                                        g, vertex_index), root_vec[0]),
            params, 
@@ -206,7 +206,7 @@ namespace boost {
 
     template <class Graph, class ComponentMap, class RootMap,
               class P, class T, class R>
-    inline typename property_traits<ComponentMap>::value_type
+    inline typename boost::property_traits<ComponentMap>::value_type
     scc_helper1(const Graph& g,
                ComponentMap comp,
                const bgl_named_params<P, T, R>& params,
@@ -220,7 +220,7 @@ namespace boost {
 
   template <class Graph, class ComponentMap, 
             class P, class T, class R>
-  inline typename property_traits<ComponentMap>::value_type
+  inline typename boost::property_traits<ComponentMap>::value_type
   strong_components(const Graph& g, ComponentMap comp,
                     const bgl_named_params<P, T, R>& params
                     BOOST_GRAPH_ENABLE_IF_MODELS_PARM(Graph, vertex_list_graph_tag))
@@ -232,7 +232,7 @@ namespace boost {
   }
 
   template <class Graph, class ComponentMap>
-  inline typename property_traits<ComponentMap>::value_type
+  inline typename boost::property_traits<ComponentMap>::value_type
   strong_components(const Graph& g, ComponentMap comp
                     BOOST_GRAPH_ENABLE_IF_MODELS_PARM(Graph, vertex_list_graph_tag))
   {
@@ -280,7 +280,7 @@ namespace boost {
   template <class Graph, class DFSVisitor, class ComponentsMap,
             class DiscoverTime, class FinishTime,
             class ColorMap>
-  typename property_traits<ComponentsMap>::value_type
+  typename boost::property_traits<ComponentsMap>::value_type
   kosaraju_strong_components(Graph& G, ComponentsMap c,
                              FinishTime finish_time, ColorMap color)
   {
@@ -288,9 +288,9 @@ namespace boost {
     // ...
     
     typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
-    typedef typename property_traits<ColorMap>::value_type ColorValue;
+    typedef typename boost::property_traits<ColorMap>::value_type ColorValue;
     typedef color_traits<ColorValue> Color;
-    typename property_traits<FinishTime>::value_type time = 0;
+    typename boost::property_traits<FinishTime>::value_type time = 0;
     depth_first_search
      (G, make_dfs_visitor(stamp_times(finish_time, time, on_finish_vertex())),
       color);
@@ -298,7 +298,7 @@ namespace boost {
     Graph G_T(num_vertices(G));
     transpose_graph(G, G_T);
 
-    typedef typename property_traits<ComponentsMap>::value_type count_type;
+    typedef typename boost::property_traits<ComponentsMap>::value_type count_type;
 
     count_type c_count(0);
     detail::components_recorder<ComponentsMap>
@@ -307,9 +307,9 @@ namespace boost {
     // initialize G_T
     typename graph_traits<Graph>::vertex_iterator ui, ui_end;
     for (boost::tie(ui, ui_end) = vertices(G_T); ui != ui_end; ++ui)
-      put(color, *ui, Color::white());
+      boost::put(color, *ui, Color::white());
 
-    typedef typename property_traits<FinishTime>::value_type D;
+    typedef typename boost::property_traits<FinishTime>::value_type D;
     typedef indirect_cmp< FinishTime, std::less<D> > Compare;
 
     Compare fl(finish_time);
@@ -319,14 +319,14 @@ namespace boost {
     boost::tie(i, iend) = vertices(G_T);
     boost::tie(j, jend) = vertices(G);
     for ( ; i != iend; ++i, ++j) {
-      put(finish_time, *i, get(finish_time, *j));
+      boost::put(finish_time, *i, boost::get(finish_time, *j));
        Q.push(*i);
     }
 
     while ( !Q.empty() ) {
       Vertex u = Q.top();
       Q.pop();
-      if  (get(color, u) == Color::white()) {
+      if  (boost::get(color, u) == Color::white()) {
         depth_first_visit(G_T, u, vis, color);
         ++c_count; 
       }

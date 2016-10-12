@@ -105,7 +105,7 @@ private:
     typedef typename Traits::vertex_descriptor Vertex;
     typedef typename Traits::edge_descriptor Edge;
     typedef typename Traits::vertices_size_type VerticesSize;
-    typedef typename property_traits<VertexIndexMap>::value_type VertexIndex;
+    typedef typename boost::property_traits<VertexIndexMap>::value_type VertexIndex;
 
     typedef typename result_of<
                 GetAdjacentVertices(Vertex, Graph const&)
@@ -117,7 +117,7 @@ private:
     // I can't find anything that documents this behavior), we're gonna
     // assert it in the constructor.
     typedef one_bit_color_map<VertexIndexMap> BlockedMap;
-    typedef typename property_traits<BlockedMap>::value_type BlockedColor;
+    typedef typename boost::property_traits<BlockedMap>::value_type BlockedColor;
 
     static BlockedColor blocked_false_color()
     { return color_traits<BlockedColor>::white(); }
@@ -164,7 +164,7 @@ public:
 private:
     //! @internal Return the index of a given vertex.
     VertexIndex index_of(Vertex v) const {
-        return get(vim_, v);
+        return boost::get(vim_, v);
     }
 
 
@@ -184,19 +184,19 @@ private:
 
     //! @internal Return whether a given vertex is blocked.
     bool is_blocked(Vertex v) const {
-        return get(blocked_, v) == blocked_true_color();
+        return boost::get(blocked_, v) == blocked_true_color();
     }
 
     //! @internal Block a given vertex.
     void block(Vertex v) {
-        put(blocked_, v, blocked_true_color());
+        boost::put(blocked_, v, blocked_true_color());
     }
 
     //! @internal Unblock a given vertex.
     void unblock(Vertex u) {
         typedef typename ClosedMatrix::reference VertexList;
 
-        put(blocked_, u, blocked_false_color());
+        boost::put(blocked_, u, blocked_false_color());
         VertexList closed_to_u = closed_[index_of(u)];
 
         while (!closed_to_u.empty()) {
@@ -325,7 +325,7 @@ void call_hawick_circuits(Graph const& graph,
 template <typename GetAdjacentVertices, typename Graph, typename Visitor>
 void call_hawick_circuits(Graph const& graph, BOOST_FWD_REF(Visitor) visitor) {
     call_hawick_circuits<GetAdjacentVertices>(
-        graph, boost::forward<Visitor>(visitor), get(vertex_index, graph)
+        graph, boost::forward<Visitor>(visitor), boost::get(vertex_index, graph)
     );
 }
 } // end namespace hawick_circuits_detail

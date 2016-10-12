@@ -67,7 +67,7 @@ namespace boost {
       void operator() (Edge e, const Graph& g)
       {
         typedef typename graph_traits <Graph>::vertex_descriptor vertex_descriptor_t;
-        typedef color_traits <typename property_traits <PartitionMap>::value_type> color_traits;
+        typedef color_traits <typename boost::property_traits<PartitionMap>::value_type> color_traits;
 
         vertex_descriptor_t source_vertex = source (e, g);
         vertex_descriptor_t target_vertex = target (e, g);
@@ -196,7 +196,7 @@ namespace boost {
   bool is_bipartite (const Graph& graph, const IndexMap index_map, PartitionMap partition_map)
   {
     /// General types and variables
-    typedef typename property_traits <PartitionMap>::value_type partition_color_t;
+    typedef typename boost::property_traits<PartitionMap>::value_type partition_color_t;
     typedef typename graph_traits <Graph>::vertex_descriptor vertex_descriptor_t;
 
     /// Declare dfs visitor
@@ -272,14 +272,14 @@ namespace boost {
       OutputIterator result)
   {
     /// General types and variables
-    typedef typename property_traits <PartitionMap>::value_type partition_color_t;
+    typedef typename boost::property_traits<PartitionMap>::value_type partition_color_t;
     typedef typename graph_traits <Graph>::vertex_descriptor vertex_descriptor_t;
     typedef typename graph_traits <Graph>::vertex_iterator vertex_iterator_t;
     vertex_iterator_t vertex_iter, vertex_end;
 
     /// Declare predecessor map
     typedef std::vector <vertex_descriptor_t> predecessors_t;
-    typedef iterator_property_map <typename predecessors_t::iterator, IndexMap, vertex_descriptor_t,
+    typedef boost::iterator_property_map <typename predecessors_t::iterator, IndexMap, vertex_descriptor_t,
         vertex_descriptor_t&> predecessor_map_t;
 
     predecessors_t predecessors (num_vertices (graph), graph_traits <Graph>::null_vertex ());

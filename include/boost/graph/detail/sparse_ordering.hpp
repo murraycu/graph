@@ -70,7 +70,7 @@ namespace boost {
         value_type& u =  base::front();
         if ( _size == 0 ) 
           w = u;
-        else if (get(degree,u) < get(degree,w) )
+        else if (boost::get(degree,u) < boost::get(degree,w) )
           w = u;
         return u;
       }
@@ -79,7 +79,7 @@ namespace boost {
         const value_type& u =  base::front();
         if ( _size == 0 ) 
           w = u;
-        else if (get(degree,u) < get(degree,w) )
+        else if (boost::get(degree,u) < boost::get(degree,w) )
           w = u;
         return u;
       }
@@ -131,14 +131,14 @@ namespace boost {
   pseudo_peripheral_pair(Graph const& G, const Vertex& u, int& ecc,
                          ColorMap color, DegreeMap degree)
   {
-    typedef typename property_traits<ColorMap>::value_type ColorValue;
+    typedef typename boost::property_traits<ColorMap>::value_type ColorValue;
     typedef color_traits<ColorValue> Color;
     
     sparse::rcm_queue<Vertex, DegreeMap> Q(degree);
 
     typename boost::graph_traits<Graph>::vertex_iterator ui, ui_end;
     for (boost::tie(ui, ui_end) = vertices(G); ui != ui_end; ++ui)
-      if (get(color, *ui) != Color::red()) put(color, *ui, Color::white());
+      if (boost::get(color, *ui) != Color::red()) boost::put(color, *ui, Color::white());
     breadth_first_visit(G, u, buffer(Q).color_map(color));
 
     ecc = Q.eccentricity(); 

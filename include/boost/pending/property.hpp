@@ -69,7 +69,7 @@ namespace boost {
   template <typename Tag, typename T, typename Base> \
   struct lookup_one_property_internal<property<Tag, T, Base>, tag> { /* Avoid ambiguity */ \
     BOOST_STATIC_CONSTANT(bool, found = true); \
-    typedef property<Tag, T, Base> type; \
+    typedef boost::property<Tag, T, Base> type; \
     static type& lookup(type& x, tag) {return x;} \
     static const type& lookup(const type& x, tag) {return x;} \
   };
@@ -101,7 +101,7 @@ namespace boost {
     template <typename BundleTag> \
     static typename lazy_enable_if_c<(base_type::found && (boost::is_same<BundleTag, BOOST_JOIN(kind, _bundle_t)>::value)), \
                                      add_reference<const typename base_type::type> >::type \
-    lookup(const property<Tag, T, Base>& p, BundleTag) {return base_type::lookup(p.m_base, BOOST_JOIN(kind, _bundle_t)());} \
+    lookup(const boost::property<Tag, T, Base>& p, BundleTag) {return base_type::lookup(p.m_base, BOOST_JOIN(kind, _bundle_t)());} \
   }; \
 
   BGL_DO_ONE_BUNDLE_TYPE(vertex)

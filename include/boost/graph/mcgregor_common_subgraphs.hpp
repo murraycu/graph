@@ -61,7 +61,7 @@ namespace boost {
     template <typename ItemFirst,
               typename ItemSecond>
     bool operator()(const ItemFirst item1, const ItemSecond item2) {
-      return (get(m_property_map1, item1) == get(m_property_map2, item2));
+      return (boost::get(m_property_map1, item1) == boost::get(m_property_map2, item2));
     }
   
   private:
@@ -141,7 +141,7 @@ namespace boost {
       // Verify edges with existing sub-graph
       BGL_FORALL_VERTICES_T(existing_vertex1, graph1, GraphFirst) {
 
-        VertexSecond existing_vertex2 = get(correspondence_map_1_to_2, existing_vertex1);
+        VertexSecond existing_vertex2 = boost::get(correspondence_map_1_to_2, existing_vertex1);
 
         // Skip unassociated vertices
         if (existing_vertex2 == graph_traits<GraphSecond>::null_vertex()) {
@@ -294,7 +294,7 @@ namespace boost {
       // Iterate until all vertices have been visited
       BGL_FORALL_VERTICES_T(new_vertex1, graph1, GraphFirst) {
 
-        VertexSecond existing_vertex2 = get(correspondence_map_1_to_2, new_vertex1);
+        VertexSecond existing_vertex2 = boost::get(correspondence_map_1_to_2, new_vertex1);
 
         // Skip already matched vertices in first graph
         if (existing_vertex2 != graph_traits<GraphSecond>::null_vertex()) {
@@ -303,7 +303,7 @@ namespace boost {
     
         BGL_FORALL_VERTICES_T(new_vertex2, graph2, GraphSecond) {
 
-          VertexFirst existing_vertex1 = get(correspondence_map_2_to_1, new_vertex2);
+          VertexFirst existing_vertex1 = boost::get(correspondence_map_2_to_1, new_vertex2);
 
           // Skip already matched vertices in second graph
           if (existing_vertex1 != graph_traits<GraphFirst>::null_vertex()) {
@@ -323,8 +323,8 @@ namespace boost {
               new_graph_size = old_graph_size + 1;
 
             // Extend subgraph
-            put(correspondence_map_1_to_2, new_vertex1, new_vertex2);
-            put(correspondence_map_2_to_1, new_vertex2, new_vertex1);
+            boost::put(correspondence_map_1_to_2, new_vertex1, new_vertex2);
+            boost::put(correspondence_map_2_to_1, new_vertex2, new_vertex1);
             vertex_stack1.push(new_vertex1);
 
             // Returning false from the callback will cancel iteration
@@ -352,14 +352,14 @@ namespace boost {
             if (vertex_stack1.size() > old_graph_size) {
               
               VertexFirst stack_vertex1 = vertex_stack1.top();
-              VertexSecond stack_vertex2 = get(correspondence_map_1_to_2,
+              VertexSecond stack_vertex2 = boost::get(correspondence_map_1_to_2,
                                                stack_vertex1);
 
               // Contract subgraph
-              put(correspondence_map_1_to_2, stack_vertex1,
+              boost::put(correspondence_map_1_to_2, stack_vertex1,
                   graph_traits<GraphSecond>::null_vertex());
             
-              put(correspondence_map_2_to_1, stack_vertex2,
+              boost::put(correspondence_map_2_to_1, stack_vertex2,
                   graph_traits<GraphFirst>::null_vertex());
                   
               vertex_stack1.pop();
@@ -401,7 +401,7 @@ namespace boost {
         correspondence_map_1_to_2(num_vertices(graph1), vindex_map1);
 
       BGL_FORALL_VERTICES_T(vertex1, graph1, GraphFirst) {
-        put(correspondence_map_1_to_2, vertex1,
+        boost::put(correspondence_map_1_to_2, vertex1,
             graph_traits<GraphSecond>::null_vertex());
       }
                                                  
@@ -409,7 +409,7 @@ namespace boost {
         correspondence_map_2_to_1(num_vertices(graph2), vindex_map2);
 
       BGL_FORALL_VERTICES_T(vertex2, graph2, GraphSecond) {
-        put(correspondence_map_2_to_1, vertex2,
+        boost::put(correspondence_map_2_to_1, vertex2,
             graph_traits<GraphFirst>::null_vertex());
       }
 
@@ -474,7 +474,7 @@ namespace boost {
       
     detail::mcgregor_common_subgraphs_internal_init
       (graph1, graph2,
-       get(vertex_index, graph1), get(vertex_index, graph2),
+       boost::get(vertex_index, graph1), boost::get(vertex_index, graph2),
        always_equivalent(), always_equivalent(),
        only_connected_subgraphs, user_callback);
   }
@@ -587,11 +587,11 @@ namespace boost {
           (num_vertices(m_graph2), m_vindex_map2);
 
         BGL_FORALL_VERTICES_T(vertex1, m_graph1, GraphFirst) {
-          put(new_subgraph_1_to_2, vertex1, get(correspondence_map_1_to_2, vertex1));
+          boost::put(new_subgraph_1_to_2, vertex1, boost::get(correspondence_map_1_to_2, vertex1));
         }
 
         BGL_FORALL_VERTICES_T(vertex2, m_graph2, GraphFirst) {
-          put(new_subgraph_2_to_1, vertex2, get(correspondence_map_2_to_1, vertex2));
+          boost::put(new_subgraph_2_to_1, vertex2, boost::get(correspondence_map_2_to_1, vertex2));
         }
 
         m_subgraphs->push_back(std::make_pair(subgraph_size,
@@ -661,7 +661,7 @@ namespace boost {
   {
     mcgregor_common_subgraphs_unique
       (graph1, graph2,
-       get(vertex_index, graph1), get(vertex_index, graph2),
+       boost::get(vertex_index, graph1), boost::get(vertex_index, graph2),
        always_equivalent(), always_equivalent(),
        only_connected_subgraphs, user_callback);
   }
@@ -759,11 +759,11 @@ namespace boost {
             (num_vertices(m_graph2), m_vindex_map2);
 
           BGL_FORALL_VERTICES_T(vertex1, m_graph1, GraphFirst) {
-            put(new_subgraph_1_to_2, vertex1, get(correspondence_map_1_to_2, vertex1));
+            boost::put(new_subgraph_1_to_2, vertex1, boost::get(correspondence_map_1_to_2, vertex1));
           }
 
           BGL_FORALL_VERTICES_T(vertex2, m_graph2, GraphFirst) {
-            put(new_subgraph_2_to_1, vertex2, get(correspondence_map_2_to_1, vertex2));
+            boost::put(new_subgraph_2_to_1, vertex2, boost::get(correspondence_map_2_to_1, vertex2));
           }
 
           m_subgraphs->push_back(std::make_pair(subgraph_size,
@@ -847,7 +847,7 @@ namespace boost {
   {
     mcgregor_common_subgraphs_maximum
       (graph1, graph2,
-       get(vertex_index, graph1), get(vertex_index, graph2),
+       boost::get(vertex_index, graph1), boost::get(vertex_index, graph2),
        always_equivalent(), always_equivalent(),
        only_connected_subgraphs, user_callback);
   }
@@ -962,11 +962,11 @@ namespace boost {
             (num_vertices(m_graph2), m_vindex_map2);
 
           BGL_FORALL_VERTICES_T(vertex1, m_graph1, GraphFirst) {
-            put(new_subgraph_1_to_2, vertex1, get(correspondence_map_1_to_2, vertex1));
+            boost::put(new_subgraph_1_to_2, vertex1, boost::get(correspondence_map_1_to_2, vertex1));
           }
 
           BGL_FORALL_VERTICES_T(vertex2, m_graph2, GraphFirst) {
-            put(new_subgraph_2_to_1, vertex2, get(correspondence_map_2_to_1, vertex2));
+            boost::put(new_subgraph_2_to_1, vertex2, boost::get(correspondence_map_2_to_1, vertex2));
           }
 
           m_subgraphs->push_back(std::make_pair(subgraph_size,
@@ -1050,7 +1050,7 @@ namespace boost {
 
     mcgregor_common_subgraphs_maximum_unique
       (graph1, graph2,
-       get(vertex_index, graph1), get(vertex_index, graph2),
+       boost::get(vertex_index, graph1), boost::get(vertex_index, graph2),
        always_equivalent(), always_equivalent(),
        only_connected_subgraphs, user_callback);
   }
@@ -1099,8 +1099,8 @@ namespace boost {
    MembershipMapFirst membership_map1) {
 
     BGL_FORALL_VERTICES_T(vertex1, graph1, GraphFirst) {
-      put(membership_map1, vertex1,
-          get(correspondence_map_1_to_2, vertex1) != graph_traits<GraphSecond>::null_vertex());
+      boost::put(membership_map1, vertex1,
+          boost::get(correspondence_map_1_to_2, vertex1) != graph_traits<GraphSecond>::null_vertex());
     }
 
   }

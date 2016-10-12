@@ -36,16 +36,16 @@ namespace boost {
 
       BOOST_ASSERT (num_vertices(g) >= 1); // g must also be undirected (or symmetric) and connected
 
-      typedef color_traits<typename property_traits<ColorMap>::value_type> color_gen;
-      BGL_FORALL_VERTICES_T(v, g, Graph) put(color, v, color_gen::white());
+      typedef color_traits<typename boost::property_traits<ColorMap>::value_type> color_gen;
+      BGL_FORALL_VERTICES_T(v, g, Graph) boost::put(color, v, color_gen::white());
 
       std::vector<vertex_descriptor> path;
 
-      put(color, s, color_gen::black());
-      put(pred, s, graph_traits<Graph>::null_vertex());
+      boost::put(color, s, color_gen::black());
+      boost::put(pred, s, graph_traits<Graph>::null_vertex());
 
       BGL_FORALL_VERTICES_T(v, g, Graph) {
-        if (get(color, v) != color_gen::white()) continue;
+        if (boost::get(color, v) != color_gen::white()) continue;
         loop_erased_random_walk(g, v, next_edge, color, path);
         for (typename std::vector<vertex_descriptor>::const_reverse_iterator i = path.rbegin();
              boost::next(i) !=
@@ -53,9 +53,9 @@ namespace boost {
              ++i) {
           typename std::vector<vertex_descriptor>::const_reverse_iterator j = i;
           ++j;
-          BOOST_ASSERT (get(color, *j) == color_gen::gray());
-          put(color, *j, color_gen::black());
-          put(pred, *j, *i);
+          BOOST_ASSERT (boost::get(color, *j) == color_gen::gray());
+          boost::put(color, *j, color_gen::black());
+          boost::put(pred, *j, *i);
         }
       }
     }

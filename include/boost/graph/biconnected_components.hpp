@@ -50,7 +50,7 @@ namespace boost
       template <typename Vertex, typename Graph>
       void initialize_vertex(const Vertex& u, Graph& g)
       {
-        put(pred, u, u);
+        boost::put(pred, u, u);
         vis.initialize_vertex(u, g);
       }
 
@@ -64,8 +64,8 @@ namespace boost
       template <typename Vertex, typename Graph>
       void discover_vertex(const Vertex& u, Graph& g)
       {
-        put(dtm, u, ++dfs_time);
-        put(lowpt, u, get(dtm, u));
+        boost::put(dtm, u, ++dfs_time);
+        boost::put(lowpt, u, boost::get(dtm, u));
         vis.discover_vertex(u, g);
       }
 
@@ -82,8 +82,8 @@ namespace boost
         typename boost::graph_traits<Graph>::vertex_descriptor tgt = target(e, g);
 
         S.push(e);
-        put(pred, tgt, src);
-        if ( get(pred, src) == src ) {
+        boost::put(pred, tgt, src);
+        if ( boost::get(pred, src) == src ) {
           ++children_of_root;
         }
         vis.tree_edge(e, g);
@@ -96,11 +96,11 @@ namespace boost
 
         typename boost::graph_traits<Graph>::vertex_descriptor src = source(e, g);
         typename boost::graph_traits<Graph>::vertex_descriptor tgt = target(e, g);
-        if ( tgt != get(pred, src) ) {
+        if ( tgt != boost::get(pred, src) ) {
           S.push(e);
-          put(lowpt, src,
-              min BOOST_PREVENT_MACRO_SUBSTITUTION(get(lowpt, src),
-                                                   get(dtm, tgt)));
+          boost::put(lowpt, src,
+              min BOOST_PREVENT_MACRO_SUBSTITUTION(boost::get(lowpt, src),
+                                                   boost::get(dtm, tgt)));
         }
         vis.back_edge(e, g);
       }
@@ -115,27 +115,27 @@ namespace boost
       void finish_vertex(const Vertex& u, Graph& g)
       {
         BOOST_USING_STD_MIN();
-        Vertex parent = get(pred, u);
+        Vertex parent = boost::get(pred, u);
         if (parent == u) { // Root of tree is special
-          is_articulation_point[get(index_map, u)] = (children_of_root > 1);
+          is_articulation_point[boost::get(index_map, u)] = (children_of_root > 1);
         } else {
-          put(lowpt, parent,
-              min BOOST_PREVENT_MACRO_SUBSTITUTION(get(lowpt, parent),
-                                                 get(lowpt, u)));
-          if ( get(lowpt, u) >= get(dtm, parent) ) {
-            is_articulation_point[get(index_map, parent)] = true;
-            while ( get(dtm, source(S.top(), g)) >= get(dtm, u) ) {
-              put(comp, S.top(), c);
+          boost::put(lowpt, parent,
+              min BOOST_PREVENT_MACRO_SUBSTITUTION(boost::get(lowpt, parent),
+                                                 boost::get(lowpt, u)));
+          if ( boost::get(lowpt, u) >= boost::get(dtm, parent) ) {
+            is_articulation_point[boost::get(index_map, parent)] = true;
+            while ( boost::get(dtm, source(S.top(), g)) >= boost::get(dtm, u) ) {
+              boost::put(comp, S.top(), c);
               S.pop();
             }
             BOOST_ASSERT (source(S.top(), g) == parent);
             BOOST_ASSERT (target(S.top(), g) == u);
-            put(comp, S.top(), c);
+            boost::put(comp, S.top(), c);
             S.pop();
             ++c;
           }
         }
-        if ( is_articulation_point[get(index_map, u)] ) {
+        if ( is_articulation_point[boost::get(index_map, u)] ) {
           *out++ = u;
         }
         vis.finish_vertex(u, g);
@@ -227,7 +227,7 @@ namespace boost
 
         return biconnected_components_impl
                 (g, comp, out, index_map, dtm, lowpt, 
-              make_iterator_property_map(pred.begin(), index_map, vert),
+              boost::make_iterator_property_map(pred.begin(), index_map, vert),
                  choose_param(get_param(params, graph_visitor),
                     make_dfs_visitor(null_visitor())));
   }
@@ -273,7 +273,7 @@ namespace boost
   
         return bicomp_dispatch3<dispatch_type>::apply
             (g, comp, out, index_map, dtm,
-             make_iterator_property_map(lowpt.begin(), index_map, vst),
+             boost::make_iterator_property_map(lowpt.begin(), index_map, vst),
              params, get_param(params, vertex_predecessor));
       }
     };
@@ -313,7 +313,7 @@ namespace boost
 
         return bicomp_dispatch2<dispatch_type>::apply
             (g, comp, out, index_map, 
-              make_iterator_property_map(discover_time.begin(), index_map, vst),
+              boost::make_iterator_property_map(discover_time.begin(), index_map, vst),
              params, get_param(params, vertex_lowpoint));
       }
     };
@@ -330,7 +330,7 @@ namespace boost
 
     return detail::bicomp_dispatch3<dispatch_type>::apply
             (g, comp, out, 
-             get(vertex_index, g), 
+             boost::get(vertex_index, g), 
              dtm, lowpt, 
              bgl_named_params<int, buffer_param_t>(0), 
              param_not_found());

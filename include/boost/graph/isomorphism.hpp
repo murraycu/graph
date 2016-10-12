@@ -331,11 +331,11 @@ fi_adj_loop_k:++fi_adj.first;
     void compute_in_degree(const Graph& g, InDegreeMap in_degree_map)
     {
       BGL_FORALL_VERTICES_T(v, g, Graph)
-        put(in_degree_map, v, 0);
+        boost::put(in_degree_map, v, 0);
 
       BGL_FORALL_VERTICES_T(u, g, Graph)
         BGL_FORALL_ADJ_T(u, v, g, Graph)
-        put(in_degree_map, v, get(in_degree_map, v) + 1);
+        boost::put(in_degree_map, v, boost::get(in_degree_map, v) + 1);
     }
 
   } // namespace detail
@@ -357,7 +357,7 @@ fi_adj_loop_k:++fi_adj.first;
         m_g(g) {
       BGL_FORALL_VERTICES_T(v, g, Graph) {
         m_max_vertex_in_degree =
-          (std::max)(m_max_vertex_in_degree, get(m_in_degree_map, v));
+          (std::max)(m_max_vertex_in_degree, boost::get(m_in_degree_map, v));
         m_max_vertex_out_degree =
           (std::max)(m_max_vertex_out_degree, out_degree(v, g));
       }
@@ -365,7 +365,7 @@ fi_adj_loop_k:++fi_adj.first;
 
     size_type operator()(vertex_t v) const {
       return (m_max_vertex_in_degree + 1) * out_degree(v, m_g)
-        + get(m_in_degree_map, v);
+        + boost::get(m_in_degree_map, v);
     }
     // The largest possible vertex invariant number
     size_type max BOOST_PREVENT_MACRO_SUBSTITUTION () const { 
@@ -414,15 +414,15 @@ fi_adj_loop_k:++fi_adj.first;
     
     // Property map requirements
     BOOST_CONCEPT_ASSERT(( ReadWritePropertyMapConcept<IsoMapping, vertex1_t> ));
-    typedef typename property_traits<IsoMapping>::value_type IsoMappingValue;
+    typedef typename boost::property_traits<IsoMapping>::value_type IsoMappingValue;
     BOOST_STATIC_ASSERT((is_convertible<IsoMappingValue, vertex2_t>::value));
     
     BOOST_CONCEPT_ASSERT(( ReadablePropertyMapConcept<IndexMap1, vertex1_t> ));
-    typedef typename property_traits<IndexMap1>::value_type IndexMap1Value;
+    typedef typename boost::property_traits<IndexMap1>::value_type IndexMap1Value;
     BOOST_STATIC_ASSERT((is_convertible<IndexMap1Value, size_type>::value));
     
     BOOST_CONCEPT_ASSERT(( ReadablePropertyMapConcept<IndexMap2, vertex2_t> ));
-    typedef typename property_traits<IndexMap2>::value_type IndexMap2Value;
+    typedef typename boost::property_traits<IndexMap2>::value_type IndexMap2Value;
     BOOST_STATIC_ASSERT((is_convertible<IndexMap2Value, size_type>::value));
     
     if (count_vertices(G1) != count_vertices(G2))
@@ -558,8 +558,8 @@ fi_adj_loop_k:++fi_adj.first;
     BGL_FORALL_EDGES_T(e1, g1, Graph1) {
       bool found_edge = false;
       BGL_FORALL_EDGES_T(e2, g2, Graph2) {
-        if (source(e2, g2) == get(iso_map, source(e1, g1)) &&
-            target(e2, g2) == get(iso_map, target(e1, g1))) {
+        if (source(e2, g2) == boost::get(iso_map, source(e1, g1)) &&
+            target(e2, g2) == boost::get(iso_map, target(e1, g1))) {
           found_edge = true;
         }
       }

@@ -113,7 +113,7 @@ namespace boost {
     BOOST_BGL_ONE_PARAM_CREF(index_in_heap_map, index_in_heap_map) \
     BOOST_BGL_ONE_PARAM_REF(max_priority_queue, max_priority_queue)
 
-  template <typename T, typename Tag, typename Base = no_property>
+  template <typename T, typename Tag, typename Base = boost::no_property>
   struct bgl_named_params
   {
     typedef bgl_named_params self;
@@ -271,8 +271,8 @@ BOOST_BGL_DECLARE_NAMED_PARAMS
         boost::is_same<Param, param_not_found>, 
         boost::mpl::eval_if<
           GraphIsConst,
-          detail::const_type_as_type<property_map<Graph, Tag> >,
-          property_map<Graph, Tag> >,
+          detail::const_type_as_type<boost::property_map<Graph, Tag> >,
+          boost::property_map<Graph, Tag> >,
         boost::mpl::identity<Param> > {};
 
     // Parameters of f are (GraphIsConst, Graph, Param, Tag)
@@ -280,13 +280,13 @@ BOOST_BGL_DECLARE_NAMED_PARAMS
 
     template <> struct choose_impl_helper<false> {
       template <typename Param, typename Graph, typename PropertyTag>
-      static typename property_map<typename boost::remove_const<Graph>::type, PropertyTag>::const_type
+      static typename boost::property_map<typename boost::remove_const<Graph>::type, PropertyTag>::const_type
       f(boost::mpl::true_, const Graph& g, const Param&, PropertyTag tag) {
         return get(tag, g);
       }
 
       template <typename Param, typename Graph, typename PropertyTag>
-      static typename property_map<typename boost::remove_const<Graph>::type, PropertyTag>::type
+      static typename boost::property_map<typename boost::remove_const<Graph>::type, PropertyTag>::type
       f(boost::mpl::false_, Graph& g, const Param&, PropertyTag tag) {
         return get(tag, g);
       }
@@ -324,7 +324,7 @@ BOOST_BGL_DECLARE_NAMED_PARAMS
     {
       typedef bgl_named_params<P, T, R> Params;
       typedef typename detail::choose_impl_result<boost::mpl::true_, Graph, typename get_param_type<edge_capacity_t, Params>::type, edge_capacity_t>::type CapacityEdgeMap;
-      typedef typename property_traits<CapacityEdgeMap>::value_type type;
+      typedef typename boost::property_traits<CapacityEdgeMap>::value_type type;
     };
     // used in the max-flow algorithms
     template <class Graph, class P, class T, class R>
@@ -332,7 +332,7 @@ BOOST_BGL_DECLARE_NAMED_PARAMS
     {
       typedef bgl_named_params<P, T, R> Params;
       typedef typename detail::choose_impl_result<boost::mpl::true_, Graph, typename get_param_type<edge_weight_t, Params>::type, edge_weight_t>::type WeightMap;
-      typedef typename property_traits<WeightMap>::value_type type;
+      typedef typename boost::property_traits<WeightMap>::value_type type;
     };
 
   }

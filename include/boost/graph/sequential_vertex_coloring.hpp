@@ -39,13 +39,13 @@
 
 namespace boost {
   template <class VertexListGraph, class OrderPA, class ColorMap>
-  typename property_traits<ColorMap>::value_type
+  typename boost::property_traits<ColorMap>::value_type
   sequential_vertex_coloring(const VertexListGraph& G, OrderPA order, 
                              ColorMap color)
   {
     typedef graph_traits<VertexListGraph> GraphTraits;
     typedef typename GraphTraits::vertex_descriptor Vertex;
-    typedef typename property_traits<ColorMap>::value_type size_type;
+    typedef typename boost::property_traits<ColorMap>::value_type size_type;
     
     size_type max_color = 0;
     const size_type V = num_vertices(G);
@@ -62,17 +62,17 @@ namespace boost {
     //Initialize colors 
     typename GraphTraits::vertex_iterator v, vend;
     for (boost::tie(v, vend) = vertices(G); v != vend; ++v)
-      put(color, *v, V-1);
+      boost::put(color, *v, V-1);
     
     //Determine the color for every vertex one by one
     for ( size_type i = 0; i < V; i++) {
-      Vertex current = get(order,i);
+      Vertex current = boost::get(order,i);
       typename GraphTraits::adjacency_iterator v, vend;
       
       //Mark the colors of vertices adjacent to current.
       //i can be the value for marking since i increases successively
       for (boost::tie(v,vend) = adjacent_vertices(current, G); v != vend; ++v)
-        mark[get(color,*v)] = i; 
+        mark[boost::get(color,*v)] = i; 
       
       //Next step is to assign the smallest un-marked color
       //to the current vertex.
@@ -89,14 +89,14 @@ namespace boost {
         ++max_color;
 
       //At this point, j is the smallest possible color
-      put(color, current, j);  //Save the color of vertex current
+      boost::put(color, current, j);  //Save the color of vertex current
     }
     
     return max_color;
   }
 
   template<class VertexListGraph, class ColorMap>
-  typename property_traits<ColorMap>::value_type
+  typename boost::property_traits<ColorMap>::value_type
   sequential_vertex_coloring(const VertexListGraph& G, ColorMap color)
   {
     typedef typename graph_traits<VertexListGraph>::vertex_descriptor
@@ -114,8 +114,8 @@ namespace boost {
 #endif
     return sequential_vertex_coloring
              (G, 
-              make_iterator_property_map
-              (order.begin(), identity_property_map(), 
+              boost::make_iterator_property_map
+              (order.begin(), boost::identity_property_map(), 
                graph_traits<VertexListGraph>::null_vertex()), 
               color);
   }

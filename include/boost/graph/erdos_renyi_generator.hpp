@@ -181,7 +181,7 @@ namespace boost {
       if (src == n) src = (std::numeric_limits<vertices_size_type>::max)();
     }
 
-    boost::shared_ptr<uniform_01<RandomGenerator*> > gen;
+    boost::shared_ptr<boost::uniform_01<RandomGenerator*> > gen;
     geometric_distribution<vertices_size_type> rand_vertex;
     vertices_size_type n;
     bool allow_self_loops;

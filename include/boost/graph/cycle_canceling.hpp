@@ -46,7 +46,7 @@ public:
         //edge e is not minimized but does not have to be on the negative weight cycle
         //to find vertex on negative wieight cycle we move n+1 times backword in the PredEdgeMap graph.
         while(n > 0) {
-            e = get(m_pred, source(e, g));
+            e = boost::get(m_pred, source(e, g));
             --n;
         }
         m_v = source(e, g);
@@ -72,8 +72,8 @@ void cycle_canceling(const Graph &g, Weight weight, Reversed rev, ResidualCapaci
     typename GTraits::vertices_size_type N = num_vertices(g);
     
     BGL_FORALL_VERTICES_T(v, g, Graph) {
-        put(pred, v, edge_descriptor());
-        put(distance, v, 0);
+        boost::put(pred, v, edge_descriptor());
+        boost::put(distance, v, 0);
     }
 
     vertex_descriptor cycleStart;
@@ -85,8 +85,8 @@ void cycle_canceling(const Graph &g, Weight weight, Reversed rev, ResidualCapaci
         detail::augment(g, cycleStart, cycleStart, pred, residual_capacity, rev);
         
         BGL_FORALL_VERTICES_T(v, g, Graph) {
-            put(pred, v, edge_descriptor());
-            put(distance, v, 0);
+            boost::put(pred, v, edge_descriptor());
+            boost::put(distance, v, 0);
         }
     }
 }
@@ -117,12 +117,12 @@ void cycle_canceling_dispatch2(
         Pred pred,
         param_not_found,
         const bgl_named_params<P, T, R>& params) {
-    typedef typename property_traits<Weight>::value_type D;
+    typedef typename boost::property_traits<Weight>::value_type D;
 
     std::vector<D> d_map(num_vertices(g));
 
     cycle_canceling(g, weight, rev, residual_capacity, pred, 
-                    make_iterator_property_map(d_map.begin(), choose_const_pmap(get_param(params, vertex_index), g, vertex_index)));
+                    boost::make_iterator_property_map(d_map.begin(), choose_const_pmap(get_param(params, vertex_index), g, vertex_index)));
 }
 
 template <class Graph, class P, class T, class R, class ResidualCapacity, class Weight, class Reversed, class Pred>
@@ -150,7 +150,7 @@ void cycle_canceling_dispatch1(
     std::vector<edge_descriptor> p_map(num_vertices(g));
 
     cycle_canceling_dispatch2(g, weight, rev, residual_capacity,
-                              make_iterator_property_map(p_map.begin(), choose_const_pmap(get_param(params, vertex_index), g, vertex_index)),
+                              boost::make_iterator_property_map(p_map.begin(), choose_const_pmap(get_param(params, vertex_index), g, vertex_index)),
                                 get_param(params, vertex_distance), params); 
 }
 

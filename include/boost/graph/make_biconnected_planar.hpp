@@ -39,9 +39,9 @@ namespace boost
     typedef typename graph_traits<Graph>::edge_descriptor edge_t;
     typedef typename graph_traits<Graph>::edges_size_type edge_size_t;
     typedef typename 
-      property_traits<PlanarEmbedding>::value_type embedding_value_t;
+      boost::property_traits<PlanarEmbedding>::value_type embedding_value_t;
     typedef typename embedding_value_t::const_iterator embedding_iterator_t;
-    typedef iterator_property_map
+    typedef boost::iterator_property_map
       <std::vector<std::size_t>::iterator, EdgeIndexMap> component_map_t;
 
     edge_size_t n_edges(num_edges(g));
@@ -110,7 +110,7 @@ namespace boost
             >
   inline void make_biconnected_planar(Graph& g, PlanarEmbedding embedding)
   {
-    make_biconnected_planar(g, embedding, get(edge_index,g));
+    make_biconnected_planar(g, embedding, boost::get(edge_index,g));
   }
 
 

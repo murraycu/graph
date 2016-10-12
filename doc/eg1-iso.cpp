@@ -90,7 +90,7 @@ void test_isomorphism()
 
   bool ret = isomorphism(Ga, Gb, &f[0], invariantA, invariantB, 
                          (invariantB.max)(),
-                         get(vertex_index, Ga), get(vertex_index, Gb));
+                         boost::get(vertex_index, Ga), boost::get(vertex_index, Gb));
   assert(ret == true);
 
   for (std::size_t i = 0; i < num_vertices(Ga); ++i)

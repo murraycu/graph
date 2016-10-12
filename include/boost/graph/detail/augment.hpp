@@ -34,25 +34,25 @@ augment(const Graph& g,
 {
     typename graph_traits<Graph>::edge_descriptor e;
     typename graph_traits<Graph>::vertex_descriptor u;
-    typedef typename property_traits<ResCapMap>::value_type FlowValue;
+    typedef typename boost::property_traits<ResCapMap>::value_type FlowValue;
 
     // find minimum residual capacity along the augmenting path
     FlowValue delta = (std::numeric_limits<FlowValue>::max)();
-    e = get(p, sink);
+    e = boost::get(p, sink);
     do {
         BOOST_USING_STD_MIN();
-        delta = min BOOST_PREVENT_MACRO_SUBSTITUTION(delta, get(residual_capacity, e));
+        delta = min BOOST_PREVENT_MACRO_SUBSTITUTION(delta, boost::get(residual_capacity, e));
         u = source(e, g);
-        e = get(p, u);
+        e = boost::get(p, u);
     } while (u != src);
 
     // push delta units of flow along the augmenting path
-    e = get(p, sink);
+    e = boost::get(p, sink);
     do {
-        put(residual_capacity, e, get(residual_capacity, e) - delta);
-        put(residual_capacity, get(reverse_edge, e), get(residual_capacity, get(reverse_edge, e)) + delta);
+        boost::put(residual_capacity, e, boost::get(residual_capacity, e) - delta);
+        boost::put(residual_capacity, boost::get(reverse_edge, e), boost::get(residual_capacity, boost::get(reverse_edge, e)) + delta);
         u = source(e, g);
-        e = get(p, u);
+        e = boost::get(p, u);
     } while (u != src);
 }
 

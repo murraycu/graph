@@ -185,7 +185,7 @@ namespace boost {
            ++element_index) {
 
         Element parent_element = parent_start[element_index];
-        IndexType parent_index = get(index_map, parent_element);
+        IndexType parent_index = boost::get(index_map, parent_element);
 
         if (element_index != parent_index) {
           index_list[element_index] = parent_index;
@@ -203,7 +203,7 @@ namespace boost {
            ++element_index) {
 
         Element parent_element = parent_start[element_index];
-        IndexType parent_index = get(index_map, parent_element);
+        IndexType parent_index = boost::get(index_map, parent_element);
 
         if (element_index != parent_index) {
 

@@ -331,10 +331,10 @@ namespace detail {
     PM underlying_pm;
 
     public:
-    typedef reverse_graph_edge_descriptor<typename property_traits<PM>::key_type> key_type;
-    typedef typename property_traits<PM>::value_type value_type;
-    typedef typename property_traits<PM>::reference reference;
-    typedef typename property_traits<PM>::category category;
+    typedef reverse_graph_edge_descriptor<typename boost::property_traits<PM>::key_type> key_type;
+    typedef typename boost::property_traits<PM>::value_type value_type;
+    typedef typename boost::property_traits<PM>::reference reference;
+    typedef typename boost::property_traits<PM>::category category;
 
     explicit reverse_graph_edge_property_map(const PM& pm): underlying_pm(pm) {}
 
@@ -364,10 +364,10 @@ struct property_map<reverse_graph<BidirGraph, GRef>, Property> {
   typedef boost::is_const<typename boost::remove_reference<GRef>::type> is_ref_const;
   typedef typename boost::mpl::if_<
                      is_ref_const,
-                     typename property_map<BidirGraph, Property>::const_type,
-                     typename property_map<BidirGraph, Property>::type>::type
+                     typename boost::property_map<BidirGraph, Property>::const_type,
+                     typename boost::property_map<BidirGraph, Property>::type>::type
     orig_type;
-  typedef typename property_map<BidirGraph, Property>::const_type orig_const_type;
+  typedef typename boost::property_map<BidirGraph, Property>::const_type orig_const_type;
   typedef typename boost::mpl::if_<is_edge_prop, detail::reverse_graph_edge_property_map<orig_type>, orig_type>::type type;
   typedef typename boost::mpl::if_<is_edge_prop, detail::reverse_graph_edge_property_map<orig_const_type>, orig_const_type>::type const_type;
 };
@@ -375,7 +375,7 @@ struct property_map<reverse_graph<BidirGraph, GRef>, Property> {
 template <class BidirGraph, class GRef, class Property>
 struct property_map<const reverse_graph<BidirGraph, GRef>, Property> {
   typedef boost::is_same<typename detail::property_kind_from_graph<BidirGraph, Property>::type, edge_property_tag> is_edge_prop;
-  typedef typename property_map<BidirGraph, Property>::const_type orig_const_type;
+  typedef typename boost::property_map<BidirGraph, Property>::const_type orig_const_type;
   typedef typename boost::mpl::if_<is_edge_prop, detail::reverse_graph_edge_property_map<orig_const_type>, orig_const_type>::type const_type;
   typedef const_type type;
 };
@@ -383,27 +383,27 @@ struct property_map<const reverse_graph<BidirGraph, GRef>, Property> {
 template <class BidirGraph, class GRef, class Property>
 typename disable_if<
   boost::is_same<Property, edge_underlying_t>,
-  typename property_map<reverse_graph<BidirGraph,GRef>, Property>::type>::type
+  typename boost::property_map<reverse_graph<BidirGraph,GRef>, Property>::type>::type
 get(Property p, reverse_graph<BidirGraph,GRef>& g)
 {
-  return typename property_map<reverse_graph<BidirGraph,GRef>, Property>::type(get(p, g.m_g));
+  return typename boost::property_map<reverse_graph<BidirGraph,GRef>, Property>::type(get(p, g.m_g));
 }
 
 template <class BidirGraph, class GRef, class Property>
 typename disable_if<
   boost::is_same<Property, edge_underlying_t>,
-  typename property_map<reverse_graph<BidirGraph,GRef>, Property>::const_type>::type
+  typename boost::property_map<reverse_graph<BidirGraph,GRef>, Property>::const_type>::type
 get(Property p, const reverse_graph<BidirGraph,GRef>& g)
 {
   const BidirGraph& gref = g.m_g; // in case GRef is non-const
-  return typename property_map<reverse_graph<BidirGraph,GRef>, Property>::const_type(get(p, gref));
+  return typename boost::property_map<reverse_graph<BidirGraph,GRef>, Property>::const_type(get(p, gref));
 }
 
 template <class BidirectionalGraph, class GRef, class Property, class Key>
 typename disable_if<
   boost::is_same<Property, edge_underlying_t>,
-  typename property_traits<
-    typename property_map<reverse_graph<BidirectionalGraph, GRef>, Property>::const_type
+  typename boost::property_traits<
+    typename boost::property_map<reverse_graph<BidirectionalGraph, GRef>, Property>::const_type
   >::value_type>::type
 get(Property p, const reverse_graph<BidirectionalGraph,GRef>& g, const Key& k)
 {
@@ -501,7 +501,7 @@ inline void
 set_property(const reverse_graph<BidirectionalGraph,GRef>& g, Tag tag,
              const Value& value)
 {
-  set_property(g.m_g, tag, value);
+  boost::set_property(g.m_g, tag, value);
 }
 
 template<typename BidirectionalGraph, typename GRef, typename Tag>

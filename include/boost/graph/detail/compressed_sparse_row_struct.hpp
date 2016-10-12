@@ -361,7 +361,7 @@ namespace detail {
         // edges_added_to_this_vertex = #mbrs of new_edges with first == i
         edge_num edges_added_to_this_vertex = 0;
         while (current_new_edge != last) {
-          if (get(global_to_local, current_new_edge->first) != i) break;
+          if (boost::get(global_to_local, current_new_edge->first) != i) break;
           ++current_new_edge;
           ++current_new_edge_prop;
           ++edges_added_to_this_vertex;
@@ -592,7 +592,7 @@ namespace detail {
 
     result_type operator()(edge_descriptor e) const
     {
-      return result_type(get(index, source(e, *g)), get(index, target(e, *g)));
+      return result_type(boost::get(index, source(e, *g)), get(index, target(e, *g)));
     }
 
    private:

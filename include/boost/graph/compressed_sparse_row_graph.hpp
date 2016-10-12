@@ -171,9 +171,9 @@ namespace detail {
  * specialize numeric_limits.
  */
 template<typename Directed = directedS,
-         typename VertexProperty = no_property,
-         typename EdgeProperty = no_property,
-         typename GraphProperty = no_property,
+         typename VertexProperty = boost::no_property,
+         typename EdgeProperty = boost::no_property,
+         typename GraphProperty = boost::no_property,
          typename Vertex = std::size_t,
          typename EdgeIndex = Vertex>
 class compressed_sparse_row_graph; // Not defined
@@ -185,11 +185,11 @@ template<typename VertexProperty,
          typename EdgeIndex>
 class compressed_sparse_row_graph<directedS, VertexProperty, EdgeProperty, GraphProperty, Vertex, EdgeIndex>
    : public detail::indexed_vertex_properties<BOOST_DIR_CSR_GRAPH_TYPE,
-                                              VertexProperty, Vertex, typed_identity_property_map<Vertex> >
+                                              VertexProperty, Vertex, boost::typed_identity_property_map<Vertex> >
 {
  public:
   typedef detail::indexed_vertex_properties<compressed_sparse_row_graph,
-                                            VertexProperty, Vertex, typed_identity_property_map<Vertex> >
+                                            VertexProperty, Vertex, boost::typed_identity_property_map<Vertex> >
     inherited_vertex_properties;
 
   // Some tests to prevent use of "void" is a property type (as was done in some test cases):
@@ -270,7 +270,7 @@ class compressed_sparse_row_graph<directedS, VertexProperty, EdgeProperty, Graph
                               const GraphProperty& prop = GraphProperty())
     : inherited_vertex_properties(numverts), m_property(prop)
   {
-    m_forward.assign_unsorted_multi_pass_edges(edge_begin, edge_end, numverts, typed_identity_property_map<vertices_size_type>(), keep_all());
+    m_forward.assign_unsorted_multi_pass_edges(edge_begin, edge_end, numverts, boost::typed_identity_property_map<vertices_size_type>(), keep_all());
   }
 
   //  From number of vertices and unsorted list of edges, plus edge properties
@@ -283,7 +283,7 @@ class compressed_sparse_row_graph<directedS, VertexProperty, EdgeProperty, Graph
                               const GraphProperty& prop = GraphProperty())
     : inherited_vertex_properties(numverts), m_forward(), m_property(prop)
   {
-    m_forward.assign_unsorted_multi_pass_edges(edge_begin, edge_end, ep_iter, numverts, typed_identity_property_map<vertices_size_type>(), keep_all());
+    m_forward.assign_unsorted_multi_pass_edges(edge_begin, edge_end, ep_iter, numverts, boost::typed_identity_property_map<vertices_size_type>(), keep_all());
   }
 
   //  From number of vertices and unsorted list of edges, with filter and
@@ -326,7 +326,7 @@ class compressed_sparse_row_graph<directedS, VertexProperty, EdgeProperty, Graph
                               const GraphProperty& prop = GraphProperty())
     : m_property(prop)
   {
-    m_forward.assign_from_sorted_edges(edge_begin, edge_end, typed_identity_property_map<vertices_size_type>(), keep_all(), numverts, numedges);
+    m_forward.assign_from_sorted_edges(edge_begin, edge_end, boost::typed_identity_property_map<vertices_size_type>(), keep_all(), numverts, numedges);
     inherited_vertex_properties::resize(numverts);
   }
 
@@ -340,7 +340,7 @@ class compressed_sparse_row_graph<directedS, VertexProperty, EdgeProperty, Graph
                               const GraphProperty& prop = GraphProperty())
     : m_property(prop)
   {
-    m_forward.assign_from_sorted_edges(edge_begin, edge_end, ep_iter, typed_identity_property_map<vertices_size_type>(), keep_all(), numverts, numedges);
+    m_forward.assign_from_sorted_edges(edge_begin, edge_end, ep_iter, boost::typed_identity_property_map<vertices_size_type>(), keep_all(), numverts, numedges);
     inherited_vertex_properties::resize(numverts);
   }
 
@@ -608,7 +608,7 @@ class compressed_sparse_row_graph<directedS, VertexProperty, EdgeProperty, Graph
       BidirectionalIteratorOrig first_sorted,
       BidirectionalIteratorOrig last_sorted,
       EPIterOrig ep_iter_sorted)  {
-    m_forward.add_edges_sorted_internal(first_sorted, last_sorted, ep_iter_sorted, typed_identity_property_map<vertices_size_type>());
+    m_forward.add_edges_sorted_internal(first_sorted, last_sorted, ep_iter_sorted, boost::typed_identity_property_map<vertices_size_type>());
   }
 
   // Add edges from a sorted (smallest sources first) range of pairs
@@ -657,7 +657,7 @@ class compressed_sparse_row_graph<directedS, VertexProperty, EdgeProperty, Graph
   template <typename InputIterator>
   inline void
   add_edges_internal(InputIterator first, InputIterator last) {
-    this->add_edges_internal(first, last, typed_identity_property_map<vertices_size_type>());
+    this->add_edges_internal(first, last, boost::typed_identity_property_map<vertices_size_type>());
   }
 
   // Add edges from a range of (source, target) pairs and edge properties that
@@ -701,7 +701,7 @@ class compressed_sparse_row_graph<directedS, VertexProperty, EdgeProperty, Graph
   inline void
   add_edges_internal(InputIterator first, InputIterator last,
                      EPIterator ep_iter, EPIterator ep_iter_end) {
-    this->add_edges_internal(first, last, ep_iter, ep_iter_end, typed_identity_property_map<vertices_size_type>());
+    this->add_edges_internal(first, last, ep_iter, ep_iter_end, boost::typed_identity_property_map<vertices_size_type>());
   }
 
   using inherited_vertex_properties::operator[];
@@ -737,11 +737,11 @@ template<typename VertexProperty,
          typename EdgeIndex>
 class compressed_sparse_row_graph<bidirectionalS, VertexProperty, EdgeProperty, GraphProperty, Vertex, EdgeIndex>
    : public detail::indexed_vertex_properties<BOOST_BIDIR_CSR_GRAPH_TYPE,
-                                              VertexProperty, Vertex, typed_identity_property_map<Vertex> >
+                                              VertexProperty, Vertex, boost::typed_identity_property_map<Vertex> >
 {
  public:
   typedef detail::indexed_vertex_properties<compressed_sparse_row_graph,
-                                            VertexProperty, Vertex, typed_identity_property_map<Vertex> >
+                                            VertexProperty, Vertex, boost::typed_identity_property_map<Vertex> >
     inherited_vertex_properties;
 
  public:
@@ -819,7 +819,7 @@ class compressed_sparse_row_graph<bidirectionalS, VertexProperty, EdgeProperty, 
            (*this, get(vertex_index, *this), e.second)),
        boost::counting_iterator<EdgeIndex>(0),
        m_forward.m_rowstart.size() - 1,
-       typed_identity_property_map<Vertex>(),
+       boost::typed_identity_property_map<Vertex>(),
        keep_all());
   }
 
@@ -834,7 +834,7 @@ class compressed_sparse_row_graph<bidirectionalS, VertexProperty, EdgeProperty, 
                               const GraphProperty& prop = GraphProperty())
     : inherited_vertex_properties(numverts), m_property(prop)
   {
-    m_forward.assign_unsorted_multi_pass_edges(edge_begin, edge_end, numverts, typed_identity_property_map<Vertex>(), keep_all());
+    m_forward.assign_unsorted_multi_pass_edges(edge_begin, edge_end, numverts, boost::typed_identity_property_map<Vertex>(), keep_all());
     set_up_backward_property_links();
   }
 
@@ -848,7 +848,7 @@ class compressed_sparse_row_graph<bidirectionalS, VertexProperty, EdgeProperty, 
                               const GraphProperty& prop = GraphProperty())
     : inherited_vertex_properties(numverts), m_forward(), m_property(prop)
   {
-    m_forward.assign_unsorted_multi_pass_edges(edge_begin, edge_end, ep_iter, numverts, typed_identity_property_map<Vertex>(), keep_all());
+    m_forward.assign_unsorted_multi_pass_edges(edge_begin, edge_end, ep_iter, numverts, boost::typed_identity_property_map<Vertex>(), keep_all());
     set_up_backward_property_links();
   }
 
@@ -1294,10 +1294,10 @@ struct csr_property_map_helper {};
 template <BOOST_CSR_GRAPH_TEMPLATE_PARMS, typename Tag>
 struct csr_property_map_helper<BOOST_CSR_GRAPH_TYPE, Tag, vertex_property_tag> {
   typedef vertex_all_t all_tag;
-  typedef typename property_traits<typename property_map<BOOST_CSR_GRAPH_TYPE, vertex_all_t>::type>::key_type key_type;
+  typedef typename boost::property_traits<typename boost::property_map<BOOST_CSR_GRAPH_TYPE, vertex_all_t>::type>::key_type key_type;
   typedef VertexProperty plist_type;
-  typedef typename property_map<BOOST_CSR_GRAPH_TYPE, vertex_all_t>::type all_type;
-  typedef typename property_map<BOOST_CSR_GRAPH_TYPE, vertex_all_t>::const_type all_const_type;
+  typedef typename boost::property_map<BOOST_CSR_GRAPH_TYPE, vertex_all_t>::type all_type;
+  typedef typename boost::property_map<BOOST_CSR_GRAPH_TYPE, vertex_all_t>::const_type all_const_type;
   typedef transform_value_property_map<detail::lookup_one_property_f<plist_type, Tag>, all_type> type;
   typedef transform_value_property_map<detail::lookup_one_property_f<const plist_type, Tag>, all_const_type> const_type;
 };
@@ -1305,10 +1305,10 @@ struct csr_property_map_helper<BOOST_CSR_GRAPH_TYPE, Tag, vertex_property_tag> {
 template <BOOST_CSR_GRAPH_TEMPLATE_PARMS, typename Tag>
 struct csr_property_map_helper<BOOST_CSR_GRAPH_TYPE, Tag, edge_property_tag> {
   typedef edge_all_t all_tag;
-  typedef typename property_traits<typename property_map<BOOST_CSR_GRAPH_TYPE, edge_all_t>::type>::key_type key_type;
+  typedef typename boost::property_traits<typename boost::property_map<BOOST_CSR_GRAPH_TYPE, edge_all_t>::type>::key_type key_type;
   typedef EdgeProperty plist_type;
-  typedef typename property_map<BOOST_CSR_GRAPH_TYPE, edge_all_t>::type all_type;
-  typedef typename property_map<BOOST_CSR_GRAPH_TYPE, edge_all_t>::const_type all_const_type;
+  typedef typename boost::property_map<BOOST_CSR_GRAPH_TYPE, edge_all_t>::type all_type;
+  typedef typename boost::property_map<BOOST_CSR_GRAPH_TYPE, edge_all_t>::const_type all_const_type;
   typedef transform_value_property_map<detail::lookup_one_property_f<plist_type, Tag>, all_type> type;
   typedef transform_value_property_map<detail::lookup_one_property_f<const plist_type, Tag>, all_const_type> const_type;
 };
@@ -1318,8 +1318,8 @@ struct csr_property_map_helper<BOOST_CSR_GRAPH_TYPE, Tag, graph_property_tag> {
   typedef graph_all_t all_tag;
   typedef BOOST_CSR_GRAPH_TYPE* key_type;
   typedef GraphProperty plist_type;
-  typedef typename property_map<BOOST_CSR_GRAPH_TYPE, graph_all_t>::type all_type;
-  typedef typename property_map<BOOST_CSR_GRAPH_TYPE, graph_all_t>::const_type all_const_type;
+  typedef typename boost::property_map<BOOST_CSR_GRAPH_TYPE, graph_all_t>::type all_type;
+  typedef typename boost::property_map<BOOST_CSR_GRAPH_TYPE, graph_all_t>::const_type all_const_type;
   typedef transform_value_property_map<detail::lookup_one_property_f<plist_type, Tag>, all_type> type;
   typedef transform_value_property_map<detail::lookup_one_property_f<const plist_type, Tag>, all_const_type> const_type;
 };
@@ -1334,47 +1334,47 @@ struct property_map<BOOST_CSR_GRAPH_TYPE, Tag, typename disable_if<detail::is_di
                ::type> {};
 
 template <BOOST_CSR_GRAPH_TEMPLATE_PARMS, typename Tag>
-typename property_map<BOOST_CSR_GRAPH_TYPE, Tag>::type
+typename boost::property_map<BOOST_CSR_GRAPH_TYPE, Tag>::type
 get(Tag tag, BOOST_CSR_GRAPH_TYPE& g) {
-  return typename property_map<BOOST_CSR_GRAPH_TYPE, Tag>::type(tag, get(typename property_map<BOOST_CSR_GRAPH_TYPE, Tag>::all_tag(), g));
+  return typename boost::property_map<BOOST_CSR_GRAPH_TYPE, Tag>::type(tag, get(typename boost::property_map<BOOST_CSR_GRAPH_TYPE, Tag>::all_tag(), g));
 }
 
 template <BOOST_CSR_GRAPH_TEMPLATE_PARMS, typename Tag>
-typename property_map<BOOST_CSR_GRAPH_TYPE, Tag>::const_type
+typename boost::property_map<BOOST_CSR_GRAPH_TYPE, Tag>::const_type
 get(Tag tag, const BOOST_CSR_GRAPH_TYPE& g) {
-  return typename property_map<BOOST_CSR_GRAPH_TYPE, Tag>::const_type(tag, get(typename property_map<BOOST_CSR_GRAPH_TYPE, Tag>::all_tag(), g));
+  return typename boost::property_map<BOOST_CSR_GRAPH_TYPE, Tag>::const_type(tag, get(typename boost::property_map<BOOST_CSR_GRAPH_TYPE, Tag>::all_tag(), g));
 }
 
 template <BOOST_CSR_GRAPH_TEMPLATE_PARMS, typename Tag>
-typename property_traits<typename property_map<BOOST_CSR_GRAPH_TYPE, Tag>::type>::reference
-get(Tag tag, BOOST_CSR_GRAPH_TYPE& g, typename property_map<BOOST_CSR_GRAPH_TYPE, Tag>::key_type k) {
-  typedef typename property_map<BOOST_CSR_GRAPH_TYPE, Tag>::all_tag all_tag;
-  typedef typename property_map<BOOST_CSR_GRAPH_TYPE, all_tag>::type outer_pm;
-  return lookup_one_property<typename property_traits<outer_pm>::value_type, Tag>::lookup(get(all_tag(), g, k), tag);
+typename boost::property_traits<typename boost::property_map<BOOST_CSR_GRAPH_TYPE, Tag>::type>::reference
+get(Tag tag, BOOST_CSR_GRAPH_TYPE& g, typename boost::property_map<BOOST_CSR_GRAPH_TYPE, Tag>::key_type k) {
+  typedef typename boost::property_map<BOOST_CSR_GRAPH_TYPE, Tag>::all_tag all_tag;
+  typedef typename boost::property_map<BOOST_CSR_GRAPH_TYPE, all_tag>::type outer_pm;
+  return lookup_one_property<typename boost::property_traits<outer_pm>::value_type, Tag>::lookup(boost::get(all_tag(), g, k), tag);
 }
 
 template <BOOST_CSR_GRAPH_TEMPLATE_PARMS, typename Tag>
-typename property_traits<typename property_map<BOOST_CSR_GRAPH_TYPE, Tag>::const_type>::reference
-get(Tag tag, const BOOST_CSR_GRAPH_TYPE& g, typename property_map<BOOST_CSR_GRAPH_TYPE, Tag>::key_type k) {
-  typedef typename property_map<BOOST_CSR_GRAPH_TYPE, Tag>::all_tag all_tag;
-  typedef typename property_map<BOOST_CSR_GRAPH_TYPE, all_tag>::const_type outer_pm;
-  return lookup_one_property<const typename property_traits<outer_pm>::value_type, Tag>::lookup(get(all_tag(), g, k), tag);
+typename boost::property_traits<typename boost::property_map<BOOST_CSR_GRAPH_TYPE, Tag>::const_type>::reference
+get(Tag tag, const BOOST_CSR_GRAPH_TYPE& g, typename boost::property_map<BOOST_CSR_GRAPH_TYPE, Tag>::key_type k) {
+  typedef typename boost::property_map<BOOST_CSR_GRAPH_TYPE, Tag>::all_tag all_tag;
+  typedef typename boost::property_map<BOOST_CSR_GRAPH_TYPE, all_tag>::const_type outer_pm;
+  return lookup_one_property<const typename boost::property_traits<outer_pm>::value_type, Tag>::lookup(boost::get(all_tag(), g, k), tag);
 }
 
 template <BOOST_CSR_GRAPH_TEMPLATE_PARMS, typename Tag>
 void
 put(Tag tag,
     BOOST_CSR_GRAPH_TYPE& g,
-    typename property_map<BOOST_CSR_GRAPH_TYPE, Tag>::key_type k,
-    typename lookup_one_property<typename property_map<BOOST_CSR_GRAPH_TYPE, Tag>::plist_type, Tag>::type val) {
-  typedef typename property_map<BOOST_CSR_GRAPH_TYPE, Tag>::all_tag all_tag;
-  lookup_one_property<typename property_map<BOOST_CSR_GRAPH_TYPE, Tag>::plist_type, Tag>::lookup(get(all_tag(), g, k), tag) = val;
+    typename boost::property_map<BOOST_CSR_GRAPH_TYPE, Tag>::key_type k,
+    typename lookup_one_property<typename boost::property_map<BOOST_CSR_GRAPH_TYPE, Tag>::plist_type, Tag>::type val) {
+  typedef typename boost::property_map<BOOST_CSR_GRAPH_TYPE, Tag>::all_tag all_tag;
+  lookup_one_property<typename boost::property_map<BOOST_CSR_GRAPH_TYPE, Tag>::plist_type, Tag>::lookup(boost::get(all_tag(), g, k), tag) = val;
 }
 
 template<BOOST_CSR_GRAPH_TEMPLATE_PARMS>
 struct property_map<BOOST_CSR_GRAPH_TYPE, vertex_index_t, typename disable_if<detail::is_distributed_selector<Vertex> >::type>
 {
-  typedef typed_identity_property_map<Vertex> type;
+  typedef boost::typed_identity_property_map<Vertex> type;
   typedef type const_type;
 };
 
@@ -1407,10 +1407,10 @@ struct property_map<BOOST_CSR_GRAPH_TYPE, graph_all_t, typename disable_if<detai
 };
 
 template<BOOST_CSR_GRAPH_TEMPLATE_PARMS>
-inline typed_identity_property_map<Vertex>
+inline boost::typed_identity_property_map<Vertex>
 get(vertex_index_t, const BOOST_CSR_GRAPH_TYPE&)
 {
-  return typed_identity_property_map<Vertex>();
+  return boost::typed_identity_property_map<Vertex>();
 }
 
 template<BOOST_CSR_GRAPH_TEMPLATE_PARMS>
@@ -1422,10 +1422,10 @@ get(vertex_index_t,
 }
 
 template<BOOST_CSR_GRAPH_TEMPLATE_PARMS>
-inline typed_identity_property_map<Vertex>
+inline boost::typed_identity_property_map<Vertex>
 get(vertex_index_t, BOOST_CSR_GRAPH_TYPE&)
 {
-  return typed_identity_property_map<Vertex>();
+  return boost::typed_identity_property_map<Vertex>();
 }
 
 template<BOOST_CSR_GRAPH_TEMPLATE_PARMS>
@@ -1437,10 +1437,10 @@ get(vertex_index_t,
 }
 
 template<BOOST_CSR_GRAPH_TEMPLATE_PARMS>
-inline typename property_map<BOOST_CSR_GRAPH_TYPE, edge_index_t>::const_type
+inline typename boost::property_map<BOOST_CSR_GRAPH_TYPE, edge_index_t>::const_type
 get(edge_index_t, const BOOST_CSR_GRAPH_TYPE&)
 {
-  typedef typename property_map<BOOST_CSR_GRAPH_TYPE, edge_index_t>::const_type
+  typedef typename boost::property_map<BOOST_CSR_GRAPH_TYPE, edge_index_t>::const_type
     result_type;
   return result_type();
 }
@@ -1454,10 +1454,10 @@ get(edge_index_t, const BOOST_CSR_GRAPH_TYPE&,
 }
 
 template<BOOST_CSR_GRAPH_TEMPLATE_PARMS>
-inline typename property_map<BOOST_CSR_GRAPH_TYPE, edge_index_t>::const_type
+inline typename boost::property_map<BOOST_CSR_GRAPH_TYPE, edge_index_t>::const_type
 get(edge_index_t, BOOST_CSR_GRAPH_TYPE&)
 {
-  typedef typename property_map<BOOST_CSR_GRAPH_TYPE, edge_index_t>::const_type
+  typedef typename boost::property_map<BOOST_CSR_GRAPH_TYPE, edge_index_t>::const_type
     result_type;
   return result_type();
 }
@@ -1471,17 +1471,17 @@ get(edge_index_t, BOOST_CSR_GRAPH_TYPE&,
 }
 
 template<BOOST_CSR_GRAPH_TEMPLATE_PARMS>
-inline typename property_map<BOOST_CSR_GRAPH_TYPE, vertex_all_t>::type
+inline typename boost::property_map<BOOST_CSR_GRAPH_TYPE, vertex_all_t>::type
 get(vertex_all_t, BOOST_CSR_GRAPH_TYPE& g)
 {
-  return g.get_vertex_bundle(get(vertex_index, g));
+  return g.get_vertex_bundle(boost::get(vertex_index, g));
 }
 
 template<BOOST_CSR_GRAPH_TEMPLATE_PARMS>
-inline typename property_map<BOOST_CSR_GRAPH_TYPE, vertex_all_t>::const_type
+inline typename boost::property_map<BOOST_CSR_GRAPH_TYPE, vertex_all_t>::const_type
 get(vertex_all_t, const BOOST_CSR_GRAPH_TYPE& g)
 {
-  return g.get_vertex_bundle(get(vertex_index, g));
+  return g.get_vertex_bundle(boost::get(vertex_index, g));
 }
 
 template<BOOST_CSR_GRAPH_TEMPLATE_PARMS>
@@ -1507,21 +1507,21 @@ put(vertex_all_t,
     Vertex v,
     const VertexProperty& val)
 {
-  put(get(vertex_all, g), v, val);
+  boost::put(boost::get(vertex_all, g), v, val);
 }
 
 template<BOOST_CSR_GRAPH_TEMPLATE_PARMS>
-inline typename property_map<BOOST_CSR_GRAPH_TYPE, edge_all_t>::type
+inline typename boost::property_map<BOOST_CSR_GRAPH_TYPE, edge_all_t>::type
 get(edge_all_t, BOOST_CSR_GRAPH_TYPE& g)
 {
-  return g.m_forward.get_edge_bundle(get(edge_index, g));
+  return g.m_forward.get_edge_bundle(boost::get(edge_index, g));
 }
 
 template<BOOST_CSR_GRAPH_TEMPLATE_PARMS>
-inline typename property_map<BOOST_CSR_GRAPH_TYPE, edge_all_t>::const_type
+inline typename boost::property_map<BOOST_CSR_GRAPH_TYPE, edge_all_t>::const_type
 get(edge_all_t, const BOOST_CSR_GRAPH_TYPE& g)
 {
-  return g.m_forward.get_edge_bundle(get(edge_index, g));
+  return g.m_forward.get_edge_bundle(boost::get(edge_index, g));
 }
 
 template<BOOST_CSR_GRAPH_TEMPLATE_PARMS>
@@ -1549,21 +1549,21 @@ put(edge_all_t,
     const typename BOOST_CSR_GRAPH_TYPE::edge_descriptor& e,
     const EdgeProperty& val)
 {
-  put(get(edge_all, g), e, val);
+  boost::put(boost::get(edge_all, g), e, val);
 }
 
 template<BOOST_CSR_GRAPH_TEMPLATE_PARMS>
-inline typename property_map<BOOST_CSR_GRAPH_TYPE, graph_all_t>::type
+inline typename boost::property_map<BOOST_CSR_GRAPH_TYPE, graph_all_t>::type
 get(graph_all_t, BOOST_CSR_GRAPH_TYPE& g)
 {
-  return typename property_map<BOOST_CSR_GRAPH_TYPE, graph_all_t>::type(g.m_property);
+  return typename boost::property_map<BOOST_CSR_GRAPH_TYPE, graph_all_t>::type(g.m_property);
 }
 
 template<BOOST_CSR_GRAPH_TEMPLATE_PARMS>
-inline typename property_map<BOOST_CSR_GRAPH_TYPE, graph_all_t>::const_type
+inline typename boost::property_map<BOOST_CSR_GRAPH_TYPE, graph_all_t>::const_type
 get(graph_all_t, const BOOST_CSR_GRAPH_TYPE& g)
 {
-  return typename property_map<BOOST_CSR_GRAPH_TYPE, graph_all_t>::const_type(g.m_property);
+  return typename boost::property_map<BOOST_CSR_GRAPH_TYPE, graph_all_t>::const_type(g.m_property);
 }
 
 template<BOOST_CSR_GRAPH_TEMPLATE_PARMS>

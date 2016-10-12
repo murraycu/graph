@@ -39,17 +39,17 @@ struct mean_geodesic_measure
 };
 
 template <typename Graph, typename DistanceMap>
-inline mean_geodesic_measure<Graph, typename property_traits<DistanceMap>::value_type, double>
+inline mean_geodesic_measure<Graph, typename boost::property_traits<DistanceMap>::value_type, double>
 measure_mean_geodesic(const Graph&, DistanceMap)
 {
-    return mean_geodesic_measure<Graph, typename property_traits<DistanceMap>::value_type, double>();
+    return mean_geodesic_measure<Graph, typename boost::property_traits<DistanceMap>::value_type, double>();
 }
 
 template <typename T, typename Graph, typename DistanceMap>
-inline mean_geodesic_measure<Graph, typename property_traits<DistanceMap>::value_type, T>
+inline mean_geodesic_measure<Graph, typename boost::property_traits<DistanceMap>::value_type, T>
 measure_mean_geodesic(const Graph&, DistanceMap)
 {
-    return mean_geodesic_measure<Graph, typename property_traits<DistanceMap>::value_type, T>();
+    return mean_geodesic_measure<Graph, typename boost::property_traits<DistanceMap>::value_type, T>();
 }
 
 // This is a little different because it's expected that the result type
@@ -83,10 +83,10 @@ struct mean_graph_distance_measure
 };
 
 template <typename Graph, typename DistanceMap>
-inline mean_graph_distance_measure<Graph, typename property_traits<DistanceMap>::value_type>
+inline mean_graph_distance_measure<Graph, typename boost::property_traits<DistanceMap>::value_type>
 measure_graph_mean_geodesic(const Graph&, DistanceMap)
 {
-    typedef typename property_traits<DistanceMap>::value_type T;
+    typedef typename boost::property_traits<DistanceMap>::value_type T;
     return mean_graph_distance_measure<Graph, T>();
 }
 
@@ -134,7 +134,7 @@ template <typename Graph,
             typename DistanceMatrixMap,
             typename GeodesicMap,
             typename Measure>
-inline typename property_traits<GeodesicMap>::value_type
+inline typename boost::property_traits<GeodesicMap>::value_type
 all_mean_geodesics(const Graph& g,
                     DistanceMatrixMap dist,
                     GeodesicMap geo,
@@ -144,7 +144,7 @@ all_mean_geodesics(const Graph& g,
     typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
     typedef typename graph_traits<Graph>::vertex_iterator VertexIterator;
     BOOST_CONCEPT_ASSERT(( ReadablePropertyMapConcept<DistanceMatrixMap,Vertex> ));
-    typedef typename property_traits<DistanceMatrixMap>::value_type DistanceMap;
+    typedef typename boost::property_traits<DistanceMatrixMap>::value_type DistanceMap;
     BOOST_CONCEPT_ASSERT(( DistanceMeasureConcept<Measure,Graph> ));
     typedef typename Measure::result_type Result;
     BOOST_CONCEPT_ASSERT(( WritablePropertyMapConcept<GeodesicMap,Vertex> ));
@@ -158,9 +158,9 @@ all_mean_geodesics(const Graph& g,
     Result sum = numeric_values<Result>::zero();
     VertexIterator i, end;
     for(boost::tie(i, end) = vertices(g); i != end; ++i) {
-        DistanceMap dm = get(dist, *i);
+        DistanceMap dm = boost::get(dist, *i);
         Result r = mean_geodesic(g, dm, measure);
-        put(geo, *i, r);
+        boost::put(geo, *i, r);
 
         // compute the sum along with geodesics
         if(r == inf) {
@@ -176,15 +176,15 @@ all_mean_geodesics(const Graph& g,
 }
 
 template <typename Graph, typename DistanceMatrixMap, typename GeodesicMap>
-inline typename property_traits<GeodesicMap>::value_type
+inline typename boost::property_traits<GeodesicMap>::value_type
 all_mean_geodesics(const Graph& g, DistanceMatrixMap dist, GeodesicMap geo)
 {
     BOOST_CONCEPT_ASSERT(( GraphConcept<Graph> ));
     typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
     BOOST_CONCEPT_ASSERT(( ReadablePropertyMapConcept<DistanceMatrixMap,Vertex> ));
-    typedef typename property_traits<DistanceMatrixMap>::value_type DistanceMap;
+    typedef typename boost::property_traits<DistanceMatrixMap>::value_type DistanceMap;
     BOOST_CONCEPT_ASSERT(( WritablePropertyMapConcept<GeodesicMap,Vertex> ));
-    typedef typename property_traits<GeodesicMap>::value_type Result;
+    typedef typename boost::property_traits<GeodesicMap>::value_type Result;
 
     return all_mean_geodesics(g, dist, geo, measure_mean_geodesic<Result>(g, DistanceMap()));
 }
@@ -202,7 +202,7 @@ small_world_distance(const Graph& g, GeodesicMap geo, Measure measure)
 }
 
 template <typename Graph, typename GeodesicMap>
-inline typename property_traits<GeodesicMap>::value_type
+inline typename boost::property_traits<GeodesicMap>::value_type
 small_world_distance(const Graph& g, GeodesicMap geo)
 { return small_world_distance(g, geo, measure_graph_mean_geodesic(g, geo)); }
 

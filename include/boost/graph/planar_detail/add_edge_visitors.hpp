@@ -29,7 +29,7 @@ namespace boost
   {
 
     typedef typename 
-      property_traits<EdgeIndexMap>::value_type edge_index_value_t;
+      boost::property_traits<EdgeIndexMap>::value_type edge_index_value_t;
 
     edge_index_update_visitor(EdgeIndexMap em, 
                               edge_index_value_t next_index_available
@@ -44,7 +44,7 @@ namespace boost
       typedef typename graph_traits<Graph>::edge_descriptor edge_t;
       std::pair<edge_t, bool> return_value = add_edge(u,v,g);
       if (return_value.second)
-        put( m_em, return_value.first, m_next_index++);
+        boost::put( m_em, return_value.first, m_next_index++);
     }
 
   private:

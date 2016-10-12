@@ -38,31 +38,31 @@ struct closeness_measure
 
 template <typename Graph, typename DistanceMap>
 inline closeness_measure<
-        Graph, typename property_traits<DistanceMap>::value_type, double,
+        Graph, typename boost::property_traits<DistanceMap>::value_type, double,
         detail::reciprocal<double> >
 measure_closeness(const Graph&, DistanceMap)
 {
-    typedef typename property_traits<DistanceMap>::value_type Distance;
+    typedef typename boost::property_traits<DistanceMap>::value_type Distance;
     return closeness_measure<Graph, Distance, double, detail::reciprocal<double> >();
 }
 
 template <typename T, typename Graph, typename DistanceMap>
 inline closeness_measure<
-        Graph, typename property_traits<DistanceMap>::value_type, T,
+        Graph, typename boost::property_traits<DistanceMap>::value_type, T,
         detail::reciprocal<T> >
 measure_closeness(const Graph&, DistanceMap)
 {
-    typedef typename property_traits<DistanceMap>::value_type Distance;
+    typedef typename boost::property_traits<DistanceMap>::value_type Distance;
     return closeness_measure<Graph, Distance, T, detail::reciprocal<T> >();
 }
 
 template <typename T, typename Graph, typename DistanceMap, typename Reciprocal>
 inline closeness_measure<
-        Graph, typename property_traits<DistanceMap>::value_type, T,
+        Graph, typename boost::property_traits<DistanceMap>::value_type, T,
         Reciprocal>
 measure_closeness(const Graph&, DistanceMap)
 {
-    typedef typename property_traits<DistanceMap>::value_type Distance;
+    typedef typename boost::property_traits<DistanceMap>::value_type Distance;
     return closeness_measure<Graph, Distance, T, Reciprocal>();
 }
 
@@ -79,7 +79,7 @@ closeness_centrality(const Graph& g,
     BOOST_CONCEPT_ASSERT(( VertexListGraphConcept<Graph> ));
     typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
     BOOST_CONCEPT_ASSERT(( ReadablePropertyMapConcept<DistanceMap,Vertex> ));
-    typedef typename property_traits<DistanceMap>::value_type Distance;
+    typedef typename boost::property_traits<DistanceMap>::value_type Distance;
     BOOST_CONCEPT_ASSERT(( NumericValueConcept<Distance> ));
     BOOST_CONCEPT_ASSERT(( DistanceMeasureConcept<Measure,Graph> ));
 
@@ -94,7 +94,7 @@ closeness_centrality(const Graph& g, DistanceMap dist, Measure measure)
     BOOST_CONCEPT_ASSERT(( GraphConcept<Graph> ));
     typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
     BOOST_CONCEPT_ASSERT(( ReadablePropertyMapConcept<DistanceMap,Vertex> ));
-    typedef typename property_traits<DistanceMap>::value_type Distance;
+    typedef typename boost::property_traits<DistanceMap>::value_type Distance;
 
     return closeness_centrality(g, dist, measure, std::plus<Distance>());
 }
@@ -120,16 +120,16 @@ all_closeness_centralities(const Graph& g,
     BOOST_CONCEPT_ASSERT(( VertexListGraphConcept<Graph> ));
     typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
     BOOST_CONCEPT_ASSERT(( ReadablePropertyMapConcept<DistanceMatrixMap,Vertex> ));
-    typedef typename property_traits<DistanceMatrixMap>::value_type DistanceMap;
+    typedef typename boost::property_traits<DistanceMatrixMap>::value_type DistanceMap;
     BOOST_CONCEPT_ASSERT(( ReadablePropertyMapConcept<DistanceMap,Vertex> ));
     BOOST_CONCEPT_ASSERT(( WritablePropertyMapConcept<CentralityMap,Vertex> ));
-    typedef typename property_traits<CentralityMap>::value_type Centrality;
+    typedef typename boost::property_traits<CentralityMap>::value_type Centrality;
 
     typename graph_traits<Graph>::vertex_iterator i, end;
     for(boost::tie(i, end) = vertices(g); i != end; ++i) {
-        DistanceMap dm = get(dist, *i);
+        DistanceMap dm = boost::get(dist, *i);
         Centrality c = closeness_centrality(g, dm, measure);
-        put(cent, *i, c);
+        boost::put(cent, *i, c);
     }
 }
 
@@ -144,9 +144,9 @@ all_closeness_centralities(const Graph& g,
     BOOST_CONCEPT_ASSERT(( GraphConcept<Graph> ));
     typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
     BOOST_CONCEPT_ASSERT(( ReadablePropertyMapConcept<DistanceMatrixMap,Vertex> ));
-    typedef typename property_traits<DistanceMatrixMap>::value_type DistanceMap;
+    typedef typename boost::property_traits<DistanceMatrixMap>::value_type DistanceMap;
     BOOST_CONCEPT_ASSERT(( ReadablePropertyMapConcept<DistanceMap,Vertex> ));
-    typedef typename property_traits<CentralityMap>::value_type Result;
+    typedef typename boost::property_traits<CentralityMap>::value_type Result;
 
     all_closeness_centralities(g, dist, cent, measure_closeness<Result>(g, DistanceMap()));
 }

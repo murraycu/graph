@@ -80,10 +80,10 @@ namespace boost {
 
     typedef adjacency_list_traits<vecS, vecS, directedS> Tr;
     typedef typename Tr::edge_descriptor Tr_edge_desc;
-    typedef adjacency_list<vecS, vecS, directedS, no_property, 
-      property<edge_capacity_t, degree_size_type,
-        property<edge_residual_capacity_t, degree_size_type,
-          property<edge_reverse_t, Tr_edge_desc> > > > 
+    typedef adjacency_list<vecS, vecS, directedS, boost::no_property, 
+      boost::property<edge_capacity_t, degree_size_type,
+        boost::property<edge_residual_capacity_t, degree_size_type,
+          boost::property<edge_reverse_t, Tr_edge_desc> > > > 
       FlowGraph;
     typedef typename graph_traits<FlowGraph>::edge_descriptor edge_descriptor;
 
@@ -104,12 +104,12 @@ namespace boost {
     // Create a network flow graph out of the undirected graph
     FlowGraph flow_g(num_vertices(g));
 
-    typename property_map<FlowGraph, edge_capacity_t>::type
-      cap = get(edge_capacity, flow_g);
-    typename property_map<FlowGraph, edge_residual_capacity_t>::type
-      res_cap = get(edge_residual_capacity, flow_g);
-    typename property_map<FlowGraph, edge_reverse_t>::type
-      rev_edge = get(edge_reverse, flow_g);
+    typename boost::property_map<FlowGraph, edge_capacity_t>::type
+      cap = boost::get(edge_capacity, flow_g);
+    typename boost::property_map<FlowGraph, edge_residual_capacity_t>::type
+      res_cap = boost::get(edge_residual_capacity, flow_g);
+    typename boost::property_map<FlowGraph, edge_reverse_t>::type
+      rev_edge = boost::get(edge_reverse, flow_g);
 
     for (boost::tie(ei, ei_end) = edges(g); ei != ei_end; ++ei) {
       u = source(*ei, g), v = target(*ei, g);

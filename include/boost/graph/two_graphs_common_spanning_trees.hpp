@@ -56,39 +56,39 @@ namespace detail {
     template <typename Vertex, typename Graph>
     void initialize_vertex(const Vertex& u, const Graph& g)
     {
-      put(mPred, u, u);
-      put(mDist, u, -1);
+      boost::put(mPred, u, u);
+      boost::put(mDist, u, -1);
     }
 
     template <typename Vertex, typename Graph>
     void discover_vertex(const Vertex& u, const Graph& g)
     {
-      put(mDist, u, ++mNum);
-      put(mLow, u, get(mDist, u));
+      boost::put(mDist, u, ++mNum);
+      boost::put(mLow, u, boost::get(mDist, u));
     }
 
     template <typename Edge, typename Graph>
     void tree_edge(const Edge& e, const Graph& g)
     {
-      put(mPred, target(e, g), source(e, g));
-      put(mTree, target(e, g), e);
+      boost::put(mPred, target(e, g), source(e, g));
+      boost::put(mTree, target(e, g), e);
     }
 
     template <typename Edge, typename Graph>
     void back_edge(const Edge& e, const Graph& g)
     {
-      put(mLow, source(e, g),
-        (std::min)(get(mLow, source(e, g)), get(mDist, target(e, g))));
+      boost::put(mLow, source(e, g),
+        (std::min)(boost::get(mLow, source(e, g)), boost::get(mDist, target(e, g))));
     }
 
     template <typename Vertex, typename Graph>
     void finish_vertex(const Vertex& u, const Graph& g)
     {
-      Vertex parent = get(mPred, u);
-      if(get(mLow, u) > get(mDist, parent))
-        mBuffer.push(get(mTree, u));
-      put(mLow, parent,
-        (std::min)(get(mLow, parent), get(mLow, u)));
+      Vertex parent = boost::get(mPred, u);
+      if(boost::get(mLow, u) > boost::get(mDist, parent))
+        mBuffer.push(boost::get(mTree, u));
+      boost::put(mLow, parent,
+        (std::min)(boost::get(mLow, parent), boost::get(mLow, u)));
     }
 
     TreeMap mTree;
@@ -136,7 +136,7 @@ namespace detail {
     inL_edge_status(InLMap map): mMap(map) { }
     template <typename Edge>
     bool operator()(const Edge& e) const
-      { return get(mMap, e); }
+      { return boost::get(mMap, e); }
     InLMap mMap;
   };
 
@@ -211,8 +211,8 @@ namespace detail {
             && !get(diG, iG_bimap.left.at(j))
             && !get(dvG, vG_bimap.left.at(j)))
         {
-          put(aiG_inL, iG_bimap.left.at(j), true);
-          put(avG_inL, vG_bimap.left.at(j), true);
+          boost::put(aiG_inL, iG_bimap.left.at(j), true);
+          boost::put(avG_inL, vG_bimap.left.at(j), true);
 
           undirected_dfs(
               make_filtered_graph(iG,
@@ -244,8 +244,8 @@ namespace detail {
           } else {
             while(!iG_buf.empty()) iG_buf.pop();
             while(!vG_buf.empty()) vG_buf.pop();
-            put(aiG_inL, iG_bimap.left.at(j), false);
-            put(avG_inL, vG_bimap.left.at(j), false);
+            boost::put(aiG_inL, iG_bimap.left.at(j), false);
+            boost::put(avG_inL, vG_bimap.left.at(j), false);
           }
         }
       }
@@ -259,8 +259,8 @@ namespace detail {
               && !get(dvG, vG_bimap.left.at(j)))
           {
 
-            put(aiG_inL, iG_bimap.left.at(j), true);
-            put(avG_inL, vG_bimap.left.at(j), true);
+            boost::put(aiG_inL, iG_bimap.left.at(j), true);
+            boost::put(avG_inL, vG_bimap.left.at(j), true);
 
             undirected_dfs(
                 make_filtered_graph(iG,
@@ -290,14 +290,14 @@ namespace detail {
             if(!iG_buf.empty() || !vG_buf.empty()) {
               while(!iG_buf.empty()) iG_buf.pop();
               while(!vG_buf.empty()) vG_buf.pop();
-              put(diG, iG_bimap.left.at(j), true);
-              put(dvG, vG_bimap.left.at(j), true);
+              boost::put(diG, iG_bimap.left.at(j), true);
+              boost::put(dvG, vG_bimap.left.at(j), true);
               iG_buf_copy.push(iG_bimap.left.at(j));
               vG_buf_copy.push(vG_bimap.left.at(j));
             }
 
-            put(aiG_inL, iG_bimap.left.at(j), false);
-            put(avG_inL, vG_bimap.left.at(j), false);
+            boost::put(aiG_inL, iG_bimap.left.at(j), false);
+            boost::put(avG_inL, vG_bimap.left.at(j), false);
           }
         }
 
@@ -306,24 +306,24 @@ namespace detail {
           (iG, iG_bimap, aiG_inL, diG, vG, vG_bimap, aiG_inL, dvG, func, inL);
 
         while(!iG_buf_copy.empty()) {
-          put(diG, iG_buf_copy.top(), false);
-          put(dvG, vG_bimap.left.at(
+          boost::put(diG, iG_buf_copy.top(), false);
+          boost::put(dvG, vG_bimap.left.at(
             iG_bimap.right.at(iG_buf_copy.top())), false);
           iG_buf_copy.pop();
         }
         while(!vG_buf_copy.empty()) {
-          put(dvG, vG_buf_copy.top(), false);
-          put(diG, iG_bimap.left.at(
+          boost::put(dvG, vG_buf_copy.top(), false);
+          boost::put(diG, iG_bimap.left.at(
             vG_bimap.right.at(vG_buf_copy.top())), false);
           vG_buf_copy.pop();
         }
 
         inL[m] = false;
-        put(aiG_inL, iG_bimap.left.at(m), false);
-        put(avG_inL, vG_bimap.left.at(m), false);
+        boost::put(aiG_inL, iG_bimap.left.at(m), false);
+        boost::put(avG_inL, vG_bimap.left.at(m), false);
 
-        put(diG, iG_bimap.left.at(m), true);
-        put(dvG, vG_bimap.left.at(m), true);
+        boost::put(diG, iG_bimap.left.at(m), true);
+        boost::put(dvG, vG_bimap.left.at(m), true);
 
         std::map<vertex_descriptor, edge_descriptor> tree_map;
         std::map<vertex_descriptor, vertex_descriptor> pred_map;
@@ -386,8 +386,8 @@ namespace detail {
         std::stack<edge_descriptor> iG_buf_tmp, vG_buf_tmp;
         while(!iG_buf.empty() && !found) {
           if(!inL[iG_bimap.right.at(iG_buf.top())]) {
-            put(aiG_inL, iG_buf.top(), true);
-            put(avG_inL, vG_bimap.left.at(
+            boost::put(aiG_inL, iG_buf.top(), true);
+            boost::put(avG_inL, vG_bimap.left.at(
               iG_bimap.right.at(iG_buf.top())), true);
 
             undirected_dfs(
@@ -425,16 +425,16 @@ namespace detail {
               iG_buf_copy.push(iG_buf.top());
             }
 
-            put(aiG_inL, iG_buf.top(), false);
-            put(avG_inL, vG_bimap.left.at(
+            boost::put(aiG_inL, iG_buf.top(), false);
+            boost::put(avG_inL, vG_bimap.left.at(
               iG_bimap.right.at(iG_buf.top())), false);
           }
           iG_buf.pop();
         }
         while(!vG_buf.empty() && !found) {
           if(!inL[vG_bimap.right.at(vG_buf.top())]) {
-            put(avG_inL, vG_buf.top(), true);
-            put(aiG_inL, iG_bimap.left.at(
+            boost::put(avG_inL, vG_buf.top(), true);
+            boost::put(aiG_inL, iG_bimap.left.at(
               vG_bimap.right.at(vG_buf.top())), true);
 
             undirected_dfs(
@@ -472,8 +472,8 @@ namespace detail {
               vG_buf_copy.push(vG_buf.top());
             }
 
-            put(avG_inL, vG_buf.top(), false);
-            put(aiG_inL, iG_bimap.left.at(
+            boost::put(avG_inL, vG_buf.top(), false);
+            boost::put(aiG_inL, iG_bimap.left.at(
               vG_bimap.right.at(vG_buf.top())), false);
           }
           vG_buf.pop();
@@ -483,16 +483,16 @@ namespace detail {
 
           while(!iG_buf_copy.empty()) {
             inL[iG_bimap.right.at(iG_buf_copy.top())] = true;
-            put(aiG_inL, iG_buf_copy.top(), true);
-            put(avG_inL, vG_bimap.left.at(
+            boost::put(aiG_inL, iG_buf_copy.top(), true);
+            boost::put(avG_inL, vG_bimap.left.at(
               iG_bimap.right.at(iG_buf_copy.top())), true);
             iG_buf.push(iG_buf_copy.top());
             iG_buf_copy.pop();
           }
           while(!vG_buf_copy.empty()) {
             inL[vG_bimap.right.at(vG_buf_copy.top())] = true;
-            put(avG_inL, vG_buf_copy.top(), true);
-            put(aiG_inL, iG_bimap.left.at(
+            boost::put(avG_inL, vG_buf_copy.top(), true);
+            boost::put(aiG_inL, iG_bimap.left.at(
               vG_bimap.right.at(vG_buf_copy.top())), true);
             vG_buf.push(vG_buf_copy.top());
             vG_buf_copy.pop();
@@ -505,23 +505,23 @@ namespace detail {
 
           while(!iG_buf.empty()) {
             inL[iG_bimap.right.at(iG_buf.top())] = false;
-            put(aiG_inL, iG_buf.top(), false);
-            put(avG_inL, vG_bimap.left.at(
+            boost::put(aiG_inL, iG_buf.top(), false);
+            boost::put(avG_inL, vG_bimap.left.at(
               iG_bimap.right.at(iG_buf.top())), false);
             iG_buf.pop();
           }
           while(!vG_buf.empty()) {
             inL[vG_bimap.right.at(vG_buf.top())] = false;
-            put(avG_inL, vG_buf.top(), false);
-            put(aiG_inL, iG_bimap.left.at(
+            boost::put(avG_inL, vG_buf.top(), false);
+            boost::put(aiG_inL, iG_bimap.left.at(
               vG_bimap.right.at(vG_buf.top())), false);
             vG_buf.pop();
           }
 
         }
 
-        put(diG, iG_bimap.left.at(m), false);
-        put(dvG, vG_bimap.left.at(m), false);
+        boost::put(diG, iG_bimap.left.at(m), false);
+        boost::put(dvG, vG_bimap.left.at(m), false);
 
       }
     }
@@ -706,11 +706,11 @@ two_graphs_common_spanning_trees
   for(seq_size_type i = 0; i < inL.size(); ++i)
   {
     if(inL[i]) {
-      put(aiG_inL, iG_bimap.left.at(i), true);
-      put(avG_inL, vG_bimap.left.at(i), true);
+      boost::put(aiG_inL, iG_bimap.left.at(i), true);
+      boost::put(avG_inL, vG_bimap.left.at(i), true);
     } else {
-      put(aiG_inL, iG_bimap.left.at(i), false);
-      put(avG_inL, vG_bimap.left.at(i), false);
+      boost::put(aiG_inL, iG_bimap.left.at(i), false);
+      boost::put(avG_inL, vG_bimap.left.at(i), false);
     }
   }
 
@@ -745,15 +745,15 @@ two_graphs_common_spanning_trees
 
     boost::tuples::tie(current, last) = edges(iG);
     for(; current != last; ++current)
-      put(diG, *current, false);
+      boost::put(diG, *current, false);
     boost::tuples::tie(current, last) = edges(vG);
     for(; current != last; ++current)
-      put(dvG, *current, false);
+      boost::put(dvG, *current, false);
 
     for(seq_size_type j = 0; j < inL.size(); ++j) {
       if(!inL[j]) {
-        put(aiG_inL, iG_bimap.left.at(j), true);
-        put(avG_inL, vG_bimap.left.at(j), true);
+        boost::put(aiG_inL, iG_bimap.left.at(j), true);
+        boost::put(avG_inL, vG_bimap.left.at(j), true);
 
         undirected_dfs(
             make_filtered_graph(iG,
@@ -781,12 +781,12 @@ two_graphs_common_spanning_trees
         if(!iG_buf.empty() || !vG_buf.empty()) {
           while(!iG_buf.empty()) iG_buf.pop();
           while(!vG_buf.empty()) vG_buf.pop();
-          put(diG, iG_bimap.left.at(j), true);
-          put(dvG, vG_bimap.left.at(j), true);
+          boost::put(diG, iG_bimap.left.at(j), true);
+          boost::put(dvG, vG_bimap.left.at(j), true);
         }
 
-        put(aiG_inL, iG_bimap.left.at(j), false);
-        put(avG_inL, vG_bimap.left.at(j), false);
+        boost::put(aiG_inL, iG_bimap.left.at(j), false);
+        boost::put(avG_inL, vG_bimap.left.at(j), false);
       }
     }
 

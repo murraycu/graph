@@ -225,7 +225,7 @@ void r_c_shortest_paths_dispatch
   Splabel splabel_first_label = Splabel( first_label );
   unprocessed_labels.push( splabel_first_label );
   std::vector<std::list<Splabel> > vec_vertex_labels_data( num_vertices( g ) );
-  iterator_property_map<typename std::vector<std::list<Splabel> >::iterator,
+  boost::iterator_property_map<typename std::vector<std::list<Splabel> >::iterator,
                         VertexIndexMap>
     vec_vertex_labels(vec_vertex_labels_data.begin(), vertex_index_map);
   vec_vertex_labels[s].push_back( splabel_first_label );
@@ -234,22 +234,22 @@ void r_c_shortest_paths_dispatch
     vec_last_valid_positions_for_dominance_data_type;
   vec_last_valid_positions_for_dominance_data_type
     vec_last_valid_positions_for_dominance_data( num_vertices( g ) );
-  iterator_property_map<
+  boost::iterator_property_map<
       typename vec_last_valid_positions_for_dominance_data_type::iterator,
       VertexIndexMap>
     vec_last_valid_positions_for_dominance
       (vec_last_valid_positions_for_dominance_data.begin(),
        vertex_index_map);
   BGL_FORALL_VERTICES_T(v, g, Graph) {
-    put(vec_last_valid_positions_for_dominance, v, vec_vertex_labels[v].begin());
+    boost::put(vec_last_valid_positions_for_dominance, v, vec_vertex_labels[v].begin());
   }
   std::vector<size_t> vec_last_valid_index_for_dominance_data( num_vertices( g ), 0 );
-  iterator_property_map<std::vector<size_t>::iterator, VertexIndexMap>
+  boost::iterator_property_map<std::vector<size_t>::iterator, VertexIndexMap>
     vec_last_valid_index_for_dominance
       (vec_last_valid_index_for_dominance_data.begin(), vertex_index_map);
   std::vector<bool> 
     b_vec_vertex_already_checked_for_dominance_data( num_vertices( g ), false );
-  iterator_property_map<std::vector<bool>::iterator, VertexIndexMap>
+  boost::iterator_property_map<std::vector<bool>::iterator, VertexIndexMap>
     b_vec_vertex_already_checked_for_dominance
       (b_vec_vertex_already_checked_for_dominance_data.begin(),
        vertex_index_map);
@@ -278,7 +278,7 @@ void r_c_shortest_paths_dispatch
       typename boost::graph_traits<Graph>::vertex_descriptor
         i_cur_resident_vertex = cur_label->resident_vertex;
       std::list<Splabel>& list_labels_cur_vertex = 
-        get(vec_vertex_labels, i_cur_resident_vertex);
+        boost::get(vec_vertex_labels, i_cur_resident_vertex);
       if( list_labels_cur_vertex.size() >= 2 
           && vec_last_valid_index_for_dominance[i_cur_resident_vertex] 
                < list_labels_cur_vertex.size() )
@@ -293,7 +293,7 @@ void r_c_shortest_paths_dispatch
           typename std::list<Splabel>::iterator inner_iter = outer_iter;
           if( !b_outer_iter_at_or_beyond_last_valid_pos_for_dominance 
               && outer_iter == 
-                   get(vec_last_valid_positions_for_dominance,
+                   boost::get(vec_last_valid_positions_for_dominance,
                        i_cur_resident_vertex) )
             b_outer_iter_at_or_beyond_last_valid_pos_for_dominance = true;
           if( !get(b_vec_vertex_already_checked_for_dominance, i_cur_resident_vertex)
@@ -304,7 +304,7 @@ void r_c_shortest_paths_dispatch
           else
           {
             inner_iter = 
-              get(vec_last_valid_positions_for_dominance,
+              boost::get(vec_last_valid_positions_for_dominance,
                   i_cur_resident_vertex);
             ++inner_iter;
           }
@@ -358,14 +358,14 @@ void r_c_shortest_paths_dispatch
             ++outer_iter;
         }
         if( list_labels_cur_vertex.size() > 1 )
-          put(vec_last_valid_positions_for_dominance, i_cur_resident_vertex,
+          boost::put(vec_last_valid_positions_for_dominance, i_cur_resident_vertex,
             (--(list_labels_cur_vertex.end())));
         else
-          put(vec_last_valid_positions_for_dominance, i_cur_resident_vertex,
+          boost::put(vec_last_valid_positions_for_dominance, i_cur_resident_vertex,
             list_labels_cur_vertex.begin());
-        put(b_vec_vertex_already_checked_for_dominance,
+        boost::put(b_vec_vertex_already_checked_for_dominance,
             i_cur_resident_vertex, true);
-        put(vec_last_valid_index_for_dominance, i_cur_resident_vertex,
+        boost::put(vec_last_valid_index_for_dominance, i_cur_resident_vertex,
           list_labels_cur_vertex.size() - 1);
       }
     }
@@ -451,7 +451,7 @@ void r_c_shortest_paths_dispatch
       l_alloc.deallocate( cur_label.get(), 1 );
     }
   }
-  std::list<Splabel> dsplabels = get(vec_vertex_labels, t);
+  std::list<Splabel> dsplabels = boost::get(vec_vertex_labels, t);
   typename std::list<Splabel>::const_iterator csi = dsplabels.begin();
   typename std::list<Splabel>::const_iterator csi_end = dsplabels.end();
   // if d could be reached from o
