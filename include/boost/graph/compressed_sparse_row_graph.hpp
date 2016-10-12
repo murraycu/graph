@@ -193,9 +193,9 @@ class compressed_sparse_row_graph<directedS, VertexProperty, EdgeProperty, Graph
     inherited_vertex_properties;
 
   // Some tests to prevent use of "void" is a property type (as was done in some test cases):
-  BOOST_STATIC_ASSERT((!is_same<VertexProperty, void>::value));
-  BOOST_STATIC_ASSERT((!is_same<EdgeProperty, void>::value));
-  BOOST_STATIC_ASSERT((!is_same<GraphProperty, void>::value));
+  BOOST_STATIC_ASSERT((!boost::is_same<VertexProperty, void>::value));
+  BOOST_STATIC_ASSERT((!boost::is_same<EdgeProperty, void>::value));
+  BOOST_STATIC_ASSERT((!boost::is_same<GraphProperty, void>::value));
 
  public:
   // For Property Graph
@@ -209,7 +209,7 @@ class compressed_sparse_row_graph<directedS, VertexProperty, EdgeProperty, Graph
    * create directed and bidirectional graphs. In the future,
    * undirected CSR graphs will also be supported.
    */
-  // BOOST_STATIC_ASSERT((is_same<Directed, directedS>::value));
+  // BOOST_STATIC_ASSERT((boost::is_same<Directed, directedS>::value));
 
   // Concept requirements:
   // For Graph
@@ -530,7 +530,7 @@ class compressed_sparse_row_graph<directedS, VertexProperty, EdgeProperty, Graph
     : m_property()
   {
     typename graph_traits<Graph>::edges_size_type numedges = num_edges(g);
-    if (is_same<typename graph_traits<Graph>::directed_category, undirectedS>::value) {
+    if (boost::is_same<typename graph_traits<Graph>::directed_category, undirectedS>::value) {
       numedges *= 2; // Double each edge (actual doubling done by out_edges function)
     }
     vertices_size_type numverts = num_vertices(g);
@@ -544,7 +544,7 @@ class compressed_sparse_row_graph<directedS, VertexProperty, EdgeProperty, Graph
     : m_property()
   {
     typename graph_traits<Graph>::edges_size_type numedges = num_edges(g);
-    if (is_same<typename graph_traits<Graph>::directed_category, undirectedS>::value) {
+    if (boost::is_same<typename graph_traits<Graph>::directed_category, undirectedS>::value) {
       numedges *= 2; // Double each edge (actual doubling done by out_edges function)
     }
     assign(g, get(vertex_index, g), num_vertices(g), numedges);
@@ -568,7 +568,7 @@ class compressed_sparse_row_graph<directedS, VertexProperty, EdgeProperty, Graph
   void assign(const Graph& g, const VertexIndexMap& vi)
   {
     typename graph_traits<Graph>::edges_size_type numedges = num_edges(g);
-    if (is_same<typename graph_traits<Graph>::directed_category, undirectedS>::value) {
+    if (boost::is_same<typename graph_traits<Graph>::directed_category, undirectedS>::value) {
       numedges *= 2; // Double each edge (actual doubling done by out_edges function)
     }
     vertices_size_type numverts = num_vertices(g);
@@ -581,7 +581,7 @@ class compressed_sparse_row_graph<directedS, VertexProperty, EdgeProperty, Graph
   void assign(const Graph& g)
   {
     typename graph_traits<Graph>::edges_size_type numedges = num_edges(g);
-    if (is_same<typename graph_traits<Graph>::directed_category, undirectedS>::value) {
+    if (boost::is_same<typename graph_traits<Graph>::directed_category, undirectedS>::value) {
       numedges *= 2; // Double each edge (actual doubling done by out_edges function)
     }
     vertices_size_type numverts = num_vertices(g);
@@ -902,7 +902,7 @@ class compressed_sparse_row_graph<bidirectionalS, VertexProperty, EdgeProperty, 
     : m_property()
   {
     typename graph_traits<Graph>::edges_size_type numedges = num_edges(g);
-    if (is_same<typename graph_traits<Graph>::directed_category, undirectedS>::value) {
+    if (boost::is_same<typename graph_traits<Graph>::directed_category, undirectedS>::value) {
       numedges *= 2; // Double each edge (actual doubling done by out_edges function)
     }
     vertices_size_type numverts = num_vertices(g);
@@ -916,7 +916,7 @@ class compressed_sparse_row_graph<bidirectionalS, VertexProperty, EdgeProperty, 
     : m_property()
   {
     typename graph_traits<Graph>::edges_size_type numedges = num_edges(g);
-    if (is_same<typename graph_traits<Graph>::directed_category, undirectedS>::value) {
+    if (boost::is_same<typename graph_traits<Graph>::directed_category, undirectedS>::value) {
       numedges *= 2; // Double each edge (actual doubling done by out_edges function)
     }
     assign(g, get(vertex_index, g), num_vertices(g), numedges);
@@ -941,7 +941,7 @@ class compressed_sparse_row_graph<bidirectionalS, VertexProperty, EdgeProperty, 
   void assign(const Graph& g, const VertexIndexMap& vi)
   {
     typename graph_traits<Graph>::edges_size_type numedges = num_edges(g);
-    if (is_same<typename graph_traits<Graph>::directed_category, undirectedS>::value) {
+    if (boost::is_same<typename graph_traits<Graph>::directed_category, undirectedS>::value) {
       numedges *= 2; // Double each edge (actual doubling done by out_edges function)
     }
     vertices_size_type numverts = num_vertices(g);
@@ -955,7 +955,7 @@ class compressed_sparse_row_graph<bidirectionalS, VertexProperty, EdgeProperty, 
   void assign(const Graph& g)
   {
     typename graph_traits<Graph>::edges_size_type numedges = num_edges(g);
-    if (is_same<typename graph_traits<Graph>::directed_category, undirectedS>::value) {
+    if (boost::is_same<typename graph_traits<Graph>::directed_category, undirectedS>::value) {
       numedges *= 2; // Double each edge (actual doubling done by out_edges function)
     }
     vertices_size_type numverts = num_vertices(g);

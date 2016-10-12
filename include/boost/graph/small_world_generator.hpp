@@ -53,8 +53,8 @@ namespace boost {
       }
       current.first = source;
 
-      uniform_01<RandomGenerator, double> rand01(*gen);
-      uniform_int<vertices_size_type> rand_vertex_gen(0, n-1);
+      boost::uniform_01<RandomGenerator, double> rand01(*gen);
+      boost::uniform_int<vertices_size_type> rand_vertex_gen(0, n-1);
       double x = rand01();
       *gen = rand01.base(); // GRRRR
       if (x < prob) {
@@ -92,7 +92,7 @@ namespace boost {
   private:
     void next()
     {
-      uniform_int<vertices_size_type> rand_vertex(0, n-1);
+      boost::uniform_int<vertices_size_type> rand_vertex(0, n-1);
       current.first = rand_vertex(*gen);
       do {
         current.second = rand_vertex(*gen);

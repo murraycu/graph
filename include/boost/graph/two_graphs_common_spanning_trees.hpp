@@ -543,8 +543,8 @@ public:
   typedef typename Coll::value_type coll_value_type;
   typedef typename Seq::value_type seq_value_type;
 
-  BOOST_STATIC_ASSERT((is_same<coll_value_type, Seq>::value));
-  BOOST_STATIC_ASSERT((is_same<seq_value_type, bool>::value));
+  BOOST_STATIC_ASSERT((boost::is_same<coll_value_type, Seq>::value));
+  BOOST_STATIC_ASSERT((boost::is_same<seq_value_type, bool>::value));
 
   tree_collector(Coll& seqs): mSeqs(seqs) { }
 
@@ -597,13 +597,13 @@ two_graphs_common_spanning_trees
   typedef typename Order::value_type order_value_type;
   typedef typename Order::size_type order_size_type;
 
-  BOOST_STATIC_ASSERT((is_same<order_value_type, edge_descriptor>::value));
+  BOOST_STATIC_ASSERT((boost::is_same<order_value_type, edge_descriptor>::value));
   BOOST_CONCEPT_ASSERT((Convertible<order_size_type, edges_size_type>));
 
   BOOST_CONCEPT_ASSERT((Convertible<seq_size_type, edges_size_type>));
-  BOOST_STATIC_ASSERT((is_same<seq_value_type, bool>::value));
+  BOOST_STATIC_ASSERT((boost::is_same<seq_value_type, bool>::value));
 
-  BOOST_STATIC_ASSERT((is_same<directed_category, undirected_tag>::value));
+  BOOST_STATIC_ASSERT((boost::is_same<directed_category, undirected_tag>::value));
 
   if(num_vertices(iG) != num_vertices(vG))
     return;

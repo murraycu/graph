@@ -64,11 +64,11 @@ namespace boost {
     {
       BOOST_USING_STD_MIN();
       while (values.empty() && verticesRemaining > 0) { // If there are no values left, generate a new clique
-        uniform_int<vertices_size_type> clique_size(1, maxCliqueSize);
-        uniform_int<vertices_size_type> rand_vertex(0, totVertices-1);
-        uniform_int<int> num_parallel_edges(1, maxParallelEdges);
-        uniform_int<short> direction(0,1);
-        uniform_01<RandomGenerator> prob(*gen);
+        boost::uniform_int<vertices_size_type> clique_size(1, maxCliqueSize);
+        boost::uniform_int<vertices_size_type> rand_vertex(0, totVertices-1);
+        boost::uniform_int<int> num_parallel_edges(1, maxParallelEdges);
+        boost::uniform_int<short> direction(0,1);
+        boost::uniform_01<RandomGenerator> prob(*gen);
         std::vector<vertices_size_type> cliqueVertices;
 
         cliqueVertices.clear();

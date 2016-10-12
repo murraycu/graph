@@ -421,7 +421,7 @@ namespace detail { namespace graph {
   {
     typedef typename graph_traits<Graph>::degree_size_type degree_size_type;
     typedef typename graph_traits<Graph>::edge_descriptor edge_descriptor;
-    typedef typename mpl::if_c<(is_same<CentralityMap, 
+    typedef typename mpl::if_c<(boost::is_same<CentralityMap, 
                                         dummy_property_map>::value),
                                          EdgeCentralityMap, 
                                CentralityMap>::type a_centrality_map;
@@ -456,7 +456,7 @@ namespace detail { namespace graph {
   {
     typedef typename graph_traits<Graph>::degree_size_type degree_size_type;
     typedef typename graph_traits<Graph>::edge_descriptor edge_descriptor;
-    typedef typename mpl::if_c<(is_same<CentralityMap, 
+    typedef typename mpl::if_c<(boost::is_same<CentralityMap, 
                                         dummy_property_map>::value),
                                          EdgeCentralityMap, 
                                CentralityMap>::type a_centrality_map;

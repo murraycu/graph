@@ -254,7 +254,7 @@ namespace boost {
       // Typedefs
       typedef graph_traits<Graph> Traits;
       typedef typename Traits::vertices_size_type size_type;
-      typedef typename detail::integer_traits<size_type>::difference_type 
+      typedef typename boost::detail::integer_traits<size_type>::difference_type 
         diff_t;
       typedef typename Traits::vertex_descriptor vertex_t;
       typedef typename Traits::adjacency_iterator adj_iter;

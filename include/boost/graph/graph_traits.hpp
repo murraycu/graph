@@ -150,7 +150,7 @@ namespace boost {
     template <typename Graph>
     struct is_multigraph
         : mpl::bool_<
-            is_same<
+            boost::is_same<
                 typename graph_traits<Graph>::edge_parallel_category,
                 allow_parallel_edge_tag
             >::value
@@ -297,7 +297,7 @@ namespace boost {
         template<typename Graph, typename Descriptor>
         class bundled_result {
             typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
-            typedef typename mpl::if_c<(is_same<Descriptor, Vertex>::value),
+            typedef typename mpl::if_c<(boost::is_same<Descriptor, Vertex>::value),
                                         vertex_bundle_type<Graph>,
                                         edge_bundle_type<Graph> >::type bundler;
         public:
@@ -318,7 +318,7 @@ namespace boost {
       // A helper metafunction for determining whether or not a type is
       // bundled.
       template <typename T>
-      struct is_no_bundle : mpl::bool_<is_same<T, no_property>::value>
+      struct is_no_bundle : mpl::bool_<boost::is_same<T, no_property>::value>
       { };
     } // namespace graph_detail
 

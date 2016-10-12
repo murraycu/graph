@@ -63,7 +63,7 @@ namespace boost {
   void compress_components(ParentIterator first, ParentIterator last)
   {
     for (ParentIterator current = first; current != last; ++current) 
-      detail::find_representative_with_full_compression(first, current-first);
+      boost::detail::find_representative_with_full_compression(first, current-first);
   }
   
   template <class ParentIterator>
@@ -222,7 +222,7 @@ namespace boost {
 
   protected:
     IndexType m_num_elements;
-    shared_ptr<IndexContainer> m_components, m_index_list;
+    boost::shared_ptr<IndexContainer> m_components, m_index_list;
 
   }; // class component_index
  

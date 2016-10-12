@@ -40,7 +40,7 @@ namespace boost { // should use a different namespace for this
     typedef unsigned int edges_size_type;
     struct edge_descriptor {
       edge_descriptor() { }
-      edge_descriptor(const detail::dummy_constructor&) { }
+      edge_descriptor(const boost::detail::dummy_constructor&) { }
       bool operator==(const edge_descriptor&) const { return false; }
       bool operator!=(const edge_descriptor&) const { return false; }
     };
@@ -60,13 +60,13 @@ namespace boost { // should use a different namespace for this
   V source(const typename incidence_graph_archetype<V,D,P,B>::edge_descriptor&,
            const incidence_graph_archetype<V,D,P,B>& )
   {
-    return V(static_object<detail::dummy_constructor>::get());
+    return V(boost::static_object<boost::detail::dummy_constructor>::get());
   }
   template <typename V, typename D, typename P, typename B>
   V target(const typename incidence_graph_archetype<V,D,P,B>::edge_descriptor&,
            const incidence_graph_archetype<V,D,P,B>& )
   {
-    return V(static_object<detail::dummy_constructor>::get());
+    return V(boost::static_object<boost::detail::dummy_constructor>::get());
   }
   
   template <typename V, typename D, typename P, typename B>
@@ -259,7 +259,7 @@ namespace boost { // should use a different namespace for this
 
   struct color_value_archetype {
     color_value_archetype() { }
-    color_value_archetype(detail::dummy_constructor) { }
+    color_value_archetype(boost::detail::dummy_constructor) { }
     bool operator==(const color_value_archetype& ) const { return true; }
     bool operator!=(const color_value_archetype& ) const { return true; }
   };
@@ -268,17 +268,17 @@ namespace boost { // should use a different namespace for this
     static color_value_archetype white()
     { 
       return color_value_archetype
-        (static_object<detail::dummy_constructor>::get()); 
+        (boost::static_object<boost::detail::dummy_constructor>::get()); 
     }
     static color_value_archetype gray()
     {
       return color_value_archetype
-        (static_object<detail::dummy_constructor>::get()); 
+        (boost::static_object<boost::detail::dummy_constructor>::get()); 
     }
     static color_value_archetype black()
     {
       return color_value_archetype
-        (static_object<detail::dummy_constructor>::get()); 
+        (boost::static_object<boost::detail::dummy_constructor>::get()); 
     }
   };
 
@@ -287,8 +287,8 @@ namespace boost { // should use a different namespace for this
   public:
     void push(const T&) {}
     void pop() {}
-    T& top() { return static_object<T>::get(); }
-    const T& top() const { return static_object<T>::get(); }
+    T& top() { return boost::static_object<T>::get(); }
+    const T& top() const { return boost::static_object<T>::get(); }
     bool empty() const { return true; }
   };
   

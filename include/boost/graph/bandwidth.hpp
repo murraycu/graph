@@ -70,7 +70,7 @@ namespace boost {
   edgesum(const Graph& g, VertexIndexMap index_map)
   {
     typedef typename graph_traits<Graph>::vertices_size_type size_type;
-    typedef typename detail::numeric_traits<size_type>::difference_type diff_t;
+    typedef typename boost::detail::numeric_traits<size_type>::difference_type diff_t;
     size_type sum = 0;
     typename graph_traits<Graph>::edge_iterator i, end;
     for (boost::tie(i, end) = edges(g); i != end; ++i) {

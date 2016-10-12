@@ -39,8 +39,8 @@ namespace boost {
     #if BOOST_WORKAROUND( __BORLANDC__, BOOST_TESTED_AT(0x581))
       std::size_t n = std::random( num_vertices(g) );
     #else
-      uniform_int<> distrib(0, num_vertices(g)-1);
-      variate_generator<RandomNumGen&, uniform_int<> > rand_gen(gen, distrib);
+      boost::uniform_int<> distrib(0, num_vertices(g)-1);
+      boost::variate_generator<RandomNumGen&, boost::uniform_int<> > rand_gen(gen, distrib);
       std::size_t n = rand_gen();
     #endif
       typename graph_traits<Graph>::vertex_iterator
@@ -58,8 +58,8 @@ namespace boost {
       typename graph_traits<Graph>::edges_size_type
         n = std::random( num_edges(g) );
     #else
-      uniform_int<> distrib(0, num_edges(g)-1);
-      variate_generator<RandomNumGen&, uniform_int<> > rand_gen(gen, distrib);
+      boost::uniform_int<> distrib(0, num_edges(g)-1);
+      boost::variate_generator<RandomNumGen&, boost::uniform_int<> > rand_gen(gen, distrib);
       typename graph_traits<Graph>::edges_size_type
         n = rand_gen();
     #endif

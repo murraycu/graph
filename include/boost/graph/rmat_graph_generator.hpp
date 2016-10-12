@@ -65,7 +65,7 @@ generate_permutation_vector(RandomGenerator& gen, std::vector<T>& vertexPermutat
   vertexPermutation.resize(n);
 
   // Generate permutation map of vertex numbers
-  uniform_int<T> rand_vertex(0, n-1);
+  boost::uniform_int<T> rand_vertex(0, n-1);
   for (T i = 0; i < n; ++i)
     vertexPermutation[i] = i;
 
@@ -154,7 +154,7 @@ namespace boost {
         SCALE(int_log2(n))
 
     {
-      this->gen.reset(new uniform_01<RandomGenerator>(gen));
+      this->gen.reset(new boost::uniform_01<RandomGenerator>(gen));
 
       // BOOST_ASSERT(boost::test_tools::check_is_close(a + b + c + d, 1., 1.e-5));
 
@@ -213,7 +213,7 @@ namespace boost {
   private:
 
     // Parameters
-    shared_ptr<uniform_01<RandomGenerator> > gen;
+    boost::shared_ptr<uniform_01<RandomGenerator> > gen;
     vertices_size_type n;
     double a, b, c, d;
     int edge;
@@ -268,7 +268,7 @@ namespace boost {
     {
       // BOOST_ASSERT(boost::test_tools::check_is_close(a + b + c + d, 1., 1.e-5));
 
-      this->gen.reset(new uniform_01<RandomGenerator>(gen));
+      this->gen.reset(new boost::uniform_01<RandomGenerator>(gen));
 
       std::vector<vertices_size_type> vertexPermutation;
       if (permute_vertices)
@@ -328,7 +328,7 @@ namespace boost {
   private:
 
     // Parameters
-    shared_ptr<uniform_01<RandomGenerator> > gen;
+    boost::shared_ptr<uniform_01<RandomGenerator> > gen;
     bool permute_vertices;
 
     // Internal data structures
@@ -369,7 +369,7 @@ namespace boost {
     {
       // BOOST_ASSERT(boost::test_tools::check_is_close(a + b + c + d, 1., 1.e-5));
 
-      this->gen.reset(new uniform_01<RandomGenerator>(gen));
+      this->gen.reset(new boost::uniform_01<RandomGenerator>(gen));
 
       std::vector<vertices_size_type> vertexPermutation;
       if (permute_vertices)
@@ -386,7 +386,7 @@ namespace boost {
 
         // Lowest vertex number always comes first
         // (this means we don't have to worry about i->j and j->i being in the edge list)
-        if (u > v && is_same<directed_category, undirected_tag>::value)
+        if (u > v && boost::is_same<directed_category, undirected_tag>::value)
           std::swap(u, v);
 
         if (edge_map.find(std::make_pair(u, v)) == edge_map.end()) {
@@ -442,7 +442,7 @@ namespace boost {
   private:
 
     // Parameters
-    shared_ptr<uniform_01<RandomGenerator> > gen;
+    boost::shared_ptr<uniform_01<RandomGenerator> > gen;
 
     // Internal data structures
     std::vector<value_type> values;
@@ -482,7 +482,7 @@ namespace boost {
     {
       // BOOST_ASSERT(boost::test_tools::check_is_close(a + b + c + d, 1., 1.e-5));
 
-      this->gen.reset(new uniform_01<RandomGenerator>(gen));
+      this->gen.reset(new boost::uniform_01<RandomGenerator>(gen));
 
       std::vector<vertices_size_type> vertexPermutation;
       if (permute_vertices)
@@ -518,7 +518,7 @@ namespace boost {
         } else {
           // Lowest vertex number always comes first
           // (this means we don't have to worry about i->j and j->i being in the edge list)
-          if (u > v && is_same<directed_category, undirected_tag>::value)
+          if (u > v && boost::is_same<directed_category, undirected_tag>::value)
             std::swap(u, v);
 
           if (edge_map.find(std::make_pair(u, v)) == edge_map.end()) {
@@ -576,7 +576,7 @@ namespace boost {
   private:
 
     // Parameters
-    shared_ptr<uniform_01<RandomGenerator> > gen;
+    boost::shared_ptr<uniform_01<RandomGenerator> > gen;
     bool             bidirectional;
 
     // Internal data structures

@@ -29,7 +29,7 @@ namespace boost {
       (bool,
        is_undirected = (is_base_and_derived<undirected_tag,
                                             directed_category>::value
-                        || is_same<undirected_tag, directed_category>::value));
+                        || boost::is_same<undirected_tag, directed_category>::value));
 
   public:
     typedef std::input_iterator_tag iterator_category;

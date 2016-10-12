@@ -873,7 +873,7 @@ namespace boost {
       // Vertex order requirements
       BOOST_CONCEPT_ASSERT(( ContainerConcept<VertexOrderSmall> )); 
       typedef typename VertexOrderSmall::value_type order_value_type;
-      BOOST_STATIC_ASSERT(( is_same<vertex_small_type, order_value_type>::value ));
+      BOOST_STATIC_ASSERT(( boost::is_same<vertex_small_type, order_value_type>::value ));
       BOOST_ASSERT( num_vertices(graph_small) == vertex_order_small.size() );
 
       if (num_vertices(graph_small) > num_vertices(graph_large))
@@ -1106,7 +1106,7 @@ namespace boost {
     // Vertex order requirements
     BOOST_CONCEPT_ASSERT(( ContainerConcept<VertexOrder1> )); 
     typedef typename VertexOrder1::value_type order_value_type;
-    BOOST_STATIC_ASSERT(( is_same<vertex1_type, order_value_type>::value ));
+    BOOST_STATIC_ASSERT(( boost::is_same<vertex1_type, order_value_type>::value ));
     BOOST_ASSERT( num_vertices(graph1) == vertex_order1.size() );
 
     if (num_vertices(graph1) != num_vertices(graph2))

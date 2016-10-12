@@ -608,7 +608,7 @@ namespace boost {
       const GraphFirst& m_graph2;
       const VertexIndexMapFirst m_vindex_map1;
       const VertexIndexMapSecond m_vindex_map2;
-      shared_ptr<SubGraphList> m_subgraphs;
+      boost::shared_ptr<SubGraphList> m_subgraphs;
       SubGraphCallback m_user_callback;
     };
     
@@ -792,8 +792,8 @@ namespace boost {
       const GraphFirst& m_graph2;
       const VertexIndexMapFirst m_vindex_map1;
       const VertexIndexMapSecond m_vindex_map2;
-      shared_ptr<SubGraphList> m_subgraphs;
-      shared_ptr<VertexSizeFirst> m_largest_size_so_far;
+      boost::shared_ptr<SubGraphList> m_subgraphs;
+      boost::shared_ptr<VertexSizeFirst> m_largest_size_so_far;
       SubGraphCallback m_user_callback;
     };
     
@@ -995,8 +995,8 @@ namespace boost {
       const GraphFirst& m_graph2;
       const VertexIndexMapFirst m_vindex_map1;
       const VertexIndexMapSecond m_vindex_map2;
-      shared_ptr<SubGraphList> m_subgraphs;
-      shared_ptr<VertexSizeFirst> m_largest_size_so_far;
+      boost::shared_ptr<SubGraphList> m_subgraphs;
+      boost::shared_ptr<VertexSizeFirst> m_largest_size_so_far;
       SubGraphCallback m_user_callback;
     };
     

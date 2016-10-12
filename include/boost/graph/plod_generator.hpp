@@ -41,7 +41,7 @@ namespace boost {
     {
       using std::pow;
 
-      uniform_int<std::size_t> x(0, n-1);
+      boost::uniform_int<std::size_t> x(0, n-1);
       std::size_t xv = x(gen);
       degree = (xv == 0? 0 : std::size_t(beta * pow(xv, -alpha)));
     }
@@ -53,7 +53,7 @@ namespace boost {
     { 
       using std::pow;
 
-      uniform_int<std::size_t> x(0, n-1);
+      boost::uniform_int<std::size_t> x(0, n-1);
 
       // Continue stepping through source nodes until the
       // (out)degree is > 0
@@ -128,7 +128,7 @@ namespace boost {
     {
       using std::pow;
 
-      uniform_int<std::size_t> x(0, n-1);
+      boost::uniform_int<std::size_t> x(0, n-1);
       for (std::size_t i = 0; i != n; ++i) {
         std::size_t xv = x(gen);
         std::size_t degree = (xv == 0? 0 : std::size_t(beta * pow(xv, -alpha)));
@@ -174,7 +174,7 @@ namespace boost {
            new edges, so we just add some random edge and set the
            degrees left = 0 to signal termination. */
         if (out_degrees->size() < 2) {
-          uniform_int<std::size_t> x(0, n-1);
+          boost::uniform_int<std::size_t> x(0, n-1);
           current.first  = x(*gen);
           do {
             current.second = x(*gen);
@@ -184,7 +184,7 @@ namespace boost {
           return;
         }
 
-        uniform_int<std::size_t> x(0, out_degrees->size()-1);
+        boost::uniform_int<std::size_t> x(0, out_degrees->size()-1);
 
         // Select source vertex
         source = x(*gen);
@@ -217,7 +217,7 @@ namespace boost {
 
     RandomGenerator* gen;
     std::size_t n;
-    shared_ptr<out_degrees_t> out_degrees;
+    boost::shared_ptr<out_degrees_t> out_degrees;
     std::size_t degrees_left;
     bool allow_self_loops;
     value_type current;

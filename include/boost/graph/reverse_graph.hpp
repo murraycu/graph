@@ -382,7 +382,7 @@ struct property_map<const reverse_graph<BidirGraph, GRef>, Property> {
 
 template <class BidirGraph, class GRef, class Property>
 typename disable_if<
-  is_same<Property, edge_underlying_t>,
+  boost::is_same<Property, edge_underlying_t>,
   typename property_map<reverse_graph<BidirGraph,GRef>, Property>::type>::type
 get(Property p, reverse_graph<BidirGraph,GRef>& g)
 {
@@ -391,7 +391,7 @@ get(Property p, reverse_graph<BidirGraph,GRef>& g)
 
 template <class BidirGraph, class GRef, class Property>
 typename disable_if<
-  is_same<Property, edge_underlying_t>,
+  boost::is_same<Property, edge_underlying_t>,
   typename property_map<reverse_graph<BidirGraph,GRef>, Property>::const_type>::type
 get(Property p, const reverse_graph<BidirGraph,GRef>& g)
 {
@@ -401,7 +401,7 @@ get(Property p, const reverse_graph<BidirGraph,GRef>& g)
 
 template <class BidirectionalGraph, class GRef, class Property, class Key>
 typename disable_if<
-  is_same<Property, edge_underlying_t>,
+  boost::is_same<Property, edge_underlying_t>,
   typename property_traits<
     typename property_map<reverse_graph<BidirectionalGraph, GRef>, Property>::const_type
   >::value_type>::type

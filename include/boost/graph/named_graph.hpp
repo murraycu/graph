@@ -367,7 +367,7 @@ find_vertex(typename BGL_NAMED_GRAPH::vertex_name_type const& name,
 ///       from the vertex name to avoid ambiguous overload problems with
 ///       the add_vertex() function that takes a vertex property.
 template<BGL_NAMED_GRAPH_PARAMS>
-    typename disable_if<is_same<
+    typename disable_if<boost::is_same<
         typename BGL_NAMED_GRAPH::vertex_name_type,
         VertexProperty
     >,

@@ -173,7 +173,7 @@ private:
         }
     }
 
-    any
+    boost::any
     get_vertex_descriptor(const std::string& v)
     {
       return m_vertex[v];
@@ -185,11 +185,11 @@ private:
         handle_vertex(u);
         handle_vertex(v);
 
-        any source, target;
+        boost::any source, target;
         source = get_vertex_descriptor(u);
         target = get_vertex_descriptor(v);
 
-        any edge;
+        boost::any edge;
         bool added;
         boost::tie(edge, added) = m_g.do_add_edge(source, target);
         if (!added) {
@@ -238,8 +238,8 @@ private:
     std::map<std::string, std::string> m_key_name;
     std::map<std::string, std::string> m_key_type;
     std::map<std::string, std::string> m_key_default;
-    std::map<std::string, any> m_vertex;
-    std::vector<any> m_edge;
+    std::map<std::string, boost::any> m_vertex;
+    std::vector<boost::any> m_edge;
 };
 
 }

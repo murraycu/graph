@@ -462,7 +462,7 @@ namespace boost {
                                              boost::allow_parallel_edge_tag)
       {
         typedef typename Graph::global_edgelist_selector EdgeListS;
-        BOOST_STATIC_ASSERT((!is_same<EdgeListS, vecS>::value));
+        BOOST_STATIC_ASSERT((!boost::is_same<EdgeListS, vecS>::value));
 
         // remove_if
         while (first != last && !pred(*first))
@@ -508,7 +508,7 @@ namespace boost {
                                              boost::disallow_parallel_edge_tag)
       {
         typedef typename Graph::global_edgelist_selector EdgeListS;
-        BOOST_STATIC_ASSERT((!is_same<EdgeListS, vecS>::value));
+        BOOST_STATIC_ASSERT((!boost::is_same<EdgeListS, vecS>::value));
 
         for (incidence_iterator next = first;
              first != last; first = next) {
@@ -759,7 +759,7 @@ namespace boost {
               StoredProperty& p)
         {
           typedef typename Config::global_edgelist_selector EdgeListS;
-          BOOST_STATIC_ASSERT((!is_same<EdgeListS, vecS>::value));
+          BOOST_STATIC_ASSERT((!boost::is_same<EdgeListS, vecS>::value));
 
           typedef typename Config::graph_type graph_type;
           graph_type& g = static_cast<graph_type&>(g_);
@@ -794,7 +794,7 @@ namespace boost {
               no_property&)
         {
           typedef typename Config::global_edgelist_selector EdgeListS;
-          BOOST_STATIC_ASSERT((!is_same<EdgeListS, vecS>::value));
+          BOOST_STATIC_ASSERT((!boost::is_same<EdgeListS, vecS>::value));
 
           typedef typename Config::graph_type graph_type;
           graph_type& g = static_cast<graph_type&>(g_);
@@ -826,7 +826,7 @@ namespace boost {
                                boost::allow_parallel_edge_tag cat)
       {
         typedef typename Graph::global_edgelist_selector EdgeListS;
-        BOOST_STATIC_ASSERT((!is_same<EdgeListS, vecS>::value));
+        BOOST_STATIC_ASSERT((!boost::is_same<EdgeListS, vecS>::value));
 
         typename EdgeList::iterator i = el.begin(), end = el.end();
         for (; i != end; ++i) {
@@ -849,7 +849,7 @@ namespace boost {
                                boost::disallow_parallel_edge_tag)
       {
         typedef typename Graph::global_edgelist_selector EdgeListS;
-        BOOST_STATIC_ASSERT((!is_same<EdgeListS, vecS>::value));
+        BOOST_STATIC_ASSERT((!boost::is_same<EdgeListS, vecS>::value));
 
         typedef typename EdgeList::value_type StoredEdge;
         typename EdgeList::iterator i = el.find(StoredEdge(v)), end = el.end();
@@ -892,7 +892,7 @@ namespace boost {
       remove_edge(typename Config::edge_descriptor e)
       {
         typedef typename Config::global_edgelist_selector EdgeListS;
-        BOOST_STATIC_ASSERT((!is_same<EdgeListS, vecS>::value));
+        BOOST_STATIC_ASSERT((!boost::is_same<EdgeListS, vecS>::value));
 
         typedef typename Config::OutEdgeList::value_type::property_type PType;
         detail::remove_undirected_edge_dispatch<PType>::apply
@@ -930,7 +930,7 @@ namespace boost {
     remove_edge(EdgeOrIter e, undirected_graph_helper<Config>& g_)
     {
       typedef typename Config::global_edgelist_selector EdgeListS;
-      BOOST_STATIC_ASSERT((!is_same<EdgeListS, vecS>::value));
+      BOOST_STATIC_ASSERT((!boost::is_same<EdgeListS, vecS>::value));
 
       g_.remove_edge(e);
     }
@@ -943,7 +943,7 @@ namespace boost {
                 undirected_graph_helper<Config>& g_)
     {
       typedef typename Config::global_edgelist_selector EdgeListS;
-      BOOST_STATIC_ASSERT((!is_same<EdgeListS, vecS>::value));
+      BOOST_STATIC_ASSERT((!boost::is_same<EdgeListS, vecS>::value));
 
       typedef typename Config::graph_type graph_type;
       graph_type& g = static_cast<graph_type&>(g_);
@@ -958,7 +958,7 @@ namespace boost {
                        undirected_graph_helper<Config>& g_)
     {
       typedef typename Config::global_edgelist_selector EdgeListS;
-      BOOST_STATIC_ASSERT((!is_same<EdgeListS, vecS>::value));
+      BOOST_STATIC_ASSERT((!boost::is_same<EdgeListS, vecS>::value));
 
       typedef typename Config::graph_type graph_type;
       typedef typename Config::OutEdgeList::value_type::property_type PropT;
@@ -975,7 +975,7 @@ namespace boost {
                       undirected_graph_helper<Config>& g_)
     {
       typedef typename Config::global_edgelist_selector EdgeListS;
-      BOOST_STATIC_ASSERT((!is_same<EdgeListS, vecS>::value));
+      BOOST_STATIC_ASSERT((!boost::is_same<EdgeListS, vecS>::value));
 
       remove_out_edge_if(u, pred, g_);
     }
@@ -986,7 +986,7 @@ namespace boost {
     remove_edge_if(Predicate pred, undirected_graph_helper<Config>& g_)
     {
       typedef typename Config::global_edgelist_selector EdgeListS;
-      BOOST_STATIC_ASSERT((!is_same<EdgeListS, vecS>::value));
+      BOOST_STATIC_ASSERT((!boost::is_same<EdgeListS, vecS>::value));
 
       typedef typename Config::graph_type graph_type;
       graph_type& g = static_cast<graph_type&>(g_);
@@ -1028,7 +1028,7 @@ namespace boost {
                  undirected_graph_helper<Config>& g_)
     {
       typedef typename Config::global_edgelist_selector EdgeListS;
-      BOOST_STATIC_ASSERT((!is_same<EdgeListS, vecS>::value));
+      BOOST_STATIC_ASSERT((!boost::is_same<EdgeListS, vecS>::value));
 
       typedef typename Config::graph_type graph_type;
       graph_type& g = static_cast<graph_type&>(g_);
@@ -1152,7 +1152,7 @@ namespace boost {
     remove_edge_if(Predicate pred, bidirectional_graph_helper<Config>& g_)
     {
       typedef typename Config::global_edgelist_selector EdgeListS;
-      BOOST_STATIC_ASSERT((!is_same<EdgeListS, vecS>::value));
+      BOOST_STATIC_ASSERT((!boost::is_same<EdgeListS, vecS>::value));
 
       typedef typename Config::graph_type graph_type;
       graph_type& g = static_cast<graph_type&>(g_);
@@ -1237,7 +1237,7 @@ namespace boost {
       remove_edge(typename Config::edge_descriptor e)
       {
         typedef typename Config::global_edgelist_selector EdgeListS;
-        BOOST_STATIC_ASSERT((!is_same<EdgeListS, vecS>::value));
+        BOOST_STATIC_ASSERT((!boost::is_same<EdgeListS, vecS>::value));
 
         graph_type& g = static_cast<graph_type&>(*this);
 
@@ -1254,7 +1254,7 @@ namespace boost {
       remove_edge(typename Config::out_edge_iterator iter)
       {
         typedef typename Config::global_edgelist_selector EdgeListS;
-        BOOST_STATIC_ASSERT((!is_same<EdgeListS, vecS>::value));
+        BOOST_STATIC_ASSERT((!boost::is_same<EdgeListS, vecS>::value));
 
         typedef typename Config::graph_type graph_type;
         graph_type& g = static_cast<graph_type&>(*this);
@@ -1278,7 +1278,7 @@ namespace boost {
                 bidirectional_graph_helper_with_property<Config>& g_)
     {
       typedef typename Config::global_edgelist_selector EdgeListS;
-      BOOST_STATIC_ASSERT((!is_same<EdgeListS, vecS>::value));
+      BOOST_STATIC_ASSERT((!boost::is_same<EdgeListS, vecS>::value));
 
       typedef typename Config::graph_type graph_type;
       graph_type& g = static_cast<graph_type&>(g_);
@@ -1294,7 +1294,7 @@ namespace boost {
                 bidirectional_graph_helper_with_property<Config>& g_)
     {
       typedef typename Config::global_edgelist_selector EdgeListS;
-      BOOST_STATIC_ASSERT((!is_same<EdgeListS, vecS>::value));
+      BOOST_STATIC_ASSERT((!boost::is_same<EdgeListS, vecS>::value));
 
       g_.remove_edge(e);
     }
@@ -1305,7 +1305,7 @@ namespace boost {
                        bidirectional_graph_helper_with_property<Config>& g_)
     {
       typedef typename Config::global_edgelist_selector EdgeListS;
-      BOOST_STATIC_ASSERT((!is_same<EdgeListS, vecS>::value));
+      BOOST_STATIC_ASSERT((!boost::is_same<EdgeListS, vecS>::value));
 
       typedef typename Config::graph_type graph_type;
       typedef typename Config::OutEdgeList::value_type::property_type PropT;
@@ -1346,7 +1346,7 @@ namespace boost {
                       bidirectional_graph_helper_with_property<Config>& g_)
     {
       typedef typename Config::global_edgelist_selector EdgeListS;
-      BOOST_STATIC_ASSERT((!is_same<EdgeListS, vecS>::value));
+      BOOST_STATIC_ASSERT((!boost::is_same<EdgeListS, vecS>::value));
 
       typedef typename Config::graph_type graph_type;
       typedef typename Config::OutEdgeList::value_type::property_type PropT;
@@ -1398,7 +1398,7 @@ namespace boost {
                  bidirectional_graph_helper_with_property<Config>& g_)
     {
       typedef typename Config::global_edgelist_selector EdgeListS;
-      BOOST_STATIC_ASSERT((!is_same<EdgeListS, vecS>::value));
+      BOOST_STATIC_ASSERT((!boost::is_same<EdgeListS, vecS>::value));
 
       typedef typename Config::graph_type graph_type;
       typedef typename Config::edge_parallel_category Cat;
@@ -1429,7 +1429,7 @@ namespace boost {
                     bidirectional_graph_helper_with_property<Config>& g_)
     {
       typedef typename Config::global_edgelist_selector EdgeListS;
-      BOOST_STATIC_ASSERT((!is_same<EdgeListS, vecS>::value));
+      BOOST_STATIC_ASSERT((!boost::is_same<EdgeListS, vecS>::value));
 
       typedef typename Config::graph_type graph_type;
       typedef typename Config::edge_parallel_category Cat;
@@ -1451,7 +1451,7 @@ namespace boost {
                    bidirectional_graph_helper_with_property<Config>& g_)
     {
       typedef typename Config::global_edgelist_selector EdgeListS;
-      BOOST_STATIC_ASSERT((!is_same<EdgeListS, vecS>::value));
+      BOOST_STATIC_ASSERT((!boost::is_same<EdgeListS, vecS>::value));
 
       typedef typename Config::graph_type graph_type;
       typedef typename Config::edge_parallel_category Cat;
@@ -1987,7 +1987,7 @@ namespace boost {
                              boost::undirected_tag)
       {
         typedef typename Graph::global_edgelist_selector EdgeListS;
-        BOOST_STATIC_ASSERT((!is_same<EdgeListS, vecS>::value));
+        BOOST_STATIC_ASSERT((!boost::is_same<EdgeListS, vecS>::value));
 
         typedef typename Graph::edge_parallel_category edge_parallel_category;
         g.m_vertices.erase(g.m_vertices.begin() + u);
@@ -2011,7 +2011,7 @@ namespace boost {
                              boost::bidirectional_tag)
       {
         typedef typename Graph::global_edgelist_selector EdgeListS;
-        BOOST_STATIC_ASSERT((!is_same<EdgeListS, vecS>::value));
+        BOOST_STATIC_ASSERT((!boost::is_same<EdgeListS, vecS>::value));
 
         typedef typename Graph::edge_parallel_category edge_parallel_category;
         g.m_vertices.erase(g.m_vertices.begin() + u);

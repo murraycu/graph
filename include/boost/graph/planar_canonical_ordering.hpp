@@ -91,9 +91,9 @@ namespace boost
 
         ei_start = embedding[u].begin();
         ei_end = embedding[u].end();
-        prior_edge_itr = prior(ei_end);
+        prior_edge_itr = boost::prior(ei_end);
         while(source(*prior_edge_itr, g) == target(*prior_edge_itr,g))
-          prior_edge_itr = prior(prior_edge_itr);
+          prior_edge_itr = boost::prior(prior_edge_itr);
 
         for(ei = ei_start; ei != ei_end; ++ei)
           {

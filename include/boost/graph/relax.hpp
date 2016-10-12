@@ -44,7 +44,7 @@ namespace boost {
                const BinaryFunction& combine, const BinaryPredicate& compare)
     {
       typedef typename graph_traits<Graph>::directed_category DirCat;
-      bool is_undirected = is_same<DirCat, undirected_tag>::value;
+      bool is_undirected = boost::is_same<DirCat, undirected_tag>::value;
       typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
       Vertex u = source(e, g), v = target(e, g);
       typedef typename property_traits<DistanceMap>::value_type D;

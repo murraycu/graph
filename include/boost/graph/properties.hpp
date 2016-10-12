@@ -211,7 +211,7 @@ namespace boost {
   template <class Graph, class Property, class Enable = void>
   struct property_map:
     mpl::if_<
-      is_same<typename detail::property_kind_from_graph<Graph, Property>::type, edge_property_tag>,
+      boost::is_same<typename detail::property_kind_from_graph<Graph, Property>::type, edge_property_tag>,
       detail::edge_property_map<Graph, Property>,
       detail::vertex_property_map<Graph, Property> >::type
   {};

@@ -200,7 +200,7 @@ template<std::size_t Dims,
          typename RandomNumberGenerator = minstd_rand>
 class hypercube_topology : public convex_topology<Dims>
 {
-  typedef uniform_01<RandomNumberGenerator, double> rand_t;
+  typedef boost::uniform_01<RandomNumberGenerator, double> rand_t;
 
  public:
   typedef typename convex_topology<Dims>::point_type point_type;
@@ -268,8 +268,8 @@ class hypercube_topology : public convex_topology<Dims>
   }
 
  private:
-  shared_ptr<RandomNumberGenerator> gen_ptr;
-  shared_ptr<rand_t> rand;
+  boost::shared_ptr<RandomNumberGenerator> gen_ptr;
+  boost::shared_ptr<rand_t> rand;
   double scaling;
 };
 
@@ -288,7 +288,7 @@ class square_topology : public hypercube_topology<2, RandomNumberGenerator>
 template<typename RandomNumberGenerator = minstd_rand>
 class rectangle_topology : public convex_topology<2>
 {
-  typedef uniform_01<RandomNumberGenerator, double> rand_t;
+  typedef boost::uniform_01<RandomNumberGenerator, double> rand_t;
 
   public:
   rectangle_topology(double left, double top, double right, double bottom)
@@ -362,8 +362,8 @@ class rectangle_topology : public convex_topology<2>
   }
 
  private:
-  shared_ptr<RandomNumberGenerator> gen_ptr;
-  shared_ptr<rand_t> rand;
+  boost::shared_ptr<RandomNumberGenerator> gen_ptr;
+  boost::shared_ptr<rand_t> rand;
   double left, top, right, bottom;
 };
 
@@ -383,7 +383,7 @@ template<std::size_t Dims,
          typename RandomNumberGenerator = minstd_rand>
 class ball_topology : public convex_topology<Dims>
 {
-  typedef uniform_01<RandomNumberGenerator, double> rand_t;
+  typedef boost::uniform_01<RandomNumberGenerator, double> rand_t;
 
  public:
   typedef typename convex_topology<Dims>::point_type point_type;
@@ -457,8 +457,8 @@ class ball_topology : public convex_topology<Dims>
   }
 
  private:
-  shared_ptr<RandomNumberGenerator> gen_ptr;
-  shared_ptr<rand_t> rand;
+  boost::shared_ptr<RandomNumberGenerator> gen_ptr;
+  boost::shared_ptr<rand_t> rand;
   double radius;
 };
 
@@ -533,7 +533,7 @@ class heart_topology
     return true;
   }
 
-  typedef uniform_01<RandomNumberGenerator, double> rand_t;
+  typedef boost::uniform_01<RandomNumberGenerator, double> rand_t;
 
  public:
   typedef point point_type;
@@ -589,8 +589,8 @@ class heart_topology
   }
 
  private:
-  shared_ptr<RandomNumberGenerator> gen_ptr;
-  shared_ptr<rand_t> rand;
+  boost::shared_ptr<RandomNumberGenerator> gen_ptr;
+  boost::shared_ptr<rand_t> rand;
 };
 
 } // namespace boost

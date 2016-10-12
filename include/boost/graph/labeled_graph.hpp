@@ -33,7 +33,7 @@ namespace graph_detail {
     /** Returns true if the selector is the default selector. */
     template <typename Selector>
     struct is_default
-        : mpl::bool_<is_same<Selector, defaultS>::value>
+        : mpl::bool_<boost::is_same<Selector, defaultS>::value>
     { };
 
     /**

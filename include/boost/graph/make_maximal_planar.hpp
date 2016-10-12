@@ -129,7 +129,7 @@ namespace boost
      
       // The iterator manipulations on the next two lines are safe because 
       // vertices_on_face.size() > 3 (from the first test in this function)
-      fi_end = prior(vertices_on_face.end());
+      fi_end = boost::prior(vertices_on_face.end());
       for(face_iterator fi = boost::next(boost::next(vertices_on_face.begin())); 
           fi != fi_end; ++fi
           )
@@ -146,7 +146,7 @@ namespace boost
           add_edge_range(
                          vertices_on_face[0],
                          boost::next(boost::next(vertices_on_face.begin())),
-                         prior(vertices_on_face.end())
+                         boost::prior(vertices_on_face.end())
                          );
         }
       else

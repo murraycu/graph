@@ -65,7 +65,7 @@ namespace boost { namespace graph { namespace detail {
   template<typename DataType>
   struct lazy_list_node
   {
-    typedef shared_ptr< lazy_list_node<DataType> > ptr_t;
+    typedef boost::shared_ptr< lazy_list_node<DataType> > ptr_t;
 
     lazy_list_node(const DataType& data) :
       m_reversed(false),
@@ -83,8 +83,8 @@ namespace boost { namespace graph { namespace detail {
     bool m_reversed;
     DataType m_data;
     bool m_has_data;
-    shared_ptr<lazy_list_node> m_left_child;
-    shared_ptr<lazy_list_node> m_right_child;
+    boost::shared_ptr<lazy_list_node> m_left_child;
+    boost::shared_ptr<lazy_list_node> m_right_child;
   };
   
 
@@ -139,7 +139,7 @@ namespace boost { namespace graph { namespace detail {
   struct edge_list_storage<recursive_lazy_list, Edge>
   {
     typedef lazy_list_node<Edge> node_type;
-    typedef shared_ptr< node_type > type;
+    typedef boost::shared_ptr< node_type > type;
     type value;
 
     void push_back(Edge e)

@@ -690,7 +690,7 @@ namespace boost
                           vertex_t second
                             = face_handles[first_tail].second_vertex();
                           boost::tie(first_side_vertex, first_tail)
-                            = make_tuple(first_tail,
+                            = boost::make_tuple(first_tail,
                                          first == first_side_vertex ?
                                          second : first
                                          );
@@ -702,7 +702,7 @@ namespace boost
                           vertex_t second
                             = face_handles[second_tail].second_vertex();
                           boost::tie(second_side_vertex, second_tail)
-                            = make_tuple(second_tail,
+                            = boost::make_tuple(second_tail,
                                          first == second_side_vertex ?
                                          second : first);
                         }

@@ -311,7 +311,6 @@ public:
     //  private:
     typedef typename property_map<Graph, edge_index_t>::type EdgeIndexMap;
     typedef typename property_traits<EdgeIndexMap>::value_type edge_index_type;
-    BOOST_STATIC_ASSERT((!is_same<edge_index_type,
                         boost::detail::error_property_not_found>::value));
 
 private:

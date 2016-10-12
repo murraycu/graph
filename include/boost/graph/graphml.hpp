@@ -79,15 +79,15 @@ class mutate_graph_impl : public mutate_graph
                               directed_tag>::value;
     }
 
-    virtual any do_add_vertex()
+    virtual boost::any do_add_vertex()
     {
-        return any(add_vertex(m_g));
+        return boost::any(add_vertex(m_g));
     }
 
-    virtual std::pair<any,bool> do_add_edge(any source, any target)
+    virtual std::pair<boost::any,bool> do_add_edge(any source, boost::any target)
     {
-        std::pair<edge_descriptor,bool> retval = add_edge(any_cast<vertex_descriptor>(source),
-                                                          any_cast<vertex_descriptor>(target), m_g);
+        std::pair<edge_descriptor,bool> retval = add_edge(boost::any_cast<vertex_descriptor>(source),
+                                                          boost::any_cast<vertex_descriptor>(target), m_g);
         return std::make_pair(any(retval.first), retval.second);
     }
 
@@ -100,7 +100,7 @@ class mutate_graph_impl : public mutate_graph
             mpl::for_each<value_types>(put_property<MutableGraph *,value_types>
                                        (name, m_dp, &m_g, value, value_type, m_type_names, type_found));
         }
-        catch (bad_lexical_cast)
+        catch (boost::bad_lexical_cast)
         {
             BOOST_THROW_EXCEPTION(
               parse_error("invalid value \"" + value + "\" for key " +
@@ -116,16 +116,16 @@ class mutate_graph_impl : public mutate_graph
     }
 
     virtual void
-    set_vertex_property(const std::string& name, any vertex, const std::string& value, const std::string& value_type)
+    set_vertex_property(const std::string& name, boost::any vertex, const std::string& value, const std::string& value_type)
     {
         bool type_found = false;
         try
         {
             mpl::for_each<value_types>(put_property<vertex_descriptor,value_types>
-                                       (name, m_dp, any_cast<vertex_descriptor>(vertex),
+                                       (name, m_dp, boost::any_cast<vertex_descriptor>(vertex),
                                         value, value_type, m_type_names, type_found));
         }
-        catch (bad_lexical_cast)
+        catch (boost::bad_lexical_cast)
         {
             BOOST_THROW_EXCEPTION(
               parse_error("invalid value \"" + value + "\" for key " +
@@ -141,16 +141,16 @@ class mutate_graph_impl : public mutate_graph
     }
 
     virtual void
-    set_edge_property(const std::string& name, any edge, const std::string& value, const std::string& value_type)
+    set_edge_property(const std::string& name, boost::any edge, const std::string& value, const std::string& value_type)
     {
         bool type_found = false;
         try
         {
             mpl::for_each<value_types>(put_property<edge_descriptor,value_types>
-                                       (name, m_dp, any_cast<edge_descriptor>(edge),
+                                       (name, m_dp, boost::any_cast<edge_descriptor>(edge),
                                         value, value_type, m_type_names, type_found));
         }
-        catch (bad_lexical_cast)
+        catch (boost::bad_lexical_cast)
         {
             BOOST_THROW_EXCEPTION(
               parse_error("invalid value \"" + value + "\" for key " +
@@ -179,7 +179,7 @@ class mutate_graph_impl : public mutate_graph
         {
             if (m_value_type == m_type_names[mpl::find<ValueVector,Value>::type::pos::value])
             {
-                put(m_name, m_dp, m_key, lexical_cast<Value>(m_value));
+                put(m_name, m_dp, m_key, boost::lexical_cast<Value>(m_value));
                 m_type_found = true;
             }
         }
@@ -261,7 +261,7 @@ write_graphml(std::ostream& out, const Graph& g, VertexIndexMap vertex_index,
     // Output keys
     for (dynamic_properties::const_iterator i = dp.begin(); i != dp.end(); ++i)
     {
-        std::string key_id = "key" + lexical_cast<std::string>(key_count++);
+        std::string key_id = "key" + boost::lexical_cast<std::string>(key_count++);
         if (i->second->key() == typeid(Graph*))
             graph_key_ids[i->first] = key_id;
         else if (i->second->key() == typeid(vertex_descriptor))

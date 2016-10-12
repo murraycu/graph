@@ -443,7 +443,7 @@ namespace boost {
     // graph type. Instead, use directedS, which also provides the
     // functionality required for a Bidirectional Graph (in_edges,
     // in_degree, etc.).
-    BOOST_STATIC_ASSERT(!(is_same<Directed, bidirectionalS>::value));
+    BOOST_STATIC_ASSERT(!(boost::is_same<Directed, bidirectionalS>::value));
 
     typedef typename mpl::if_<is_directed,
                                     bidirectional_tag, undirected_tag>::type
@@ -482,7 +482,7 @@ namespace boost {
     // graph type. Instead, use directedS, which also provides the
     // functionality required for a Bidirectional Graph (in_edges,
     // in_degree, etc.).
-    BOOST_STATIC_ASSERT(!(is_same<Directed, bidirectionalS>::value));
+    BOOST_STATIC_ASSERT(!(boost::is_same<Directed, bidirectionalS>::value));
 
     typedef GraphProperty graph_property_type;
     typedef typename lookup_one_property<GraphProperty, graph_bundle_t>::type graph_bundled;
@@ -565,7 +565,7 @@ namespace boost {
 
     // VertexListGraph required types
     typedef size_type vertices_size_type;
-    typedef integer_range<vertex_descriptor> VertexList;
+    typedef boost::integer_range<vertex_descriptor> VertexList;
     typedef typename VertexList::iterator vertex_iterator;
 
     // EdgeListGraph required types
