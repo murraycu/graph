@@ -218,7 +218,7 @@ main(int , char* [])
   parent[vertex(a, G)] = vertex(a, G);
   boost::dijkstra_shortest_paths
     (G, vertex(a, G), 
-     distance_map(boost::make_iterator_property_map(distance.begin(), vertex_id, 
+     boost::distance_map(boost::make_iterator_property_map(distance.begin(), vertex_id, 
                                              distance[0])).
      predecessor_map(boost::make_iterator_property_map(parent.begin(), vertex_id,
                                                 parent[0])).

@@ -81,7 +81,7 @@ main(int , char* [])
      default_dijkstra_visitor());
 #else
   dijkstra_shortest_paths
-    (G, s, distance_map(&d[0]).
+    (G, s, boost::distance_map(&d[0]).
      predecessor_map(&p[0]).
      distance_compare(std::greater<int>()));
 #endif

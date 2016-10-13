@@ -91,7 +91,7 @@ int main(int argc, char* argv[])
    total_length_visitor<Distance> length_vis(sp_length, d);
 
    prim_minimum_spanning_tree(g, p,
-                              distance_map(boost::get(z_property<long>(), g)).
+                              boost::distance_map(boost::get(z_property<long>(), g)).
                               weight_map(boost::get(edge_length_t(), g)). 
                               // Use the "y" utility field for color
                               color_map(boost::get(y_property<long>(), g)).
