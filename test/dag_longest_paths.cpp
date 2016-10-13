@@ -40,7 +40,7 @@ int test_main(int, char*[])
     boost::vector_property_map<int> distance;
 
     dag_shortest_paths(graph, 0,
-                       distance_map(distance)
+                       boost::distance_map(distance)
                        .distance_compare(std::greater<int>())
                        .distance_inf((std::numeric_limits<int>::min)())
                        .distance_zero(0));
