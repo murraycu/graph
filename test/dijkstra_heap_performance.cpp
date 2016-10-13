@@ -61,7 +61,7 @@ void run_test(const Graph& g, const char* name, Kind kind,
   dijkstra_heap_kind = kind;
 
   dijkstra_shortest_paths(g, vertex(0, g),
-                          distance_map(&distances[0]).
+                          boost::distance_map(&distances[0]).
                           visitor(show_events_visitor()));
   double run_time = t.elapsed();
   std::cout << run_time << " seconds.\n";
@@ -117,7 +117,7 @@ int main(int argc, char* argv[])
   dijkstra_relaxed_heap = false;
 #endif
   dijkstra_shortest_paths(g, vertex(0, g),
-                          distance_map(
+                          boost::distance_map(
                             boost::make_iterator_property_map(
                               binary_heap_distances.begin(), boost::get(boost::vertex_index, g))));
   double binary_heap_time = t.elapsed();
@@ -137,7 +137,7 @@ int main(int argc, char* argv[])
   dijkstra_relaxed_heap = true;
 #endif
   dijkstra_shortest_paths(g, vertex(0, g),
-                          distance_map(
+                          boost::distance_map(
                             boost::make_iterator_property_map(
                               relaxed_heap_distances.begin(), boost::get(boost::vertex_index, g))));
   double relaxed_heap_time = t.elapsed();

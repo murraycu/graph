@@ -61,7 +61,7 @@ int main()
 
     std::vector < int >d(V, (std::numeric_limits < int >::max)());
     int D[V][V];
-    johnson_all_pairs_shortest_paths(g, D, distance_map(&d[0]));
+    johnson_all_pairs_shortest_paths(g, D, boost::distance_map(&d[0]));
 
     std::cout << std::setw(5) <<" ";
     for (int k = 0; k < 10; ++k)
