@@ -8,7 +8,7 @@
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/adjacency_list.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
 template <typename Graph> void
 generic_foo(Graph & g)
@@ -41,14 +41,14 @@ generic_bar(Graph & g)
 
 // This version of foo gets called when g is directed
 template <typename Graph> void
-foo_dispatch(Graph & g, boost::directed_tag)
+foo_dispatch(Graph & g, boost::graph::directed_tag)
 {
   //... 
 }
 
 // This version of foo gets called when g is undirected
 template <typename Graph> void
-foo_dispatch(Graph & g, boost::undirected_tag)
+foo_dispatch(Graph & g, boost::graph::undirected_tag)
 {
   //...
 }
@@ -56,7 +56,7 @@ foo_dispatch(Graph & g, boost::undirected_tag)
 template <typename Graph> void
 foo(Graph & g)
 {
-  using Cat = typename boost::graph_traits<Graph>::directed_category;
+  using Cat = typename boost::graph::graph_traits<Graph>::directed_category;
   foo_dispatch(g, Cat());
 }
 
@@ -88,7 +88,7 @@ int
 main()
 {
 
-  boost::adjacency_list<vecS, vecS, directedS> g(2);
+  boost::graph::adjacency_list<vecS, vecS, directedS> g(2);
   add_edge(0, 1, g);
   add_edge(1, 0, g);
   generic_foo(g);
@@ -96,7 +96,7 @@ main()
   foo(g);
   foo(g, vertex(0, g), vertex(1, g));
 
-  boost::adjacency_list<vecS, vecS, undirectedS> ug(2);
+  boost::graph::adjacency_list<vecS, vecS, undirectedS> ug(2);
   add_edge(0, 1, g);
   bar(ug, vertex(0, g), vertex(1, g));
 

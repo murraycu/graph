@@ -15,7 +15,7 @@
 #include "helper.hpp"
 #include "range_pair.hpp"
 
-using namespace boost;
+using namespace boost::graph;
 
 // This template structure defines the function that we will apply
 // to compute both the per-vertex mean geodesic distances and the

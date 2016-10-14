@@ -12,7 +12,7 @@
 int
 main()
 {
-  using namespace boost;
+  using namespace boost::graph;
   using Graph = leda::GRAPH<int, int>;
   BOOST_CONCEPT_ASSERT(( VertexListGraphConcept<Graph> ));
   BOOST_CONCEPT_ASSERT(( BidirectionalGraphConcept<Graph> ));

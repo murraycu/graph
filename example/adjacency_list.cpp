@@ -45,12 +45,12 @@ struct EdgeProperties {
 
 struct VertexProperties {
   std::size_t index;
-  boost::default_color_type color;
+  boost::graph::default_color_type color;
 };
   
 int main(int , char* [])
 {
-  using namespace boost;
+  using namespace boost::graph;
 
   using Graph = adjacency_list<vecS, listS, undirectedS, 
     VertexProperties, EdgeProperties>;

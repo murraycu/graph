@@ -12,7 +12,7 @@
 #include <algorithm>
 #include <boost/graph/adjacency_list.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
 
 /*
@@ -42,8 +42,8 @@ template <class Graph>
 struct exercise_edge {
   exercise_edge(Graph& g) : G(g) {}
 
-  using Edge = typename boost::graph_traits<Graph>::edge_descriptor;
-  using Vertex = typename boost::graph_traits<Graph>::vertex_descriptor;
+  using Edge = typename boost::graph::graph_traits<Graph>::edge_descriptor;
+  using Vertex = typename boost::graph::graph_traits<Graph>::vertex_descriptor;
   void operator()(Edge e) const
   {
     //begin

@@ -16,7 +16,7 @@
 int
 main()
 {
-  using namespace boost;
+  using namespace boost::graph;
   using graph_t = GRAPH<std::string, char>;
   graph_t leda_g;
   using vertex_t = graph_traits<graph_t>::vertex_descriptor;

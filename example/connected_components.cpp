@@ -36,7 +36,7 @@
 
 int main(int , char* []) 
 {
-  using namespace boost;
+  using namespace boost::graph;
   {
     using Graph = adjacency_list <vecS, vecS, undirectedS>;
 

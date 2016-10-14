@@ -18,7 +18,7 @@ enum family
 int
 main()
 {
-  using namespace boost;
+  using namespace boost::graph;
   const char *name[] = { "Jeanie", "Debbie", "Rick", "John", "Amanda",
     "Margaret", "Benjamin"
   };

@@ -13,7 +13,7 @@
 #include <boost/graph/graph_utility.hpp>
 #include "range_pair.hpp"
 
-using namespace boost;
+using namespace boost::graph;
 
 namespace std
 {

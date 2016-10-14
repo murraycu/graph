@@ -11,7 +11,7 @@
 int
 main()
 {
-  using namespace boost;
+  using namespace boost::graph;
   using graph_t = leda::GRAPH<std::string, int>;
   graph_t g;
   g.new_node("Philoctetes");

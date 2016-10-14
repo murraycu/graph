@@ -15,7 +15,7 @@
 #include <boost/graph/adjacency_list.hpp>
 #include "range_pair.hpp"
 
-using namespace boost;
+using namespace boost::graph;
 
 using VertexProperty = boost::property<vertex_color_t, default_color_type,
     boost::property<vertex_distance_t,int,
@@ -28,7 +28,7 @@ using Graph = adjacency_list<vecS, vecS, bidirectionalS,
 
 template <class Graph>
 void print(Graph& g) {
-  for (const auto& vertex : make_range_pair(boost::vertices(g))) {
+  for (const auto& vertex : make_range_pair(boost::graph::vertices(g))) {
     std::cout << vertex << " --> ";
     for (const auto& edge : make_range_pair(out_edges(vertex, g)))
       std::cout << target(edge, g) << "  ";

@@ -86,7 +86,7 @@ struct harwell_boeing
 
 int main(int argc, char* argv[]) 
 {
-  using namespace boost;
+  using namespace boost::graph;
 
   if (argc < 2) {
     std::cout << argv[0] << " HB file"  << std::endl;

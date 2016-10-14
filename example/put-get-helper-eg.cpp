@@ -51,7 +51,7 @@ main()
   using vec_t = std::vector<std::string>;
   using pmap_t = foo::iterator_property_map<vec_t::iterator,
     boost::identity_property_map>;
-  using namespace boost;
-  BOOST_CONCEPT_ASSERT(( Mutable_LvaluePropertyMapConcept<pmap_t, int> ));
+  using namespace boost::graph;
+  BOOST_CONCEPT_ASSERT(( boost::Mutable_LvaluePropertyMapConcept<pmap_t, int> ));
   return 0;
 }

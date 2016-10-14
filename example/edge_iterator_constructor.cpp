@@ -93,8 +93,8 @@ bool operator!=(const edge_stream_iterator& x,
 int
 main()
 {
-  using IteratorConstructibleGraph = boost::adjacency_list<>;
-  using Traits = boost::graph_traits<IteratorConstructibleGraph>;
+  using IteratorConstructibleGraph = boost::graph::adjacency_list<>;
+  using Traits = boost::graph::graph_traits<IteratorConstructibleGraph>;
   Traits::vertices_size_type size_V;
   Traits::edges_size_type size_E;
 
@@ -108,12 +108,12 @@ main()
   while (edge_iter != end) {
     int i, j;
     std::tie(i, j) = *edge_iter++;
-    boost::add_edge(i, j, G);
+    boost::graph::add_edge(i, j, G);
   }
 #else
   IteratorConstructibleGraph G(edge_iter, end, size_V);
 #endif
-  boost::print_graph(G);
+  boost::graph::print_graph(G);
 
   return 0;
 }

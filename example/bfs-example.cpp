@@ -12,7 +12,7 @@
 
 #include <iostream>
 
-using namespace boost;
+using namespace boost::graph;
 template <typename TimeMap> class bfs_time_visitor:public default_bfs_visitor {
   using T = typename boost::property_traits<TimeMap>::value_type;
 public:
@@ -30,7 +30,7 @@ public:
 int
 main()
 {
-  using namespace boost;
+  using namespace boost::graph;
   // Select the graph type we wish to use
   using graph_t = adjacency_list<vecS, vecS, undirectedS>;
   // Set up the vertex IDs and names
@@ -60,7 +60,7 @@ main()
   std::vector<Size> dtime(num_vertices(g));
   using dtime_pm_type =
     boost::iterator_property_map<std::vector<Size>::iterator,
-                          boost::property_map<graph_t, vertex_index_t>::const_type>;
+                          boost::property_map<graph_t, boost::graph::vertex_index_t>::const_type>;
   dtime_pm_type dtime_pm(dtime.begin(), boost::get(vertex_index, g));
 
   Size time = 0;

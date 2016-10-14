@@ -32,7 +32,7 @@
  */
 int main(int , char* [])
 {
-  using namespace boost;
+  using namespace boost::graph;
   using Graph = adjacency_list<vecS, vecS, undirectedS, 
      boost::property<vertex_color_t, default_color_type,
        boost::property<vertex_degree_t,int>>>;

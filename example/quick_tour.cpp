@@ -16,14 +16,14 @@
 #include <boost/graph/graphviz.hpp>
 #include "range_pair.hpp"
 
-using namespace boost;
+using namespace boost::graph;
 
 template <class Graph> struct exercise_vertex {
   exercise_vertex(Graph& g_, const char name_[]) : g(g_),name(name_) { }
   using Vertex = typename graph_traits<Graph>::vertex_descriptor;
   void operator()(const Vertex& v) const
   {
-    using namespace boost;
+    using namespace boost::graph;
     auto vertex_id = boost::get(vertex_index, g);
     std::cout << "vertex: " << name[boost::get(vertex_id, v)] << std::endl;
 
@@ -128,7 +128,7 @@ int main(int,char*[])
   graph_attr["ratio"] = "fill";
   vertex_attr["shape"] = "circle";
 
-  boost::write_graphviz(std::cout, g,
+  boost::graph::write_graphviz(std::cout, g,
                         make_label_writer(name),
                         make_label_writer(trans_delay),
                         make_graph_attributes_writer(graph_attr, vertex_attr,

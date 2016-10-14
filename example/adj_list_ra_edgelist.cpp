@@ -14,7 +14,7 @@
 int
 main()
 {
-  using namespace boost;
+  using namespace boost::graph;
   using Graph = adjacency_list<vecS, vecS, bidirectionalS, boost::no_property, 
     boost::property<int, edge_weight_t>, boost::no_property, vecS>;
 

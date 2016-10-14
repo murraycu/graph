@@ -12,7 +12,7 @@
 
 #include "helper.hpp"
 
-using namespace boost;
+using namespace boost::graph;
 
 // The clique_printer is a visitor that will print the vertices that comprise
 // a clique. Note that the vertices are not given in any specific order.

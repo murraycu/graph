@@ -11,7 +11,7 @@
 #include <iterator>
 #include <vector>
 #include <list>
-// Use boost::queue instead of std::queue because std::queue doesn't
+// Use boost::graph::queue instead of std::queue because std::queue doesn't
 // model Buffer; it has to top() function. -Jeremy
 #include <boost/pending/queue.hpp>
 
@@ -22,7 +22,7 @@
 #include <boost/graph/graph_utility.hpp>
 #include "range_pair.hpp"
 
-using namespace boost;
+using namespace boost::graph;
 /*
   This example does a best-first-search (using dijkstra's) and
   simultaneously makes a copy of the graph (assuming the graph is
@@ -82,7 +82,7 @@ using Graph = adjacency_list<vecS, vecS, directedS, VProperty, EProperty >;
 
 template <class Tag>
 struct endl_printer
-  : public boost::base_visitor<endl_printer<Tag>>
+  : public boost::graph::base_visitor<endl_printer<Tag>>
 {
   using event_filter = Tag;
   endl_printer(std::ostream& os) : m_os(os) { }
@@ -97,7 +97,7 @@ endl_printer<Tag> print_endl(std::ostream& os, Tag) {
 
 template <class PA, class Tag>
 struct edge_printer
- : public boost::base_visitor<edge_printer<PA, Tag>>
+ : public boost::graph::base_visitor<edge_printer<PA, Tag>>
 {
   using event_filter = Tag;
 
@@ -120,7 +120,7 @@ print_edge(PA pa, std::ostream& os, Tag) {
 
 template <class NewGraph, class Tag>
 struct graph_copier 
-  : public boost::base_visitor<graph_copier<NewGraph, Tag>>
+  : public boost::graph::base_visitor<graph_copier<NewGraph, Tag>>
 {
   using event_filter = Tag;
 
@@ -163,7 +163,7 @@ main(int , char* [])
   auto vertex_id = boost::get(vertex_index, G);
 
   std::vector<weight_t> distance(N, (std::numeric_limits<weight_t>::max)());
-  using Vertex = boost::graph_traits<Graph>::vertex_descriptor;
+  using Vertex = boost::graph::graph_traits<Graph>::vertex_descriptor;
   std::vector<Vertex> parent(N);
 
   using E = std::pair<int,int>;
@@ -195,11 +195,11 @@ main(int , char* [])
   std::ostream_iterator<int> cout_int(std::cout, " ");
   std::ostream_iterator<char> cout_char(std::cout, " ");
 
-  boost::queue<Vertex> Q;
-  boost::breadth_first_search
+  boost::graph::queue<Vertex> Q;
+  boost::graph::breadth_first_search
     (G, vertex(a, G), Q,
      make_bfs_visitor(
-     boost::make_list
+     boost::graph::make_list
       (write_property(boost::make_iterator_property_map(name, vertex_id,
                                                 name[0]),
                       cout_char, on_examine_vertex()),
@@ -216,9 +216,9 @@ main(int , char* [])
   std::cout << "about to call dijkstra's" << std::endl;
 
   parent[vertex(a, G)] = vertex(a, G);
-  boost::dijkstra_shortest_paths
+  boost::graph::dijkstra_shortest_paths
     (G, vertex(a, G), 
-     boost::distance_map(boost::make_iterator_property_map(distance.begin(), vertex_id, 
+     boost::graph::distance_map(boost::make_iterator_property_map(distance.begin(), vertex_id, 
                                              distance[0])).
      predecessor_map(boost::make_iterator_property_map(parent.begin(), vertex_id,
                                                 parent[0])).
@@ -226,10 +226,10 @@ main(int , char* [])
 
   std::cout << std::endl;
   std::cout << "Result:" << std::endl;
-  boost::breadth_first_search
+  boost::graph::breadth_first_search
     (G, vertex(a, G), 
      visitor(make_bfs_visitor(
-     boost::make_list
+     boost::graph::make_list
      (write_property(boost::make_iterator_property_map(name, vertex_id,
                                                 name[0]),
                      cout_char, on_examine_vertex()),

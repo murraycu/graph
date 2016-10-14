@@ -13,7 +13,7 @@
 
 #include <iostream>
 
-using namespace boost;
+using namespace boost::graph;
 template <typename TimeMap> class bfs_time_visitor:public default_bfs_visitor {
   using T = typename boost::property_traits<TimeMap>::value_type;
 public:
@@ -29,7 +29,7 @@ public:
 
 
 struct VertexProps {
-  boost::default_color_type color;
+  boost::graph::default_color_type color;
   std::size_t discover_time;
   unsigned int index;
 };
@@ -37,7 +37,7 @@ struct VertexProps {
 int
 main()
 {
-  using namespace boost;
+  using namespace boost::graph;
   // Select the graph type we wish to use
   using graph_t = adjacency_list<listS, listS, undirectedS,
     VertexProps>;
@@ -65,7 +65,7 @@ main()
 #endif
 
   // Typedefs
-  using Size = graph_traits<graph_t>::vertices_size_type;
+  using Size = boost::graph::graph_traits<graph_t>::vertices_size_type;
 
   Size time = 0;
   using dtime_map_t = boost::property_map<graph_t, std::size_t VertexProps::*>::type;

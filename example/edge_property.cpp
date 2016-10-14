@@ -57,13 +57,17 @@
 #include "range_pair.hpp"
 
 
-using namespace boost;
+using namespace boost::graph;
 
 
 enum edge_myflow_t { edge_myflow };
 enum edge_mycapacity_t { edge_mycapacity };
 
 namespace boost {
+  // TODO: Don't put this the in boost::graph namespace.
+  namespace graph {
+  }
+
   BOOST_INSTALL_PROPERTY(edge, myflow);
   BOOST_INSTALL_PROPERTY(edge, mycapacity);
 }

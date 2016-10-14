@@ -19,7 +19,7 @@
 
 
 
-using namespace boost;
+using namespace boost::graph;
 
 //a class to hold the coordinates of the straight line embedding
 struct coord_t

@@ -11,7 +11,7 @@
 
 char name[] = "abcdefghij";
 
-struct parenthesis_visitor : public boost::default_dfs_visitor
+struct parenthesis_visitor : public boost::graph::default_dfs_visitor
 {
   template <class Vertex, class Graph> void
   start_vertex(Vertex v, const Graph &)
@@ -33,7 +33,7 @@ struct parenthesis_visitor : public boost::default_dfs_visitor
 int
 main()
 {
-  using namespace boost;
+  using namespace boost::graph;
   GraphvizGraph g;
   read_graphviz("figs/dfs-example.dot", g);
   for (const auto& edge : make_range_pair(edges(g)))

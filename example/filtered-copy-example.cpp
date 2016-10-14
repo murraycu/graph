@@ -18,7 +18,7 @@ struct non_zero_degree {
 
   non_zero_degree(const Graph& g) : g(&g) { }
 
-  bool operator()(typename boost::graph_traits<Graph>::vertex_descriptor v) const
+  bool operator()(typename boost::graph::graph_traits<Graph>::vertex_descriptor v) const
   {
     return degree(v, *g) != 0;
   }
@@ -28,7 +28,7 @@ struct non_zero_degree {
 int
 main()
 {
-  using namespace boost;
+  using namespace boost::graph;
   using graph_t = adjacency_list<vecS, vecS, bidirectionalS,
     boost::property<vertex_name_t, char>>;
 

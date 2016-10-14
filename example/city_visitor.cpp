@@ -17,7 +17,7 @@
 #include <boost/graph/depth_first_search.hpp>
 #include <boost/graph/breadth_first_search.hpp>
 #include <boost/property_map/property_map.hpp>
-#include <boost/graph/graph_utility.hpp> // for boost::make_list
+#include <boost/graph/graph_utility.hpp> // for boost::graph::make_list
 
 
 /*
@@ -51,7 +51,7 @@
 
  */
 
-using namespace boost;
+using namespace boost::graph;
 
 
 struct city_arrival : public base_visitor<city_arrival>
@@ -120,7 +120,7 @@ int main(int, char*[])
   std::cout << "*** Depth First ***" << std::endl;
   depth_first_search
     (G, 
-     visitor(make_dfs_visitor(boost::make_list(city_arrival(names),
+     visitor(make_dfs_visitor(boost::graph::make_list(city_arrival(names),
                                                neighbor_cities(names),
                                                finish_city(names)))));
   std::cout << std::endl;
@@ -130,7 +130,7 @@ int main(int, char*[])
 
   std::cout << "*** Breadth First ***" << std::endl;
   breadth_first_search
-    (G, s, visitor(make_bfs_visitor(boost::make_list(city_arrival(names), 
+    (G, s, visitor(make_bfs_visitor(boost::graph::make_list(city_arrival(names), 
                                                      neighbor_cities(names), 
                                                      finish_city(names)))));
   

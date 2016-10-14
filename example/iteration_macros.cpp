@@ -16,7 +16,7 @@ enum family { Jeanie, Debbie, Rick, John, Amanda, Margaret, Benjamin, N };
 
 int main()
 {
-  using namespace boost;
+  using namespace boost::graph;
   const char *name[] = { "Jeanie", "Debbie", "Rick", "John", "Amanda",
     "Margaret", "Benjamin"
   };

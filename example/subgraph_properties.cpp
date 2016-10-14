@@ -37,7 +37,7 @@
 
 int main(int,char*[])
 {
-  using namespace boost;
+  using namespace boost::graph;
   //using Traits = adjacency_list_traits<vecS, vecS, directedS>;// Does nothing?
   using VertexProperty = boost::property<vertex_color_t, int,
     boost::property<vertex_name_t, std::string>>;

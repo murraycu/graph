@@ -32,7 +32,7 @@ struct cycle_printer
 
         // Get the property map containing the vertex indices
         // so we can print them.
-        auto indices = boost::get(boost::vertex_index, g);
+        auto indices = boost::get(boost::graph::vertex_index, g);
 
         // Iterate over path printing each vertex that forms the cycle.
         typename Path::const_iterator i, before_end = boost::prior(p.end());
@@ -50,7 +50,7 @@ struct cycle_printer
 template <typename Graph, typename VertexPairIterator>
 void build_graph(Graph& graph, unsigned int const nvertices,
                  VertexPairIterator first, VertexPairIterator last) {
-    using Traits = boost::graph_traits<Graph>;
+    using Traits = boost::graph::graph_traits<Graph>;
     using vertex_descriptor = typename Traits::vertex_descriptor;
     std::map<unsigned int, vertex_descriptor> vertices;
 
@@ -82,11 +82,11 @@ int main(int argc, char const* argv[]) {
 
     unsigned int num_vertices = boost::lexical_cast<unsigned int>(argv[1]);
     std::istream_iterator<unsigned int> first_vertex(std::cin), last_vertex;
-    boost::directed_graph<> graph;
+    boost::graph::directed_graph<> graph;
     build_graph(graph, num_vertices, first_vertex, last_vertex);
 
     cycle_printer<std::ostream> visitor(std::cout);
-    boost::hawick_circuits(graph, visitor);
+    boost::graph::hawick_circuits(graph, visitor);
 
     return EXIT_SUCCESS;
 }

@@ -15,7 +15,7 @@
 #include "helper.hpp"
 #include "range_pair.hpp"
 
-using namespace boost;
+using namespace boost::graph;
 
 // The Actor type stores the name of each vertex in the graph.
 struct Actor

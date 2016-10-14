@@ -13,7 +13,7 @@
 int
 main()
 {
-  using namespace boost;
+  using namespace boost::graph;
   using Graph = adjacency_list<vecS, vecS, undirectedS,
     boost::no_property, boost::property<edge_weight_t, int>>;
   using Edge = graph_traits<Graph>::edge_descriptor;

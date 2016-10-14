@@ -35,7 +35,7 @@ int
 main(int , char* [])
 {
   //begin
-  using namespace boost;
+  using namespace boost::graph;
 
   /* Topological sort will need to color the graph.  Here we use an
      internal decorator, so we "property" the color to the graph.
@@ -43,7 +43,7 @@ main(int , char* [])
   using Graph = adjacency_list<vecS, vecS, directedS, 
     boost::property<vertex_color_t, default_color_type>>;
 
-  using Vertex = boost::graph_traits<Graph>::vertex_descriptor;
+  using Vertex = boost::graph::graph_traits<Graph>::vertex_descriptor;
 
   const auto edges = {
     Pair(0, 1),

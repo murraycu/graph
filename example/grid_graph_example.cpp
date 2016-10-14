@@ -12,7 +12,7 @@
 #include <boost/graph/grid_graph.hpp>
 
 #define DIMENSIONS 3
-using namespace boost;
+using namespace boost::graph;
 
 using Graph = grid_graph<DIMENSIONS>;
 using Traits = graph_traits<Graph>;
@@ -35,9 +35,8 @@ int main(int argc, char* argv[]) {
        v_index < num_vertices(graph); ++v_index) {
 
     // The two indicies should always be equal
-    // TODO: get() is in the global namespace, but it should be in boost::.
     std::cout << "Index of vertex " << v_index << " is " <<
-      get(boost::vertex_index, graph, vertex(v_index, graph)) << std::endl;
+      get(boost::graph::vertex_index, graph, vertex(v_index, graph)) << std::endl;
 
   }
 
@@ -47,7 +46,7 @@ int main(int argc, char* argv[]) {
 
     // The two indicies should always be equal
     std::cout << "Index of edge " << e_index << " is " <<
-      get(boost::edge_index, graph, edge_at(e_index, graph)) << std::endl;
+      get(boost::graph::edge_index, graph, edge_at(e_index, graph)) << std::endl;
 
   }
 

@@ -18,7 +18,7 @@
 #include "range_pair.hpp"
 
 
-using namespace boost;
+using namespace boost::graph;
 
 
 int main(int argc, char** argv)

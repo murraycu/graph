@@ -46,7 +46,7 @@
 int
 main()
 {
-  using namespace boost;
+  using namespace boost::graph;
 
   using Traits = adjacency_list_traits<vecS, vecS, directedS>;
   using Graph = adjacency_list < listS, vecS, directedS,

@@ -39,18 +39,20 @@ struct order_by_name
     // Order by target vertex, then by name. 
     // std::pair's operator< does a nice job of implementing
     // lexicographical compare on tuples.
-    return std::make_pair(e1.get_target(), boost::get(boost::edge_name, e1))
-      < std::make_pair(e2.get_target(), boost::get(boost::edge_name, e2));
+    return std::make_pair(e1.get_target(), boost::get(boost::graph::edge_name, e1))
+      < std::make_pair(e2.get_target(), boost::get(boost::graph::edge_name, e2));
   }
 };
 
 #if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 struct ordered_set_by_nameS { };
 namespace boost {
+namespace graph {
   template <class ValueType>
   struct container_gen<ordered_set_by_nameS, ValueType> {
     using type = std::multiset<ValueType, order_by_name<ValueType>>;
   };
+}
 }
 #else
 struct ordered_set_by_nameS {
@@ -58,17 +60,21 @@ struct ordered_set_by_nameS {
   struct bind_ { using } = std::multiset<T, order_by_name<T>> type;;
 };
 namespace boost {
+namespace graph {
   template <> struct container_selector<ordered_set_by_nameS>  {
     using type = ordered_set_by_nameS;
   };
 }
+}
 #endif
 
 namespace boost {
+namespace graph {
   template <>
   struct parallel_edge_traits<ordered_set_by_nameS> { 
     using type = allow_parallel_edge_tag;
   };
+}
 }
 
 int
@@ -77,7 +83,7 @@ main()
 #ifdef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
   std::cout << "This program requires partial specialization" << std::endl;
 #else
-  using namespace boost;
+  using namespace boost::graph;
   using EdgeProperty = boost::property<edge_name_t, std::string>;
   using graph_type = adjacency_list<ordered_set_by_nameS, vecS, undirectedS,
     boost::no_property, EdgeProperty>;

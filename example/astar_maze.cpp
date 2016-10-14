@@ -41,9 +41,9 @@ boost::mt19937 random_generator;
 using distance = double;
 
 #define GRID_RANK 2
-using grid = boost::grid_graph<GRID_RANK>;
-using vertex_descriptor = boost::graph_traits<grid>::vertex_descriptor;
-using vertices_size_type = boost::graph_traits<grid>::vertices_size_type;
+using grid = boost::graph::grid_graph<GRID_RANK>;
+using vertex_descriptor = boost::graph::graph_traits<grid>::vertex_descriptor;
+using vertices_size_type = boost::graph::graph_traits<grid>::vertices_size_type;
 
 // A hash function for vertices.
 struct vertex_hash:std::unary_function<vertex_descriptor, std::size_t> {
@@ -56,7 +56,7 @@ struct vertex_hash:std::unary_function<vertex_descriptor, std::size_t> {
 };
 
 using vertex_set = boost::unordered_set<vertex_descriptor, vertex_hash>;
-using filtered_grid = boost::vertex_subset_complement_filter<grid, vertex_set>::type;
+using filtered_grid = boost::graph::vertex_subset_complement_filter<grid, vertex_set>::type;
 
 // A searchable maze
 //
@@ -111,7 +111,7 @@ private:
 
   // Filter the barrier vertices out of the underlying grid.
   filtered_grid create_barrier_grid() {
-    return boost::make_vertex_subset_complement_filter(m_grid, m_barriers);
+    return boost::graph::make_vertex_subset_complement_filter(m_grid, m_barriers);
   }
 
   // The grid underlying the maze
@@ -132,7 +132,7 @@ private:
 // This calculates the Euclidean distance between a vertex and a goal
 // vertex.
 class euclidean_heuristic:
-      public boost::astar_heuristic<filtered_grid, double>
+      public boost::graph::astar_heuristic<filtered_grid, double>
 {
 public:
   euclidean_heuristic(vertex_descriptor goal):m_goal(goal) {};
@@ -149,7 +149,7 @@ private:
 struct found_goal {};
 
 // Visitor that terminates when we find the goal vertex
-struct astar_goal_visitor:public boost::default_astar_visitor {
+struct astar_goal_visitor:public boost::graph::default_astar_visitor {
   astar_goal_visitor(vertex_descriptor goal):m_goal(goal) {};
 
   void examine_vertex(vertex_descriptor u, const filtered_grid&) {
@@ -184,7 +184,7 @@ bool maze::solve() {
 
   try {
     astar_search(m_barrier_grid, s, heuristic,
-                 boost::weight_map(weight).
+                 boost::graph::weight_map(weight).
                  predecessor_map(pred_pmap).
                  distance_map(dist_pmap).
                  visitor(visitor) );

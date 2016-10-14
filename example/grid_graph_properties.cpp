@@ -14,7 +14,7 @@
 int main(int argc, char* argv[]) 
 {
   // A 2D grid graph
-  using GraphType = boost::grid_graph<2>;
+  using GraphType = boost::graph::grid_graph<2>;
 
   // Create a 5x5 graph
   const unsigned int dimension = 5;
@@ -22,15 +22,15 @@ int main(int argc, char* argv[])
   GraphType graph(lengths);
 
   // Get the index map of the grid graph
-  using indexMapType = boost::property_map<GraphType, boost::vertex_index_t>::const_type;
+  using indexMapType = boost::property_map<GraphType, boost::graph::vertex_index_t>::const_type;
   // TODO: get() is in the global namespace, but it should be in boost::.
-  indexMapType indexMap(get(boost::vertex_index, graph));
+  indexMapType indexMap(get(boost::graph::vertex_index, graph));
 
   // Create a float for every node in the graph
   boost::vector_property_map<float, indexMapType> dataMap(num_vertices(graph), indexMap);
 
   // Associate the value 2.0 with the node at position (0,1) in the grid
-  boost::graph_traits<GraphType>::vertex_descriptor v = { { 0, 1 } };
+  boost::graph::graph_traits<GraphType>::vertex_descriptor v = { { 0, 1 } };
   boost::put(dataMap, v, 2.0f);
 
   // Get the data at: the node at position (0,1) in the grid

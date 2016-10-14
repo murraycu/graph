@@ -16,7 +16,7 @@
 #include <boost/graph/graph_utility.hpp>
 #include <boost/pending/indirect_cmp.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
 int
 main()

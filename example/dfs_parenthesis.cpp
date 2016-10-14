@@ -24,7 +24,7 @@
 #include "boost/graph/breadth_first_search.hpp"
 #include "boost/graph/depth_first_search.hpp"
 
-using namespace boost;
+using namespace boost::graph;
 
 struct open_paren : public base_visitor<open_paren> {
   using event_filter = on_discover_vertex;
@@ -46,7 +46,7 @@ int
 main(int, char*[])
 {
 
-  using namespace boost;
+  using namespace boost::graph;
   
   using Graph = adjacency_list<>;
   using E = std::pair<int,int>;

@@ -45,7 +45,7 @@
 
  */
 
-using namespace boost;
+using namespace boost::graph;
 
 int main(int argc, char* argv[]) 
 {
@@ -62,7 +62,7 @@ int main(int argc, char* argv[])
   using Rank = VertexIndex*;
   using Parent = Vertex*;
 
-  disjoint_sets<Rank, Parent> ds(&rank[0], &parent[0]);
+  boost::disjoint_sets<Rank, Parent> ds(&rank[0], &parent[0]);
 
   initialize_incremental_components(graph, ds);
   incremental_components(graph, ds);
@@ -83,7 +83,7 @@ int main(int argc, char* argv[])
   ds.union_set(2,5);
     
   std::cout << "An undirected graph:" << std::endl;
-  print_graph(graph, boost::get(boost::vertex_index, graph));
+  print_graph(graph, boost::get(boost::graph::vertex_index, graph));
   std::cout << std::endl;
     
   BOOST_FOREACH(Vertex current_vertex, vertices(graph)) {

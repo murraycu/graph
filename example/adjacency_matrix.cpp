@@ -14,7 +14,7 @@
 
 int main()
 {
-  using namespace boost;
+  using namespace boost::graph;
   enum { A, B, C, D, E, F, N };
   const char* name = "ABCDEF";
 

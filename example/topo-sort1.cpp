@@ -15,7 +15,7 @@
 int
 main()
 {
-  using namespace boost;
+  using namespace boost::graph;
   const char *tasks[] = {
     "pick up kids from school",
     "buy groceries (and snacks)",

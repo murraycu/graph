@@ -39,7 +39,7 @@ struct positive_edge_weight {
 
 int main()
 {
-  using namespace boost;
+  using namespace boost::graph;
   
   using Graph = adjacency_list<multisetS, vecS, directedS,
     boost::no_property, boost::property<edge_weight_t, int>>;

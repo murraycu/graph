@@ -21,7 +21,7 @@ public:
   template <typename Node, typename Tree> 
   void inorder(Node n, Tree& t)
   {
-    std::cout << boost::get(boost::vertex_name, t)[n];
+    std::cout << boost::get(boost::graph::vertex_name, t)[n];
   }
   template <typename Node, typename Tree> 
   void postorder(Node, Tree&) {
@@ -32,7 +32,7 @@ public:
 
 int main()
 {
-  using namespace boost;
+  using namespace boost::graph;
   using graph_t = adjacency_list<vecS, vecS, directedS, 
     boost::property<vertex_name_t, std::string>>;
   using vertex_t = graph_traits<graph_t>::vertex_descriptor;

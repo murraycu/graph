@@ -8,7 +8,7 @@
 #include <boost/config.hpp>
 #include <iostream>
 #include <boost/graph/adjacency_list.hpp>
-using namespace boost;
+using namespace boost::graph;
 
 template <typename UndirectedGraph> void
 undirected_graph_demo1()
@@ -89,7 +89,7 @@ undirected_graph_demo2()
   std::cout << "weight[(v,u)] = " << boost::get(weight, e2) << std::endl;
 
   std::cout << "the edges incident to v: ";
-  typename boost::graph_traits<UndirectedGraph>::out_edge_iterator e, e_end;
+  typename boost::graph::graph_traits<UndirectedGraph>::out_edge_iterator e, e_end;
   auto s = vertex(0, undigraph);
   for (std::tie(e, e_end) = out_edges(s, undigraph); e != e_end; ++e)
     std::cout << "(" << source(*e, undigraph) 

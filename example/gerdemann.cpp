@@ -40,11 +40,11 @@
 // v is deleted
 template <class Graph, class GetEdgeProperties>
 void merge_vertex
-  (typename boost::graph_traits<Graph>::vertex_descriptor u,
-   typename boost::graph_traits<Graph>::vertex_descriptor v,
+  (typename boost::graph::graph_traits<Graph>::vertex_descriptor u,
+   typename boost::graph::graph_traits<Graph>::vertex_descriptor v,
    Graph& g, GetEdgeProperties getp)
 {
-  using Traits = boost::graph_traits<Graph>;
+  using Traits = boost::graph::graph_traits<Graph>;
   typename Traits::edge_descriptor e;
   typename Traits::out_edge_iterator out_i, out_end;
   for (std::tie(out_i, out_end) = out_edges(v, g); out_i != out_end; ++out_i) {
@@ -69,14 +69,15 @@ struct order_by_name
   bool operator()(const StoredEdge& e1, const StoredEdge& e2) const {
     // Using std::pair operator< as an easy way to get lexicographical
     // compare over tuples.
-    return std::make_pair(e1.get_target(), boost::get(boost::edge_name, e1))
-      < std::make_pair(e2.get_target(), boost::get(boost::edge_name, e2));
+    return std::make_pair(e1.get_target(), boost::get(boost::graph::edge_name, e1))
+      < std::make_pair(e2.get_target(), boost::get(boost::graph::edge_name, e2));
   }
 };
 struct ordered_set_by_nameS { };
 
 #ifndef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 namespace boost {
+namespace graph {
   template <class ValueType>
   struct container_gen<ordered_set_by_nameS, ValueType> {
     using type = std::set<ValueType, order_by_name<ValueType>>;
@@ -86,6 +87,7 @@ namespace boost {
     using type = allow_parallel_edge_tag;
   };
 }
+}
 #endif
 
 template <class Graph>
@@ -93,8 +95,8 @@ struct get_edge_name {
   get_edge_name(const Graph& g_) : g(g_) { }
 
   template <class Edge>
-  boost::property<boost::edge_name_t, char> operator()(Edge e) const {
-    return boost::property<boost::edge_name_t, char>(boost::get(boost::edge_name, g, e));
+  boost::property<boost::graph::edge_name_t, char> operator()(Edge e) const {
+    return boost::property<boost::graph::edge_name_t, char>(boost::get(boost::graph::edge_name, g, e));
   }
   const Graph& g;
 };
@@ -105,7 +107,7 @@ main()
 #ifdef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
   std::cout << "This program requires partial specialization." << std::endl;
 #else
-  using namespace boost;
+  using namespace boost::graph;
   using EdgeProperty = boost::property<edge_name_t, char>;
   using graph_type = adjacency_list<ordered_set_by_nameS, vecS, bidirectionalS,
     boost::no_property, EdgeProperty> ;

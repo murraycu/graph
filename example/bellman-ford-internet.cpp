@@ -12,7 +12,7 @@
 int
 main()
 {
-  using namespace boost;
+  using namespace boost::graph;
   // ID numbers for the routers (vertices).
   enum
   { A, B, C, D, E, F, G, H, n_vertices };

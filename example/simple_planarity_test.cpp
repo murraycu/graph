@@ -16,7 +16,7 @@ int main(int argc, char** argv)
   // This program illustrates a simple use of boyer_myrvold_planar_embedding
   // as a simple yes/no test for planarity.
 
-  using namespace boost;
+  using namespace boost::graph;
 
   using graph = adjacency_list<vecS,
                          vecS,

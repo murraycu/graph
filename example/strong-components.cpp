@@ -14,7 +14,7 @@
 int
 main()
 {
-  using namespace boost;
+  using namespace boost::graph;
   using Graph = adjacency_list<vecS, vecS, directedS>;
   const int N = 6;
   Graph G(N);

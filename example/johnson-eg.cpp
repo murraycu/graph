@@ -19,7 +19,7 @@
 int
 main()
 {
-  using namespace boost;
+  using namespace boost::graph;
   using Graph = adjacency_list<vecS, vecS, directedS, boost::no_property,
     boost::property<edge_weight_t, int, boost::property<edge_weight2_t, int>>>;
   const int V = 6;
@@ -49,7 +49,7 @@ main()
 
   std::vector<int >d(V, (std::numeric_limits < int>::max)());
   int D[V][V];
-  johnson_all_pairs_shortest_paths(g, D, boost::distance_map(&d[0]));
+  johnson_all_pairs_shortest_paths(g, D, boost::graph::distance_map(&d[0]));
 
   std::cout << "       ";
   for (int k = 0; k < V; ++k)

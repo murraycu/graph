@@ -23,9 +23,9 @@ struct edge_t
 // A graphic of the min-cut is available at <http://www.boost.org/doc/libs/release/libs/graph/doc/stoer_wagner_imgs/stoer_wagner.cpp.gif>
 int main()
 { 
-  using undirected_graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS,
-    boost::no_property, boost::property<boost::edge_weight_t, int>>;
-  using weight_map_type = boost::property_map<undirected_graph, boost::edge_weight_t>::type;
+  using undirected_graph = boost::graph::adjacency_list<boost::graph::vecS, boost::graph::vecS, boost::graph::undirectedS,
+    boost::no_property, boost::property<boost::graph::edge_weight_t, int>>;
+  using weight_map_type = boost::property_map<undirected_graph, boost::graph::edge_weight_t>::type;
   using weight_type = boost::property_traits<weight_map_type>::value_type;
   
   // define the 16 edges of the graph. {3, 4} means an undirected edge between vertices 3 and 4.
@@ -38,28 +38,28 @@ int main()
   
   // construct the graph object. 8 is the number of vertices, which are numbered from 0
   // through 7, and 16 is the number of edges.
-  undirected_graph g(std::begin(edges), std::end(edges), ws, 8, 16);
+  boost::graph::undirected_graph g(std::begin(edges), std::end(edges), ws, 8, 16);
   
   // define a property map, `parities`, that will store a boolean value for each vertex.
   // Vertices that have the same parity after `stoer_wagner_min_cut` runs are on the same side of the min-cut.
-  BOOST_AUTO(parities, boost::make_one_bit_color_map(num_vertices(g), boost::get(boost::vertex_index, g)));
+  BOOST_AUTO(parities, boost::graph::make_one_bit_color_map(boost::graph::num_vertices(g), boost::get(boost::graph::vertex_index, g)));
   
   // run the Stoer-Wagner algorithm to obtain the min-cut weight. `parities` is also filled in.
-  int w = boost::stoer_wagner_min_cut(g, boost::get(boost::edge_weight, g), boost::parity_map(parities));
+  int w = boost::graph::stoer_wagner_min_cut(g, boost::get(boost::graph::edge_weight, g), boost::graph::parity_map(parities));
   
   std::cout << "The min-cut weight of G is " << w << ".\n" << std::endl;
   assert(w == 7);
   
   std::cout << "One set of vertices consists of:" << std::endl;
   size_t i;
-  for (i = 0; i < num_vertices(g); ++i) {
+  for (i = 0; i < boost::graph::num_vertices(g); ++i) {
     if (boost::get(parities, i))
       std::cout << i << std::endl;
   }
   std::cout << std::endl;
   
   std::cout << "The other set of vertices consists of:" << std::endl;
-  for (i = 0; i < num_vertices(g); ++i) {
+  for (i = 0; i < boost::graph::num_vertices(g); ++i) {
     if (!boost::get(parities, i))
       std::cout << i << std::endl;
   }

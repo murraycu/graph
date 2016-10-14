@@ -23,7 +23,7 @@
 // spanning tree. The Distance template parameter is for a
 // PropertyMap.
 template <class Distance>
-struct total_length_visitor : public boost::dijkstra_visitor<> {
+struct total_length_visitor : public boost::graph::dijkstra_visitor<> {
   using D = typename boost::property_traits<Distance>::value_type;
   total_length_visitor(D& len, Distance d)
     : _total_length(len), _distance(d) { }
@@ -37,7 +37,7 @@ struct total_length_visitor : public boost::dijkstra_visitor<> {
 
 int main(int argc, char* argv[])
 {
-  using namespace boost;
+  using namespace boost::graph;
   Graph* g;
 
   unsigned long n = 100;
@@ -91,7 +91,7 @@ int main(int argc, char* argv[])
    total_length_visitor<Distance> length_vis(sp_length, d);
 
    prim_minimum_spanning_tree(g, p,
-                              boost::distance_map(boost::get(z_property<long>(), g)).
+                              boost::graph::distance_map(boost::get(z_property<long>(), g)).
                               weight_map(boost::get(edge_length_t(), g)). 
                               // Use the "y" utility field for color
                               color_map(boost::get(y_property<long>(), g)).

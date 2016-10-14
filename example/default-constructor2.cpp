@@ -9,7 +9,7 @@
 #include <fstream>
 #include <boost/graph/adjacency_list.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
 template <typename Graph> void
 read_graph_file(std::istream & in, Graph & g)

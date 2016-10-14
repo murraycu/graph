@@ -12,7 +12,7 @@
 #include <boost/graph/adjacency_list_io.hpp>
 #include <fstream>
 
-using namespace boost;
+using namespace boost::graph;
 
 //======== my data structure
 struct MyStruct { double value; };

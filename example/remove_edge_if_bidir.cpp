@@ -39,7 +39,7 @@
 
  */
 
-using namespace boost;
+using namespace boost::graph;
 
 using Graph = adjacency_list<vecS, vecS, bidirectionalS, 
   boost::no_property, boost::property<edge_weight_t, int>>;

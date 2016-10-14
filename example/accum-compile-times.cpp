@@ -25,13 +25,18 @@ namespace std
   }
 }
 
+
 namespace boost
 {
-  enum vertex_compile_cost_t { vertex_compile_cost };
-  BOOST_INSTALL_PROPERTY(vertex, compile_cost);
+  // TODO: Don't put this the in boost::graph namespace.
+  namespace graph {
+    enum vertex_compile_cost_t { vertex_compile_cost };
+  }
+
+  BOOST_INSTALL_PROPERTY(boost::graph::vertex, compile_cost);
 }
 
-using namespace boost;
+using namespace boost::graph;
 
 using file_dep_graph2 = adjacency_list<listS, // Store out-edges of each vertex in a std::list
   listS,                       // Store vertex set in a std::list
@@ -81,7 +86,7 @@ main()
 
   graph_property_iter_range < file_dep_graph2,
     vertex_compile_cost_t >::iterator ci, ci_end;
-  std::tie(ci, ci_end) = boost::get_property_iter_range(g, vertex_compile_cost);
+  std::tie(ci, ci_end) = boost::graph::get_property_iter_range(g, vertex_compile_cost);
   std::cout << "total (sequential) compile time: "
     << std::accumulate(ci, ci_end, 0.0) << std::endl;
 

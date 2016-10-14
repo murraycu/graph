@@ -19,7 +19,7 @@
 #include <boost/graph/mcgregor_common_subgraphs.hpp>
 #include <boost/property_map/shared_array_property_map.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
 // Callback that looks for the first common subgraph whose size
 // matches the user's preference.
@@ -48,7 +48,7 @@ struct example_callback {
 
     // Generate filtered graphs using membership map
     using MembershipFilteredGraph =
-      typename boost::membership_filtered_graph_traits<Graph, MembershipMap>::graph_type;
+      typename boost::boost::graph::membership_filtered_graph_traits<Graph, MembershipMap>::graph_type;
 
     MembershipFilteredGraph subgraph1 =
       make_membership_filtered_graph(m_graph1, membership_map1);
@@ -115,28 +115,28 @@ int main (int argc, char *argv[]) {
   std::cout << "mcgregor_common_subgraphs:" << std::endl;
   mcgregor_common_subgraphs
     (graph_simple1, graph_simple2, true, user_callback,
-     vertices_equivalent(boost::make_property_map_equivalent(vname_map_simple1, vname_map_simple2))); 
+     vertices_equivalent(boost::graph::make_property_map_equivalent(vname_map_simple1, vname_map_simple2))); 
   std::cout << std::endl;
 
   // Unique subgraphs
   std::cout << "mcgregor_common_subgraphs_unique:" << std::endl;
   mcgregor_common_subgraphs_unique
     (graph_simple1, graph_simple2, true, user_callback,
-     vertices_equivalent(boost::make_property_map_equivalent(vname_map_simple1, vname_map_simple2))); 
+     vertices_equivalent(boost::graph::make_property_map_equivalent(vname_map_simple1, vname_map_simple2))); 
   std::cout << std::endl;
 
   // Maximum subgraphs
   std::cout << "mcgregor_common_subgraphs_maximum:" << std::endl;
   mcgregor_common_subgraphs_maximum
     (graph_simple1, graph_simple2, true, user_callback,
-     vertices_equivalent(boost::make_property_map_equivalent(vname_map_simple1, vname_map_simple2))); 
+     vertices_equivalent(boost::graph::make_property_map_equivalent(vname_map_simple1, vname_map_simple2))); 
   std::cout << std::endl;
 
   // Maximum, unique subgraphs
   std::cout << "mcgregor_common_subgraphs_maximum_unique:" << std::endl;
   mcgregor_common_subgraphs_maximum_unique
     (graph_simple1, graph_simple2, true, user_callback,
-     vertices_equivalent(boost::make_property_map_equivalent(vname_map_simple1, vname_map_simple2))); 
+     vertices_equivalent(boost::graph::make_property_map_equivalent(vname_map_simple1, vname_map_simple2))); 
 
   return 0;
 }

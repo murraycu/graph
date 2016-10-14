@@ -17,7 +17,7 @@
 int
 main()
 {
-  using namespace boost;
+  using namespace boost::graph;
   GraphvizGraph g_dot;
   read_graphviz("figs/telephone-network.dot", g_dot);
 

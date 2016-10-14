@@ -34,7 +34,7 @@
 
 int main(int, char *[])
 {
-  using namespace boost;
+  using namespace boost::graph;
   using Graph = adjacency_list<vecS, vecS, undirectedS, boost::no_property, size_t, boost::no_property>;
 
   using Pair = std::pair<std::size_t, std::size_t>;

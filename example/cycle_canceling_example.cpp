@@ -14,14 +14,14 @@
 
 
 int main() {
-    boost::SampleGraph::vertex_descriptor s,t;
-    boost::SampleGraph::Graph g;
-    boost::SampleGraph::getSampleGraph(g, s, t);
+    boost::graph::SampleGraph::vertex_descriptor s,t;
+    boost::graph::SampleGraph::Graph g;
+    boost::graph::SampleGraph::getSampleGraph(g, s, t);
 
-    boost::edmonds_karp_max_flow(g, s, t);
-    boost::cycle_canceling(g);
+    boost::graph::edmonds_karp_max_flow(g, s, t);
+    boost::graph::cycle_canceling(g);
 
-    auto cost = boost::find_flow_cost(g);
+    auto cost = boost::graph::find_flow_cost(g);
     assert(cost == 29);
     return 0;
 }

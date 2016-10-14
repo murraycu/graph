@@ -13,7 +13,7 @@
 #include <fstream>
 #include <boost/graph/graphviz.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
 class WebPage
 {
@@ -38,7 +38,7 @@ int main()
                     E(5, 2) };
 
   using WebGraph = compressed_sparse_row_graph<directedS, WebPage>;
-  WebGraph g(boost::edges_are_sorted, &the_edges[0], &the_edges[0] + sizeof(the_edges)/sizeof(E), 6);
+  WebGraph g(boost::graph::edges_are_sorted, &the_edges[0], &the_edges[0] + sizeof(the_edges)/sizeof(E), 6);
   
   // Set the URLs of each vertex
   int index = 0;
@@ -52,7 +52,7 @@ int main()
               << std::endl;
     
   // Output the graph in DOT format
-  dynamic_properties dp;
+  boost::dynamic_properties dp;
   dp.property("label", boost::get(&WebPage::url, g));
   std::ofstream out("web-graph.dot");
   write_graphviz(out, g, dp, std::string(), boost::get(vertex_index, g));

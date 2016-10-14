@@ -12,7 +12,7 @@
 #include <algorithm>
 #include <boost/graph/adjacency_list.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
 
 /*
@@ -58,8 +58,8 @@ template <class Graph>
 struct print_edge {
   print_edge(Graph& g) : G(g) { }
 
-  using Edge = typename boost::graph_traits<Graph>::edge_descriptor;
-  using Vertex = typename boost::graph_traits<Graph>::vertex_descriptor;
+  using Edge = typename boost::graph::graph_traits<Graph>::edge_descriptor;
+  using Vertex = typename boost::graph::graph_traits<Graph>::vertex_descriptor;
   void operator()(Edge e) const
   {
     auto id = boost::get(vertex_index, G);
@@ -77,7 +77,7 @@ template <class Graph>
 struct print_index {
   print_index(Graph& g) : G(g){ }
 
-  using Vertex = typename boost::graph_traits<Graph>::vertex_descriptor;
+  using Vertex = typename boost::graph::graph_traits<Graph>::vertex_descriptor;
   void operator()(Vertex c) const
   {
     typename boost::property_map<Graph,vertex_index_t>::type 
@@ -91,7 +91,7 @@ struct print_index {
 
 template <class Graph>
 struct exercise_vertex {
-  using Vertex = typename boost::graph_traits<Graph>::vertex_descriptor;
+  using Vertex = typename boost::graph::graph_traits<Graph>::vertex_descriptor;
 
   exercise_vertex(Graph& _g) : g(_g) { }
 
@@ -143,7 +143,7 @@ main()
     id = boost::get(vertex_index, g);
 
   std::cout << "vertices(g) = ";
-  boost::graph_traits<MyGraphType>::vertex_iterator vi;
+  boost::graph::graph_traits<MyGraphType>::vertex_iterator vi;
   for (vi = vertices(g).first; vi != vertices(g).second; ++vi)
     std::cout << id[*vi] <<  " ";
   std::cout << std::endl;

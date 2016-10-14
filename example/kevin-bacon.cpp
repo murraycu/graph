@@ -17,7 +17,7 @@
 #include "range_pair.hpp"
 #include <map>
 
-using namespace boost;
+using namespace boost::graph;
 
 template <typename DistanceMap>
 class bacon_number_recorder : public default_bfs_visitor

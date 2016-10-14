@@ -10,7 +10,7 @@
 #include <fstream>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/breadth_first_search.hpp>
-using namespace boost;
+using namespace boost::graph;
 
 template <typename Graph, typename VertexNameMap, typename TransDelayMap>
 void

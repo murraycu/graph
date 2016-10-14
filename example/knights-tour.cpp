@@ -15,7 +15,7 @@
 #include <boost/graph/visitors.hpp>
 #include <boost/property_map/property_map.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
 using Position = std::pair<int, int>;
 Position
@@ -258,12 +258,10 @@ struct board_map
 {
   using value_type = int;
   using key_type = Position;
-  using category = read_write_property_map_tag;
+  using category = boost::read_write_property_map_tag;
     board_map(int *b, int n):m_board(b), m_size(n)
   {
   }
-
-  // TODO: get() and put should be in boost::, not global.
   friend int get(const board_map & ba, Position p);
   friend void put(const board_map & ba, Position p, int v);
   friend std::ostream & operator << (std::ostream & os, const board_map & ba);

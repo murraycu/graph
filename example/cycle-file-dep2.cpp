@@ -13,9 +13,9 @@
 #include <boost/graph/graph_utility.hpp>
 #include "range_pair.hpp"
 
-// can't do using namespace boost because then
-// we get conflict with boost::default_dfs_visitor.
-using namespace boost;
+// can't do using namespace boost::graph because then
+// we get conflict with boost::graph::default_dfs_visitor.
+using namespace boost::graph;
 
 namespace std {
   template <typename T >

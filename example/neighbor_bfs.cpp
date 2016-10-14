@@ -38,7 +38,7 @@
 
 */
 
-using namespace boost;
+using namespace boost::graph;
 
 template <class ParentDecorator>
 struct print_parent {

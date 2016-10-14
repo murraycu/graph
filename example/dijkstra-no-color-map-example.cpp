@@ -19,7 +19,7 @@
 #include <boost/property_map/property_map.hpp>
 #include "range_pair.hpp"
 
-using namespace boost;
+using namespace boost::graph;
 
 int
 main(int, char *[])
@@ -44,8 +44,8 @@ main(int, char *[])
   auto s = vertex(A, g);
 
   dijkstra_shortest_paths_no_color_map(g, s,
-                                       predecessor_map(boost::make_iterator_property_map(p.begin(), boost::get(boost::vertex_index, g))).
-                                       distance_map(boost::make_iterator_property_map(d.begin(), boost::get(boost::vertex_index, g))));
+                                       predecessor_map(boost::make_iterator_property_map(p.begin(), boost::get(boost::graph::vertex_index, g))).
+                                       distance_map(boost::make_iterator_property_map(d.begin(), boost::get(boost::graph::vertex_index, g))));
 
   std::cout << "distances and parents:" << std::endl;
   for(const auto& vertex : make_range_pair(vertices(g))) {

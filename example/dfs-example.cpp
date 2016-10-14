@@ -12,7 +12,7 @@
 
 #include <iostream>
 
-using namespace boost;
+using namespace boost::graph;
 template <typename TimeMap> class dfs_time_visitor:public default_dfs_visitor {
   using T = typename boost::property_traits<TimeMap>::value_type;
 public:

@@ -37,7 +37,7 @@ struct edge_properties {
   }  
 };
 
-using namespace boost;
+using namespace boost::graph;
 
 using Graph = adjacency_list<vecS, vecS, undirectedS, 
                vertex_properties, edge_properties>;

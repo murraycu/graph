@@ -12,7 +12,7 @@
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graph_utility.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
 namespace std
 {

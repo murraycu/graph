@@ -15,7 +15,7 @@
 #include <boost/property_map/property_map.hpp>
 #include <string>
 
-using namespace boost;
+using namespace boost::graph;
 
 /*
   Interior Property Map Basics

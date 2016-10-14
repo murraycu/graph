@@ -41,7 +41,7 @@
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 #include <boost/graph/visitors.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
 enum files_e { dax_h, yow_h, boz_h, zow_h, foo_cpp, 
                foo_o, bar_cpp, bar_o, libfoobar_a,

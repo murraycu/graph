@@ -22,17 +22,17 @@
 
 
 template <class Distance>
-class calc_distance_visitor : public boost::bfs_visitor<>
+class calc_distance_visitor : public boost::graph::bfs_visitor<>
 {
 public:
   calc_distance_visitor(Distance d) : distance(d) { }
 
   template <class Graph>
-  void tree_edge(typename boost::graph_traits<Graph>::edge_descriptor e,
+  void tree_edge(typename boost::graph::graph_traits<Graph>::edge_descriptor e,
                  Graph& g)
   {
-    auto u = boost::source(e, g);
-    auto v = boost::target(e, g);
+    auto u = boost::graph::source(e, g);
+    auto v = boost::graph::target(e, g);
     distance[v] = distance[u] + 1;
   }
 private:
@@ -41,13 +41,13 @@ private:
 
 
 template <class VertexNameMap, class DistanceMap>
-class print_tree_visitor : public boost::dfs_visitor<>
+class print_tree_visitor : public boost::graph::dfs_visitor<>
 {
 public:
   print_tree_visitor(VertexNameMap n, DistanceMap d) : name(n), distance(d) { }
   template <class Graph>
   void 
-  discover_vertex(typename boost::graph_traits<Graph>::vertex_descriptor v,
+  discover_vertex(typename boost::graph::graph_traits<Graph>::vertex_descriptor v,
             Graph&)
   {
     using Dist = typename boost::property_traits<DistanceMap>::value_type;
@@ -58,10 +58,10 @@ public:
   }
 
   template <class Graph>
-  void tree_edge(typename boost::graph_traits<Graph>::edge_descriptor e,
+  void tree_edge(typename boost::graph::graph_traits<Graph>::edge_descriptor e,
                  Graph& g)
   {
-    distance[boost::target(e, g)] = distance[boost::source(e, g)] + 1;
+    distance[boost::graph::target(e, g)] = distance[boost::graph::source(e, g)] + 1;
   }  
 
 private:
@@ -72,7 +72,7 @@ private:
 int
 main()
 {
-  using namespace boost;
+  using namespace boost::graph;
 
   std::ifstream datafile("./boost_web.dat");
   if (!datafile) {
@@ -107,7 +107,7 @@ main()
   while (std::getline(datafile,line)) {
 
     std::list<std::string> line_toks;
-    boost::stringtok(line_toks, line, "|");
+    boost::graph::stringtok(line_toks, line, "|");
 
     NameVertexMap::iterator pos; 
     bool inserted;
@@ -155,7 +155,7 @@ main()
   for (i = 0; i < num_vertices(g); ++i) {
     calc_distance_visitor<size_type*> vis(&d_matrix[i][0]);
     Traits::vertex_descriptor src = vertices(g).first[i];
-    breadth_first_search(g, src, boost::visitor(vis));
+    breadth_first_search(g, src, boost::graph::visitor(vis));
   }
 
   size_type diameter = 0;
@@ -186,7 +186,7 @@ main()
   Traits::vertex_descriptor src = vertices(g).first[0];
   breadth_first_search
     (g, src, 
-     boost::visitor(make_bfs_visitor(record_predecessors(&parent[0],
+     boost::graph::visitor(make_bfs_visitor(record_predecessors(&parent[0],
                                                          on_tree_edge()))));
 
   // Add all the search tree edges into a new graph

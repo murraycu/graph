@@ -14,13 +14,13 @@
 
 
 int main() {
-    boost::SampleGraph::vertex_descriptor s,t;
-    boost::SampleGraph::Graph g; 
-    boost::SampleGraph::getSampleGraph(g, s, t);
+    boost::graph::SampleGraph::vertex_descriptor s,t;
+    boost::graph::SampleGraph::Graph g; 
+    boost::graph::SampleGraph::getSampleGraph(g, s, t);
 
-    boost::successive_shortest_path_nonnegative_weights(g, s, t);
+    boost::graph::successive_shortest_path_nonnegative_weights(g, s, t);
 
-    auto cost =  boost::find_flow_cost(g);
+    auto cost =  boost::graph::find_flow_cost(g);
     assert(cost == 29);
 
     return 0;

@@ -16,6 +16,11 @@
 
 namespace boost
 {
+
+namespace graph
+{
+
+{
   template <typename Graph>
     std::pair < typename graph_traits<Graph>::vertex_descriptor,
     typename graph_traits<Graph >::degree_size_type>
@@ -141,12 +146,13 @@ namespace boost
     return c;
   }
 
-}
+} // namespace graph
+} // namespace boost
 
 int
 main()
 {
-  using namespace boost;
+  using namespace boost::graph;
   GraphvizGraph g;
   read_graphviz("figs/edge-connectivity.dot", g);
 

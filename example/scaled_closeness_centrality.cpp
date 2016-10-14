@@ -15,7 +15,7 @@
 #include "helper.hpp"
 #include "range_pair.hpp"
 
-using namespace boost;
+using namespace boost::graph;
 
 // This template struct provides a generic version of a "scaling"
 // closeness measure. Specifically, this implementation divides
@@ -71,7 +71,7 @@ using WeightMap = constant_property_map<Edge, int>;
 // Declare a container and its corresponding property map that
 // will contain the resulting closeness centralities of each
 // vertex in the graph.
-using ClosenessProperty = boost::exterior_vertex_property<Graph, float>;
+using ClosenessProperty = exterior_vertex_property<Graph, float>;
 using ClosenessContainer = ClosenessProperty::container_type;
 using ClosenessMap = ClosenessProperty::map_type;
 

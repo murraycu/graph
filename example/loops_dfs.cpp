@@ -19,7 +19,7 @@
 #include <boost/graph/reverse_graph.hpp>
 #include "range_pair.hpp"
 
-using namespace boost;
+using namespace boost::graph;
 
 template <typename OutputIterator> 
 class back_edge_recorder : public default_dfs_visitor

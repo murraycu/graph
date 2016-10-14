@@ -17,7 +17,7 @@
 #include <algorithm>
 
 
-using namespace boost;
+using namespace boost::graph;
 
 //======== vertex properties
 struct toto_t {
@@ -94,20 +94,20 @@ int main(int argc, char* argv[])
   std::cout << write( graph );
   
   std::cout << "radii:" << std::endl;
-  auto seqRadius = boost::get_property_iter_range(graph,radius_t());
+  auto seqRadius = boost::graph::get_property_iter_range(graph,radius_t());
   std::for_each( seqRadius.first, seqRadius.second, Print() ); 
   std::cout << std::endl;
   
   std::cout << "stiff:" << std::endl;
-  auto seqStiff = boost::get_property_iter_range(graph, stiff_t());
+  auto seqStiff = boost::graph::get_property_iter_range(graph, stiff_t());
   std::for_each( seqStiff.first, seqStiff.second, Print() ); 
   std::cout << std::endl;
   
-  seqStiff = boost::get_property_iter_range(graph, stiff_t());
+  seqStiff = boost::graph::get_property_iter_range(graph, stiff_t());
   std::for_each( seqStiff.first, seqStiff.second, Set<double>(2.4) );
   
   std::cout << "new stiff:" << std::endl;
-  seqStiff = boost::get_property_iter_range(graph,stiff_t());
+  seqStiff = boost::graph::get_property_iter_range(graph,stiff_t());
   std::for_each( seqStiff.first, seqStiff.second, Print() ); 
   std::cout << std::endl;
   

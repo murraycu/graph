@@ -40,7 +40,7 @@
 
 int main(int,char*[])
 {
-  using namespace boost;
+  using namespace boost::graph;
   using Graph = subgraph<adjacency_list<vecS, vecS, directedS,
     boost::property<vertex_color_t, int>, boost::property<edge_index_t, int>>>;
 

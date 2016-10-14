@@ -12,7 +12,7 @@
 #include <boost/graph/adjacency_list.hpp>
 #include "range_pair.hpp"
 
-using namespace boost;
+using namespace boost::graph;
 
 template <typename Graph, typename VertexNamePropertyMap> void
 read_graph_file(std::istream & graph_in, std::istream & name_in,

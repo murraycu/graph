@@ -11,28 +11,33 @@
 #include <boost/lexical_cast.hpp>
 #include "range_pair.hpp"
 
+
 namespace boost {
-  enum graph_color_t { graph_color = 5556 };
-  BOOST_INSTALL_PROPERTY(graph, color);
+  // TODO: Don't put this the in boost::graph namespace.
+  namespace graph {
+    enum graph_color_t { graph_color = 5556 };
+  }
+
+  BOOST_INSTALL_PROPERTY(boost::graph::graph, color);
 }
 
 int
 main()
 {
-  using namespace boost;
+  using namespace boost::graph;
   using g_dot_type = 
     adjacency_list<vecS, vecS, directedS,
                    boost::property<vertex_name_t, std::string>, 
                    boost::property<edge_color_t, std::string,
                             boost::property<edge_weight_t, int>>,
-                   boost::property<graph_color_t, std::string>>;
+                   boost::property<boost::graph::graph_color_t, std::string>>;
   g_dot_type g_dot;
 
   boost::dynamic_properties dp(boost::ignore_other_properties);
   dp.property("node_id", boost::get(vertex_name, g_dot));
   dp.property("label", boost::get(edge_weight, g_dot));
   dp.property("color", boost::get(edge_color, g_dot));
-  dp.property("color", ref_property_map<g_dot_type*, std::string>(boost::get_property(g_dot, graph_color)));
+  dp.property("color", boost::ref_property_map<g_dot_type*, std::string>(boost::get_property(g_dot, graph_color)));
   {
     std::ifstream infile("figs/ospf-graph.dot");
     read_graphviz(infile, g_dot, dp);

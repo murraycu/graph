@@ -18,7 +18,7 @@
 #include <sstream>
 #include <cstdlib>
 
-using namespace boost;
+using namespace boost::graph;
 
 
 //

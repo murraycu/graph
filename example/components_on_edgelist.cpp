@@ -53,7 +53,7 @@ using std::tie;
 
 int main(int , char* []) 
 {
-  using namespace boost;
+  using namespace boost::graph;
   using Index = int; // ID of a Vertex
   using Edge = std::pair<Index,Index>;
   const int N = 6;
@@ -64,10 +64,10 @@ int main(int , char* [])
 
   edge_list<Edge*,Edge,ptrdiff_t,std::random_access_iterator_tag> g(edgelist, edgelist + E);
   std::cout << "An undirected graph (edge list):" << std::endl;
-  print_edges(g, identity_property_map());
+  print_edges(g, boost::identity_property_map());
   std::cout << std::endl;
 
-  disjoint_sets_with_storage<> ds(N);
+  boost::disjoint_sets_with_storage<> ds(N);
   incremental_components(g, ds);
   
   component_index<int> components(&ds.parents()[0], 

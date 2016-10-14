@@ -18,7 +18,7 @@
  * @author Andrey Parfenov
  */
 
-using namespace boost;
+using namespace boost::graph;
 using grap_real_t = adjacency_list<
     listS, listS, directedS,
     boost::property<vertex_index_t, int>,
@@ -33,7 +33,7 @@ void gen_rand_graph(TG &g, size_t nV, size_t nE)
     g.clear();
     boost::mt19937 rng;
     rng.seed(uint32_t(time(0)));
-    boost::generate_random_graph(g, nV, nE, rng, true, true);
+    boost::graph::generate_random_graph(g, nV, nE, rng, true, true);
     boost::uniform_real<> ur(-1,10);
     boost::variate_generator<boost::mt19937&, boost::uniform_real<>>   ew1rg(rng, ur);
     randomize_property<edge_weight_t>(g, ew1rg);

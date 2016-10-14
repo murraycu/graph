@@ -22,7 +22,7 @@ main(int argc, char *argv[])
       << std::endl;
     return -1;
   }
-  using namespace boost;
+  using namespace boost::graph;
   GraphvizDigraph g_in;
   read_graphviz(argv[1], g_in);
 

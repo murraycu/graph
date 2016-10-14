@@ -50,7 +50,7 @@
 #include <boost/graph/graph_utility.hpp>
 #include "range_pair.hpp"
 
-using Traits = boost::graph_traits<Graph*>;
+using Traits = boost::graph::graph_traits<Graph*>;
 using vertex_descriptor = Traits::vertex_descriptor;
 using edge_descriptor = Traits::edge_descriptor;
 using vertex_iterator = Traits::vertex_iterator;
@@ -66,7 +66,7 @@ boost::property_map<Graph*, pred_t>::type p_map;
 using color_t = boost::w_property<long>;
 boost::property_map<Graph*, color_t>::type c_map;
 
-class diameter_and_girth_visitor : public boost::bfs_visitor<>
+class diameter_and_girth_visitor : public boost::graph::bfs_visitor<>
 {
 public:
   diameter_and_girth_visitor(std::size_t& k_, std::size_t& girth_)
@@ -127,23 +127,23 @@ main()
       continue;
     }
     distance_list.clear();
-    distance_list.resize(boost::num_vertices(g), 0);
+    distance_list.resize(boost::graph::num_vertices(g), 0);
 
     // obtain property maps
     d_map = boost::get(dist_t(), g);
     p_map = boost::get(pred_t(), g);
     c_map = boost::get(color_t(), g);
 
-    for (const auto& vertex : make_range_pair(boost::vertices(g)))
+    for (const auto& vertex : make_range_pair(boost::graph::vertices(g)))
       d_map[vertex] = 0;
 
     std::size_t k = 0;
     std::size_t girth = (std::numeric_limits<std::size_t>::max)();
     diameter_and_girth_visitor vis(k, girth);
 
-    vertex_descriptor s = *boost::vertices(g).first;
+    vertex_descriptor s = *boost::graph::vertices(g).first;
 
-    boost::breadth_first_search(g, s, visitor(vis).color_map(c_map));
+    boost::graph::breadth_first_search(g, s, visitor(vis).color_map(c_map));
 
     std::cout << "Starting at any given vertex, there are" << std::endl;
 

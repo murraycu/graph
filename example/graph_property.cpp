@@ -12,7 +12,7 @@
 int
 main()
 {
-  using namespace boost;
+  using namespace boost::graph;
 
   using graph_t = adjacency_list<vecS, vecS, directedS, boost::no_property, 
     boost::property<edge_index_t, int>,

@@ -46,7 +46,7 @@ int main(int,char*[])
   int weights[nedges];
   std::fill(weights, weights + nedges, 1);
 
-  using namespace boost;
+  using namespace boost::graph;
 
   using Graph = adjacency_list<vecS, vecS, directedS, 
       boost::property<vertex_color_t, default_color_type>,

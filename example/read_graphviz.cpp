@@ -15,7 +15,7 @@
 #include <string>
 #include <sstream>
 
-using namespace boost;
+using namespace boost::graph;
 
 int main() {
   // Vertex properties

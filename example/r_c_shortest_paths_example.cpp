@@ -15,7 +15,7 @@
 #include <boost/graph/r_c_shortest_paths.hpp>
 #include <iostream>
 
-using namespace boost;
+using namespace boost::graph;
 
 struct SPPRC_Example_Graph_Vert_Prop
 {

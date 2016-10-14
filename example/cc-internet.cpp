@@ -16,7 +16,7 @@
 int
 main()
 {
-  using namespace boost;
+  using namespace boost::graph;
   GraphvizGraph g;
   read_graphviz("figs/cc-internet.dot", g);
 

@@ -64,7 +64,7 @@ int main(int , char* [])
   std::cout << "### First light of sloan-ordering ###" << std::endl;
   std::cout << "#####################################" << std::endl << std::endl;
 
-  using namespace boost;
+  using namespace boost::graph;
  
 
   //Defining the graph type 

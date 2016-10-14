@@ -69,13 +69,13 @@
 
 int main()
 {
-  using namespace boost;
+  using namespace boost::graph;
 
   using Traits = adjacency_list_traits<vecS, vecS, directedS>;
   using Graph = adjacency_list < vecS, vecS, directedS,
     boost::property< vertex_name_t, std::string,
     boost::property< vertex_index_t, long,
-    boost::property< vertex_color_t, default_color_type,
+    boost::property< vertex_color_t, boost::graph::default_color_type,
     boost::property< vertex_distance_t, long,
     boost::property<vertex_predecessor_t, Traits::edge_descriptor>>>>>,
 

@@ -25,7 +25,7 @@
 #include <boost/lexical_cast.hpp>
 #include <map>
 
-using namespace boost;
+using namespace boost::graph;
 
 struct Actor
 {

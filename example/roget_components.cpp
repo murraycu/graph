@@ -18,7 +18,7 @@
 
 int main(int argc, char* argv[])
 {
-  using namespace boost;
+  using namespace boost::graph;
   Graph* g;
   using vertex_t = graph_traits<Graph*>::vertex_descriptor;
   unsigned long n = 0;

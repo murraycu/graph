@@ -66,18 +66,18 @@ Various aspects of the graph are modeled by the following classes:
     weight equal to the average of their endpoint vertex indices, i.e. edge
     (2,3) has weight 2.5, edge (0,4) has weight 2, etc.
 
-  boost::property_map<graph, boost::edge_weight_t>
+  boost::property_map<graph, boost::graph::edge_weight_t>
     This tells Boost to associate the edges of the ring graph with the edge
     weight map.
 
 Along with these classes, the graph concepts are modeled by various valid
 expression functions defined below.  This example also defines a
-get(boost::vertex_index_t, const ring_graph&) function which isn't part of a
+boost::get(boost::graph::vertex_index_t, const ring_graph&) function which isn't part of a
 graph concept, but is used for Dijkstra search.
 
 Apart from graph, client code should not instantiate the model classes
 directly. Instead it should access them and their properties via
-graph_traits<...> and boost::property_traits<...> lookups. For convenience,
+graph_traits<...> and property_traits<...> lookups. For convenience,
 this example defines short names for all these properties that client code can
 use.
 */
@@ -91,25 +91,28 @@ struct edge_weight_map;
 
 // ReadablePropertyGraph associated types
 namespace boost {
+
   template<>
-  struct property_map<ring_graph, edge_weight_t> {
+  struct property_map<ring_graph, boost::graph::edge_weight_t> {
     using type = edge_weight_map;
     using const_type = edge_weight_map;
   };
 
   template<>
-  struct property_map<const ring_graph, edge_weight_t> {
+  struct property_map<const ring_graph, boost::graph::edge_weight_t> {
     using type = edge_weight_map;
     using const_type = edge_weight_map;
   };
 }
 
+namespace graph {
+
 // Tag values that specify the traversal type in graph::traversal_category.
 struct ring_traversal_catetory:
-  virtual public boost::bidirectional_graph_tag,
-  virtual public boost::adjacency_graph_tag,
-  virtual public boost::vertex_list_graph_tag,
-  virtual public boost::edge_list_graph_tag
+  virtual public boost::graph::bidirectional_graph_tag,
+  virtual public boost::graph::adjacency_graph_tag,
+  virtual public boost::graph::vertex_list_graph_tag,
+  virtual public boost::graph::edge_list_graph_tag
   {};
 
 
@@ -123,8 +126,8 @@ class ring_graph {
 public:
   // Graph associated types
   using vertex_descriptor = std::size_t;
-  using directed_category = boost::undirected_tag;
-  using edge_parallel_category = boost::disallow_parallel_edge_tag;
+  using directed_category = boost::graph::undirected_tag;
+  using edge_parallel_category = boost::graph::disallow_parallel_edge_tag;
   using traversal_category = ring_traversal_catetory;
 
   // IncidenceGraph associated types
@@ -161,16 +164,16 @@ private:
 
 // Use these graph_traits parameterizations to refer to the associated
 // graph types.
-using vertex_descriptor = boost::graph_traits<ring_graph>::vertex_descriptor;
-using edge_descriptor = boost::graph_traits<ring_graph>::edge_descriptor;
-using out_edge_iterator = boost::graph_traits<ring_graph>::out_edge_iterator;
-using in_edge_iterator = boost::graph_traits<ring_graph>::in_edge_iterator;
-using adjacency_iterator = boost::graph_traits<ring_graph>::adjacency_iterator;
-using degree_size_type = boost::graph_traits<ring_graph>::degree_size_type;
-using vertex_iterator = boost::graph_traits<ring_graph>::vertex_iterator;
-using vertices_size_type = boost::graph_traits<ring_graph>::vertices_size_type;
-using edge_iterator = boost::graph_traits<ring_graph>::edge_iterator;
-using edges_size_type = boost::graph_traits<ring_graph>::edges_size_type;
+using vertex_descriptor = boost::graph::graph_traits<ring_graph>::vertex_descriptor;
+using edge_descriptor = boost::graph::graph_traits<ring_graph>::edge_descriptor;
+using out_edge_iterator = boost::graph::graph_traits<ring_graph>::out_edge_iterator;
+using in_edge_iterator = boost::graph::graph_traits<ring_graph>::in_edge_iterator;
+using adjacency_iterator = boost::graph::graph_traits<ring_graph>::adjacency_iterator;
+using degree_size_type = boost::graph::graph_traits<ring_graph>::degree_size_type;
+using vertex_iterator = boost::graph::graph_traits<ring_graph>::vertex_iterator;
+using vertices_size_type = boost::graph::graph_traits<ring_graph>::vertices_size_type;
+using edge_iterator = boost::graph::graph_traits<ring_graph>::edge_iterator;
+using edges_size_type = boost::graph::graph_traits<ring_graph>::edges_size_type;
 
 
 // Tag values passed to an iterator constructor to specify whether it should
@@ -282,13 +285,13 @@ Iterator over vertices adjacent to a given vertex.
 
 This iterates over the target vertices of all the incident edges.
 */
-class ring_adjacency_iterator:public boost::adjacency_iterator_generator<
+class ring_adjacency_iterator:public boost::graph::adjacency_iterator_generator<
   ring_graph,
   vertex_descriptor,
   out_edge_iterator>::type {
   // The parent class is an iterator_adpator that turns an iterator over
   // out edges into an iterator over adjacent vertices.
-  using parent_class = boost::adjacency_iterator_generator<
+  using parent_class = boost::graph::adjacency_iterator_generator<
     ring_graph,
     vertex_descriptor,
     out_edge_iterator>::type;
@@ -407,7 +410,7 @@ struct edge_weight_map {
 // Use these propety_map and property_traits parameterizations to refer to
 // the associated property map types.
 using const_edge_weight_map = boost::property_map<ring_graph,
-                            boost::edge_weight_t>::const_type;
+                            boost::graph::edge_weight_t>::const_type;
 using edge_weight_map_value_type = boost::property_traits<const_edge_weight_map>::reference;
 using edge_weight_map_key = boost::property_traits<const_edge_weight_map>::key_type;
 
@@ -419,11 +422,11 @@ get(const_edge_weight_map pmap, edge_weight_map_key e) {
 
 
 // ReadablePropertyGraph valid expressions
-const_edge_weight_map get(boost::edge_weight_t, const ring_graph&) {
+const_edge_weight_map get(boost::graph::edge_weight_t, const ring_graph&) {
   return const_edge_weight_map();
 }
 
-edge_weight_map_value_type get(boost::edge_weight_t tag,
+edge_weight_map_value_type get(boost::graph::edge_weight_t tag,
                                const ring_graph& g,
                                edge_weight_map_key e) {
   return get(tag, g)[e];
@@ -432,7 +435,7 @@ edge_weight_map_value_type get(boost::edge_weight_t tag,
 
 // This expression is not part of a graph concept, but is used to return the
 // default vertex index map used by the Dijkstra search algorithm.
-boost::identity_property_map get(boost::vertex_index_t, const ring_graph&) {
+boost::identity_property_map get(boost::graph::vertex_index_t, const ring_graph&) {
   // The vertex descriptors are already unsigned integer indices, so just
   // return an identity map.
   return boost::identity_property_map();
@@ -444,7 +447,7 @@ std::ostream& operator<<(std::ostream& output, const edge_descriptor& e) {
 }
 
 int main (int argc, char const *argv[]) {
-  using namespace boost;
+  using namespace boost::graph;
   // Check the concepts that graph models.  This is included to demonstrate
   // how concept checking works, but is not required for a working program
   // since Boost algorithms do their own concept checking.
@@ -453,9 +456,8 @@ int main (int argc, char const *argv[]) {
   BOOST_CONCEPT_ASSERT(( VertexListGraphConcept<ring_graph> ));
   BOOST_CONCEPT_ASSERT(( EdgeListGraphConcept<ring_graph> ));
   BOOST_CONCEPT_ASSERT(( AdjacencyMatrixConcept<ring_graph> ));
-  // TODO: get() and set() should be in boost::, not global, but then this fails:
   BOOST_CONCEPT_ASSERT((
-    ReadablePropertyMapConcept<const_edge_weight_map, edge_descriptor> ));
+    boost::ReadablePropertyMapConcept<const_edge_weight_map, edge_descriptor> ));
   BOOST_CONCEPT_ASSERT((
     ReadablePropertyGraphConcept<ring_graph, edge_descriptor, edge_weight_t> ));
 
@@ -485,8 +487,8 @@ int main (int argc, char const *argv[]) {
       std::cout << edge << "  ";
     std::cout << " Adjacent vertices ";
     // Adjacent vertices
-    // Here we want our adjacency_iterator and not boost::adjacency_iterator.
-    ::adjacency_iterator ai, ai_end;
+    // Here we want our adjacency_iterator and not boost::graph::adjacency_iterator.
+    boost::graph::adjacency_iterator ai, ai_end;
     for (std::tie(ai, ai_end) = adjacent_vertices(u, g); ai != ai_end; ai++) {
       std::cout << *ai << " ";
     }
@@ -530,7 +532,7 @@ int main (int argc, char const *argv[]) {
                           boost::property_map<ring_graph, vertex_index_t>::const_type>
       dist_pm(dist.begin(), get(vertex_index, g));
 
-    dijkstra_shortest_paths(g, source,
+    boost::graph::dijkstra_shortest_paths(g, source,
                             predecessor_map(pred_pm).
                             distance_map(dist_pm) );
 

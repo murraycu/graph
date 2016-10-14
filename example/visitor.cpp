@@ -44,7 +44,7 @@
 #include <boost/graph/breadth_first_search.hpp>
 #include <boost/graph/depth_first_search.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
 template <class Tag>
 struct edge_printer : public base_visitor<edge_printer<Tag>> {
@@ -66,7 +66,7 @@ int
 main(int, char*[])
 {
 
-  using namespace boost;
+  using namespace boost::graph;
   
   using Graph = adjacency_list<>;
   using E = std::pair<int,int>;
@@ -77,7 +77,7 @@ main(int, char*[])
                 E(4, 0), E(4, 1) };  
   Graph G(std::begin(edges), std::end(edges), 5);
 
-  using size_type = boost::graph_traits<Graph>::vertices_size_type;
+  using size_type = boost::graph::graph_traits<Graph>::vertices_size_type;
   
   std::vector<size_type> d(num_vertices(G));  
   std::vector<size_type> f(num_vertices(G));
@@ -90,7 +90,7 @@ main(int, char*[])
                 ))));
 
   std::cout << std::endl << "BFS categorized directed graph" << std::endl;
-  boost::breadth_first_search
+  boost::graph::breadth_first_search
     (G, vertex(0, G), visitor(make_bfs_visitor(
      std::make_pair(print_edge("tree", on_tree_edge()),
                     print_edge("cycle", on_non_tree_edge())))));

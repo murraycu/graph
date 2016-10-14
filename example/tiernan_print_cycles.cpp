@@ -12,7 +12,7 @@
 
 #include "helper.hpp"
 
-using namespace boost;
+using namespace boost::graph;
 
 // The cycle_printer is a visitor that will print the path that comprises
 // the cycle. Note that the back() vertex of the path is not the same as

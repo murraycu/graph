@@ -17,7 +17,7 @@
 int
 main(int, char *[])
 {
-  using namespace boost;
+  using namespace boost::graph;
   using Name = boost::property<vertex_name_t, char>;
   using Index = boost::property<vertex_index_t, std::size_t, Name>;
   using graph_t = adjacency_list<listS, listS, directedS, Index>;

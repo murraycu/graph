@@ -16,6 +16,9 @@
 
 namespace boost
 {
+
+namespace graph
+{
   struct edge_component_t
   {
     enum
@@ -23,14 +26,16 @@ namespace boost
     using kind = edge_property_tag;
   }
   edge_component;
-}
+
+} // namespace graph
+} // namespace boost
 
 int
 main()
 {
-  using namespace boost;
+  using namespace boost::graph;
   using graph_t = adjacency_list<vecS, vecS, undirectedS,
-    boost::no_property, boost::property<edge_component_t, std::size_t>>;
+    boost::no_property, boost::property<boost::graph::edge_component_t, std::size_t>>;
   using vertex_t = graph_traits<graph_t>::vertex_descriptor;
   graph_t g(9);
   add_edge(0, 5, g);

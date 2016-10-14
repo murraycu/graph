@@ -69,7 +69,7 @@ struct print_parent {
 
 template <class NewGraph, class Tag>
 struct graph_copier 
-  : public boost::base_visitor<graph_copier<NewGraph, Tag>>
+  : public boost::graph::base_visitor<graph_copier<NewGraph, Tag>>
 {
   using event_filter = Tag;
 
@@ -77,7 +77,7 @@ struct graph_copier
 
   template <class Edge, class Graph>
   void operator()(Edge e, Graph& g) {
-    boost::add_edge(boost::source(e, g), boost::target(e, g), new_g);
+    boost::graph::add_edge(boost::graph::source(e, g), boost::graph::target(e, g), new_g);
   }
 private:
   NewGraph& new_g;
@@ -91,33 +91,33 @@ copy_graph(NewGraph& g, Tag) {
 
 int main(int , char* []) 
 {
-  using Graph = boost::adjacency_list< 
-    boost::mapS, boost::vecS, boost::bidirectionalS,
-    boost::property<boost::vertex_color_t, boost::default_color_type,
-        boost::property<boost::vertex_degree_t, int,
-          boost::property<boost::vertex_in_degree_t, int,
-    boost::property<boost::vertex_out_degree_t, int>>>>
+  using Graph = boost::graph::adjacency_list< 
+    boost::graph::mapS, boost::graph::vecS, boost::graph::bidirectionalS,
+    boost::property<boost::graph::vertex_color_t, boost::graph::default_color_type,
+        boost::property<boost::graph::vertex_degree_t, int,
+          boost::property<boost::graph::vertex_in_degree_t, int,
+    boost::property<boost::graph::vertex_out_degree_t, int>>>>
   >;
   
   Graph G(5);
-  boost::add_edge(0, 2, G);
-  boost::add_edge(1, 1, G);
-  boost::add_edge(1, 3, G);
-  boost::add_edge(1, 4, G);
-  boost::add_edge(2, 1, G);
-  boost::add_edge(2, 3, G);
-  boost::add_edge(2, 4, G);
-  boost::add_edge(3, 1, G);
-  boost::add_edge(3, 4, G);
-  boost::add_edge(4, 0, G);
-  boost::add_edge(4, 1, G);
+  boost::graph::add_edge(0, 2, G);
+  boost::graph::add_edge(1, 1, G);
+  boost::graph::add_edge(1, 3, G);
+  boost::graph::add_edge(1, 4, G);
+  boost::graph::add_edge(2, 1, G);
+  boost::graph::add_edge(2, 3, G);
+  boost::graph::add_edge(2, 4, G);
+  boost::graph::add_edge(3, 1, G);
+  boost::graph::add_edge(3, 4, G);
+  boost::graph::add_edge(4, 0, G);
+  boost::graph::add_edge(4, 1, G);
 
   using Vertex = Graph::vertex_descriptor;
 
   Graph G_copy(5);
   // Array to store predecessor (parent) of each vertex. This will be
   // used as a Decorator (actually, its iterator will be).
-  std::vector<Vertex> p(boost::num_vertices(G));
+  std::vector<Vertex> p(boost::graph::num_vertices(G));
   // VC++ version of std::vector has no ::pointer, so
   // I use ::value_type* instead.
   using Piter = std::vector<Vertex>::value_type*;
@@ -125,25 +125,25 @@ int main(int , char* [])
   // Array to store distances from the source to each vertex .  We use
   // a built-in array here just for variety. This will also be used as
   // a Decorator.  
-  boost::graph_traits<Graph>::vertices_size_type d[5];
+  boost::graph::graph_traits<Graph>::vertices_size_type d[5];
   std::fill_n(d, 5, 0);
 
   // The source vertex
-  auto s = *(boost::vertices(G).first);
+  auto s = *(boost::graph::vertices(G).first);
   p[s] = s;
-  boost::breadth_first_search
+  boost::graph::breadth_first_search
     (G, s, 
-     boost::visitor(boost::make_bfs_visitor
-     (std::make_pair(boost::record_distances(d, boost::on_tree_edge()),
+     boost::graph::visitor(boost::graph::make_bfs_visitor
+     (std::make_pair(boost::graph::record_distances(d, boost::graph::on_tree_edge()),
                      std::make_pair
-                     (boost::record_predecessors(&p[0], 
-                                                 boost::on_tree_edge()),
-                      copy_graph(G_copy, boost::on_examine_edge())))) ));
+                     (boost::graph::record_predecessors(&p[0], 
+                                                 boost::graph::on_tree_edge()),
+                      copy_graph(G_copy, boost::graph::on_examine_edge())))) ));
 
-  boost::print_graph(G);
-  boost::print_graph(G_copy);
+  boost::graph::print_graph(G);
+  boost::graph::print_graph(G_copy);
 
-  if (boost::num_vertices(G) < 11) {
+  if (boost::graph::num_vertices(G) < 11) {
     std::cout << "distances: ";
 #ifdef BOOST_OLD_STREAM_ITERATORS
     std::copy(d, d + 5, std::ostream_iterator<int, char>(std::cout, " "));
@@ -152,7 +152,7 @@ int main(int , char* [])
 #endif
     std::cout << std::endl;
 
-    std::for_each(boost::vertices(G).first, boost::vertices(G).second, 
+    std::for_each(boost::graph::vertices(G).first, boost::graph::vertices(G).second, 
                   print_parent<Piter>(&p[0]));
   }
 

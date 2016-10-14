@@ -10,11 +10,11 @@
 #include <boost/graph/directed_graph.hpp>
 #include <boost/graph/labeled_graph.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
 int main() {
 
-    using namespace boost::graph_detail;
+    using namespace boost::graph::graph_detail;
 
     using Digraph = directed_graph<>;
 

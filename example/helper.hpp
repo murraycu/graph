@@ -15,10 +15,10 @@
 #include <boost/graph/properties.hpp>
 
 template <typename Graph, typename NameMap, typename VertexMap>
-typename boost::graph_traits<Graph>::vertex_descriptor
+typename boost::graph::graph_traits<Graph>::vertex_descriptor
 add_named_vertex(Graph& g, NameMap nm, const std::string& name, VertexMap& vm)
 {
-    using Vertex = typename boost::graph_traits<Graph>::vertex_descriptor;
+    using Vertex = typename boost::graph::graph_traits<Graph>::vertex_descriptor;
     using Iterator = typename VertexMap::iterator;
 
     Vertex v;
@@ -40,10 +40,10 @@ add_named_vertex(Graph& g, NameMap nm, const std::string& name, VertexMap& vm)
 }
 
 template <typename Graph, typename NameMap, typename InputStream>
-inline std::map<std::string, typename boost::graph_traits<Graph>::vertex_descriptor>
+inline std::map<std::string, typename boost::graph::graph_traits<Graph>::vertex_descriptor>
 read_graph(Graph& g, NameMap nm, InputStream& is)
 {
-    using Vertex = typename boost::graph_traits<Graph>::vertex_descriptor;
+    using Vertex = typename boost::graph::graph_traits<Graph>::vertex_descriptor;
     std::map<std::string, Vertex> verts;
     for(std::string line; std::getline(is, line); ) {
         if(line.empty()) continue;
@@ -59,20 +59,20 @@ read_graph(Graph& g, NameMap nm, InputStream& is)
 }
 
 template <typename Graph, typename InputStream>
-inline std::map<std::string, typename boost::graph_traits<Graph>::vertex_descriptor>
+inline std::map<std::string, typename boost::graph::graph_traits<Graph>::vertex_descriptor>
 read_graph(Graph& g, InputStream& is)
 {
-    using Vertex = typename boost::graph_traits<Graph>::vertex_descriptor;
-    using NameMap = boost::null_property_map<Vertex, std::string>;
+    using Vertex = typename boost::graph::graph_traits<Graph>::vertex_descriptor;
+    using NameMap = boost::graph::null_property_map<Vertex, std::string>;
     return read_graph(g, NameMap(), is);
 }
 
 template <typename Graph, typename NameMap, typename WeightMap, typename InputStream>
-inline std::map<std::string, typename boost::graph_traits<Graph>::vertex_descriptor>
+inline std::map<std::string, typename boost::graph::graph_traits<Graph>::vertex_descriptor>
 read_weighted_graph(Graph& g, NameMap nm, WeightMap wm, InputStream& is)
 {
-    using Vertex = typename boost::graph_traits<Graph>::vertex_descriptor;
-    using Edge = typename boost::graph_traits<Graph>::edge_descriptor;
+    using Vertex = typename boost::graph::graph_traits<Graph>::vertex_descriptor;
+    using Edge = typename boost::graph::graph_traits<Graph>::edge_descriptor;
     std::map<std::string, Vertex> verts;
     for(std::string line; std::getline(is, line); ) {
         if(line.empty()) continue;
@@ -100,11 +100,11 @@ read_weighted_graph(Graph& g, NameMap nm, WeightMap wm, InputStream& is)
 
 
 template <typename Graph, typename WeightMap, typename InputStream>
-inline std::map<std::string, typename boost::graph_traits<Graph>::vertex_descriptor>
+inline std::map<std::string, typename boost::graph::graph_traits<Graph>::vertex_descriptor>
 read_weighted_graph(Graph& g, WeightMap wm, InputStream& is)
 {
-    using Vertex = typename boost::graph_traits<Graph>::vertex_descriptor;
-    using NameMap = boost::null_property_map<Vertex, std::string>;
+    using Vertex = typename boost::graph::graph_traits<Graph>::vertex_descriptor;
+    using NameMap = boost::graph::null_property_map<Vertex, std::string>;
 
     return read_weighted_graph(g, NameMap(), wm, is);
 }

@@ -13,7 +13,7 @@
 int
 main()
 {
-  using namespace boost;
+  using namespace boost::graph;
   using Graph = adjacency_list<vecS, vecS, undirectedS,
     boost::property<vertex_distance_t, int>, boost::property<edge_weight_t, int >>;
   using E = std::pair<int, int>;

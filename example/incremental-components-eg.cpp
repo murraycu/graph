@@ -16,7 +16,7 @@
 #include <boost/graph/incremental_components.hpp>
 #include <boost/pending/disjoint_sets.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
 int main(int argc, char* argv[]) 
 {
@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
 
   using Rank = VertexIndex*;
   using Parent = Vertex*;
-  disjoint_sets<Rank, Parent> ds(&rank[0], &parent[0]);
+  boost::disjoint_sets<Rank, Parent> ds(&rank[0], &parent[0]);
 
   // Determine the connected components, storing the results in the
   // disjoint-sets object.

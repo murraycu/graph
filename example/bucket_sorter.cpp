@@ -25,7 +25,7 @@ struct trivial_id {
 
 
 int main() {
-  using boost::bucket_sorter;
+  using boost::graph::bucket_sorter;
   
   const std::size_t N = 10;
 

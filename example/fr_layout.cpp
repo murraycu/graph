@@ -20,7 +20,7 @@
 #include <boost/shared_ptr.hpp>
 #include "range_pair.hpp"
 
-using namespace boost;
+using namespace boost::graph;
 
 void usage()
 {
@@ -38,7 +38,7 @@ void usage()
             << "  Vertices and their positions are written to standard output with the label,\n  x-position, and y-position of a vertex on each line, separated by spaces.\n";
 }
 
-using topology_type = boost::rectangle_topology<>;
+using topology_type = boost::graph::rectangle_topology<>;
 using point_type = topology_type::point_type;
 
 using Graph = adjacency_list<listS, vecS, undirectedS, 

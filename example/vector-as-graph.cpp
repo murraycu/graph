@@ -32,6 +32,6 @@ main()
     {t, x}, //w
     {y}, //x
     {u}}; //y
-  boost::print_graph(g, name);
+  boost::graph::print_graph(g, name);
   return 0;
 }

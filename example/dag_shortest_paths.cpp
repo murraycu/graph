@@ -25,7 +25,7 @@
 
 int main()
 {
-  using namespace boost;
+  using namespace boost::graph;
   using graph_t = adjacency_list<vecS, vecS, directedS, 
     boost::property<vertex_distance_t, int>, boost::property<edge_weight_t, int>>;
   graph_t g(6);
@@ -56,7 +56,7 @@ int main()
   dag_shortest_paths(g, s, d_map, w_map, &color[0], &pred[0], 
      vis, compare, combine, (std::numeric_limits<int>::max)(), 0);
 #else
-  dag_shortest_paths(g, s, boost::distance_map(d_map));
+  dag_shortest_paths(g, s, boost::graph::distance_map(d_map));
 #endif
 
   for(const auto& vertex : make_range_pair(vertices(g)))

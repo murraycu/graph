@@ -47,12 +47,12 @@ void print_network(Graph& G, Capacity capacity, Flow flow)
 
     for (const auto& edge : make_range_pair(out_edges(vertex, G)))
       std::cout << "--(" << boost::get(capacity, edge) << ", " 
-           << boost::get(flow, edge) << ")--> " << boost::target(edge, G) << "\t";
+           << boost::get(flow, edge) << ")--> " << boost::graph::target(edge, G) << "\t";
     std::cout << std::endl << "\t";
 
     for (const auto& edge : make_range_pair(in_edges(vertex, G)))
       std::cout << "<--(" << boost::get(capacity, edge) << "," << boost::get(flow, edge) << ")-- "
-           << boost::source(edge, G) << "\t";
+           << boost::graph::source(edge, G) << "\t";
     std::cout << std::endl;
   }
 }
@@ -60,9 +60,9 @@ void print_network(Graph& G, Capacity capacity, Flow flow)
 
 int main(int , char* []) {
 
-  using Graph = boost::adjacency_list<boost::vecS, boost::vecS, 
-    boost::bidirectionalS, boost::no_property, 
-    boost::property<boost::edge_index_t, std::size_t>>;
+  using Graph = boost::graph::adjacency_list<boost::graph::vecS, boost::graph::vecS, 
+    boost::graph::bidirectionalS, boost::no_property, 
+    boost::property<boost::graph::edge_index_t, std::size_t>>;
 
   const int num_vertices = 9;
   Graph G(num_vertices);
@@ -83,23 +83,23 @@ int main(int , char* []) {
 
   // insert edges into the graph, and assign each edge an ID number
   // to index into the property arrays
-  boost::add_edge(0, 1, 0, G);
+  boost::graph::add_edge(0, 1, 0, G);
 
-  boost::add_edge(1, 4, 1, G);
-  boost::add_edge(4, 7, 2, G);
-  boost::add_edge(7, 6, 3, G);
+  boost::graph::add_edge(1, 4, 1, G);
+  boost::graph::add_edge(4, 7, 2, G);
+  boost::graph::add_edge(7, 6, 3, G);
 
-  boost::add_edge(1, 3, 4, G);
-  boost::add_edge(3, 6, 5, G);
+  boost::graph::add_edge(1, 3, 4, G);
+  boost::graph::add_edge(3, 6, 5, G);
 
-  boost::add_edge(6, 5, 6, G);
-  boost::add_edge(5, 2, 7, G);
-  boost::add_edge(2, 1, 8, G);
+  boost::graph::add_edge(6, 5, 6, G);
+  boost::graph::add_edge(5, 2, 7, G);
+  boost::graph::add_edge(2, 1, 8, G);
 
-  boost::add_edge(6, 8, 9, G);
+  boost::graph::add_edge(6, 8, 9, G);
 
-  using EdgeIndexMap = boost::property_map<Graph, boost::edge_index_t>::type;
-  EdgeIndexMap edge_id = boost::get(boost::edge_index, G);
+  using EdgeIndexMap = boost::property_map<Graph, boost::graph::edge_index_t>::type;
+  EdgeIndexMap edge_id = boost::get(boost::graph::edge_index, G);
 
   using IterMap = boost::iterator_property_map<int*, EdgeIndexMap, int, int&>;
 

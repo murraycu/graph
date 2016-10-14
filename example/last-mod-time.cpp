@@ -13,7 +13,7 @@
 #include <sys/stat.h>
 #include <boost/graph/adjacency_list.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
 template <typename Graph, typename VertexNamePropertyMap> void
 read_graph_file(std::istream & graph_in, std::istream & name_in,

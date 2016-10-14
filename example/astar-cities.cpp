@@ -23,7 +23,7 @@
 #include <fstream>
 #include <math.h>    // for sqrt
 
-using namespace boost;
+using namespace boost::graph;
 
 
 // auxiliary types
@@ -94,7 +94,7 @@ struct found_goal {}; // exception for termination
 
 // visitor that terminates when we find the goal
 template <class Vertex>
-class astar_goal_visitor : public boost::default_astar_visitor
+class astar_goal_visitor : public boost::graph::default_astar_visitor
 {
 public:
   astar_goal_visitor(Vertex goal) : m_goal(goal) {}
@@ -112,7 +112,7 @@ int main(int argc, char **argv)
 {
   
   // specify some types
-  using mygraph_t = adjacency_list<listS, vecS, undirectedS, boost::no_property,
+  using mygraph_t = boost::graph::adjacency_list<listS, vecS, undirectedS, boost::no_property,
     boost::property<edge_weight_t, cost>>;
   using WeightMap = boost::property_map<mygraph_t, edge_weight_t>::type;
   using vertex = mygraph_t::vertex_descriptor;
@@ -162,7 +162,7 @@ int main(int argc, char **argv)
   auto weightmap = boost::get(edge_weight, g);
   for(std::size_t j = 0; j < num_edges; ++j) {
     edge_descriptor e; bool inserted;
-    std::tie(e, inserted) = add_edge(edge_array[j].first,
+    std::tie(e, inserted) = boost::graph::add_edge(edge_array[j].first,
                                        edge_array[j].second, g);
     weightmap[e] = weights[j];
   }
@@ -179,7 +179,7 @@ int main(int argc, char **argv)
   
   std::ofstream dotfile;
   dotfile.open("test-astar-cities.dot");
-  write_graphviz(dotfile, g,
+  boost::graph::write_graphviz(dotfile, g,
                  city_writer<const char **, location*>
                   (name, locations, 73.46, 78.86, 40.67, 44.93,
                    480, 400),
@@ -194,7 +194,7 @@ int main(int argc, char **argv)
       (g, start,
        distance_heuristic<mygraph_t, cost, location*>
         (locations, goal),
-       predecessor_map(boost::make_iterator_property_map(p.begin(), boost::get(vertex_index, g))).
+       boost::graph::predecessor_map(boost::make_iterator_property_map(p.begin(), boost::get(vertex_index, g))).
        distance_map(boost::make_iterator_property_map(d.begin(), boost::get(vertex_index, g))).
        visitor(astar_goal_visitor<vertex>(goal)));
   

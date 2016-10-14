@@ -12,13 +12,13 @@
 #include <fstream>
 #include <boost/graph/iteration_macros.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
-using Digraph = boost::adjacency_list<vecS, vecS, directedS,
+using Digraph = boost::graph::adjacency_list<vecS, vecS, directedS,
                               boost::property<vertex_name_t, std::string>,
                               boost::property<edge_weight_t, double>>;
 
-using Graph = boost::adjacency_list<vecS, vecS, undirectedS,
+using Graph = boost::graph::adjacency_list<vecS, vecS, undirectedS,
                               boost::property<vertex_name_t, std::string>,
                               boost::property<edge_weight_t, double>>;
 

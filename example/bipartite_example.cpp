@@ -14,7 +14,7 @@
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/bipartite.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
 /// Example to test for bipartiteness and print the certificates.
 
@@ -31,7 +31,7 @@ void print_bipartite (const Graph& g)
   if (bipartite)
   {
     using partition_t = std::vector <default_color_type>;
-    using index_map_t = typename boost::property_map <Graph, vertex_index_t>::type;
+    using index_map_t = typename boost::property_map <Graph, boost::graph::vertex_index_t>::type;
     using partition_map_t = boost::iterator_property_map <partition_t::iterator, index_map_t>;
 
     partition_t partition (num_vertices (g));

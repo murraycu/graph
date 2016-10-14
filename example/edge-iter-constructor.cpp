@@ -10,7 +10,7 @@
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graph_utility.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
 template <typename T>
   std::istream & operator >> (std::istream & in, std::pair<T, T> &p) {

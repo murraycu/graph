@@ -12,7 +12,7 @@
 
 #include "helper.hpp"
 
-using namespace boost;
+using namespace boost::graph;
 
 // Declare the graph type and its vertex and edge types.
 using Graph = undirected_graph<>;

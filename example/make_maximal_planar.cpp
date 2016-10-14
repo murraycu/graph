@@ -28,7 +28,7 @@
 
 
 
-using namespace boost;
+using namespace boost::graph;
 
 
 // This visitor is passed to planar_face_traversal to count the 

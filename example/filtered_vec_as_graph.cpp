@@ -36,7 +36,7 @@ struct constant_target {
 
 int main()
 {
-  using namespace boost;
+  using namespace boost::graph;
   
   enum { A, B, C, D, E };
   const char* name = "ABCDE";

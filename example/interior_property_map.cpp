@@ -14,7 +14,7 @@
 #include <boost/property_map/property_map.hpp>
 #include <string>
 
-using namespace boost;
+using namespace boost::graph;
 
 /*
   Interior Property Map Basics
@@ -46,7 +46,12 @@ using namespace boost;
 // create a tag for our new property
 
 enum vertex_first_name_t { vertex_first_name };
+
 namespace boost {
+  // TODO: Don't put this the in boost::graph namespace.
+  namespace graph {
+  }
+
   BOOST_INSTALL_PROPERTY(vertex, first_name);
 }
 

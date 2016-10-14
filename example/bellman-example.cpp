@@ -14,7 +14,7 @@
 #include <boost/graph/bellman_ford_shortest_paths.hpp>
 #include "range_pair.hpp"
 
-using namespace boost;
+using namespace boost::graph;
 
 template <typename Graph, typename ParentMap> 
 struct edge_writer

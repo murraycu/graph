@@ -14,7 +14,7 @@
 int
 main()
 {
-  using namespace boost;
+  using namespace boost::graph;
   const int n_vertices = 7;
   Graph *sgb_g = gb_new_graph(n_vertices);
 

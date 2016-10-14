@@ -40,7 +40,7 @@
 int 
 main(int , char* [])
 {
-  using namespace boost;
+  using namespace boost::graph;
 
   using Graph = adjacency_list<listS, vecS, directedS, 
     boost::no_property, boost::property<edge_weight_t, int>>;
@@ -81,7 +81,7 @@ main(int , char* [])
      default_dijkstra_visitor());
 #else
   dijkstra_shortest_paths
-    (G, s, boost::distance_map(&d[0]).
+    (G, s, boost::graph::distance_map(&d[0]).
      predecessor_map(&p[0]).
      distance_compare(std::greater<int>()));
 #endif

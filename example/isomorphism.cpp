@@ -19,7 +19,7 @@
 int
 main()
 {
-  using namespace boost;
+  using namespace boost::graph;
   
   const int n = 12;
 

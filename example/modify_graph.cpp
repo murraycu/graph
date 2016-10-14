@@ -13,7 +13,7 @@
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graph_utility.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
 // Predicate Function for use in remove if 
 template <class NamePropertyMap>

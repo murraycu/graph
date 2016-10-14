@@ -14,6 +14,7 @@ template <class Allocator>
 struct list_with_allocatorS { };
 
 namespace boost {
+namespace graph {
   template <class Alloc, class ValueType>
   struct container_gen<list_with_allocatorS<Alloc>, ValueType> {
     using Allocator = typename Alloc::template rebind<ValueType>::other;
@@ -25,10 +26,11 @@ namespace boost {
   };
 
 }
+}
 
 // now you can define a graph using std::list and a specific allocator  
-using MyGraph = boost::adjacency_list<list_with_allocatorS<std::allocator<int>>,
-  boost::vecS, boost::directedS>;
+using MyGraph = boost::graph::adjacency_list<list_with_allocatorS<std::allocator<int>>,
+  boost::graph::vecS, boost::graph::directedS>;
 
 int main(int, char*[])
 {
