@@ -32,19 +32,19 @@
 template <typename Graph>
 void run_dijkstra_test(const Graph& graph)
 {
-  using namespace boost;
+  using namespace boost::graph;
   
   // Set up property maps
   typedef typename graph_traits<Graph>::vertex_descriptor vertex_t;
   
   typedef typename std::map<vertex_t, vertex_t> vertex_map_t;
-  typedef associative_property_map<vertex_map_t> predecessor_map_t;
+  typedef boost::associative_property_map<vertex_map_t> predecessor_map_t;
   vertex_map_t default_vertex_map, no_color_map_vertex_map;
   predecessor_map_t default_predecessor_map(default_vertex_map),
                     no_color_map_predecessor_map(no_color_map_vertex_map);
 
   typedef typename std::map<vertex_t, double> vertex_double_map_t;
-  typedef associative_property_map<vertex_double_map_t> distance_map_t;
+  typedef boost::associative_property_map<vertex_double_map_t> distance_map_t;
   vertex_double_map_t default_vertex_double_map, no_color_map_vertex_double_map;
   distance_map_t default_distance_map(default_vertex_double_map),
                  no_color_map_distance_map(no_color_map_vertex_double_map);
@@ -69,7 +69,7 @@ void run_dijkstra_test(const Graph& graph)
 
 int test_main(int argc, char* argv[])
 {
-  using namespace boost;
+  using namespace boost::graph;
 
   int vertices_to_create = 10; 
   int edges_to_create = 500;

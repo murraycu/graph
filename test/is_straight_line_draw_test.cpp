@@ -15,7 +15,7 @@
 
 #include <vector>
 
-using namespace boost;
+using namespace boost::graph;
 
 struct coord_t 
 {

@@ -15,7 +15,7 @@
 
 int main(int,char*[])
 {
-  using namespace boost;
+  using namespace boost::graph;
   // Check const reverse_graph
   {
     typedef adjacency_list< vecS, vecS, bidirectionalS, 

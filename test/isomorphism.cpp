@@ -31,7 +31,7 @@
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/lexical_cast.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
 template <typename Generator>
 struct random_functor {

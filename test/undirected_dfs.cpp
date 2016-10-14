@@ -23,7 +23,7 @@ template <typename ColorMap, typename ParentMap,
   typename DiscoverTimeMap, typename FinishTimeMap>
 class dfs_test_visitor {
   typedef typename boost::property_traits<ColorMap>::value_type ColorValue;
-  typedef typename boost::color_traits<ColorValue> Color;
+  typedef typename boost::graph::color_traits<ColorValue> Color;
 public:
   dfs_test_visitor(ColorMap color, ParentMap p, DiscoverTimeMap d,
                    FinishTimeMap f)
@@ -40,7 +40,7 @@ public:
   }
   template <class Vertex, class Graph>
   void discover_vertex(Vertex u, Graph&) {
-    using namespace boost;
+    using namespace boost::graph;
     BOOST_CHECK( boost::get(m_color, u) == Color::gray() );
     BOOST_CHECK( boost::get(m_color, boost::get(m_parent, u)) == Color::gray() );
 
@@ -48,29 +48,29 @@ public:
   }
   template <class Edge, class Graph>
   void examine_edge(Edge e, Graph& g) {
-    using namespace boost;
+    using namespace boost::graph;
     BOOST_CHECK( boost::get(m_color, source(e, g)) == Color::gray() );
   }
   template <class Edge, class Graph>
   void tree_edge(Edge e, Graph& g) {
-    using namespace boost;
+    using namespace boost::graph;
     BOOST_CHECK( boost::get(m_color, target(e, g)) == Color::white() );
 
     boost::put(m_parent, target(e, g), source(e, g));
   }
   template <class Edge, class Graph>
   void back_edge(Edge e, Graph& g) {
-    using namespace boost;
+    using namespace boost::graph;
     BOOST_CHECK( boost::get(m_color, target(e, g)) == Color::gray() );
   }
   template <class Edge, class Graph>
   void forward_or_cross_edge(Edge e, Graph& g) {
-    using namespace boost;
+    using namespace boost::graph;
     BOOST_CHECK( boost::get(m_color, target(e, g)) == Color::black() );
   }
   template <class Edge, class Graph>
   void finish_edge(Edge e, Graph& g) {
-    using namespace boost;
+    using namespace boost::graph;
     BOOST_CHECK(
         (boost::get(m_color, target(e, g)) == Color::gray())
      || (boost::get(m_color, target(e, g)) == Color::black())
@@ -78,7 +78,7 @@ public:
   }
   template <class Vertex, class Graph>
   void finish_vertex(Vertex u, Graph&) {
-    using namespace boost;
+    using namespace boost::graph;
     BOOST_CHECK( boost::get(m_color, u) == Color::black() );
 
     boost::put(m_finish_time, u, m_time++);
@@ -94,21 +94,21 @@ private:
 template <typename Graph>
 struct dfs_test
 {
-  typedef boost::graph_traits<Graph> Traits;
+  typedef boost::graph::graph_traits<Graph> Traits;
   typedef typename Traits::vertices_size_type
     vertices_size_type;
 
   static void go(vertices_size_type max_V) {
-    using namespace boost;
+    using namespace boost::graph;
     typedef typename Traits::vertex_descriptor vertex_descriptor;
     typedef typename boost::property_map<Graph,
-      boost::vertex_color_t>::type ColorMap;
+      boost::graph::vertex_color_t>::type ColorMap;
     typedef typename boost::property_traits<ColorMap>::value_type ColorValue;
-    typedef typename boost::color_traits<ColorValue> Color;
+    typedef typename boost::graph::color_traits<ColorValue> Color;
     typedef typename boost::property_map<Graph,
-      boost::edge_color_t>::type EColorMap;
+      boost::graph::edge_color_t>::type EColorMap;
     typedef typename boost::property_traits<EColorMap>::value_type EColorValue;
-    typedef typename boost::color_traits<EColorValue> EColor;
+    typedef typename boost::graph::color_traits<EColorValue> EColor;
 
     vertices_size_type i, k;
     typename Traits::edges_size_type j;
@@ -122,8 +122,8 @@ struct dfs_test
         Graph g;
         generate_random_graph(g, i, j, gen);
 
-        ColorMap color = boost::get(boost::vertex_color, g);
-        EColorMap e_color = boost::get(boost::edge_color, g);
+        ColorMap color = boost::get(boost::graph::vertex_color, g);
+        EColorMap e_color = boost::get(boost::graph::edge_color, g);
         std::vector<vertex_descriptor> parent(num_vertices(g));
         for (k = 0; k < num_vertices(g); ++k)
           parent[k] = k;
@@ -131,8 +131,8 @@ struct dfs_test
           finish_time(num_vertices(g));
 
         // Get vertex index map
-        typedef typename boost::property_map<Graph, boost::vertex_index_t>::const_type idx_type;
-        idx_type idx = boost::get(boost::vertex_index, g);
+        typedef typename boost::property_map<Graph, boost::graph::vertex_index_t>::const_type idx_type;
+        idx_type idx = boost::get(boost::graph::vertex_index, g);
         
         typedef
           boost::iterator_property_map<typename std::vector<vertex_descriptor>::iterator, idx_type>
@@ -149,7 +149,7 @@ struct dfs_test
           vis(color, parent_pm,
               discover_time_pm, finish_time_pm);
 
-        boost::undirected_dfs(g, visitor(vis).color_map(color)
+        boost::graph::undirected_dfs(g, visitor(vis).color_map(color)
                               .edge_color_map(e_color));
 
         // all vertices should be black
@@ -170,10 +170,10 @@ struct dfs_test
                           || finish_time[v] < discover_time[u]
                           || (discover_time[v] < discover_time[u]
                                && finish_time[u] < finish_time[v]
-                               && boost::is_descendant(u, v, parent_pm))
+                               && boost::graph::is_descendant(u, v, parent_pm))
                           || (discover_time[u] < discover_time[v]
                                && finish_time[v] < finish_time[u]
-                               && boost::is_descendant(v, u, parent_pm))
+                               && boost::graph::is_descendant(v, u, parent_pm))
                         );
             }
           }
@@ -192,9 +192,9 @@ int test_main(int argc, char* argv[])
     max_V = atoi(argv[1]);
 
   // Test undirected graphs.
-  dfs_test< boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS,
-           boost::property<boost::vertex_color_t, boost::default_color_type>,
-           boost::property<boost::edge_color_t, boost::default_color_type> >
+  dfs_test< boost::graph::adjacency_list<boost::graph::vecS, boost::graph::vecS, boost::graph::undirectedS,
+           boost::property<boost::graph::vertex_color_t, boost::graph::default_color_type>,
+           boost::property<boost::graph::edge_color_t, boost::graph::default_color_type> >
     >::go(max_V);
 
   return 0;

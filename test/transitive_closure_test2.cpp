@@ -8,7 +8,7 @@
 #include <iostream>
 using namespace std;
 
-using namespace boost;
+using namespace boost::graph;
 typedef adjacency_list<> graph_t;
 
 int main(int argc, char *argv[]) {

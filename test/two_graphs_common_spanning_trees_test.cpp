@@ -19,40 +19,36 @@
 #include <vector>
 
 using namespace boost::assign;
-
-
-namespace boost
-{
-
+using namespace boost::graph;
 
 typedef
-boost::adjacency_list
+boost::graph::adjacency_list
   <
-    boost::vecS,         // OutEdgeList
-    boost::vecS,         // VertexList
-    boost::undirectedS,  // Directed
+    boost::graph::vecS,         // OutEdgeList
+    boost::graph::vecS,         // VertexList
+    boost::graph::undirectedS,  // Directed
     boost::no_property,  // VertexProperties
     boost::no_property,  // EdgeProperties
     boost::no_property,  // GraphProperties
-    boost::listS         // EdgeList
+    boost::graph::listS         // EdgeList
   >
 Graph
 ;
 
 typedef
-boost::graph_traits<Graph>::vertex_descriptor
+boost::graph::graph_traits<Graph>::vertex_descriptor
 vertex_descriptor;
 
 typedef
-boost::graph_traits<Graph>::edge_descriptor
+boost::graph::graph_traits<Graph>::edge_descriptor
 edge_descriptor;
 
 typedef
-boost::graph_traits<Graph>::vertex_iterator
+boost::graph::graph_traits<Graph>::vertex_iterator
 vertex_iterator;
 
 typedef
-boost::graph_traits<Graph>::edge_iterator
+boost::graph::graph_traits<Graph>::edge_iterator
 edge_iterator;
 
 
@@ -97,33 +93,33 @@ void two_graphs_common_spanning_trees_test()
   std::vector< edge_descriptor > iG_o;
   std::vector< edge_descriptor > vG_o;
 
-  iG_o.push_back(boost::add_edge(0, 1, iG).first);
-  iG_o.push_back(boost::add_edge(1, 3, iG).first);
-  iG_o.push_back(boost::add_edge(3, 2, iG).first);
-  iG_o.push_back(boost::add_edge(1, 5, iG).first);
-  iG_o.push_back(boost::add_edge(5, 4, iG).first);
-  iG_o.push_back(boost::add_edge(5, 6, iG).first);
-  iG_o.push_back(boost::add_edge(5, 3, iG).first);
-  iG_o.push_back(boost::add_edge(3, 1, iG).first);
-  iG_o.push_back(boost::add_edge(1, 3, iG).first);
+  iG_o.push_back(boost::graph::add_edge(0, 1, iG).first);
+  iG_o.push_back(boost::graph::add_edge(1, 3, iG).first);
+  iG_o.push_back(boost::graph::add_edge(3, 2, iG).first);
+  iG_o.push_back(boost::graph::add_edge(1, 5, iG).first);
+  iG_o.push_back(boost::graph::add_edge(5, 4, iG).first);
+  iG_o.push_back(boost::graph::add_edge(5, 6, iG).first);
+  iG_o.push_back(boost::graph::add_edge(5, 3, iG).first);
+  iG_o.push_back(boost::graph::add_edge(3, 1, iG).first);
+  iG_o.push_back(boost::graph::add_edge(1, 3, iG).first);
 
-  vG_o.push_back(boost::add_edge(0, 2, vG).first);
-  vG_o.push_back(boost::add_edge(0, 4, vG).first);
-  vG_o.push_back(boost::add_edge(0, 5, vG).first);
-  vG_o.push_back(boost::add_edge(5, 1, vG).first);
-  vG_o.push_back(boost::add_edge(5, 3, vG).first);
-  vG_o.push_back(boost::add_edge(5, 6, vG).first);
-  vG_o.push_back(boost::add_edge(5, 4, vG).first);
-  vG_o.push_back(boost::add_edge(5, 2, vG).first);
-  vG_o.push_back(boost::add_edge(2, 6, vG).first);
+  vG_o.push_back(boost::graph::add_edge(0, 2, vG).first);
+  vG_o.push_back(boost::graph::add_edge(0, 4, vG).first);
+  vG_o.push_back(boost::graph::add_edge(0, 5, vG).first);
+  vG_o.push_back(boost::graph::add_edge(5, 1, vG).first);
+  vG_o.push_back(boost::graph::add_edge(5, 3, vG).first);
+  vG_o.push_back(boost::graph::add_edge(5, 6, vG).first);
+  vG_o.push_back(boost::graph::add_edge(5, 4, vG).first);
+  vG_o.push_back(boost::graph::add_edge(5, 2, vG).first);
+  vG_o.push_back(boost::graph::add_edge(2, 6, vG).first);
 
   std::vector< std::vector<bool> > coll;
-  boost::tree_collector<
+  boost::graph::tree_collector<
       std::vector< std::vector<bool> >, std::vector<bool>
     > collector(coll);
   std::vector<bool> inL(iG_o.size(), false);
 
-  boost::two_graphs_common_spanning_trees(iG, iG_o, vG, vG_o, collector, inL);
+  boost::graph::two_graphs_common_spanning_trees(iG, iG_o, vG, vG_o, collector, inL);
 
   check_edge< std::vector< std::vector<bool> >, std::vector<bool> > checker;
   std::vector<bool> check;
@@ -137,12 +133,8 @@ void two_graphs_common_spanning_trees_test()
   checker(coll, check);
 }
 
-
-}
-
-
 int test_main ( int argc, char** argv )
 {
-  boost::two_graphs_common_spanning_trees_test();
+  two_graphs_common_spanning_trees_test();
   return EXIT_SUCCESS;
 }

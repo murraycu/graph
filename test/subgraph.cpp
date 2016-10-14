@@ -20,7 +20,7 @@
 
 int test_main(int, char*[])
 {
-  using namespace boost;
+  using namespace boost::graph;
   typedef adjacency_list<vecS, vecS, bidirectionalS,
     boost::property<vertex_color_t, int>,
     boost::property<edge_index_t, std::size_t, boost::property<edge_weight_t, int> >
@@ -114,7 +114,7 @@ int test_main(int, char*[])
     // TODO: Subgraph is fundamentally broken for property types.
     // TODO: Under construction.
     {
-        using namespace boost;
+        using namespace boost::graph;
         typedef boost::property<edge_index_t, size_t, EdgeBundle> EdgeProp;
         typedef adjacency_list<vecS, vecS, directedS, VertexBundle, EdgeProp> BaseGraph;
         typedef subgraph<BaseGraph> Graph;

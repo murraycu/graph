@@ -18,46 +18,46 @@
 
 
 BOOST_AUTO_TEST_CASE(cycle_canceling_def_test) {
-    boost::SampleGraph::vertex_descriptor s,t;
-    boost::SampleGraph::Graph g;
-    boost::SampleGraph::getSampleGraph(g, s, t);
+    boost::graph::SampleGraph::vertex_descriptor s,t;
+    boost::graph::SampleGraph::Graph g;
+    boost::graph::SampleGraph::getSampleGraph(g, s, t);
 
-    boost::edmonds_karp_max_flow(g, s, t);
-    boost::cycle_canceling(g);
+    boost::graph::edmonds_karp_max_flow(g, s, t);
+    boost::graph::cycle_canceling(g);
 
-    int cost = boost::find_flow_cost(g);
+    int cost = boost::graph::find_flow_cost(g);
     BOOST_CHECK_EQUAL(cost, 29);
 }
 
 BOOST_AUTO_TEST_CASE(path_augmentation_def_test2) {
-    boost::SampleGraph::vertex_descriptor s,t;
-    boost::SampleGraph::Graph g; 
-    boost::SampleGraph::getSampleGraph2(g, s, t);
+    boost::graph::SampleGraph::vertex_descriptor s,t;
+    boost::graph::SampleGraph::Graph g; 
+    boost::graph::SampleGraph::getSampleGraph2(g, s, t);
 
-    boost::edmonds_karp_max_flow(g, s, t);
-    boost::cycle_canceling(g);
+    boost::graph::edmonds_karp_max_flow(g, s, t);
+    boost::graph::cycle_canceling(g);
 
-    int cost =  boost::find_flow_cost(g);
+    int cost =  boost::graph::find_flow_cost(g);
     BOOST_CHECK_EQUAL(cost, 7);
 }
 
 BOOST_AUTO_TEST_CASE(cycle_canceling_test) {
-    boost::SampleGraph::vertex_descriptor s,t;
-    typedef boost::SampleGraph::Graph Graph;
-    boost::SampleGraph::Graph g; 
-    boost::SampleGraph::getSampleGraph(g, s, t);
+    boost::graph::SampleGraph::vertex_descriptor s,t;
+    typedef boost::graph::SampleGraph::Graph Graph;
+    boost::graph::SampleGraph::Graph g; 
+    boost::graph::SampleGraph::getSampleGraph(g, s, t);
 
-    int N = num_vertices(g);
+    int N = boost::graph::num_vertices(g);
     std::vector<int> dist(N);
-    typedef boost::graph_traits<Graph>::edge_descriptor edge_descriptor;
+    typedef boost::graph::graph_traits<Graph>::edge_descriptor edge_descriptor;
     std::vector<edge_descriptor> pred(N);
 
-    boost::property_map<Graph, boost::vertex_index_t>::const_type idx = boost::get(boost::vertex_index, g);
+    boost::property_map<Graph, boost::graph::vertex_index_t>::const_type idx = boost::get(boost::graph::vertex_index, g);
 
-    boost::edmonds_karp_max_flow(g, s, t);
-    boost::cycle_canceling(g, boost::distance_map(boost::make_iterator_property_map(dist.begin(), idx)).predecessor_map(boost::make_iterator_property_map(pred.begin(), idx)).vertex_index_map(idx));
+    boost::graph::edmonds_karp_max_flow(g, s, t);
+    boost::graph::cycle_canceling(g, boost::graph::distance_map(boost::make_iterator_property_map(dist.begin(), idx)).predecessor_map(boost::make_iterator_property_map(pred.begin(), idx)).vertex_index_map(idx));
 
-    int cost = boost::find_flow_cost(g);
+    int cost = boost::graph::find_flow_cost(g);
     BOOST_CHECK_EQUAL(cost, 29);
 }
 

@@ -12,7 +12,7 @@
 // for bundled properties.
 // TODO: Integrate this into a testing framework.
 
-using namespace boost;
+using namespace boost::graph;
 
 struct EdgeProp
 {

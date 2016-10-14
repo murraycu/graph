@@ -9,7 +9,7 @@
 #include <boost/assert.hpp>
 #include <boost/graph/adjacency_list.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
 // TODO: Integrate this into a larger adj_list test suite.
 

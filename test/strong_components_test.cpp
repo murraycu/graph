@@ -29,7 +29,7 @@ Vertex c is in component 0 and has root 0
 
 int main(int, char*[])
 {
-  using namespace boost;
+  using namespace boost::graph;
 
   adjacency_list<vecS, vecS, directedS> G;
 

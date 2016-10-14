@@ -13,7 +13,7 @@
 
 int main(int,char*[])
 {
-  using namespace boost;
+  using namespace boost::graph;
   // Check adjacency_matrix without properties
   {
     typedef adjacency_matrix<directedS> Graph;

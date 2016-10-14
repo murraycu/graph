@@ -18,7 +18,7 @@
 #include <boost/random.hpp>
 #include <boost/test/minimal.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
 typedef adjacency_list<vecS, 
                        vecS, 

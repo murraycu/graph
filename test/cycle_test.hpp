@@ -22,7 +22,7 @@
 
 
 namespace cycle_test_detail {
-    using namespace boost;
+    using namespace boost::graph;
 
     struct cycle_validator {
         explicit cycle_validator(std::size_t& number_of_cycles)
@@ -71,10 +71,10 @@ namespace cycle_test_detail {
 template <typename Algorithm>
 void cycle_test(Algorithm const& algorithm) {
     std::cout << "*** undirected ***\n";
-    cycle_test_detail::test_one<boost::undirected_graph<> >(algorithm);
+    cycle_test_detail::test_one<boost::graph::undirected_graph<> >(algorithm);
 
     std::cout << "*** directed ***\n";
-    cycle_test_detail::test_one<boost::directed_graph<> >(algorithm);
+    cycle_test_detail::test_one<boost::graph::directed_graph<> >(algorithm);
 }
 
 #endif // !BOOST_GRAPH_TEST_CYCLE_TEST_HPP

@@ -12,14 +12,14 @@
 struct call_hawick_circuits {
     template <typename Graph, typename Visitor>
     void operator()(Graph const& g, Visitor const& v) const {
-        boost::hawick_circuits(g, v);
+        boost::graph::hawick_circuits(g, v);
     }
 };
 
 struct call_hawick_unique_circuits {
     template <typename Graph, typename Visitor>
     void operator()(Graph const& g, Visitor const& v) const {
-        boost::hawick_unique_circuits(g, v);
+        boost::graph::hawick_unique_circuits(g, v);
     }
 };
 

@@ -25,17 +25,21 @@
 #include <boost/random/mersenne_twister.hpp>
 
 
-enum vertex_id_t { vertex_id = 500 };
-enum edge_id_t { edge_id = 501 };
 namespace boost {
-  BOOST_INSTALL_PROPERTY(vertex, id);
-  BOOST_INSTALL_PROPERTY(edge, id);
+  // TODO: Don't put this the in boost::graph namespace.
+  namespace graph {
+    enum vertex_id_t { vertex_id = 500 };
+    enum edge_id_t { edge_id = 501 };
 }
+
+  BOOST_INSTALL_PROPERTY(boost::graph::vertex, id);
+  BOOST_INSTALL_PROPERTY(boost::graph::edge, id);
+} // namespace boost
 
 
 #include "graph_type.hpp" // this provides a typedef for Graph
 
-using namespace boost;
+using namespace boost::graph;
 
 /*
   This program tests models of the MutableGraph concept.
@@ -54,7 +58,7 @@ bool check_vertex_cleared(Graph& g, Vertex v, ID id)
   for (boost::tie(vi,viend) = vertices(g); vi != viend; ++vi) {
     typename graph_traits<Graph>::adjacency_iterator ai, aiend, found;
     boost::tie(ai, aiend) = adjacent_vertices(*vi, g);
-    boost::indirect_cmp<ID, std::equal_to<std::size_t> > cmp(id);
+    boost::graph::indirect_cmp<ID, std::equal_to<std::size_t> > cmp(id);
 
 #if (defined(BOOST_MSVC) && BOOST_MSVC <= 1300) && defined(__SGI_STL_PORT)
     // seeing internal compiler errors when using std::find_if()
@@ -129,7 +133,7 @@ template <class Graph>
 std::size_t count_edges(Graph& g)
 {
   std::size_t e = 0;
-  typename boost::graph_traits<Graph>::edge_iterator ei,ei_end;
+  typename boost::graph::graph_traits<Graph>::edge_iterator ei,ei_end;
   for (boost::tie(ei,ei_end) = edges(g); ei != ei_end; ++ei)
     ++e;
   return e;
@@ -144,8 +148,8 @@ int main(int, char* [])
 
   typedef ::Graph Graph;
   Graph g;
-  typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
-  typedef boost::graph_traits<Graph>::edge_descriptor Edge;
+  typedef boost::graph::graph_traits<Graph>::vertex_descriptor Vertex;
+  typedef boost::graph::graph_traits<Graph>::edge_descriptor Edge;
 
   int i, j;
   std::size_t current_vertex_id = 0;
@@ -210,7 +214,7 @@ int main(int, char* [])
       Vertex a, b;
       
       Edge e = random_edge(g, gen);
-      boost::tie(a,b) = boost::incident(e, g);
+      boost::tie(a,b) = boost::graph::incident(e, g);
       --E;
 #if VERBOSE
       cerr << "remove_edge(" << vertex_id_map[a] << "," << vertex_id_map[b] << ")" << endl;
@@ -247,7 +251,7 @@ int main(int, char* [])
 #endif
       Vertex a, b;
       Edge e = random_edge(g, gen);
-      boost::tie(a,b) = boost::incident(e, g);
+      boost::tie(a,b) = boost::graph::incident(e, g);
       --E;
 #if VERBOSE
       cerr << "remove_edge(" << vertex_id_map[a] << "," << vertex_id_map[b] << ")" << endl;

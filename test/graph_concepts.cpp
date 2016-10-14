@@ -12,11 +12,11 @@
 
 int main(int,char*[])
 {
-  using namespace boost;
+  using namespace boost::graph;
 
   // Check graph concepts againt their archetypes
-  typedef default_constructible_archetype<
-    sgi_assignable_archetype< equality_comparable_archetype<> > > Vertex;
+  typedef boost::default_constructible_archetype<
+    boost::sgi_assignable_archetype< boost::equality_comparable_archetype<> > > Vertex;
 
   typedef incidence_graph_archetype<Vertex, directed_tag, 
     allow_parallel_edge_tag> Graph1;

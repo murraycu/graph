@@ -10,7 +10,7 @@
 #include <boost/property_map/property_map.hpp>
 #include <stdio.h>
 
-using namespace boost;
+using namespace boost::graph;
 
 const char* errstr = "";
 

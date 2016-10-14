@@ -17,7 +17,7 @@ int main(int,char*[])
 {
     // Check edge_list
     {
-        using namespace boost;
+        using namespace boost::graph;
         
         typedef std::pair<int,int> E;
     

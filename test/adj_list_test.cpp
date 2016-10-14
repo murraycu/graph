@@ -37,7 +37,7 @@ main()
         }
 
         header << "#include <boost/graph/adjacency_list.hpp>" << std::endl
-               << "typedef boost::adjacency_list<boost::" << container_types[i]
+               << "typedef boost::graph::adjacency_list<boost::" << container_types[i]
                << ", boost::" << container_types[j]
                << ", boost::" << directed_types[k]
                << ", boost::property<vertex_id_t, std::size_t>"

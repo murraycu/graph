@@ -17,7 +17,7 @@
 //@{
 template <typename Graph, typename VertexSet>
 void test_outdirected_graph(Graph const& g, VertexSet const& verts, boost::mpl::true_) {
-    using namespace boost;
+    using namespace boost::graph;
     BOOST_CONCEPT_ASSERT((IncidenceGraphConcept<Graph>));
 
     std::cout << "...test_outdirected_graph\n";
@@ -60,7 +60,7 @@ void test_outdirected_graph(Graph const&, VertexSet const&, boost::mpl::false_)
 //@{
 template <typename Graph, typename VertexSet>
 void test_indirected_graph(Graph const& g, VertexSet const& verts, boost::mpl::true_) {
-    using namespace boost;
+    using namespace boost::graph;
     BOOST_CONCEPT_ASSERT((BidirectionalGraphConcept<Graph>));
 
     std::cout << "...test_indirected_graph\n";
@@ -98,7 +98,7 @@ void test_indirected_graph(Graph const&, VertexSet const&, boost::mpl::false_)
  */
 template <typename Graph, typename VertexSet>
 void test_undirected_graph(Graph const& g, VertexSet const& verts, boost::mpl::true_) {
-    using namespace boost;
+    using namespace boost::graph;
     BOOST_CONCEPT_ASSERT((IncidenceGraphConcept<Graph>));
 
     std::cout << "...test_undirected_graph\n";

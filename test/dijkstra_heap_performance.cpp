@@ -29,7 +29,7 @@
 #include <boost/type_traits/is_same.hpp>
 #include <boost/detail/lightweight_test.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
 #ifdef BOOST_GRAPH_DIJKSTRA_TESTING_DIETMAR
 
@@ -61,7 +61,7 @@ void run_test(const Graph& g, const char* name, Kind kind,
   dijkstra_heap_kind = kind;
 
   dijkstra_shortest_paths(g, vertex(0, g),
-                          boost::distance_map(&distances[0]).
+                          boost::graph::distance_map(&distances[0]).
                           visitor(show_events_visitor()));
   double run_time = t.elapsed();
   std::cout << run_time << " seconds.\n";
@@ -117,9 +117,9 @@ int main(int argc, char* argv[])
   dijkstra_relaxed_heap = false;
 #endif
   dijkstra_shortest_paths(g, vertex(0, g),
-                          boost::distance_map(
+                          distance_map(
                             boost::make_iterator_property_map(
-                              binary_heap_distances.begin(), boost::get(boost::vertex_index, g))));
+                              binary_heap_distances.begin(), boost::get(boost::graph::vertex_index, g))));
   double binary_heap_time = t.elapsed();
   std::cout << binary_heap_time << " seconds.\n";
 
@@ -137,9 +137,9 @@ int main(int argc, char* argv[])
   dijkstra_relaxed_heap = true;
 #endif
   dijkstra_shortest_paths(g, vertex(0, g),
-                          boost::distance_map(
+                          distance_map(
                             boost::make_iterator_property_map(
-                              relaxed_heap_distances.begin(), boost::get(boost::vertex_index, g))));
+                              relaxed_heap_distances.begin(), boost::get(boost::graph::vertex_index, g))));
   double relaxed_heap_time = t.elapsed();
   std::cout << relaxed_heap_time << " seconds.\n"
             << "Speedup = " << (binary_heap_time / relaxed_heap_time) << ".\n";
@@ -164,12 +164,12 @@ int main(int argc, char* argv[])
     (g, vertex(0, g),
      boost::dummy_property_map(),
      boost::make_iterator_property_map(no_color_map_distances.begin(),
-                                       boost::get(boost::vertex_index, g),
+                                       boost::get(boost::graph::vertex_index, g),
                                        0.),
-     boost::get(boost::edge_weight, g),
-     boost::get(boost::vertex_index, g),
+     boost::get(boost::graph::edge_weight, g),
+     boost::get(boost::graph::vertex_index, g),
      std::less<double>(),
-     boost::closed_plus<double>(),
+     boost::graph::closed_plus<double>(),
      (std::numeric_limits<double>::max)(),
      0,
      make_dijkstra_visitor(null_visitor())

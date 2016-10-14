@@ -20,7 +20,7 @@
 // This test module is a testing ground to determine if graphs and graph
 // adaptors actually implement the graph concepts correctly.
 
-using namespace boost;
+using namespace boost::graph;
 
 int main()
 {

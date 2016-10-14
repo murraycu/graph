@@ -14,10 +14,10 @@
 
 template<typename graph_t>
 struct TalkativeVisitor
-  : boost::dfs_visitor<>
+  : boost::graph::dfs_visitor<>
 {
-  typedef typename boost::graph_traits<graph_t>::vertex_descriptor vertex_descriptor;
-  typedef typename boost::graph_traits<graph_t>::edge_descriptor edge_descriptor;
+  typedef typename boost::graph::graph_traits<graph_t>::vertex_descriptor vertex_descriptor;
+  typedef typename boost::graph::graph_traits<graph_t>::edge_descriptor edge_descriptor;
 
   // // Commented out to avoid clutter of the output.
   // void discover_vertex(vertex_descriptor u, const graph_t&) { // check!
@@ -57,7 +57,7 @@ std::ostream &operator<<(std::ostream &os, const std::pair<t,t> &x) {
 
 int main(int, char*[])
 {
-  using namespace boost;
+  using namespace boost::graph;
 
   typedef  adjacency_list<vecS, vecS, directedS> Graph;
   Graph G;

@@ -14,7 +14,7 @@
 
 int main(int,char*[])
 {
-  using namespace boost;
+  using namespace boost::graph;
   // Check filtered_graph
   {
     typedef adjacency_list<vecS, vecS, directedS, 

@@ -6,7 +6,7 @@
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/copy.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
 class copier {
 public:

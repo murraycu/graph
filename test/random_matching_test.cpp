@@ -16,7 +16,7 @@
 
 #include <boost/graph/max_cardinality_matching.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
 typedef adjacency_list<vecS, 
                        vecS, 

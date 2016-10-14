@@ -12,7 +12,7 @@
 #include <boost/graph/clustering_coefficient.hpp>
 
 using namespace std;
-using namespace boost;
+using namespace boost::graph;
 
 // number of vertices in the graph
 static const unsigned N = 5;

@@ -6,7 +6,7 @@
 
 #include "min_cost_max_flow_utils.hpp"
 
-typedef boost::adjacency_list_traits<boost::vecS,boost::vecS,boost::directedS> traits;
+typedef boost::graph::adjacency_list_traits<boost::graph::vecS,boost::graph::vecS,boost::graph::directedS> traits;
 struct edge_t {
   double capacity;
   float cost;
@@ -17,10 +17,10 @@ struct node_t {
   traits::edge_descriptor predecessor;
   int dist;
   int dist_prev;
-  boost::vertex_index_t id;
-  boost::default_color_type color;
+  boost::graph::vertex_index_t id;
+  boost::graph::default_color_type color;
 };
-typedef boost::adjacency_list<boost::listS, boost::vecS, boost::directedS, node_t, edge_t > Graph;
+typedef boost::graph::adjacency_list<boost::graph::listS, boost::graph::vecS, boost::graph::directedS, node_t, edge_t > Graph;
 
 BOOST_AUTO_TEST_CASE(using_named_parameters_and_bundled_params_on_edmonds_karp_max_flow_test)
 {
@@ -32,14 +32,14 @@ BOOST_AUTO_TEST_CASE(using_named_parameters_and_bundled_params_on_edmonds_karp_m
   boost::property_map<Graph,float edge_t::* >::type residual_capacity = boost::get(&edge_t::residual_capacity, g);
   boost::property_map<Graph,traits::edge_descriptor edge_t::* >::type rev = boost::get(&edge_t::reversed_edge, g);
   boost::property_map<Graph,traits::edge_descriptor node_t::* >::type pred = boost::get(&node_t::predecessor, g);
-  boost::property_map<Graph,boost::default_color_type node_t::* >::type col = boost::get(&node_t::color, g);
+  boost::property_map<Graph,boost::graph::default_color_type node_t::* >::type col = boost::get(&node_t::color, g);
 
-  boost::SampleGraph::getSampleGraph(g,s,t,capacity,residual_capacity,cost,rev);
+  boost::graph::SampleGraph::getSampleGraph(g,s,t,capacity,residual_capacity,cost,rev);
 
   // The "named parameter version" (producing errors)
   // I chose to show the error with edmonds_karp_max_flow().
   int flow_value = edmonds_karp_max_flow(g, s, t,
-    boost::capacity_map(capacity)
+    boost::graph::capacity_map(capacity)
     .residual_capacity_map(residual_capacity)
     .reverse_edge_map(rev)
     .color_map(col)

@@ -35,7 +35,7 @@
 
 
 using namespace std;
-using namespace boost;
+using namespace boost::graph;
 
 int test_main(int argc, char** argv)
 {

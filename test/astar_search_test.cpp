@@ -22,7 +22,7 @@
 #include <math.h>    // for sqrt
 #include <time.h>
 
-using namespace boost;
+using namespace boost::graph;
 using namespace std;
 
 
@@ -99,7 +99,7 @@ struct found_goal {}; // exception for termination
 
 // visitor that terminates when we find the goal
 template <class Vertex>
-class astar_goal_visitor : public boost::default_astar_visitor
+class astar_goal_visitor : public boost::graph::default_astar_visitor
 {
 public:
   astar_goal_visitor(Vertex goal) : m_goal(goal) {}
@@ -185,8 +185,8 @@ int main(int, char **)
   vector<mygraph_t::vertex_descriptor> p(num_vertices(g));
   vector<cost> d(num_vertices(g));
 
-  boost::property_map<mygraph_t, boost::vertex_index_t>::const_type
-    idx = boost::get(boost::vertex_index, g);
+  boost::property_map<mygraph_t, boost::graph::vertex_index_t>::const_type
+    idx = boost::get(boost::graph::vertex_index, g);
 
   try {
     // call astar named parameter interface

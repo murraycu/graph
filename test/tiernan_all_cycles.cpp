@@ -15,7 +15,7 @@
 #include <boost/random/linear_congruential.hpp>
 
 using namespace std;
-using namespace boost;
+using namespace boost::graph;
 
 struct cycle_validator
 {

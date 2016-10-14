@@ -12,7 +12,7 @@
 #include <boost/graph/exterior_property.hpp>
 
 using namespace std;
-using namespace boost;
+using namespace boost::graph;
 
 // useful types
 // number of vertices in the graph

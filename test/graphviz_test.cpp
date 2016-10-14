@@ -32,7 +32,7 @@
 #include <utility>
 
 using namespace std;
-using namespace boost;
+using namespace boost::graph;
 
 using namespace boost::assign;
 
@@ -231,10 +231,10 @@ bool test_graph(std::istream& dotfile, graph_t& graph,
       typedef adjacency_list < vecS, vecS, directedS,
         vertex_p, edge_p, graph_p > graph_t;
       test_graph<graph_t>(gs,3,masses,weight_map_t());
-      BOOST_ERROR("Failed to throw boost::undirected_graph_error.");
-    } catch (boost::undirected_graph_error&) {
-    } catch (boost::directed_graph_error&) {
-      BOOST_ERROR("Threw boost::directed_graph_error, should have thrown boost::undirected_graph_error.");
+      BOOST_ERROR("Failed to throw boost::graph::undirected_graph_error.");
+    } catch (boost::graph::undirected_graph_error&) {
+    } catch (boost::graph::directed_graph_error&) {
+      BOOST_ERROR("Threw boost::graph::directed_graph_error, should have thrown boost::graph::undirected_graph_error.");
     }
   }
 
@@ -247,8 +247,8 @@ bool test_graph(std::istream& dotfile, graph_t& graph,
       typedef adjacency_list < vecS, vecS, undirectedS,
         vertex_p, edge_p, graph_p > graph_t;
       test_graph<graph_t>(gs,3,masses,weight_map_t());
-      BOOST_ERROR("Failed to throw boost::directed_graph_error.");
-    } catch (boost::directed_graph_error&) {}
+      BOOST_ERROR("Failed to throw boost::graph::directed_graph_error.");
+    } catch (boost::graph::directed_graph_error&) {}
   }
 
   // Complain about parallel edges
@@ -261,8 +261,8 @@ bool test_graph(std::istream& dotfile, graph_t& graph,
       typedef adjacency_list < setS, vecS, directedS,
         vertex_p, edge_p, graph_p > graph_t;
       test_graph<graph_t>(gs,2,mass_map_t(),weights);
-      BOOST_ERROR("Failed to throw boost::bad_parallel_edge.");
-    } catch (boost::bad_parallel_edge&) {}
+      BOOST_ERROR("Failed to throw boost::graph::bad_parallel_edge.");
+    } catch (boost::graph::bad_parallel_edge&) {}
   }
 
   // Handle parallel edges gracefully

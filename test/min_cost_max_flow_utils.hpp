@@ -16,6 +16,8 @@
 
 
 namespace boost {
+namespace graph {
+
 struct SampleGraph {
     typedef adjacency_list_traits < vecS, vecS, directedS > Traits;
 
@@ -31,7 +33,7 @@ struct SampleGraph {
     typedef boost::property_map< Graph, edge_residual_capacity_t >::type ResidualCapacity;
     typedef boost::property_map< Graph, edge_weight_t >::type Weight;
     typedef boost::property_map< Graph, edge_reverse_t>::type Reversed;
-    typedef boost::graph_traits<Graph>::vertices_size_type size_type;
+    typedef boost::graph::graph_traits<Graph>::vertices_size_type size_type;
     typedef Traits::vertex_descriptor vertex_descriptor;
     
     template <class Graph, class Weight, class Capacity, class Reversed, class ResidualCapacity>
@@ -106,8 +108,8 @@ struct SampleGraph {
 
     static void getSampleGraph2(Graph &g, vertex_descriptor & s, vertex_descriptor & t) {
 
-        const boost::graph_traits<Graph>::vertices_size_type N(5);
-        typedef boost::property_map< Graph, edge_reverse_t >::type Reversed;
+        const boost::graph::graph_traits<Graph>::vertices_size_type N(5);
+        typedef boost::property_map < Graph, edge_reverse_t >::type Reversed;
 
         for(size_type i = 0; i < N; ++i){
             add_vertex(g);
@@ -139,7 +141,9 @@ struct SampleGraph {
         ea.addEdge(4, 3, 1 ,3);
     }       
 };
-} //boost
+
+} // namespace graph
+} // namespace boost
 
 #endif /* SAMPLE_GRAPH_UNDIRECTED_HPP */
 

@@ -30,8 +30,8 @@
 template<typename PointType>
 struct cmpPnt
 {
-    bool operator()(const boost::simple_point<PointType>& l,
-                    const boost::simple_point<PointType>& r) const
+    bool operator()(const boost::graph::simple_point<PointType>& l,
+                    const boost::graph::simple_point<PointType>& r) const
     { return (l.x > r.x); }
 };
 
@@ -44,7 +44,7 @@ void connectAllEuclidean(VertexListGraph& g,
                         VertexIndexMap vmap,       // Property maps passed by value
                         int /*sz*/)
 {
-    using namespace boost;
+    using namespace boost::graph;
     using namespace std;
     typedef typename graph_traits<VertexListGraph>::edge_descriptor Edge;
     typedef typename graph_traits<VertexListGraph>::vertex_iterator VItr;
@@ -79,7 +79,7 @@ void connectAllEuclidean(VertexListGraph& g,
 // scatter time execution
 void testScalability(unsigned numpts)
 {
-    using namespace boost;
+    using namespace boost::graph;
     using namespace std;
 
     typedef adjacency_matrix<undirectedS, boost::no_property,
@@ -128,7 +128,7 @@ template <typename PositionVec>
 void checkAdjList(PositionVec v)
 {
     using namespace std;
-    using namespace boost;
+    using namespace boost::graph;
 
     typedef adjacency_list<listS, listS, undirectedS> Graph;
     typedef graph_traits<Graph>::vertex_descriptor Vertex;
@@ -191,7 +191,7 @@ static void usage()
 
 int main(int argc, char* argv[])
 {
-   using namespace boost;
+   using namespace boost::graph;
    using namespace std;
 
     typedef vector<simple_point<double> > PositionVec;

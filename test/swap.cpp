@@ -15,7 +15,7 @@ void test_member_swap()
 
 int main()
 {
-    test_member_swap<boost::adjacency_list<> >();
-    test_member_swap<boost::directed_graph<> >();
-    test_member_swap<boost::undirected_graph<> >();
+    test_member_swap<boost::graph::adjacency_list<> >();
+    test_member_swap<boost::graph::directed_graph<> >();
+    test_member_swap<boost::graph::undirected_graph<> >();
 }

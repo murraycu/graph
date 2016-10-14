@@ -20,7 +20,7 @@
 #include <boost/random.hpp>
 #include <boost/test/minimal.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
 typedef adjacency_list<vecS, vecS, undirectedS> VectorGraph;
 
@@ -49,7 +49,7 @@ void test_graph(const Graph& graph) {
   IndexParentMap index_parent_map(parent_map.begin());
 
   // Create disjoint sets of vertices from the graph
-  disjoint_sets<RankPropertyMap, IndexParentMap>
+  boost::disjoint_sets<RankPropertyMap, IndexParentMap>
     vertex_sets(rank_property_map, index_parent_map);
 
   initialize_incremental_components(graph, vertex_sets);
@@ -60,13 +60,13 @@ void test_graph(const Graph& graph) {
   typedef component_index<vertices_size_type> Components;
   Components vertex_components(parent_map.begin(),
                                parent_map.end(),
-                               boost::get(boost::vertex_index, graph));
+                               boost::get(boost::graph::vertex_index, graph));
 
   // Create a reverse-lookup map for vertex indices
   std::vector<vertex_descriptor> reverse_index_map(num_vertices(graph));
 
   BOOST_FOREACH(vertex_descriptor vertex, vertices(graph)) {
-    reverse_index_map[boost::get(boost::get(boost::vertex_index, graph), vertex)] = vertex;
+    reverse_index_map[boost::get(boost::get(boost::graph::vertex_index, graph), vertex)] = vertex;
   }
 
   // Verify that components are really connected
@@ -152,7 +152,7 @@ int test_main(int argc, char* argv[])
   graph_traits<ListGraph>::vertices_size_type index = 0;
   BOOST_FOREACH(graph_traits<ListGraph>::vertex_descriptor vertex,
                 vertices(list_graph)) {
-    boost::put(boost::get(boost::vertex_index, list_graph), vertex, index++);
+    boost::put(boost::get(boost::graph::vertex_index, list_graph), vertex, index++);
   }
 
   test_graph(list_graph); 

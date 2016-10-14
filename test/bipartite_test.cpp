@@ -20,14 +20,14 @@
 template <typename Graph, typename ColorMap>
 void check_two_coloring (const Graph& g, const ColorMap color_map)
 {
-  typedef boost::graph_traits <Graph> traits;
+  typedef boost::graph::graph_traits <Graph> traits;
   typename traits::edge_iterator edge_iter, edge_end;
 
-  for (boost::tie (edge_iter, edge_end) = boost::edges (g); edge_iter != edge_end; ++edge_iter)
+  for (boost::tie (edge_iter, edge_end) = boost::graph::edges (g); edge_iter != edge_end; ++edge_iter)
   {
     typename traits::vertex_descriptor source, target;
-    source = boost::source (*edge_iter, g);
-    target = boost::target (*edge_iter, g);
+    source = boost::graph::source (*edge_iter, g);
+    target = boost::graph::target (*edge_iter, g);
     BOOST_REQUIRE (boost::get(color_map, source) != boost::get(color_map, target));
   }
 }
@@ -37,7 +37,7 @@ void check_two_coloring (const Graph& g, const ColorMap color_map)
 template <typename Graph, typename RandomAccessIterator>
 void check_odd_cycle (const Graph& g, RandomAccessIterator first, RandomAccessIterator beyond)
 {
-  typedef boost::graph_traits <Graph> traits;
+  typedef boost::graph::graph_traits <Graph> traits;
 
   typename traits::vertex_descriptor first_vertex, current_vertex, last_vertex;
 
@@ -52,10 +52,10 @@ void check_odd_cycle (const Graph& g, RandomAccessIterator first, RandomAccessIt
     last_vertex = current_vertex;
     current_vertex = *first;
 
-    BOOST_REQUIRE (boost::lookup_edge (current_vertex, last_vertex, g).second);
+    BOOST_REQUIRE (boost::graph::lookup_edge (current_vertex, last_vertex, g).second);
   }
 
-  BOOST_REQUIRE (boost::lookup_edge (first_vertex, current_vertex, g).second);
+  BOOST_REQUIRE (boost::graph::lookup_edge (first_vertex, current_vertex, g).second);
 }
 
 /// Call the is_bipartite and find_odd_cycle functions and verify their results.
@@ -63,19 +63,19 @@ void check_odd_cycle (const Graph& g, RandomAccessIterator first, RandomAccessIt
 template <typename Graph, typename IndexMap>
 void check_bipartite (const Graph& g, IndexMap index_map, bool is_bipartite)
 {
-  typedef boost::graph_traits <Graph> traits;
-  typedef std::vector <boost::default_color_type> partition_t;
+  typedef boost::graph::graph_traits <Graph> traits;
+  typedef std::vector <boost::graph::default_color_type> partition_t;
   typedef std::vector <typename traits::vertex_descriptor> vertex_vector_t;
   typedef boost::iterator_property_map <partition_t::iterator, IndexMap> partition_map_t;
 
-  partition_t partition (boost::num_vertices (g));
+  partition_t partition (boost::graph::num_vertices (g));
   partition_map_t partition_map (partition.begin (), index_map);
 
-  vertex_vector_t odd_cycle (boost::num_vertices (g));
+  vertex_vector_t odd_cycle (boost::graph::num_vertices (g));
 
-  bool first_result = boost::is_bipartite (g, index_map, partition_map);
+  bool first_result = boost::graph::is_bipartite (g, index_map, partition_map);
 
-  BOOST_REQUIRE (first_result == boost::is_bipartite(g, index_map));
+  BOOST_REQUIRE (first_result == boost::graph::is_bipartite(g, index_map));
 
   if (first_result)
     check_two_coloring (g, partition_map);
@@ -83,7 +83,7 @@ void check_bipartite (const Graph& g, IndexMap index_map, bool is_bipartite)
   BOOST_CHECK (first_result == is_bipartite);
 
   typename vertex_vector_t::iterator second_first = odd_cycle.begin ();
-  typename vertex_vector_t::iterator second_beyond = boost::find_odd_cycle (g, index_map, partition_map, second_first);
+  typename vertex_vector_t::iterator second_beyond = boost::graph::find_odd_cycle (g, index_map, partition_map, second_first);
 
   if (is_bipartite)
   {
@@ -95,7 +95,7 @@ void check_bipartite (const Graph& g, IndexMap index_map, bool is_bipartite)
     check_odd_cycle (g, second_first, second_beyond);
   }
 
-  second_beyond = boost::find_odd_cycle (g, index_map, second_first);
+  second_beyond = boost::graph::find_odd_cycle (g, index_map, second_first);
   if (is_bipartite)
   {
     BOOST_CHECK (second_beyond == second_first);
@@ -108,11 +108,11 @@ void check_bipartite (const Graph& g, IndexMap index_map, bool is_bipartite)
 
 int test_main (int argc, char **argv)
 {
-  typedef boost::adjacency_list <boost::vecS, boost::vecS, boost::undirectedS> vector_graph_t;
-  typedef boost::adjacency_list <boost::listS, boost::listS, boost::undirectedS> list_graph_t;
+  typedef boost::graph::adjacency_list <boost::graph::vecS, boost::graph::vecS, boost::graph::undirectedS> vector_graph_t;
+  typedef boost::graph::adjacency_list <boost::graph::listS, boost::graph::listS, boost::graph::undirectedS> list_graph_t;
   typedef std::pair <int, int> E;
 
-  typedef std::map <boost::graph_traits <list_graph_t>::vertex_descriptor, size_t> index_map_t;
+  typedef std::map <boost::graph::graph_traits <list_graph_t>::vertex_descriptor, size_t> index_map_t;
   typedef boost::associative_property_map <index_map_t> index_property_map_t;
 
   /**
@@ -157,16 +157,16 @@ int test_main (int argc, char **argv)
   /// Create index maps
 
   index_map_t bipartite_index_map, non_bipartite_index_map;
-  boost::graph_traits <list_graph_t>::vertex_iterator vertex_iter, vertex_end;
+  boost::graph::graph_traits <list_graph_t>::vertex_iterator vertex_iter, vertex_end;
   size_t i = 0;
-  for (boost::tie (vertex_iter, vertex_end) = boost::vertices (bipartite_list_graph); vertex_iter != vertex_end; ++vertex_iter)
+  for (boost::tie (vertex_iter, vertex_end) = boost::graph::vertices (bipartite_list_graph); vertex_iter != vertex_end; ++vertex_iter)
   {
     bipartite_index_map[*vertex_iter] = i++;
   }
   index_property_map_t bipartite_index_property_map = index_property_map_t (bipartite_index_map);
 
   i = 0;
-  for (boost::tie (vertex_iter, vertex_end) = boost::vertices (non_bipartite_list_graph); vertex_iter != vertex_end; ++vertex_iter)
+  for (boost::tie (vertex_iter, vertex_end) = boost::graph::vertices (non_bipartite_list_graph); vertex_iter != vertex_end; ++vertex_iter)
   {
     non_bipartite_index_map[*vertex_iter] = i++;
   }
@@ -174,10 +174,10 @@ int test_main (int argc, char **argv)
 
   /// Call real checks
 
-  check_bipartite (bipartite_vector_graph, boost::get (boost::vertex_index, bipartite_vector_graph), true);
+  check_bipartite (bipartite_vector_graph, boost::get (boost::graph::vertex_index, bipartite_vector_graph), true);
   check_bipartite (bipartite_list_graph, bipartite_index_property_map, true);
 
-  check_bipartite (non_bipartite_vector_graph, boost::get (boost::vertex_index, non_bipartite_vector_graph), false);
+  check_bipartite (non_bipartite_vector_graph, boost::get (boost::graph::vertex_index, non_bipartite_vector_graph), false);
   check_bipartite (non_bipartite_list_graph, non_bipartite_index_property_map, false);
 
   /// Test some more interfaces

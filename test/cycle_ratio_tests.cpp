@@ -129,18 +129,18 @@ static const char test_graph6[]= "digraph test_graph6 {\
   21 -> 21 [w1=1.25, w2=2.15];\
 }";
 
-using namespace boost;
-typedef  boost::property<vertex_index_t, int, boost::property<boost::vertex_name_t, std::string> > vertex_props_t;
+using namespace boost::graph;
+typedef  boost::property<vertex_index_t, int, boost::property<boost::graph::vertex_name_t, std::string> > vertex_props_t;
 template <typename TW1, typename TW2> struct Graph
 {
     typedef typename boost::property<
-        boost::edge_weight_t, TW1,
+        boost::graph::edge_weight_t, TW1,
         typename boost::property<
-            boost::edge_weight2_t, TW2, boost::property<boost::edge_index_t, int>
+            boost::graph::edge_weight2_t, TW2, boost::property<boost::graph::edge_index_t, int>
         >
     > edge_props_t;
-    typedef typename boost::adjacency_list<
-        boost::listS, boost::listS, boost::directedS, vertex_props_t,
+    typedef typename boost::graph::adjacency_list<
+        boost::graph::listS, boost::graph::listS, boost::graph::directedS, vertex_props_t,
         edge_props_t>
     type;
 };
@@ -161,7 +161,7 @@ typedef  adjacency_matrix<directedS, boost::no_property, CEdgeProps<int, int> > 
 
 ///Create "tokens_map" for reading graph properties from .dot file
 template <typename TG>
-void  make_dynamic_properties(TG &g, dynamic_properties &p)
+void  make_dynamic_properties(TG &g, boost::dynamic_properties &p)
 {
   p.property("node_id", boost::get(vertex_name, g));
   p.property("label", boost::get(edge_weight, g));
@@ -198,7 +198,7 @@ void read_data(const char *file, TG &g)
   read_data1(ifs, g);
 }
 
-struct my_float : boost::mcr_float<>
+struct my_float : boost::graph::mcr_float<>
 {
   static double infinity()
   {
@@ -206,7 +206,7 @@ struct my_float : boost::mcr_float<>
   }
 };
 
-struct my_float2 : boost::mcr_float<>
+struct my_float2 : boost::graph::mcr_float<>
 {
   static double infinity() { return 2; }
 };
@@ -244,7 +244,7 @@ int test_main(int argc, char* argv[])
     // TODO: This is causing a failuire, but I'm not really sure what it's doing per se.
     // Commented out for now.
     // BOOST_CHECK(std::abs(maximum_cycle_ratio(tg, vim, ew1m, ew2m) + (std::numeric_limits<double>::max)()) < epsilon );
-    BOOST_CHECK(std::abs(boost::maximum_cycle_ratio(tg, vim, ew1m, ew2m,
+    BOOST_CHECK(std::abs(boost::graph::maximum_cycle_ratio(tg, vim, ew1m, ew2m,
                                                         static_cast<ccInt_t*>(0), my_float()) + 1000) < epsilon );
     tg.clear();
   }
@@ -293,7 +293,7 @@ int test_main(int argc, char* argv[])
 
   {
       read_data(argv[1], tg);
-      min_cr = boost::minimum_cycle_ratio(tg, vim, ew1m, ew2m, &cc, my_float2());
+      min_cr = boost::graph::minimum_cycle_ratio(tg, vim, ew1m, ew2m, &cc, my_float2());
       cout << "Minimum cycle ratio is " << min_cr << endl;
       BOOST_CHECK(std::abs(min_cr - 0.33333333333) < epsilon );
       cout << "Critical cycle is:" << endl;

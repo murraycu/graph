@@ -11,7 +11,7 @@
 #include "../../../../../gpld/common/typestr.hpp"
 
 using namespace std;
-using namespace boost;
+using namespace boost::graph;
 
 // The purpose of this test is simply to provide a testing ground for the
 // invalidation of iterators and descriptors.

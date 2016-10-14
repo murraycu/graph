@@ -19,7 +19,7 @@
 #include <boost/random/linear_congruential.hpp>
 
 using namespace std;
-using namespace boost;
+using namespace boost::graph;
 
 // TODO: This is probably not a very good test. We should be able to define
 // an identity test - something like find the clique of K5.

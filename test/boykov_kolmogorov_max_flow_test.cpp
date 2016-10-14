@@ -45,7 +45,7 @@
 #include <boost/random/linear_congruential.hpp>
 #include <boost/lexical_cast.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
 template <typename Graph, typename CapacityMap, typename ReverseEdgeMap>
 std::pair< typename graph_traits<Graph>::vertex_descriptor,typename graph_traits<Graph>::vertex_descriptor>
@@ -102,7 +102,7 @@ long test_adjacency_list_vecS(int n_verts, int n_edges, std::size_t seed){
   typedef adjacency_list<vecS, vecS, directedS,
   boost::property<vertex_index_t, long,
   boost::property<vertex_predecessor_t, tVectorTraits::edge_descriptor,
-  boost::property<vertex_color_t, boost::default_color_type,
+  boost::property<vertex_color_t, boost::graph::default_color_type,
   boost::property<vertex_distance_t, long> > > >,
   boost::property<edge_capacity_t, long,
   boost::property<edge_residual_capacity_t, long,
@@ -128,7 +128,7 @@ long test_adjacency_list_listS(int n_verts, int n_edges, std::size_t seed){
   typedef adjacency_list<listS, listS, directedS,
   boost::property<vertex_index_t, long,
   boost::property<vertex_predecessor_t, tListTraits::edge_descriptor,
-  boost::property<vertex_color_t, boost::default_color_type,
+  boost::property<vertex_color_t, boost::graph::default_color_type,
   boost::property<vertex_distance_t, long> > > >,
   boost::property<edge_capacity_t, long,
   boost::property<edge_residual_capacity_t, long,
@@ -157,7 +157,7 @@ long test_adjacency_list_listS(int n_verts, int n_edges, std::size_t seed){
 
 template<typename EdgeDescriptor>
     struct Node{
-  boost::default_color_type vertex_color;
+  boost::graph::default_color_type vertex_color;
   long vertex_distance;
   EdgeDescriptor vertex_predecessor;
 };

@@ -35,7 +35,7 @@ struct false_predicate {
 };
 
 void test_empty_graph_cases() {
-  typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::bidirectionalS> Graph;
+  typedef boost::graph::adjacency_list<boost::graph::vecS, boost::graph::vecS, boost::graph::bidirectionalS> Graph;
   Graph gEmpty, gLarge;
   add_vertex(gLarge);
 
@@ -81,8 +81,8 @@ void test_empty_graph_cases() {
 }
 
 void test_return_value() {
-  typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::bidirectionalS> Graph;
-  typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
+  typedef boost::graph::adjacency_list<boost::graph::vecS, boost::graph::vecS, boost::graph::bidirectionalS> Graph;
+  typedef boost::graph::graph_traits<Graph>::vertex_descriptor Vertex;
   Graph gSmall, gLarge;
   add_vertex(gSmall);
   Vertex v1 = add_vertex(gLarge);
@@ -102,7 +102,7 @@ void test_return_value() {
       test_callback callback(got_hit, true);
       false_predicate pred;
       bool exists = vf2_graph_iso(gLarge, gLarge, callback, vertex_order_by_mult(gLarge),
-                                  boost::edges_equivalent(pred).vertices_equivalent(pred));
+                                  boost::graph::edges_equivalent(pred).vertices_equivalent(pred));
       BOOST_CHECK(!exists);
       BOOST_CHECK(!got_hit);
     }
@@ -134,7 +134,7 @@ void test_return_value() {
       test_callback callback(got_hit, true);
       false_predicate pred;
       bool exists = vf2_subgraph_iso(gLarge, gLarge, callback, vertex_order_by_mult(gLarge),
-                                  boost::edges_equivalent(pred).vertices_equivalent(pred));
+                                  boost::graph::edges_equivalent(pred).vertices_equivalent(pred));
       BOOST_CHECK(!exists);
       BOOST_CHECK(!got_hit);
     }
@@ -166,7 +166,7 @@ void test_return_value() {
       test_callback callback(got_hit, true);
       false_predicate pred;
       bool exists = vf2_subgraph_mono(gLarge, gLarge, callback, vertex_order_by_mult(gLarge),
-                                  boost::edges_equivalent(pred).vertices_equivalent(pred));
+                                  boost::graph::edges_equivalent(pred).vertices_equivalent(pred));
       BOOST_CHECK(!exists);
       BOOST_CHECK(!got_hit);
     }

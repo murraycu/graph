@@ -36,7 +36,7 @@
 #include <boost/graph/betweenness_centrality.hpp>
 #include <boost/graph/kruskal_min_spanning_tree.hpp>
 
-typedef boost::adjacency_list<> GraphT;
+typedef boost::graph::adjacency_list<> GraphT;
 typedef boost::erdos_renyi_iterator<boost::minstd_rand, GraphT> ERGen;
 
 struct VertexData
@@ -49,10 +49,10 @@ struct EdgeData
   int index_e;
 };
 
-typedef boost::compressed_sparse_row_graph<boost::directedS, VertexData, EdgeData>
+typedef boost::compressed_sparse_row_graph<boost::graph::directedS, VertexData, EdgeData>
   CSRGraphT;
 
-typedef boost::compressed_sparse_row_graph<boost::bidirectionalS, VertexData, EdgeData>
+typedef boost::compressed_sparse_row_graph<boost::graph::bidirectionalS, VertexData, EdgeData>
   BidirCSRGraphT;
 
 template <class G1, class VI1, class G2, class VI2, class IsomorphismMap>
@@ -64,24 +64,24 @@ void assert_graphs_equal(const G1& g1, const VI1& vi1,
   BOOST_CHECK (num_vertices(g1) == num_vertices(g2));
   BOOST_CHECK (num_edges(g1) == num_edges(g2));
 
-  typedef typename boost::graph_traits<G1>::vertex_iterator vertiter1;
+  typedef typename boost::graph::graph_traits<G1>::vertex_iterator vertiter1;
   {
     vertiter1 i, iend;
     for (boost::tie(i, iend) = vertices(g1); i != iend; ++i) {
-      typename boost::graph_traits<G1>::vertex_descriptor v1 = *i;
-      typename boost::graph_traits<G2>::vertex_descriptor v2 = iso[v1];
+      typename boost::graph::graph_traits<G1>::vertex_descriptor v1 = *i;
+      typename boost::graph::graph_traits<G2>::vertex_descriptor v2 = iso[v1];
 
       BOOST_CHECK (vi1[v1] == vi2[v2]);
 
       BOOST_CHECK (out_degree(v1, g1) == out_degree(v2, g2));
       std::vector<std::size_t> edges1(out_degree(v1, g1));
-      typename boost::graph_traits<G1>::out_edge_iterator oe1, oe1end;
+      typename boost::graph::graph_traits<G1>::out_edge_iterator oe1, oe1end;
       for (boost::tie(oe1, oe1end) = out_edges(v1, g1); oe1 != oe1end; ++oe1) {
         BOOST_CHECK (source(*oe1, g1) == v1);
         edges1.push_back(vi1[target(*oe1, g1)]);
       }
       std::vector<std::size_t> edges2(out_degree(v2, g2));
-      typename boost::graph_traits<G2>::out_edge_iterator oe2, oe2end;
+      typename boost::graph::graph_traits<G2>::out_edge_iterator oe2, oe2end;
       for (boost::tie(oe2, oe2end) = out_edges(v2, g2); oe2 != oe2end; ++oe2) {
         BOOST_CHECK (source(*oe2, g2) == v2);
         edges2.push_back(vi2[target(*oe2, g2)]);
@@ -105,11 +105,11 @@ void assert_graphs_equal(const G1& g1, const VI1& vi1,
   {
     std::vector<std::pair<std::size_t, std::size_t> > all_edges1;
     std::vector<std::pair<std::size_t, std::size_t> > all_edges2;
-    typename boost::graph_traits<G1>::edge_iterator ei1, ei1end;
+    typename boost::graph::graph_traits<G1>::edge_iterator ei1, ei1end;
     for (boost::tie(ei1, ei1end) = edges(g1); ei1 != ei1end; ++ei1)
       all_edges1.push_back(std::make_pair(vi1[source(*ei1, g1)],
                                           vi1[target(*ei1, g1)]));
-    typename boost::graph_traits<G2>::edge_iterator ei2, ei2end;
+    typename boost::graph::graph_traits<G2>::edge_iterator ei2, ei2end;
     for (boost::tie(ei2, ei2end) = edges(g2); ei2 != ei2end; ++ei2)
       all_edges2.push_back(std::make_pair(vi2[source(*ei2, g2)],
                                           vi2[target(*ei2, g2)]));
@@ -147,8 +147,8 @@ template <class G>
 void assert_bidir_equal_in_both_dirs(const G& g) {
   BOOST_CHECK (g.m_forward.m_rowstart.size() == g.m_backward.m_rowstart.size());
   BOOST_CHECK (g.m_forward.m_column.size() == g.m_backward.m_column.size());
-  typedef typename boost::graph_traits<G>::vertex_descriptor Vertex;
-  typedef typename boost::graph_traits<G>::edges_size_type EdgeIndex;
+  typedef typename boost::graph::graph_traits<G>::vertex_descriptor Vertex;
+  typedef typename boost::graph::graph_traits<G>::edges_size_type EdgeIndex;
   std::vector<boost::tuple<EdgeIndex, Vertex, Vertex> > edges_forward, edges_backward;
   for (Vertex i = 0; i < g.m_forward.m_rowstart.size() - 1; ++i) {
     for (EdgeIndex j = g.m_forward.m_rowstart[i];
@@ -169,7 +169,7 @@ void assert_bidir_equal_in_both_dirs(const G& g) {
 
 template <typename Graph>
 void check_consistency_dispatch(const Graph& g,
-                                boost::bidirectional_graph_tag) {
+                                boost::graph::bidirectional_graph_tag) {
   check_consistency_one(g.m_forward);
   check_consistency_one(g.m_backward);
   assert_bidir_equal_in_both_dirs(g);
@@ -177,7 +177,7 @@ void check_consistency_dispatch(const Graph& g,
 
 template <typename Graph>
 void check_consistency(const Graph& g) {
-  check_consistency_dispatch(g, typename boost::graph_traits<Graph>::traversal_category());
+  check_consistency_dispatch(g, typename boost::graph::graph_traits<Graph>::traversal_category());
 }
 
 template<typename OrigGraph>
@@ -193,11 +193,11 @@ void graph_test(const OrigGraph& g)
                       boost::identity_property_map());
 
   // Check constructing a graph from iterators
-  CSRGraphT g3(boost::edges_are_sorted,
+  CSRGraphT g3(boost::graph::edges_are_sorted,
               boost::make_transform_iterator(edges(g2).first,
-                                              boost::detail::make_edge_to_index_pair(g2)),
+                                              boost::graph::detail::make_edge_to_index_pair(g2)),
                boost::make_transform_iterator(edges(g2).second,
-                                              boost::detail::make_edge_to_index_pair(g2)),
+                                              boost::graph::detail::make_edge_to_index_pair(g2)),
                num_vertices(g));
   check_consistency(g3);
   BOOST_CHECK((std::size_t)std::distance(edges(g3).first, edges(g3).second)
@@ -282,9 +282,9 @@ void graph_test(const OrigGraph& g)
   // each edge in g2
   std::size_t last_src = 0;
   for (boost::tie(ei, ei_end) = edges(g2); ei != ei_end; ++ei) {
-    BOOST_CHECK(edge_from_index(boost::get(boost::edge_index, g2, *ei), g2) == *ei);
-    std::size_t src = boost::get(boost::vertex_index, g2, source(*ei, g2));
-    (void)(std::size_t)get(boost::vertex_index, g2, target(*ei, g2));
+    BOOST_CHECK(edge_from_index(boost::get(boost::graph::edge_index, g2, *ei), g2) == *ei);
+    std::size_t src = boost::get(boost::graph::vertex_index, g2, source(*ei, g2));
+    (void)(std::size_t)get(boost::graph::vertex_index, g2, target(*ei, g2));
     BOOST_CHECK(src >= last_src);
     last_src = src;
   }
@@ -294,7 +294,7 @@ void graph_test(const OrigGraph& g)
   std::size_t last_vertex = 0;
   bool first_iter = true;
   for (boost::tie(vi, vi_end) = vertices(g2); vi != vi_end; ++vi) {
-    std::size_t v = boost::get(boost::vertex_index, g2, *vi);
+    std::size_t v = boost::get(boost::graph::vertex_index, g2, *vi);
     BOOST_CHECK(first_iter || v > last_vertex);
     last_vertex = v;
     first_iter = false;
@@ -316,15 +316,15 @@ void graph_test(const OrigGraph& g)
 
   // Run brandes_betweenness_centrality, which touches on a whole lot
   // of things, including VertexListGraph and IncidenceGraph
-  using namespace boost;
+  using namespace boost::graph;
   std::vector<double> vertex_centralities(num_vertices(g3));
   std::vector<double> edge_centralities(num_edges(g3));
   brandes_betweenness_centrality
     (g3,
      boost::make_iterator_property_map(vertex_centralities.begin(),
-                                boost::get(boost::vertex_index, g3)),
+                                boost::get(boost::graph::vertex_index, g3)),
      boost::make_iterator_property_map(edge_centralities.begin(),
-                                boost::get(boost::edge_index, g3)));
+                                boost::get(boost::graph::edge_index, g3)));
     // Extra qualifications for aCC
 
   // Invert the edge centralities and use these as weights to
@@ -335,13 +335,13 @@ void graph_test(const OrigGraph& g)
     edge_centralities[i] =
       edge_centralities[i] == 0.0? max_val : 1.0 / edge_centralities[i];
 
-  typedef boost::graph_traits<CSRGraphT>::edge_descriptor edge_descriptor;
+  typedef boost::graph::graph_traits<CSRGraphT>::edge_descriptor edge_descriptor;
   std::vector<edge_descriptor> mst_edges;
   mst_edges.reserve(num_vertices(g3));
   kruskal_minimum_spanning_tree
     (g3, std::back_inserter(mst_edges),
-     weight_map(boost::make_iterator_property_map(edge_centralities.begin(),
-                                           boost::get(boost::edge_index, g3))));
+     weight_map(make_iterator_property_map(edge_centralities.begin(),
+                                           boost::get(boost::graph::edge_index, g3))));
 }
 
 void graph_test(int nnodes, double density, int seed)
@@ -354,7 +354,7 @@ void graph_test(int nnodes, double density, int seed)
 
 void test_graph_properties()
 {
-  using namespace boost;
+  using namespace boost::graph;
 
   typedef compressed_sparse_row_graph<directedS,
                                       boost::no_property,
@@ -383,7 +383,7 @@ struct Edge
 
 void test_vertex_and_edge_properties()
 {
-  using namespace boost;
+  using namespace boost::graph;
   typedef compressed_sparse_row_graph<directedS, Vertex, Edge>
     CSRGraphWithPropsT;
 
@@ -392,7 +392,7 @@ void test_vertex_and_edge_properties()
   double weights[6] = { 1.0, 1.0, 0.5, 1.0, 1.0, 0.5 };
   double centrality[5] = { 0.0, 1.5, 0.0, 1.0, 0.5 };
 
-  CSRGraphWithPropsT g(boost::edges_are_sorted, &edges_init[0], &edges_init[0] + 6, &weights[0], 5, 6);
+  CSRGraphWithPropsT g(boost::graph::edges_are_sorted, &edges_init[0], &edges_init[0] + 6, &weights[0], 5, 6);
   brandes_betweenness_centrality
     (g,
      centrality_map(boost::get(&Vertex::centrality, g)).
@@ -427,49 +427,49 @@ int test_main(int argc, char* argv[])
   {
     std::cout << "Testing CSR graph built from unsorted edges" << std::endl;
     std::pair<int, int> unsorted_edges[] = {std::make_pair(5, 0), std::make_pair(3, 2), std::make_pair(4, 1), std::make_pair(4, 0), std::make_pair(0, 2), std::make_pair(5, 2)};
-    CSRGraphT g(boost::edges_are_unsorted, unsorted_edges, unsorted_edges + sizeof(unsorted_edges) / sizeof(*unsorted_edges), 6);
+    CSRGraphT g(boost::graph::edges_are_unsorted, unsorted_edges, unsorted_edges + sizeof(unsorted_edges) / sizeof(*unsorted_edges), 6);
 
     // Test vertex and edge bundle access
     boost::ignore_unused_variable_warning(
-      (VertexData&)get(boost::get(boost::vertex_bundle, g), vertex(0, g)));
+      (VertexData&)get(boost::get(boost::graph::vertex_bundle, g), vertex(0, g)));
     boost::ignore_unused_variable_warning(
-      (const VertexData&)get(boost::get(boost::vertex_bundle, (const CSRGraphT&)g), vertex(0, g)));
+      (const VertexData&)get(boost::get(boost::graph::vertex_bundle, (const CSRGraphT&)g), vertex(0, g)));
     boost::ignore_unused_variable_warning(
-      (VertexData&)get(boost::vertex_bundle, g, vertex(0, g)));
+      (VertexData&)get(boost::graph::vertex_bundle, g, vertex(0, g)));
     boost::ignore_unused_variable_warning(
-      (const VertexData&)get(boost::vertex_bundle, (const CSRGraphT&)g, vertex(0, g)));
-    boost::put(boost::vertex_bundle, g, vertex(0, g), VertexData());
+      (const VertexData&)get(boost::graph::vertex_bundle, (const CSRGraphT&)g, vertex(0, g)));
+    boost::put(boost::graph::vertex_bundle, g, vertex(0, g), VertexData());
     boost::ignore_unused_variable_warning(
-      (EdgeData&)get(boost::get(boost::edge_bundle, g), *edges(g).first));
+      (EdgeData&)get(boost::get(boost::graph::edge_bundle, g), *edges(g).first));
     boost::ignore_unused_variable_warning(
-      (const EdgeData&)get(boost::get(boost::edge_bundle, (const CSRGraphT&)g), *edges(g).first));
+      (const EdgeData&)get(boost::get(boost::graph::edge_bundle, (const CSRGraphT&)g), *edges(g).first));
     boost::ignore_unused_variable_warning(
-      (EdgeData&)get(boost::edge_bundle, g, *edges(g).first));
+      (EdgeData&)get(boost::graph::edge_bundle, g, *edges(g).first));
     boost::ignore_unused_variable_warning(
-      (const EdgeData&)get(boost::edge_bundle, (const CSRGraphT&)g, *edges(g).first));
-    boost::put(boost::edge_bundle, g, *edges(g).first, EdgeData());
+      (const EdgeData&)get(boost::graph::edge_bundle, (const CSRGraphT&)g, *edges(g).first));
+    boost::put(boost::graph::edge_bundle, g, *edges(g).first, EdgeData());
 
-    CSRGraphT g2(boost::edges_are_unsorted_multi_pass, unsorted_edges, unsorted_edges + sizeof(unsorted_edges) / sizeof(*unsorted_edges), 6);
+    CSRGraphT g2(boost::graph::edges_are_unsorted_multi_pass, unsorted_edges, unsorted_edges + sizeof(unsorted_edges) / sizeof(*unsorted_edges), 6);
     graph_test(g);
     graph_test(g2);
     assert_graphs_equal(g, boost::identity_property_map(),
                         g2, boost::identity_property_map(),
                         boost::identity_property_map());
     std::cout << "Testing bidir CSR graph built from unsorted edges" << std::endl;
-    BidirCSRGraphT g2b(boost::edges_are_unsorted_multi_pass, unsorted_edges, unsorted_edges + sizeof(unsorted_edges) / sizeof(*unsorted_edges), 6);
+    BidirCSRGraphT g2b(boost::graph::edges_are_unsorted_multi_pass, unsorted_edges, unsorted_edges + sizeof(unsorted_edges) / sizeof(*unsorted_edges), 6);
     graph_test(g2b);
     assert_graphs_equal(g, boost::identity_property_map(),
                         g2b, boost::identity_property_map(),
                         boost::identity_property_map());
     // Check in edge access
-    typedef boost::graph_traits<BidirCSRGraphT>::in_edge_iterator in_edge_iterator;
+    typedef boost::graph::graph_traits<BidirCSRGraphT>::in_edge_iterator in_edge_iterator;
     std::pair<in_edge_iterator, in_edge_iterator> ie(in_edges(vertex(0, g2b), g2b));
     // quiet unused variable warning 
     ie.first = ie.second;
 
     std::cout << "Testing CSR graph built using add_edges" << std::endl;
     // Test building a graph using add_edges on unsorted lists
-    CSRGraphT g3(boost::edges_are_unsorted, unsorted_edges, unsorted_edges, 6); // Empty range
+    CSRGraphT g3(boost::graph::edges_are_unsorted, unsorted_edges, unsorted_edges, 6); // Empty range
     add_edges(unsorted_edges, unsorted_edges + 3, g3);
     EdgeData edge_data[3];
     add_edges(unsorted_edges + 3, unsorted_edges + 6, edge_data, edge_data + 3, g3);

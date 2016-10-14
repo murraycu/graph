@@ -17,16 +17,16 @@
 #include <boost/random/mersenne_twister.hpp>
 
 #ifdef BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP
-using namespace boost;
+using namespace boost::graph;
 #endif
 
 template <typename DistanceMap, typename ParentMap,
           typename Graph, typename ColorMap>
 class bfs_testing_visitor
 {
-  typedef typename boost::graph_traits<Graph>::vertex_descriptor Vertex;
-  typedef typename boost::graph_traits<Graph>::edge_descriptor Edge;
-  typedef typename boost::color_traits<
+  typedef typename boost::graph::graph_traits<Graph>::vertex_descriptor Vertex;
+  typedef typename boost::graph::graph_traits<Graph>::edge_descriptor Edge;
+  typedef typename boost::graph::color_traits<
     typename boost::property_traits<ColorMap>::value_type
   > Color;
 public:
@@ -68,7 +68,7 @@ public:
   void non_tree_edge(const Edge& e, const Graph& g) const {
     BOOST_CHECK( color[target(e, g)] != Color::white() );
 
-    if (boost::is_directed(g))
+    if (boost::graph::is_directed(g))
       // cross or back edge
       BOOST_CHECK(distance[target(e, g)] <= distance[source(e, g)] + 1);
     else {
@@ -88,7 +88,7 @@ public:
     BOOST_CHECK( color[target(e, g)] == Color::black() );
 
     // All vertices adjacent to a black vertex must already be discovered
-    typename boost::graph_traits<Graph>::adjacency_iterator ai, ai_end;
+    typename boost::graph::graph_traits<Graph>::adjacency_iterator ai, ai_end;
     for (boost::tie(ai, ai_end) = adjacent_vertices(target(e, g), g);
          ai != ai_end; ++ai)
       BOOST_CHECK( color[*ai] != Color::white() );
@@ -111,12 +111,12 @@ private:
 template <class Graph>
 struct bfs_test
 {
-  typedef boost::graph_traits<Graph> Traits;
+  typedef boost::graph::graph_traits<Graph> Traits;
   typedef typename Traits::vertices_size_type
     vertices_size_type;
   static void go(vertices_size_type max_V) {
     typedef typename Traits::vertex_descriptor vertex_descriptor;
-    typedef boost::color_traits<boost::default_color_type> Color;
+    typedef boost::graph::color_traits<boost::graph::default_color_type> Color;
 
     vertices_size_type i;
     typename Traits::edges_size_type j;
@@ -127,10 +127,10 @@ struct bfs_test
     for (i = 0; i < max_V; ++i)
       for (j = 0; j < i*i; ++j) {
         Graph g;
-        boost::generate_random_graph(g, i, j, gen);
+        boost::graph::generate_random_graph(g, i, j, gen);
 
         // declare the "start" variable
-        vertex_descriptor start = boost::random_vertex(g, gen);
+        vertex_descriptor start = boost::graph::random_vertex(g, gen);
 
         // vertex properties
         std::vector<int> distance(i, (std::numeric_limits<int>::max)());
@@ -138,11 +138,11 @@ struct bfs_test
         std::vector<vertex_descriptor> parent(i);
         for (boost::tie(ui, ui_end) = vertices(g); ui != ui_end; ++ui)
           parent[*ui] = *ui;
-        std::vector<boost::default_color_type> color(i);
+        std::vector<boost::graph::default_color_type> color(i);
 
         // Get vertex index map
-        typedef typename boost::property_map<Graph, boost::vertex_index_t>::const_type idx_type;
-        idx_type idx = boost::get(boost::vertex_index, g);
+        typedef typename boost::property_map<Graph, boost::graph::vertex_index_t>::const_type idx_type;
+        idx_type idx = boost::get(boost::graph::vertex_index, g);
 
         // Make property maps from vectors
         typedef
@@ -154,7 +154,7 @@ struct bfs_test
           parent_pm_type;
         parent_pm_type parent_pm(parent.begin(), idx);
         typedef
-          boost::iterator_property_map<std::vector<boost::default_color_type>::iterator, idx_type>
+          boost::iterator_property_map<std::vector<boost::graph::default_color_type>::iterator, idx_type>
           color_pm_type;
         color_pm_type color_pm(color.begin(), idx);
 
@@ -163,15 +163,15 @@ struct bfs_test
           color_pm_type>
           vis(start, distance_pm, parent_pm, color_pm);
 
-        boost::breadth_first_search(g, start,
+        boost::graph::breadth_first_search(g, start,
                                     visitor(vis).
                                     color_map(color_pm));
 
         // All white vertices should be unreachable from the source.
         for (boost::tie(ui, ui_end) = vertices(g); ui != ui_end; ++ui)
           if (color[*ui] == Color::white()) {
-            std::vector<boost::default_color_type> color2(i, Color::white());
-            BOOST_CHECK(!boost::is_reachable(start, *ui, g, color_pm_type(color2.begin(), idx)));
+            std::vector<boost::graph::default_color_type> color2(i, Color::white());
+            BOOST_CHECK(!boost::graph::is_reachable(start, *ui, g, color_pm_type(color2.begin(), idx)));
           }
 
         // The shortest path to a child should be one longer than
@@ -186,7 +186,7 @@ struct bfs_test
 
 int test_main(int argc, char* argv[])
 {
-  using namespace boost;
+  using namespace boost::graph;
   int max_V = 7;
   if (argc > 1)
     max_V = atoi(argv[1]);

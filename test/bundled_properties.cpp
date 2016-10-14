@@ -19,7 +19,7 @@
 #include <iterator>
 
 using namespace std;
-using namespace boost;
+using namespace boost::graph;
 
 struct City
 {
@@ -97,17 +97,17 @@ bool operator==(const Highway& h1, const Highway& h2)
 template<bool> struct truth {};
 
 template<typename Map, typename VertexIterator, typename Bundle>
-typename boost::graph_traits<Map>::vertex_descriptor 
+typename boost::graph::graph_traits<Map>::vertex_descriptor 
 do_add_vertex(Map& map, VertexIterator, const Bundle& bundle, truth<true>)
 {
   return add_vertex(bundle, map);
 }
 
 template<typename Map, typename VertexIterator, typename Bundle>
-typename boost::graph_traits<Map>::vertex_descriptor 
+typename boost::graph::graph_traits<Map>::vertex_descriptor 
 do_add_vertex(Map& map, VertexIterator& vi, const Bundle& bundle, truth<false>)
 {
-  boost::get(boost::vertex_bundle, map)[*vi] = bundle;
+  boost::get(boost::graph::vertex_bundle, map)[*vi] = bundle;
   return *vi++;
 }
 
@@ -146,9 +146,9 @@ void test_io(const Map&, long)
 template<typename Map, bool CanAddVertex>
 void test_bundled_properties(Map*, truth<CanAddVertex> can_add_vertex)
 {
-  typedef typename boost::graph_traits<Map>::vertex_iterator   vertex_iterator;
-  typedef typename boost::graph_traits<Map>::vertex_descriptor vertex_descriptor;
-  typedef typename boost::graph_traits<Map>::edge_descriptor   edge_descriptor;
+  typedef typename boost::graph::graph_traits<Map>::vertex_iterator   vertex_iterator;
+  typedef typename boost::graph::graph_traits<Map>::vertex_descriptor vertex_descriptor;
+  typedef typename boost::graph::graph_traits<Map>::edge_descriptor   edge_descriptor;
 
   Map map(CanAddVertex? 2 : 3);
 
@@ -167,7 +167,7 @@ void test_bundled_properties(Map*, truth<CanAddVertex> can_add_vertex)
   // Try adding a vertex with a property value
   vertex_descriptor bloomington = do_add_vertex(map, vi, City("Bloomington", 39000, 47401),
                                                 can_add_vertex);
-  BOOST_CHECK(boost::get(boost::vertex_bundle, map)[bloomington].zipcodes[0] == 47401);
+  BOOST_CHECK(boost::get(boost::graph::vertex_bundle, map)[bloomington].zipcodes[0] == 47401);
   
   edge_descriptor e = add_edge(v, u, map).first;
   map[e].name = "I-87";
@@ -177,7 +177,7 @@ void test_bundled_properties(Map*, truth<CanAddVertex> can_add_vertex)
   map[e].divided = true;
 
   edge_descriptor our_trip = add_edge(v, bloomington, Highway("Long", 1000), map).first;
-  BOOST_CHECK(boost::get(boost::edge_bundle, map, our_trip).miles == 1000);
+  BOOST_CHECK(boost::get(boost::graph::edge_bundle, map, our_trip).miles == 1000);
   
   BOOST_CHECK(boost::get(boost::get(&City::name, map), v) == "Troy");
   BOOST_CHECK(boost::get(boost::get(&Highway::name, map), e) == "I-87");
@@ -186,8 +186,8 @@ void test_bundled_properties(Map*, truth<CanAddVertex> can_add_vertex)
   boost::put(&City::population, map, v, 49168);
   BOOST_CHECK(boost::get(&City::population, map)[v] == 49168);
   
-  boost::filtered_graph<Map, boost::keep_all> fmap(map, boost::keep_all());
-  BOOST_CHECK(boost::get(boost::edge_bundle, map, our_trip).miles == 1000);
+  boost::graph::filtered_graph<Map, boost::graph::keep_all> fmap(map, boost::graph::keep_all());
+  BOOST_CHECK(boost::get(boost::graph::edge_bundle, map, our_trip).miles == 1000);
   
   BOOST_CHECK(boost::get(boost::get(&City::name, fmap), v) == "Troy");
   BOOST_CHECK(boost::get(boost::get(&Highway::name, fmap), e) == "I-87");
@@ -201,13 +201,13 @@ void test_bundled_properties(Map*, truth<CanAddVertex> can_add_vertex)
 
 void test_subgraph_bundled_properties()
 {
-  typedef boost::subgraph<
-            boost::adjacency_list<boost::vecS, boost::vecS, 
-                                  boost::bidirectionalS, City, 
-                                  boost::property<boost::edge_index_t, int,
+  typedef boost::graph::subgraph<
+            boost::graph::adjacency_list<boost::graph::vecS, boost::graph::vecS, 
+                                  boost::graph::bidirectionalS, City, 
+                                  boost::property<boost::graph::edge_index_t, int,
                                                   Highway> > > SubMap;
-  typedef boost::graph_traits<SubMap>::vertex_descriptor Vertex;
-  typedef boost::graph_traits<SubMap>::vertex_iterator vertex_iterator;
+  typedef boost::graph::graph_traits<SubMap>::vertex_descriptor Vertex;
+  typedef boost::graph::graph_traits<SubMap>::vertex_iterator vertex_iterator;
 
   SubMap map(3);
   vertex_iterator vi = vertices(map).first;
@@ -223,10 +223,10 @@ void test_subgraph_bundled_properties()
 
 int test_main(int, char*[])
 {
-  typedef boost::adjacency_list<
-    boost::listS, boost::vecS, boost::bidirectionalS,
+  typedef boost::graph::adjacency_list<
+    boost::graph::listS, boost::graph::vecS, boost::graph::bidirectionalS,
     City, Highway> Map1;
-  typedef boost::adjacency_matrix<boost::directedS,
+  typedef boost::graph::adjacency_matrix<boost::graph::directedS,
     City, Highway> Map2;
 
   test_bundled_properties(static_cast<Map1*>(0), truth<true>());

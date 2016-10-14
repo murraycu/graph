@@ -13,7 +13,7 @@
 
 int main(int,char*[])
 {
-  using namespace boost;
+  using namespace boost::graph;
   // Check Stanford GraphBase Graph
   {
     typedef Graph* Graph;

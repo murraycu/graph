@@ -18,10 +18,17 @@
 #include <boost/limits.hpp>
 #include <fstream>
 #include <string>
-using namespace boost;
+using namespace boost::graph;
 
-enum vertex_position_t { vertex_position };
-namespace boost { BOOST_INSTALL_PROPERTY(vertex, position); }
+
+namespace boost {
+  // TODO: Don't put this the in boost::graph namespace.
+  namespace graph {
+    enum vertex_position_t { vertex_position };
+  }
+
+BOOST_INSTALL_PROPERTY(boost::graph::vertex, position);
+} // namespace boost
 
 typedef square_topology<>::point_type point;
 
@@ -106,7 +113,7 @@ struct kamada_kawai_done
 
   template<typename Graph>
   bool operator()(double delta_p, 
-                  typename boost::graph_traits<Graph>::vertex_descriptor /*p*/,
+                  typename boost::graph::graph_traits<Graph>::vertex_descriptor /*p*/,
                   const Graph& /*g*/,
                   bool global)
   {

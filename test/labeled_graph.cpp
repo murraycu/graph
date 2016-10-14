@@ -19,7 +19,7 @@
 
 using std::cout;
 using std::string;
-using namespace boost;
+using namespace boost::graph;
 
 void test_norm();
 void test_temp();

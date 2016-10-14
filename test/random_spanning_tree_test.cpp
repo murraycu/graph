@@ -21,7 +21,7 @@
 #include <fstream>
 #include <boost/graph/iteration_macros.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 using namespace std;
 
 typedef grid_graph<2> graph_type;

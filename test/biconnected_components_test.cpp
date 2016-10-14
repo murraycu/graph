@@ -19,7 +19,7 @@
 #include <boost/random/linear_congruential.hpp>
 #include <fstream>
 
-using namespace boost;
+using namespace boost::graph;
 
 struct EdgeProperty
 {

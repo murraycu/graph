@@ -7,28 +7,32 @@
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 #include <boost/graph/filtered_graph.hpp>
 
+
+
 namespace boost {
-
+  // TODO: Don't put this the in boost::graph namespace.
+  namespace graph {
     enum edge_info_t { edge_info = 114 };
+  }
 
-    BOOST_INSTALL_PROPERTY( edge, info );
-}
+    BOOST_INSTALL_PROPERTY(boost::graph::edge, info );
+} // namespace boost
 
 template< typename EdgeInfo,
           typename Directed >
 class Graph
 {
 public:
-    typedef boost::property< boost::edge_info_t, EdgeInfo > tEdge_property;
+    typedef boost::property< boost::graph::edge_info_t, EdgeInfo > tEdge_property;
 
-    typedef boost::adjacency_list< boost::setS,
-                                   boost::vecS,
+    typedef boost::graph::adjacency_list< boost::graph::setS,
+                                   boost::graph::vecS,
                                    Directed,
                                    boost::no_property,
                                    tEdge_property > tGraph;
 
-    typedef typename boost::graph_traits< tGraph >::vertex_descriptor tNode;
-    typedef typename boost::graph_traits< tGraph >::edge_descriptor   tEdge;
+    typedef typename boost::graph::graph_traits< tGraph >::vertex_descriptor tNode;
+    typedef typename boost::graph::graph_traits< tGraph >::edge_descriptor   tEdge;
 
 protected:
 
@@ -39,7 +43,7 @@ class DataEdge;
 
 class UndirectedGraph
     : public Graph< DataEdge*,
-                    boost::undirectedS >
+                    boost::graph::undirectedS >
 {
 public:
 
@@ -96,11 +100,11 @@ UndirectedGraph::dijkstra( Evaluator const& rEvaluator,
 
     std::vector< tNode > predecessors( num_vertices(m_Graph) );
 
-    boost::filtered_graph< tGraph, Filter > filteredGraph( m_Graph, rFilter );
+    boost::graph::filtered_graph< tGraph, Filter > filteredGraph( m_Graph, rFilter );
 
-    boost::dijkstra_shortest_paths( filteredGraph,
+    boost::graph::dijkstra_shortest_paths( filteredGraph,
                                     nodeSource,
-                                    boost::predecessor_map( &predecessors[0] )
+                                    boost::graph::predecessor_map( &predecessors[0] )
                                     .weight_map( rEvaluator ) );
 }
 

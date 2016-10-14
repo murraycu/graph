@@ -31,7 +31,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/graph/graphviz.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
 
 template <typename Generator>
@@ -200,14 +200,14 @@ void test_vf2_sub_graph_iso(int n1, int n2, double edge_probability,
   
   typedef property_map_equivalent<vertex_name_map1, vertex_name_map2> vertex_predicate;
   vertex_predicate vertex_comp =
-    boost::make_property_map_equivalent(boost::get(vertex_name, g1), boost::get(vertex_name, g2));
+    boost::graph::make_property_map_equivalent(boost::get(vertex_name, g1), boost::get(vertex_name, g2));
   
   typedef boost::property_map<graph1, edge_name_t>::type edge_name_map1;
   typedef boost::property_map<graph2, edge_name_t>::type edge_name_map2;
   
   typedef property_map_equivalent<edge_name_map1, edge_name_map2> edge_predicate;
   edge_predicate edge_comp =
-    boost::make_property_map_equivalent(boost::get(edge_name, g1), boost::get(edge_name, g2));
+    boost::graph::make_property_map_equivalent(boost::get(edge_name, g1), boost::get(edge_name, g2));
   
   
   std::clock_t start = std::clock();
@@ -235,13 +235,13 @@ void test_vf2_sub_graph_iso(int n1, int n2, double edge_probability,
   if (output) {
     std::fstream file_graph1("graph1.dot", std::fstream::out);
     write_graphviz(file_graph1, g1,
-                   make_label_writer(boost::get(boost::vertex_name, g1)),
-                   make_label_writer(boost::get(boost::edge_name, g1)));
+                   make_label_writer(boost::get(boost::graph::vertex_name, g1)),
+                   make_label_writer(boost::get(boost::graph::edge_name, g1)));
     
     std::fstream file_graph2("graph2.dot", std::fstream::out);
     write_graphviz(file_graph2, g2,
-                   make_label_writer(boost::get(boost::vertex_name, g2)),
-                   make_label_writer(boost::get(boost::edge_name, g2)));
+                   make_label_writer(boost::get(boost::graph::vertex_name, g2)),
+                   make_label_writer(boost::get(boost::graph::edge_name, g2)));
   }
 }
 

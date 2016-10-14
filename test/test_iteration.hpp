@@ -17,7 +17,7 @@
 //@{
 template <typename Graph>
 void test_vertex_list_graph(Graph const& g) {
-    using namespace boost;
+    using namespace boost::graph;
     BOOST_CONCEPT_ASSERT((VertexListGraphConcept<Graph>));
 
     std::cout << "...test_vertex_list_graph\n";
@@ -38,7 +38,7 @@ void test_vertex_list_graph(Graph const& g) {
 //@{
 template <typename Graph>
 void test_edge_list_graph(Graph const& g) {
-    using namespace boost;
+    using namespace boost::graph;
     BOOST_CONCEPT_ASSERT((EdgeListGraphConcept<Graph>));
 
     std::cout << "...test_edge_list_graph\n";

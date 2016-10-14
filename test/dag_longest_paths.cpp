@@ -9,7 +9,7 @@
 #include <boost/property_map/vector_property_map.hpp>
 #include <boost/test/minimal.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
 #include <iostream>
 using namespace std;
@@ -40,7 +40,7 @@ int test_main(int, char*[])
     boost::vector_property_map<int> distance;
 
     dag_shortest_paths(graph, 0,
-                       boost::distance_map(distance)
+                       boost::graph::distance_map(distance)
                        .distance_compare(std::greater<int>())
                        .distance_inf((std::numeric_limits<int>::min)())
                        .distance_zero(0));

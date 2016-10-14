@@ -10,14 +10,19 @@
 #include <boost/graph/properties.hpp>
 #include <boost/graph/adjacency_list.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
-struct vertex_info_t { };
-struct edge_info_t { };
+
 namespace boost {
+  // TODO: Don't put this the in boost::graph namespace.
+  namespace graph {
+    struct vertex_info_t { };
+    struct edge_info_t { };
+  }
+
   BOOST_INSTALL_PROPERTY(vertex, info);
   BOOST_INSTALL_PROPERTY(edge, info);
-};
+} // namespace boost
 
 typedef boost::property<vertex_info_t, double> vertex_properties;
 typedef boost::property<edge_info_t, double> edge_properties;

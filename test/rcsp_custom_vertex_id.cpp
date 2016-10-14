@@ -16,7 +16,7 @@
 
 using std::vector;
 using std::allocator;
-using namespace boost;
+using namespace boost::graph;
 
 class VertexProperty {
 public:

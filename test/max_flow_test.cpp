@@ -55,7 +55,7 @@
 *   seeed:              defaults to 1
 ***************/
 
-using namespace boost;
+using namespace boost::graph;
 
 int test_main(int argc, char* argv[])
 {
@@ -63,7 +63,7 @@ int test_main(int argc, char* argv[])
   typedef adjacency_list_traits < vecS, vecS, directedS > Traits;
   typedef adjacency_list < vecS, vecS, directedS,
   boost::property< vertex_index_t, long,
-  boost::property< vertex_color_t, boost::default_color_type,
+  boost::property< vertex_color_t, boost::graph::default_color_type,
   boost::property< vertex_distance_t, long,
   boost::property< vertex_predecessor_t, Traits::edge_descriptor > > > >,
   boost::property< edge_capacity_t, long,

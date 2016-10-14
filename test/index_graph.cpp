@@ -9,7 +9,7 @@
 #include <boost/graph/directed_graph.hpp>
 
 using namespace std;
-using namespace boost;
+using namespace boost::graph;
 
 template <typename Graph>
 void test()

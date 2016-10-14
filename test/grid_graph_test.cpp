@@ -17,7 +17,7 @@
 #include <boost/random.hpp>
 #include <boost/test/minimal.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
 // Function that prints a vertex to std::cout
 template <typename Vertex>
@@ -80,7 +80,7 @@ void do_test(boost::minstd_rand& generator) {
        vertex_index < num_vertices(graph);
        ++vertex_index) {
     // TODO: get() should be in boost::, not global.
-    BOOST_REQUIRE(get(boost::vertex_index, graph, vertex(vertex_index, graph)) == vertex_index);
+    BOOST_REQUIRE(get(boost::graph::vertex_index, graph, vertex(vertex_index, graph)) == vertex_index);
   }
 
   for (edges_size_type edge_index = 0;
@@ -88,7 +88,7 @@ void do_test(boost::minstd_rand& generator) {
        ++edge_index) {
 
     edge_descriptor current_edge = edge_at(edge_index, graph);
-    BOOST_REQUIRE(get(boost::edge_index, graph, current_edge) == edge_index);
+    BOOST_REQUIRE(get(boost::graph::edge_index, graph, current_edge) == edge_index);
   }
 
   // Verify all vertices are within bounds
@@ -96,7 +96,7 @@ void do_test(boost::minstd_rand& generator) {
   BOOST_FOREACH(vertex_descriptor current_vertex, vertices(graph)) {
 
     vertices_size_type current_index =
-      get(boost::vertex_index, graph, current_vertex);
+      get(boost::graph::vertex_index, graph, current_vertex);
 
     for (unsigned int dimension_index = 0;
          dimension_index < Dims;
@@ -113,7 +113,7 @@ void do_test(boost::minstd_rand& generator) {
                   out_edges(current_vertex, graph)) {
 
       target_vertices.insert
-        (get(boost::vertex_index, graph, target(out_edge, graph)));
+        (get(boost::graph::vertex_index, graph, target(out_edge, graph)));
 
       ++out_edge_count;
     }
@@ -127,7 +127,7 @@ void do_test(boost::minstd_rand& generator) {
                   in_edges(current_vertex, graph)) {
 
       BOOST_REQUIRE(target_vertices.count
-                   (get(boost::vertex_index, graph, source(in_edge, graph))) > 0);
+                   (get(boost::graph::vertex_index, graph, source(in_edge, graph))) > 0);
 
       ++in_edge_count;
     }
@@ -146,7 +146,7 @@ void do_test(boost::minstd_rand& generator) {
                   adjacent_vertices(current_vertex, graph)) {
 
       BOOST_REQUIRE(target_vertices.count
-                   (get(boost::vertex_index, graph, adjacent_vertex)) > 0);
+                   (get(boost::graph::vertex_index, graph, adjacent_vertex)) > 0);
 
       ++adjacent_count;
     }
@@ -158,7 +158,7 @@ void do_test(boost::minstd_rand& generator) {
     BOOST_FOREACH(vertex_descriptor unconnected_vertex, vertices(graph)) {
       
       vertices_size_type unconnected_index =
-        get(boost::vertex_index, graph, unconnected_vertex);
+        get(boost::graph::vertex_index, graph, unconnected_vertex);
 
       if ((unconnected_index == current_index) ||
           (target_vertices.count(unconnected_index) > 0)) {
@@ -179,10 +179,10 @@ void do_test(boost::minstd_rand& generator) {
   BOOST_FOREACH(edge_descriptor current_edge, edges(graph)) {
 
     vertices_size_type source_index =
-      get(boost::vertex_index, graph, source(current_edge, graph));
+      get(boost::graph::vertex_index, graph, source(current_edge, graph));
 
     vertices_size_type target_index =
-      get(boost::vertex_index, graph, target(current_edge, graph));
+      get(boost::graph::vertex_index, graph, target(current_edge, graph));
 
     BOOST_REQUIRE(source_index != target_index);
     BOOST_REQUIRE(/* (source_index >= 0) : always true && */ (source_index < num_vertices(graph)));

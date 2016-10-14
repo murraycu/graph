@@ -15,7 +15,7 @@
 #include <boost/graph/geodesic_distance.hpp>
 
 using namespace std;
-using namespace boost;
+using namespace boost::graph;
 
 // useful types
 // number of vertices in the graph

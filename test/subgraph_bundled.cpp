@@ -14,7 +14,7 @@
 #include <boost/graph/graph_test.hpp>
 #include <boost/graph/iteration_macros.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
 struct node
 {

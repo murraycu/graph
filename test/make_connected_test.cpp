@@ -15,7 +15,7 @@
 #include <boost/test/minimal.hpp>
 
 
-using namespace boost;
+using namespace boost::graph;
 
 
 template <typename Graph>
@@ -116,8 +116,8 @@ int test_main(int, char* [])
   std::vector<int> gVV_components(num_vertices(gVV));
   boost::iterator_property_map<
     std::vector<int>::iterator,
-    boost::property_map<VVgraph_t, boost::vertex_index_t>::const_type
-  > gVV_components_pm(gVV_components.begin(), boost::get(boost::vertex_index, gVV));
+    boost::property_map<VVgraph_t, boost::graph::vertex_index_t>::const_type
+  > gVV_components_pm(gVV_components.begin(), boost::get(boost::graph::vertex_index, gVV));
   BOOST_CHECK(connected_components(gVV, gVV_components_pm) ==
               static_cast<int>(num_cycles));
   make_connected(gVV);
@@ -132,8 +132,8 @@ int test_main(int, char* [])
   std::vector<int> gLV_components(num_vertices(gLV));
   boost::iterator_property_map<
     std::vector<int>::iterator,
-    boost::property_map<VVgraph_t, boost::vertex_index_t>::const_type
-  > gLV_components_pm(gLV_components.begin(), boost::get(boost::vertex_index, gLV));
+    boost::property_map<VVgraph_t, boost::graph::vertex_index_t>::const_type
+  > gLV_components_pm(gLV_components.begin(), boost::get(boost::graph::vertex_index, gLV));
   BOOST_CHECK(connected_components(gLV, gLV_components_pm) ==
               static_cast<int>(num_cycles));
   make_connected(gLV);

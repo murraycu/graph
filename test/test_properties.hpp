@@ -14,15 +14,15 @@ template<typename T> void ignore(T const&) { }
 
 template<typename Graph>
 void test_graph_bundle(Graph& g, boost::mpl::true_) {
-  using namespace boost;
+  using namespace boost::graph;
   std::cout << "...test_graph_bundle\n";
 
   GraphBundle& b1 = g[graph_bundle];
-  GraphBundle& b2 = boost::get_property(g);
+  GraphBundle& b2 = get_property(g);
   ignore(b1); ignore(b2);
 
   GraphBundle const& cb1 = as_const(g)[graph_bundle];
-  GraphBundle const& cb2 = boost::get_property(g);
+  GraphBundle const& cb2 = get_property(g);
   ignore(cb1); ignore(cb2);
 }
 
@@ -37,7 +37,7 @@ void test_graph_bundle(Graph& g, boost::mpl::false_)
 //@{
 template <typename Graph, typename VertexSet>
 void test_vertex_bundle(Graph& g, VertexSet const& verts, boost::mpl::true_) {
-  using namespace boost;
+  using namespace boost::graph;
   BOOST_CONCEPT_ASSERT((GraphConcept<Graph>));
   typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
   BOOST_CONCEPT_ASSERT((PropertyGraphConcept<Graph, Vertex, vertex_bundle_t>));
@@ -50,13 +50,13 @@ void test_vertex_bundle(Graph& g, VertexSet const& verts, boost::mpl::true_) {
 
   // Test bundling via the property map.
   typedef typename boost::property_map<Graph, int VertexBundle::*>::type BundleMap;
-  BOOST_CONCEPT_ASSERT((ReadWritePropertyMapConcept<BundleMap, Vertex>));
+  BOOST_CONCEPT_ASSERT((boost::ReadWritePropertyMapConcept<BundleMap, Vertex>));
   BundleMap map = boost::get(&VertexBundle::value, g);
   boost::put(map, v, 5);
   BOOST_ASSERT(boost::get(map, v) == 5);
 
   typedef typename boost::property_map<Graph, int VertexBundle::*>::const_type ConstBundleMap;
-  BOOST_CONCEPT_ASSERT((ReadablePropertyMapConcept<ConstBundleMap, Vertex>));
+  BOOST_CONCEPT_ASSERT((boost::ReadablePropertyMapConcept<ConstBundleMap, Vertex>));
   ConstBundleMap cmap = boost::get(&VertexBundle::value, (Graph const&)g);
   BOOST_ASSERT(boost::get(cmap, v) == 5);
 }
@@ -73,28 +73,28 @@ void test_vertex_bundle(Graph&, VertexSet const&, boost::mpl::false_)
 //@{
 template <typename Graph, typename VertexSet>
 void test_edge_bundle(Graph& g, VertexSet const& verts, boost::mpl::true_) {
-    using namespace boost;
+    using namespace boost::graph;
     BOOST_CONCEPT_ASSERT((GraphConcept<Graph>));
-    typedef typename boost::graph_traits<Graph>::edge_descriptor Edge;
+    typedef typename boost::graph::graph_traits<Graph>::edge_descriptor Edge;
     BOOST_CONCEPT_ASSERT((PropertyGraphConcept<Graph, Edge, edge_bundle_t>));
 
     std::cout << "...test_edge_bundle\n";
 
     // Test bundling via the graph object on the lollipop edge.
-    Edge e = boost::edge(verts[5], verts[3], g).first;
+    Edge e = boost::graph::edge(verts[5], verts[3], g).first;
     EdgeBundle& b = g[e];
     b.value = 10;
     BOOST_ASSERT(g[e].value == 10);
 
     // Test bundling via the property map.
     typedef typename boost::property_map<Graph, int EdgeBundle::*>::type BundleMap;
-    BOOST_CONCEPT_ASSERT((ReadWritePropertyMapConcept<BundleMap, Edge>));
+    BOOST_CONCEPT_ASSERT((boost::ReadWritePropertyMapConcept<BundleMap, Edge>));
     BundleMap map = boost::get(&EdgeBundle::value, g);
     boost::put(map, e, 5);
     BOOST_ASSERT(boost::get(map, e) == 5);
 
     typedef typename boost::property_map<Graph, int EdgeBundle::*>::const_type ConstBundleMap;
-    BOOST_CONCEPT_ASSERT((ReadablePropertyMapConcept<BundleMap, Edge>));
+    BOOST_CONCEPT_ASSERT((boost::ReadablePropertyMapConcept<BundleMap, Edge>));
     ConstBundleMap cmap = boost::get(&EdgeBundle::value, (Graph const&)g);
     BOOST_ASSERT(boost::get(cmap, e) == 5);
 }
@@ -111,7 +111,7 @@ void test_edge_bundle(Graph&, VertexSet const&, boost::mpl::false_)
  */
 template <typename Graph, typename VertexSet>
 void test_properties(Graph& g, VertexSet const& verts) {
-  using namespace boost;
+  using namespace boost::graph;
 
   typename has_bundled_graph_property<Graph>::type graph_bundled;
   typename has_bundled_vertex_property<Graph>::type vertex_bundled;

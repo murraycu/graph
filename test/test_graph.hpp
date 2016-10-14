@@ -48,12 +48,12 @@ std::pair<Pair*, Pair*> edge_pairs() {
 // Return true if the vertex v is the target of the edge e.
 template <typename Graph, typename Edge, typename Vertex>
 bool has_target(Graph const& g, Edge e, Vertex v)
-{ return boost::target(e, g) == v; }
+{ return boost::graph::target(e, g) == v; }
 
 // Return true if the vertex v is the source of the edge e.
 template <typename Graph, typename Edge, typename Vertex>
 bool has_source(Graph const& g, Edge e, Vertex v)
-{ return boost::source(e, g) == v; }
+{ return boost::graph::source(e, g) == v; }
 
 /** @name Property Bundles
  * Support testing with bundled properties. Note that the vertex bundle and
@@ -96,7 +96,7 @@ struct EdgeBundle {
 
 template <typename Graph>
 void test_graph(Graph& g) {
-    using namespace boost;
+    using namespace boost::graph;
     BOOST_CONCEPT_ASSERT((GraphConcept<Graph>));
 
     std::cout << typestr(g) << "\n";

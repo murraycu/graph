@@ -13,7 +13,7 @@
 
 int main(int,char*[])
 {
-  using namespace boost;
+  using namespace boost::graph;
   // Check adjacency_list with properties
   {
     typedef adjacency_list<vecS, vecS, directedS, 

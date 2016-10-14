@@ -19,9 +19,9 @@ int
 test_main(int, char*[])
 {
   {
-    typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::bidirectionalS,
-      boost::no_property, edge_prop, boost::no_property, boost::vecS> graph;
-    typedef boost::graph_traits<graph>::edge_descriptor edge;
+    typedef boost::graph::adjacency_list<boost::graph::vecS, boost::graph::vecS, boost::graph::bidirectionalS,
+      boost::no_property, edge_prop, boost::no_property, boost::graph::vecS> graph;
+    typedef boost::graph::graph_traits<graph>::edge_descriptor edge;
 
     graph g(2);
 
@@ -30,8 +30,8 @@ test_main(int, char*[])
     add_edge(0, 1, p1, g);
     add_edge(1, 0, p2, g);
     
-    edge e1 = boost::edge(0, 1, g).first;
-    edge e2 = boost::edge(1, 0, g).first;
+    edge e1 = boost::graph::edge(0, 1, g).first;
+    edge e2 = boost::graph::edge(1, 0, g).first;
     BOOST_CHECK( num_edges(g) == 2 );
     BOOST_CHECK( g[e1].weight == 42 );
     BOOST_CHECK( g[e2].weight == 17 );
@@ -40,7 +40,7 @@ test_main(int, char*[])
 
     // e2 has been invalidated, so grab it again
     bool b2;
-    boost::tie(e2, b2) = boost::edge(1, 0, g);
+    boost::tie(e2, b2) = boost::graph::edge(1, 0, g);
     BOOST_CHECK( b2 );
     BOOST_CHECK( g[e2].weight == 17 );
 

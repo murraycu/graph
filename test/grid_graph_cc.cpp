@@ -12,7 +12,7 @@
 #include <boost/graph/grid_graph.hpp>
 #include <boost/concept/assert.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
 template <unsigned int Dims>
 void check() {

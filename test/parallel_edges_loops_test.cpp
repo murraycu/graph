@@ -52,7 +52,7 @@ This test needs to be linked against Boost.Filesystem.
 
 
 
-using namespace boost;
+using namespace boost::graph;
 
 struct coord_t
 {

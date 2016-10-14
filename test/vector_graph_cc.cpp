@@ -21,7 +21,7 @@
 
 int main(int,char*[])
 {
-  using namespace boost;
+  using namespace boost::graph;
   // Check "vector as graph"
   {
     typedef std::vector< std::list<int> > Graph;

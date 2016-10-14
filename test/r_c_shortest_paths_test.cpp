@@ -16,7 +16,7 @@
 #include <iostream>
 #include <boost/test/minimal.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
 struct SPPRC_Example_Graph_Vert_Prop
 {

@@ -18,7 +18,7 @@ boost::throw_exception(std::exception const& ex)
 }
 #endif
 
-using namespace boost;
+using namespace boost::graph;
 
 /* An undirected graph with distance values stored on the vertices. */
 typedef adjacency_list<vecS, vecS, undirectedS,
@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
   // Open the METIS input file
   std::ifstream in(filename);
   assert (in.good());
-  graph::metis_reader reader(in);
+  boost::graph::metis_reader reader(in);
 
   // Load the graph using the default distribution
   Graph g(reader.begin(), reader.end(),

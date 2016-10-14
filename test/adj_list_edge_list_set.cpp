@@ -11,7 +11,7 @@
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/test/minimal.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
 typedef adjacency_list<vecS, vecS, undirectedS, boost::no_property, boost::no_property,
                        boost::no_property, setS> GraphType;

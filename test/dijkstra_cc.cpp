@@ -32,10 +32,10 @@ std::size_t abs(std::size_t x) { return x; }
 
 int main()
 {
-  using namespace boost;
-  typedef default_constructible_archetype< 
-    sgi_assignable_archetype<
-    equality_comparable_archetype<> > > vertex_t;
+  using namespace boost::graph;
+  typedef boost::default_constructible_archetype< 
+    boost::sgi_assignable_archetype<
+    boost::equality_comparable_archetype<> > > vertex_t;
   {
     typedef incidence_graph_archetype<vertex_t, directed_tag, 
       allow_parallel_edge_tag> IncidenceGraph;
@@ -44,9 +44,9 @@ int main()
     graph_t& g = boost::static_object<graph_t>::get();
     vertex_t s;
     typedef graph_traits<graph_t>::edge_descriptor edge_t;
-    readable_property_map_archetype<edge_t, std::size_t> weight;
-    readable_property_map_archetype<vertex_t, int> index;
-    read_write_property_map_archetype<vertex_t, std::size_t> distance;
+    boost::readable_property_map_archetype<edge_t, std::size_t> weight;
+    boost::readable_property_map_archetype<vertex_t, int> index;
+    boost::read_write_property_map_archetype<vertex_t, std::size_t> distance;
     dijkstra_shortest_paths(g, s, 
                             vertex_index_map(index).
                             weight_map(weight).
@@ -64,11 +64,11 @@ int main()
       allow_parallel_edge_tag, IncidenceGraph> Graph;
     vertex_t s;
     typedef graph_traits<Graph>::edge_descriptor edge_t;
-    readable_property_map_archetype<edge_t, std::size_t> weight;
+    boost::readable_property_map_archetype<edge_t, std::size_t> weight;
     typedef property_graph_archetype<Graph, vertex_index_t, std::size_t> 
       graph_t;
     graph_t& g = boost::static_object<graph_t>::get();
-    read_write_property_map_archetype<vertex_t, vertex_t> pred;
+    boost::read_write_property_map_archetype<vertex_t, vertex_t> pred;
     dijkstra_shortest_paths(g, s,
                             predecessor_map(pred).
                             weight_map(weight));
@@ -86,8 +86,8 @@ int main()
     typedef property_graph_archetype<Graph, edge_weight_t, std::size_t> 
       graph_t;
     graph_t& g = boost::static_object<graph_t>::get();
-    read_write_property_map_archetype<vertex_t, vertex_t> pred;
-    readable_property_map_archetype<vertex_t, int> index;
+    boost::read_write_property_map_archetype<vertex_t, vertex_t> pred;
+    boost::readable_property_map_archetype<vertex_t, int> index;
     dijkstra_shortest_paths(g, s,
                             predecessor_map(pred).
                             vertex_index_map(index));
@@ -104,14 +104,14 @@ int main()
     graph_t& g = boost::static_object<graph_t>::get();
     vertex_t s;
     typedef graph_traits<graph_t>::edge_descriptor edge_t;
-    readable_property_map_archetype<edge_t, dist_value> weight;
-    readable_property_map_archetype<vertex_t, int> index;
-    read_write_property_map_archetype<vertex_t, color_value_archetype> color;
-    read_write_property_map_archetype<vertex_t, dist_value> distance;
-    typedef binary_function_archetype<dist_value, dist_value, dist_value> 
+    boost::readable_property_map_archetype<edge_t, dist_value> weight;
+    boost::readable_property_map_archetype<vertex_t, int> index;
+    boost::read_write_property_map_archetype<vertex_t, color_value_archetype> color;
+    boost::read_write_property_map_archetype<vertex_t, dist_value> distance;
+    typedef boost::binary_function_archetype<dist_value, dist_value, dist_value> 
       Combine;
     Combine combine = boost::static_object<Combine>::get();
-    typedef binary_predicate_archetype<dist_value, dist_value>
+    typedef boost::binary_predicate_archetype<dist_value, dist_value>
       Compare;
     Compare compare = boost::static_object<Compare>::get();
     dijkstra_visitor<> vis;

@@ -13,7 +13,7 @@
 int
 main(int,char*[])
 {
-  using namespace boost;
+  using namespace boost::graph;
   {
     typedef leda::GRAPH<int,int> Graph;
     typedef graph_traits<Graph>::vertex_descriptor Vertex;

@@ -9,7 +9,7 @@
 #include <boost/graph/subgraph.hpp>
 #include "typestr.hpp"
 
-using namespace boost;
+using namespace boost::graph;
 
 struct TestProps {
     typedef boost::property<vertex_name_t, std::size_t> VertexProp;

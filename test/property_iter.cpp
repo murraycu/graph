@@ -30,18 +30,21 @@
 
 #include <boost/random/mersenne_twister.hpp>
 
-
-enum vertex_id_t { vertex_id = 500 };
-enum edge_id_t { edge_id = 501 };
 namespace boost {
-  BOOST_INSTALL_PROPERTY(vertex, id);
-  BOOST_INSTALL_PROPERTY(edge, id);
-}
+  // TODO: Don't put this the in boost::graph namespace.
+  namespace graph {
+    enum vertex_id_t { vertex_id = 500 };
+    enum edge_id_t { edge_id = 501 };
+  }
+
+  BOOST_INSTALL_PROPERTY(boost::graph::vertex, id);
+  BOOST_INSTALL_PROPERTY(bost::graph::edge, id);
+} // namespace boost
 
 
 #include "graph_type.hpp" // this provides a typedef for Graph
 
-using namespace boost;
+using namespace boost::graph;
 
 /*
   This program tests the property range iterators
@@ -60,8 +63,8 @@ int main(int, char* [])
 
   typedef ::Graph Graph;
   Graph g;
-  typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
-  typedef boost::graph_traits<Graph>::edge_descriptor Edge;
+  typedef boost::graph::graph_traits<Graph>::vertex_descriptor Vertex;
+  typedef boost::graph::graph_traits<Graph>::edge_descriptor Edge;
 
   int i, j;
   std::size_t current_vertex_id = 0;
@@ -109,13 +112,13 @@ int main(int, char* [])
       ++E;
     }
 
-  typedef boost::graph_property_iter_range< Graph, vertex_id_t>::iterator    TNodeIterator;
+  typedef boost::graph::graph_property_iter_range< Graph, vertex_id_t>::iterator    TNodeIterator;
 
-  typedef boost::graph_property_iter_range< Graph, edge_id_t>::iterator    TLinkIterator;
+  typedef boost::graph::graph_property_iter_range< Graph, edge_id_t>::iterator    TLinkIterator;
 
   TLinkIterator itEdgeBegin, itEdgeEnd;
 
-  boost::tie(itEdgeBegin, itEdgeEnd) = boost::get_property_iter_range(g, edge_id);
+  boost::tie(itEdgeBegin, itEdgeEnd) = boost::graph::get_property_iter_range(g, edge_id);
 
   cout << "Edge iteration:" << endl;
   for (; itEdgeBegin != itEdgeEnd; ++itEdgeBegin)
@@ -126,7 +129,7 @@ int main(int, char* [])
 
   TNodeIterator itVertexBegin, itVertexEnd;
 
-  boost::tie(itVertexBegin, itVertexEnd) = boost::get_property_iter_range(g, vertex_id);
+  boost::tie(itVertexBegin, itVertexEnd) = boost::graph::get_property_iter_range(g, vertex_id);
 
   cout << "Vertex iteration:" << endl;
   for (; itVertexBegin != itVertexEnd; ++itVertexBegin)

@@ -15,7 +15,7 @@
 #include <boost/graph/property_maps/constant_property_map.hpp>
 
 using namespace std;
-using namespace boost;
+using namespace boost::graph;
 
 // number of vertices in the graph
 static const unsigned N = 5;

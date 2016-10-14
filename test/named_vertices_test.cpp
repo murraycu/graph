@@ -22,7 +22,7 @@ boost::throw_exception(std::exception const& ex)
 }
 #endif
 
-using namespace boost;
+using namespace boost::graph;
 
 /// City structure to be attached to each vertex
 struct City {

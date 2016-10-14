@@ -22,7 +22,7 @@ struct DominatorCorrectnessTestSet
   vector<int> correctIdoms;
 };
 
-using namespace boost;
+using namespace boost::graph;
 
 typedef adjacency_list<
     listS,

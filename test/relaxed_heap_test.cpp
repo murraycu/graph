@@ -54,7 +54,7 @@ void interactive_test()
   cin >> max_values;
 
   values.resize(max_values);
-  boost::relaxed_heap<unsigned, less_extvalue> heap(max_values);
+  boost::graph::relaxed_heap<unsigned, less_extvalue> heap(max_values);
 
   char option;
   do {
@@ -151,7 +151,7 @@ void interactive_test()
 void random_test(int n, int iterations, int seed)
 {
   values.resize(n);
-  boost::relaxed_heap<unsigned, less_extvalue> heap(n);
+  boost::graph::relaxed_heap<unsigned, less_extvalue> heap(n);
   boost::minstd_rand gen(seed);
   boost::uniform_int<unsigned> rand_index(0, n-1);
   boost::uniform_real<> rand_value(-1000.0, 1000.0);

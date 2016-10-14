@@ -18,7 +18,7 @@
 
 #include <boost/graph/adjacency_list.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
 int test_main(int argc, char** argv) {
 

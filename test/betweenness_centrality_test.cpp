@@ -18,7 +18,7 @@
 #include <boost/random/linear_congruential.hpp>
 #include <boost/lexical_cast.hpp>
 
-using namespace boost;
+using namespace boost::graph;
 
 const double error_tolerance = 0.001;
 
@@ -45,7 +45,7 @@ run_weighted_test(Graph*, int V, weighted_edge edge_init[], int E,
   {
     vertex_iterator v, v_end;
     int index = 0;
-    for (boost::tie(v, v_end) = boost::vertices(g); v != v_end; ++v, ++index) {
+    for (boost::tie(v, v_end) = boost::graph::vertices(g); v != v_end; ++v, ++index) {
       boost::put(vertex_index, g, *v, index);
       vertices[index] = *v;
     }
@@ -93,7 +93,7 @@ run_unweighted_test(Graph*, int V, unweighted_edge edge_init[], int E,
   {
     vertex_iterator v, v_end;
     int index = 0;
-    for (boost::tie(v, v_end) = boost::vertices(g); v != v_end; ++v, ++index) {
+    for (boost::tie(v, v_end) = boost::graph::vertices(g); v != v_end; ++v, ++index) {
       boost::put(vertex_index, g, *v, index);
       vertices[index] = *v;
     }
@@ -180,13 +180,13 @@ run_wheel_test(Graph*, int V)
   typedef typename graph_traits<Graph>::edge_descriptor Edge;
 
   Graph g(V);
-  Vertex center = *boost::vertices(g).first;
+  Vertex center = *boost::graph::vertices(g).first;
 
   std::vector<Vertex> vertices(V);
   {
     vertex_iterator v, v_end;
     int index = 0;
-    for (boost::tie(v, v_end) = boost::vertices(g); v != v_end; ++v, ++index) {
+    for (boost::tie(v, v_end) = boost::graph::vertices(g); v != v_end; ++v, ++index) {
       boost::put(vertex_index, g, *v, index);
       vertices[index] = *v;
       if (*v != center) {
@@ -266,10 +266,10 @@ void
 simple_unweighted_betweenness_centrality(const Graph& g, VertexIndexMap index,
                                          CentralityMap centrality)
 {
-  typedef typename boost::graph_traits<Graph>::vertex_descriptor vertex;
-  typedef typename boost::graph_traits<Graph>::vertex_iterator vertex_iterator;
-  typedef typename boost::graph_traits<Graph>::adjacency_iterator adjacency_iterator;
-  typedef typename boost::graph_traits<Graph>::vertices_size_type vertices_size_type;
+  typedef typename boost::graph::graph_traits<Graph>::vertex_descriptor vertex;
+  typedef typename boost::graph::graph_traits<Graph>::vertex_iterator vertex_iterator;
+  typedef typename boost::graph::graph_traits<Graph>::adjacency_iterator adjacency_iterator;
+  typedef typename boost::graph::graph_traits<Graph>::vertices_size_type vertices_size_type;
   typedef typename boost::property_traits<CentralityMap>::value_type centrality_type;
 
   vertex_iterator vi, vi_end;
@@ -380,7 +380,7 @@ void random_unweighted_test(Graph*, int n)
   {
     typename graph_traits<Graph>::vertex_iterator v, v_end;
     int index = 0;
-    for (boost::tie(v, v_end) = boost::vertices(g); v != v_end; ++v, ++index) {
+    for (boost::tie(v, v_end) = boost::graph::vertices(g); v != v_end; ++v, ++index) {
       boost::put(vertex_index, g, *v, index);
     }
   }
