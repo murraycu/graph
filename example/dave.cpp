@@ -144,7 +144,7 @@ void print(Graph& G, Name name)
 {
   for(const auto& u : make_range_pair(vertices(G))) {
     std::cout << name[u] << " --> ";
-    for(const auto& v : make_range_pair(adjacent_vertices(u, G)))
+    for(const auto& v : make_range_pair(boost::adjacent_vertices(u, G)))
       std::cout << name[v] << " ";
     std::cout << std::endl;
   }

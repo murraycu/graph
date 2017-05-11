@@ -69,7 +69,7 @@ main()
   size_type t = 0;
   dfs_time_visitor<time_pm_type> vis(dtime_pm, ftime_pm, t);
 
-  depth_first_search(g, visitor(vis));
+  boost::depth_first_search(g, boost::visitor(vis));
 
   // use std::sort to order the vertices by their discover time
   std::vector<size_type> discover_order(N);
