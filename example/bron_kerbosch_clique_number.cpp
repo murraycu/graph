@@ -12,12 +12,11 @@
 
 #include "helper.hpp"
 
-using namespace boost;
 
 // Declare the graph type and its vertex and edge types.
-using Graph = undirected_graph<>;
-using Vertex = graph_traits<Graph>::vertex_descriptor;
-using Edge = graph_traits<Graph>::edge_descriptor;
+using Graph = boost::undirected_graph<>;
+using Vertex = boost::graph_traits<Graph>::vertex_descriptor;
+using Edge = boost::graph_traits<Graph>::edge_descriptor;
 
 int
 main(int argc, char *argv[])
