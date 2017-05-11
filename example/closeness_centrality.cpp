@@ -16,8 +16,6 @@
 #include "helper.hpp"
 #include "range_pair.hpp"
 
-using namespace boost;
-
 // The Actor type stores the name of each vertex in the graph.
 struct Actor
 {
@@ -25,22 +23,22 @@ struct Actor
 };
 
 // Declare the graph type and its vertex and edge types.
-using Graph = undirected_graph<Actor>;
-using Vertex = graph_traits<Graph>::vertex_descriptor;
-using Edge = graph_traits<Graph>::edge_descriptor;
+using Graph = boost::undirected_graph<Actor>;
+using Vertex = boost::graph_traits<Graph>::vertex_descriptor;
+using Edge = boost::graph_traits<Graph>::edge_descriptor;
 
 // The name map provides an abstract accessor for the names of
 // each vertex. This is used during graph creation.
-using NameMap = property_map<Graph, std::string Actor::*>::type;
+using NameMap = boost::property_map<Graph, std::string Actor::*>::type;
 
 // Declare a matrix type and its corresponding property map that
 // will contain the distances between each pair of vertices.
-using DistanceProperty = exterior_vertex_property<Graph, int>;
+using DistanceProperty = boost::exterior_vertex_property<Graph, int>;
 using DistanceMatrix = DistanceProperty::matrix_type;
 using DistanceMatrixMap = DistanceProperty::matrix_map_type;
 
 // Declare the weight map so that each edge returns the same value.
-using WeightMap = constant_property_map<Edge, int>;
+using WeightMap = boost::constant_property_map<Edge, int>;
 
 // Declare a container and its corresponding property map that
 // will contain the resulting closeness centralities of each
@@ -55,7 +53,7 @@ main(int argc, char *argv[])
     // Create the graph and a property map that provides access to[
     // tha actor names.
     Graph g;
-    NameMap nm(get(&Actor::name, g));
+    NameMap nm(boost::get(&Actor::name, g));
 
     // Read the graph from standard input.
     read_graph(g, nm, std::cin);
@@ -63,20 +61,20 @@ main(int argc, char *argv[])
     // Compute the distances between all pairs of vertices using
     // the Floyd-Warshall algorithm. Note that the weight map is
     // created so that every edge has a weight of 1.
-    DistanceMatrix distances(num_vertices(g));
+    DistanceMatrix distances(boost::num_vertices(g));
     DistanceMatrixMap dm(distances, g);
     WeightMap wm(1);
     floyd_warshall_all_pairs_shortest_paths(g, dm, weight_map(wm));
 
     // Compute the closeness centrality for graph.
-    ClosenessContainer cents(num_vertices(g));
+    ClosenessContainer cents(boost::num_vertices(g));
     ClosenessMap cm(cents, g);
     all_closeness_centralities(g, dm, cm);
 
     // Print the closeness centrality of each vertex.
-    for(const auto& vertex : make_range_pair(vertices(g))) {
+    for(const auto& vertex : make_range_pair(boost::vertices(g))) {
       std::cout << std::setw(12) << std::setiosflags(std::ios::left)
-             << g[vertex].name << get(cm, vertex) << std::endl;
+             << g[vertex].name << boost::get(cm, vertex) << std::endl;
     }
 
     return 0;
