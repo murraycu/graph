@@ -17,7 +17,7 @@
 
 /*
 
-  This example demonstrates the usage of the connected_components
+  This example demonstrates the usage of the boost::connected_components
   algorithm on a undirected graph. The example graphs come from
   "Introduction to Algorithms", Cormen, Leiserson, and Rivest p. 87
   (though we number the vertices from zero instead of one).
@@ -36,18 +36,17 @@
 
 int main(int , char* []) 
 {
-  using namespace boost;
   {
-    using Graph = adjacency_list <vecS, vecS, undirectedS>;
+    using Graph = boost::adjacency_list <boost::vecS, boost::vecS, boost::undirectedS>;
 
     Graph G;
-    add_edge(0, 1, G);
-    add_edge(1, 4, G);
-    add_edge(4, 0, G);
-    add_edge(2, 5, G);
+    boost::add_edge(0, 1, G);
+    boost::add_edge(1, 4, G);
+    boost::add_edge(4, 0, G);
+    boost::add_edge(2, 5, G);
     
-    std::vector<int> component(num_vertices(G));
-    auto num = connected_components(G, &component[0]);
+    std::vector<int> component(boost::num_vertices(G));
+    auto num = boost::connected_components(G, &component[0]);
     
     std::vector<int>::size_type i;
     std::cout << "Total number of components: " << num << std::endl;
