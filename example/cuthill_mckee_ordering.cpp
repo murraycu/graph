@@ -32,12 +32,11 @@
  */
 int main(int , char* [])
 {
-  using namespace boost;
-  using Graph = adjacency_list<vecS, vecS, undirectedS, 
-     property<vertex_color_t, default_color_type,
-       property<vertex_degree_t,int>>>;
-  using Vertex = graph_traits<Graph>::vertex_descriptor;
-  using size_type = graph_traits<Graph>::vertices_size_type;
+  using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, 
+     boost::property<boost::vertex_color_t, boost::default_color_type,
+       boost::property<boost::vertex_degree_t,int>>>;
+  using Vertex = boost::graph_traits<Graph>::vertex_descriptor;
+  using size_type = boost::graph_traits<Graph>::vertices_size_type;
 
   using Pair = std::pair<std::size_t, std::size_t>;
   Pair edges[] = { Pair(0,3), //a-d
@@ -57,23 +56,23 @@ int main(int , char* [])
   
   Graph G(10);
   for (const auto& edge : edges)
-    add_edge(edge.first, edge.second, G);
+    boost::add_edge(edge.first, edge.second, G);
 
-  auto deg = get(vertex_degree, G);
-  for(const auto& v : make_range_pair(vertices(G)))
+  auto deg = boost::get(boost::vertex_degree, G);
+  for(const auto& v : make_range_pair(boost::vertices(G)))
     deg[v] = degree(v, G);
 
-  auto index_map = get(vertex_index, G);
+  auto index_map = boost::get(boost::vertex_index, G);
 
   std::cout << "original bandwidth: " << bandwidth(G) << std::endl;
 
-  std::vector<Vertex> inv_perm(num_vertices(G));
-  std::vector<size_type> perm(num_vertices(G));
+  std::vector<Vertex> inv_perm(boost::num_vertices(G));
+  std::vector<size_type> perm(boost::num_vertices(G));
   {
     auto s = vertex(6, G);
     //reverse cuthill_mckee_ordering
-    cuthill_mckee_ordering(G, s, inv_perm.rbegin(), get(vertex_color, G), 
-                           get(vertex_degree, G));
+    cuthill_mckee_ordering(G, s, inv_perm.rbegin(), boost::get(boost::vertex_color, G), 
+                           boost::get(boost::vertex_degree, G));
     std::cout << "Reverse Cuthill-McKee ordering starting at: " << s << std::endl;
     std::cout << "  ";    
     for (const auto& vertex : inv_perm)
@@ -83,14 +82,14 @@ int main(int , char* [])
     for (size_type c = 0; c != inv_perm.size(); ++c)
       perm[index_map[inv_perm[c]]] = c;
     std::cout << "  bandwidth: " 
-              << bandwidth(G, make_iterator_property_map(&perm[0], index_map, perm[0]))
+              << bandwidth(G, boost::make_iterator_property_map(&perm[0], index_map, perm[0]))
               << std::endl;
   }
   {
     auto s = vertex(0, G);
     //reverse cuthill_mckee_ordering
-    cuthill_mckee_ordering(G, s, inv_perm.rbegin(), get(vertex_color, G),
-                           get(vertex_degree, G));
+    cuthill_mckee_ordering(G, s, inv_perm.rbegin(), boost::get(boost::vertex_color, G),
+                           boost::get(boost::vertex_degree, G));
     std::cout << "Reverse Cuthill-McKee ordering starting at: " << s << std::endl;
     std::cout << "  ";
     for (const auto& vertex : inv_perm)
@@ -100,13 +99,13 @@ int main(int , char* [])
     for (size_type c = 0; c != inv_perm.size(); ++c)
       perm[index_map[inv_perm[c]]] = c;
     std::cout << "  bandwidth: " 
-              << bandwidth(G, make_iterator_property_map(&perm[0], index_map, perm[0]))
+              << bandwidth(G, boost::make_iterator_property_map(&perm[0], index_map, perm[0]))
               << std::endl;
   }
 
   {
     //reverse cuthill_mckee_ordering
-    cuthill_mckee_ordering(G, inv_perm.rbegin(), get(vertex_color, G),
+    cuthill_mckee_ordering(G, inv_perm.rbegin(), boost::get(boost::vertex_color, G),
                            make_degree_map(G));
     
     std::cout << "Reverse Cuthill-McKee ordering:" << std::endl;
@@ -118,7 +117,7 @@ int main(int , char* [])
     for (size_type c = 0; c != inv_perm.size(); ++c)
       perm[index_map[inv_perm[c]]] = c;
     std::cout << "  bandwidth: " 
-              << bandwidth(G, make_iterator_property_map(&perm[0], index_map, perm[0]))
+              << bandwidth(G, boost::make_iterator_property_map(&perm[0], index_map, perm[0]))
               << std::endl;
   }
   return 0;
