@@ -36,7 +36,7 @@ has_cycle_dfs(const file_dep_graph & g, vertex_t u,
               boost::default_color_type * color)
 {
   color[u] = boost::gray_color;
-  for (const auto& vertex : make_range_pair(adjacent_vertices(u, g)))
+  for (const auto& vertex : make_range_pair(boost::adjacent_vertices(u, g)))
     if (color[vertex] == boost::white_color) {
       if (has_cycle_dfs(g, vertex, color))
         return true;            // cycle detected, return immediately

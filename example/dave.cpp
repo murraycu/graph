@@ -197,7 +197,7 @@ main(int , char* [])
   boost::queue<Vertex> Q;
   boost::breadth_first_search
     (G, vertex(a, G), Q,
-     make_bfs_visitor(
+     boost::make_bfs_visitor(
      boost::make_list
       (write_property(make_iterator_property_map(name, vertex_id,
                                                 name[0]),
@@ -227,7 +227,7 @@ main(int , char* [])
   std::cout << "Result:" << std::endl;
   boost::breadth_first_search
     (G, vertex(a, G), 
-     visitor(make_bfs_visitor(
+     boost::visitor(boost::make_bfs_visitor(
      boost::make_list
      (write_property(make_iterator_property_map(name, vertex_id,
                                                 name[0]),
