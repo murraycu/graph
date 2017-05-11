@@ -62,7 +62,7 @@ int main(int , char* [])
 
   boost::edge_list<Edge*,Edge,ptrdiff_t,std::random_access_iterator_tag> g(edgelist, edgelist + E);
   std::cout << "An undirected graph (edge list):" << std::endl;
-  print_edges(g, boost::identity_property_map());
+  boost::print_edges(g, boost::identity_property_map());
   std::cout << std::endl;
 
   boost::disjoint_sets_with_storage<> ds(N);

@@ -15,16 +15,15 @@
 int
 main()
 {
-  using namespace boost;
-  using graph_t = adjacency_list<vecS, vecS, directedS,
-    property<vertex_name_t, char >>;
+  using graph_t = boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS,
+    boost::property<boost::vertex_name_t, char >>;
 
   enum
   { a, b, c, d, e, f, g, N };
   graph_t G(N);
-  auto name_map = get(vertex_name, G);
+  auto name_map = boost::get(boost::vertex_name, G);
   char name = 'a';
-  for (const auto& vertex : make_range_pair(vertices(G))) {
+  for (const auto& vertex : make_range_pair(boost::vertices(G))) {
     name_map[vertex] = name;
     ++name;
   }
@@ -34,15 +33,15 @@ main()
     E(d, c), E(d, e), E(d, f), E(e, b), E(e, g), E(f, e), E(f, g)
   };
   for (const auto& edge : edges)
-    add_edge(edge.first, edge.second, G);
+    boost::add_edge(edge.first, edge.second, G);
 
-  print_graph(G, name_map);
+  boost::print_graph(G, name_map);
   std::cout << std::endl;
 
   graph_t G_copy;
   copy_graph(G, G_copy);
 
-  print_graph(G_copy, name_map);
+  boost::print_graph(G_copy, name_map);
 
   return 0;
 }
