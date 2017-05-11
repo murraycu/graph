@@ -22,7 +22,6 @@
 #include <boost/graph/graph_utility.hpp>
 #include "range_pair.hpp"
 
-using namespace boost;
 /*
   This example does a best-first-search (using dijkstra's) and
   simultaneously makes a copy of the graph (assuming the graph is
@@ -71,12 +70,12 @@ b(14); d a
 
 */
 
-using VProperty = property<vertex_color_t, default_color_type, 
-         property<vertex_distance_t,int>>;
+using VProperty = boost::property<boost::vertex_color_t, boost::default_color_type, 
+         boost::property<boost::vertex_distance_t,int>>;
 using weight_t = int;
-using EProperty = property<edge_weight_t,weight_t>;
+using EProperty = boost::property<boost::edge_weight_t,weight_t>;
 
-using Graph = adjacency_list<vecS, vecS, directedS, VProperty, EProperty >;
+using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS, VProperty, EProperty >;
 
 
 
@@ -105,8 +104,8 @@ struct edge_printer
 
   template <class T, class Graph>
   void operator()(T x, Graph& g) {
-    m_os << "(" << get(m_pa, source(x, g)) << "," 
-         << get(m_pa, target(x, g)) << ") ";
+    m_os << "(" << boost::get(m_pa, boost::source(x, g)) << "," 
+         << boost::get(m_pa, boost::target(x, g)) << ") ";
   }
   PA m_pa;
   std::ostream& m_os;
@@ -128,7 +127,7 @@ struct graph_copier
 
   template <class Edge, class Graph>
   void operator()(Edge e, Graph& g) {
-    add_edge(source(e, g), target(e, g), new_g);
+    boost::add_edge(boost::source(e, g), boost::target(e, g), new_g);
   }
 private:
   NewGraph& new_g;
@@ -142,7 +141,7 @@ copy_graph(NewGraph& g, Tag) {
 template <class Graph, class Name>
 void print(Graph& G, Name name)
 {
-  for(const auto& u : make_range_pair(vertices(G))) {
+  for(const auto& u : make_range_pair(boost::vertices(G))) {
     std::cout << name[u] << " --> ";
     for(const auto& v : make_range_pair(boost::adjacent_vertices(u, G)))
       std::cout << name[v] << " ";
@@ -159,7 +158,7 @@ main(int , char* [])
   enum { a, b, c, d, e, f, g, N};
 
   Graph G(N);
-  auto vertex_id = get(vertex_index, G);
+  auto vertex_id = boost::get(boost::vertex_index, G);
 
   std::vector<weight_t> distance(N, (std::numeric_limits<weight_t>::max)());
   using Vertex = boost::graph_traits<Graph>::vertex_descriptor;
@@ -182,12 +181,12 @@ main(int , char* [])
                    1, 2 };
 
   for (int i = 0; i < 12; ++i)
-    add_edge(edges[i].first, edges[i].second, weight[i], G);
+    boost::add_edge(edges[i].first, edges[i].second, weight[i], G);
 
   print(G, name);
 
-  adjacency_list<listS, vecS, directedS, 
-    property<vertex_color_t, default_color_type>> G_copy(N);
+  boost::adjacency_list<boost::listS, boost::vecS, boost::directedS, 
+    boost::property<boost::vertex_color_t, boost::default_color_type>> G_copy(N);
 
   std::cout << "Starting graph:" << std::endl;
 
@@ -199,29 +198,29 @@ main(int , char* [])
     (G, vertex(a, G), Q,
      boost::make_bfs_visitor(
      boost::make_list
-      (write_property(make_iterator_property_map(name, vertex_id,
+      (write_property(boost::make_iterator_property_map(name, vertex_id,
                                                 name[0]),
-                      cout_char, on_examine_vertex()),
-       write_property(make_iterator_property_map(distance.begin(),
+                      cout_char, boost::on_examine_vertex()),
+       write_property(boost::make_iterator_property_map(distance.begin(),
                                                 vertex_id, 
                                                 distance[0]), 
-                      cout_int, on_examine_vertex()),
-       print_edge(make_iterator_property_map(name, vertex_id, 
+                      cout_int, boost::on_examine_vertex()),
+       print_edge(boost::make_iterator_property_map(name, vertex_id, 
                                             name[0]),
-                  std::cout, on_examine_edge()),
-       print_endl(std::cout, on_finish_vertex()))),
-     get(vertex_color, G));
+                  std::cout, boost::on_examine_edge()),
+       print_endl(std::cout, boost::on_finish_vertex()))),
+     boost::get(boost::vertex_color, G));
 
   std::cout << "about to call dijkstra's" << std::endl;
 
   parent[vertex(a, G)] = vertex(a, G);
   boost::dijkstra_shortest_paths
     (G, vertex(a, G), 
-     distance_map(make_iterator_property_map(distance.begin(), vertex_id, 
+     boost::distance_map(boost::make_iterator_property_map(distance.begin(), vertex_id, 
                                              distance[0])).
-     predecessor_map(make_iterator_property_map(parent.begin(), vertex_id,
+     predecessor_map(boost::make_iterator_property_map(parent.begin(), vertex_id,
                                                 parent[0])).
-     visitor(make_dijkstra_visitor(copy_graph(G_copy, on_examine_edge()))));
+     visitor(make_dijkstra_visitor(copy_graph(G_copy, boost::on_examine_edge()))));
 
   std::cout << std::endl;
   std::cout << "Result:" << std::endl;
@@ -229,17 +228,17 @@ main(int , char* [])
     (G, vertex(a, G), 
      boost::visitor(boost::make_bfs_visitor(
      boost::make_list
-     (write_property(make_iterator_property_map(name, vertex_id,
+     (write_property(boost::make_iterator_property_map(name, vertex_id,
                                                 name[0]),
-                     cout_char, on_examine_vertex()),
-      write_property(make_iterator_property_map(distance.begin(),
+                     cout_char, boost::on_examine_vertex()),
+      write_property(boost::make_iterator_property_map(distance.begin(),
                                                 vertex_id, 
                                                 distance[0]), 
-                     cout_int, on_examine_vertex()),
-      print_edge(make_iterator_property_map(name, vertex_id, 
+                     cout_int, boost::on_examine_vertex()),
+      print_edge(boost::make_iterator_property_map(name, vertex_id, 
                                             name[0]),
-                 std::cout, on_examine_edge()),
-      print_endl(std::cout, on_finish_vertex())))));
+                 std::cout, boost::on_examine_edge()),
+      print_endl(std::cout, boost::on_finish_vertex())))));
 
   return 0;
 }
