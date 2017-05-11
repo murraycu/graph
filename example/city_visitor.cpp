@@ -51,13 +51,10 @@
 
  */
 
-using namespace boost;
-
-
-struct city_arrival : public base_visitor<city_arrival>
+struct city_arrival : public boost::base_visitor<city_arrival>
 {
   city_arrival(std::string* n) : names(n) { }
-  using event_filter = on_discover_vertex;
+  using event_filter = boost::on_discover_vertex;
   template <class Vertex, class Graph>
   inline void operator()(Vertex u, Graph&) {
     std::cout << std::endl << "arriving at " << names[u] << std::endl
@@ -66,21 +63,21 @@ struct city_arrival : public base_visitor<city_arrival>
   std::string* names;
 };
 
-struct neighbor_cities : public base_visitor<neighbor_cities>
+struct neighbor_cities : public boost::base_visitor<neighbor_cities>
 {
   neighbor_cities(std::string* n) : names(n) { }
-  using event_filter = on_examine_edge;
+  using event_filter = boost::on_examine_edge;
   template <class Edge, class Graph>
   inline void operator()(Edge e, Graph& g) {
-    std::cout << names[ target(e, g) ] << ", ";
+    std::cout << names[ boost::target(e, g) ] << ", ";
   }
   std::string* names;
 };
 
-struct finish_city : public base_visitor<finish_city>
+struct finish_city : public boost::base_visitor<finish_city>
 {
   finish_city(std::string* n) : names(n) { }
-  using event_filter = on_finish_vertex;
+  using event_filter = boost::on_finish_vertex;
   template <class Vertex, class Graph>
   inline void operator()(Vertex u, Graph&) {
     std::cout << std::endl << "finished with " << names[u] << std::endl;
@@ -107,20 +104,20 @@ int main(int, char*[])
                      E(LasVegas, Phoenix) };
 
   /* Create the graph type we want. */
-  using Graph = adjacency_list<vecS, vecS, undirectedS>;
+  using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS>;
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
   // VC++ has trouble with the edge iterator constructor
   Graph G(N);
   for (std::size_t j = 0; j < sizeof(edge_array)/sizeof(E); ++j)
-    add_edge(edge_array[j].first, edge_array[j].second, G);
+    boost::add_edge(edge_array[j].first, edge_array[j].second, G);
 #else
   Graph G(edge_array, edge_array + sizeof(edge_array)/sizeof(E), N);
 #endif
 
   std::cout << "*** Depth First ***" << std::endl;
-  depth_first_search
+  boost::depth_first_search
     (G, 
-     visitor(make_dfs_visitor(boost::make_list(city_arrival(names),
+     boost::visitor(boost::make_dfs_visitor(boost::make_list(city_arrival(names),
                                                neighbor_cities(names),
                                                finish_city(names)))));
   std::cout << std::endl;
@@ -129,8 +126,8 @@ int main(int, char*[])
   auto s = vertex(SanJose,G);
 
   std::cout << "*** Breadth First ***" << std::endl;
-  breadth_first_search
-    (G, s, visitor(make_bfs_visitor(boost::make_list(city_arrival(names), 
+  boost::breadth_first_search
+    (G, s, boost::visitor(boost::make_bfs_visitor(boost::make_list(city_arrival(names), 
                                                      neighbor_cities(names), 
                                                      finish_city(names)))));
   
