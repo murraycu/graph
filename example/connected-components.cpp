@@ -14,19 +14,18 @@
 int
 main()
 {
-  using namespace boost;
-  using Graph = adjacency_list<vecS, vecS, undirectedS>;
+  using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS>;
 
   const int N = 6;
   Graph G(N);
-  add_edge(0, 1, G);
-  add_edge(1, 4, G);
-  add_edge(4, 0, G);
-  add_edge(2, 5, G);
+  boost::add_edge(0, 1, G);
+  boost::add_edge(1, 4, G);
+  boost::add_edge(4, 0, G);
+  boost::add_edge(2, 5, G);
 
-  std::vector<int> c(num_vertices(G));
-  auto num = connected_components
-    (G, make_iterator_property_map(c.begin(), get(vertex_index, G), c[0]));
+  std::vector<int> c(boost::num_vertices(G));
+  auto num = boost::connected_components
+    (G, boost::make_iterator_property_map(c.begin(), boost::get(boost::vertex_index, G), c[0]));
 
   std::cout << std::endl;
   std::cout << "Total number of components: " << num << std::endl;
