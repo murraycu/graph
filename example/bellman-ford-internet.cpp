@@ -12,7 +12,7 @@
 int
 main()
 {
-  using namespace boost;
+
   // ID numbers for the routers (vertices).
   enum
   { A, B, C, D, E, F, G, H, n_vertices };
@@ -26,7 +26,7 @@ main()
   };
 
   // Specify the graph type and declare a graph object
-  using Graph = edge_list <const Edge*, Edge, std::ptrdiff_t, std::random_access_iterator_tag>;
+  using Graph = boost::edge_list <const Edge*, Edge, std::ptrdiff_t, std::random_access_iterator_tag>;
   Graph g(std::begin(edges), std::end(edges));
 
   // The transmission delay values for each edge.  
@@ -43,10 +43,10 @@ main()
   // Specify A as the source vertex
   distance[A] = 0;
 
-  bool r = bellman_ford_shortest_paths(g, int (n_vertices),
-                                       weight_map(make_iterator_property_map
+  bool r = boost::bellman_ford_shortest_paths(g, int (n_vertices),
+                                       boost::weight_map(boost::make_iterator_property_map
                                                   (&delay[0],
-                                                   get(edge_index, g),
+                                                   boost::get(boost::edge_index, g),
                                                    delay[0])).
                                        distance_map(&distance[0]).
                                        predecessor_map(&parent[0]));

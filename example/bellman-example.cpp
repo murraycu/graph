@@ -70,7 +70,7 @@ main()
 #endif
   auto weight_pmap = boost::get(&EdgeProperties::weight, g);
   int i = 0;
-  for (const auto& edge : make_range_pair(edges(g))) {
+  for (const auto& edge : make_range_pair(boost::edges(g))) {
     weight_pmap[edge] = weight[i];
     ++i;
   }
@@ -106,7 +106,7 @@ main()
     << "  edge[style=\"bold\"]\n" << "  node[shape=\"circle\"]\n";
 
   {
-    for(const auto& e : make_range_pair(edges(g))) {
+    for(const auto& e : make_range_pair(boost::edges(g))) {
       auto u = boost::source(e, g), v = boost::target(e, g);
       // VC++ doesn't like the 3-argument get function, so here
       // we workaround by using 2-nested get()'s.
