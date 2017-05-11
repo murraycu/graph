@@ -12,9 +12,8 @@
 
 #include <iostream>
 
-using namespace boost;
-template <typename TimeMap> class dfs_time_visitor:public default_dfs_visitor {
-  using T = typename property_traits<TimeMap>::value_type;
+template <typename TimeMap> class dfs_time_visitor:public boost::default_dfs_visitor {
+  using T = typename boost::property_traits<TimeMap>::value_type;
 public:
   dfs_time_visitor(TimeMap dmap, TimeMap fmap, T & t)
 :  m_dtimemap(dmap), m_ftimemap(fmap), m_time(t) {
@@ -39,8 +38,8 @@ int
 main()
 {
   // Select the graph type we wish to use
-  using graph_t = adjacency_list<vecS, vecS, directedS>;
-  using size_type = graph_traits<graph_t>::vertices_size_type;
+  using graph_t = boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS>;
+  using size_type = boost::graph_traits<graph_t>::vertices_size_type;
   // Set up the vertex names
   enum
   { u, v, w, x, y, z, N };
@@ -53,19 +52,19 @@ main()
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
   graph_t g(N);  
   for (std::size_t j = 0; j < sizeof(edge_array) / sizeof(E); ++j)
-    add_edge(edge_array[j].first, edge_array[j].second, g);
+    boost::add_edge(edge_array[j].first, edge_array[j].second, g);
 #else
   graph_t g(edge_array, edge_array + sizeof(edge_array) / sizeof(E), N);
 #endif
 
   // discover time and finish time properties
-  std::vector<size_type> dtime(num_vertices(g));
-  std::vector<size_type> ftime(num_vertices(g));
+  std::vector<size_type> dtime(boost::num_vertices(g));
+  std::vector<size_type> ftime(boost::num_vertices(g));
   using time_pm_type =
-    iterator_property_map<std::vector<size_type>::iterator,
-                          property_map<graph_t, vertex_index_t>::const_type>;
-  time_pm_type dtime_pm(dtime.begin(), get(vertex_index, g));
-  time_pm_type ftime_pm(ftime.begin(), get(vertex_index, g));
+    boost::iterator_property_map<std::vector<size_type>::iterator,
+                          boost::property_map<graph_t, boost::vertex_index_t>::const_type>;
+  time_pm_type dtime_pm(dtime.begin(), boost::get(boost::vertex_index, g));
+  time_pm_type ftime_pm(ftime.begin(), boost::get(boost::vertex_index, g));
   size_type t = 0;
   dfs_time_visitor<time_pm_type> vis(dtime_pm, ftime_pm, t);
 
@@ -73,10 +72,10 @@ main()
 
   // use std::sort to order the vertices by their discover time
   std::vector<size_type> discover_order(N);
-  integer_range<size_type> r(0, N);
+  boost::integer_range<size_type> r(0, N);
   std::copy(r.begin(), r.end(), discover_order.begin());
   std::sort(discover_order.begin(), discover_order.end(),
-            indirect_cmp<time_pm_type, std::less<size_type>>(dtime_pm));
+            boost::indirect_cmp<time_pm_type, std::less<size_type>>(dtime_pm));
   std::cout << "order of discovery: ";
   int i;
   for (i = 0; i < N; ++i)
@@ -85,7 +84,7 @@ main()
   std::vector<size_type> finish_order(N);
   std::copy(r.begin(), r.end(), finish_order.begin());
   std::sort(finish_order.begin(), finish_order.end(),
-            indirect_cmp<time_pm_type, std::less<size_type>>(ftime_pm));
+            boost::indirect_cmp<time_pm_type, std::less<size_type>>(ftime_pm));
   std::cout << std::endl << "order of finish: ";
   for (i = 0; i < N; ++i)
     std::cout << name[finish_order[i]] << " ";
