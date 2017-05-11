@@ -15,8 +15,6 @@
 #include "helper.hpp"
 #include "range_pair.hpp"
 
-using namespace boost;
-
 // The Actor type stores the name of each vertex in the graph.
 struct Actor
 {
@@ -24,17 +22,17 @@ struct Actor
 };
 
 // Declare the graph type and its vertex and edge types.
-using Graph = undirected_graph<Actor>;
-using Vertex = graph_traits<Graph>::vertex_descriptor;
-using Edge = graph_traits<Graph>::edge_descriptor;
+using Graph = boost::undirected_graph<Actor>;
+using Vertex = boost::graph_traits<Graph>::vertex_descriptor;
+using Edge = boost::graph_traits<Graph>::edge_descriptor;
 
 // The name map provides an abstract accessor for the names of
 // each vertex. This is used during graph creation.
-using NameMap = property_map<Graph, std::string Actor::*>::type;
+using NameMap = boost::property_map<Graph, std::string Actor::*>::type;
 
 // The clustering property, container, and map define the containment
 // and abstract accessor for the clustering coefficients of vertices.
-using ClusteringProperty = exterior_vertex_property<Graph, float>;
+using ClusteringProperty = boost::exterior_vertex_property<Graph, float>;
 using ClusteringContainer = ClusteringProperty::container_type;
 using ClusteringMap = ClusteringProperty::map_type;
 
@@ -44,7 +42,7 @@ main(int argc, char *argv[])
     // Create the graph and a name map that provides access to
     // then actor names.
     Graph g;
-    NameMap nm(get(&Actor::name, g));
+    NameMap nm(boost::get(&Actor::name, g));
 
     // Read the graph from standard input.
     read_graph(g, nm, std::cin);
@@ -52,14 +50,14 @@ main(int argc, char *argv[])
     // Compute the clustering coefficients of each vertex in the graph
     // and the mean clustering coefficient which is returned from the
     // computation.
-    ClusteringContainer coefs(num_vertices(g));
+    ClusteringContainer coefs(boost::num_vertices(g));
     ClusteringMap cm(coefs, g);
     auto cc = all_clustering_coefficients(g, cm);
 
     // Print the clustering coefficient of each vertex.
-    for(const auto& vertex : make_range_pair(vertices(g))) {
+    for(const auto& vertex : make_range_pair(boost::vertices(g))) {
       std::cout << std::setw(12) << std::setiosflags(std::ios::left)
-                << g[vertex].name << get(cm, vertex) << std::endl;
+                << g[vertex].name << boost::get(cm, vertex) << std::endl;
     }
     std::cout << "mean clustering coefficient: " << cc << std::endl;
 
