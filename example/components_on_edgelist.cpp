@@ -21,7 +21,7 @@
 /*
 
   This example demonstrates the usage of the
-  connected_components_on_edgelist algorithm. This differs from the
+  boost::connected_components_on_edgelist algorithm. This differs from the
   connect_components algorithm in that the graph object
   only needs to provide access to the "list" of edges (via the
   edges() function).
@@ -52,7 +52,6 @@
 
 int main(int , char* []) 
 {
-  using namespace boost;
   using Index = int; // ID of a Vertex
   using Edge = std::pair<Index,Index>;
   const int N = 6;
@@ -61,15 +60,15 @@ int main(int , char* [])
   
 
 
-  edge_list<Edge*,Edge,ptrdiff_t,std::random_access_iterator_tag> g(edgelist, edgelist + E);
+  boost::edge_list<Edge*,Edge,ptrdiff_t,std::random_access_iterator_tag> g(edgelist, edgelist + E);
   std::cout << "An undirected graph (edge list):" << std::endl;
-  print_edges(g, identity_property_map());
+  print_edges(g, boost::identity_property_map());
   std::cout << std::endl;
 
-  disjoint_sets_with_storage<> ds(N);
-  incremental_components(g, ds);
+  boost::disjoint_sets_with_storage<> ds(N);
+  boost::incremental_components(g, ds);
   
-  component_index<int> components(&ds.parents()[0], 
+  boost::component_index<int> components(&ds.parents()[0], 
                                   &ds.parents()[0] + ds.parents().size());
 
   std::cout << "Total number of components: " << components.size() << std::endl;
@@ -80,7 +79,7 @@ int main(int , char* [])
 
   for (std::size_t i = 0; i < components.size(); ++i) {
     std::cout << "component " << i << " contains: ";
-    component_index<int>::component_iterator
+    boost::component_index<int>::component_iterator
       j = components[i].first,
       jend = components[i].second;
     for ( ; j != jend; ++j)
