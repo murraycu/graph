@@ -13,8 +13,6 @@
 #include <fstream>
 #include <boost/graph/graphviz.hpp>
 
-using namespace boost;
-
 class WebPage
 {
  public:
@@ -37,7 +35,7 @@ int main()
                     E(2, 0), E(2, 5), E(3, 1), E(3, 4), E(4, 1), E(5, 0), 
                     E(5, 2) };
 
-  using WebGraph = compressed_sparse_row_graph<directedS, WebPage>;
+  using WebGraph = compressed_sparse_row_graph<boost::directedS, WebPage>;
   WebGraph g(boost::edges_are_sorted, &the_edges[0], &the_edges[0] + sizeof(the_edges)/sizeof(E), 6);
   
   // Set the URLs of each vertex
@@ -48,13 +46,13 @@ int main()
   // Output each of the links
   std::cout << "The web graph:" << std::endl;
   BGL_FORALL_EDGES(e, g, WebGraph)
-    std::cout << "  " << g[source(e, g)].url << " -> " << g[target(e, g)].url 
+    std::cout << "  " << g[boost::source(e, g)].url << " -> " << g[boost::target(e, g)].url 
               << std::endl;
     
   // Output the graph in DOT format
-  dynamic_properties dp;
-  dp.property("label", get(&WebPage::url, g));
+  boost::dynamic_properties dp;
+  dp.property("label", boost::get(&WebPage::url, g));
   std::ofstream out("web-graph.dot");
-  write_graphviz(out, g, dp, std::string(), get(vertex_index, g));
+  boost::write_graphviz(out, g, dp, std::string(), boost::get(boost::vertex_index, g));
   return 0;
 }
