@@ -14,9 +14,8 @@
 int
 main()
 {
-  using namespace boost;
-  using Graph = adjacency_list<vecS, vecS, bidirectionalS, no_property, 
-    property<int, edge_weight_t>, no_property, vecS>;
+  using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::bidirectionalS, boost::no_property, 
+    boost::property<int, boost::edge_weight_t>, boost::no_property, boost::vecS>;
 
   const std::size_t n = 3;
   using E = std::pair<std::size_t, std::size_t>;
@@ -25,7 +24,7 @@ main()
   Graph g(edge_array, edge_array + m, n);
 
   for (std::size_t i = 0; i < m; ++i) {
-    const auto e = edges(g).first + i;
+    const auto e = boost::edges(g).first + i;
     std::cout << *e << " ";
   }
   std::cout << std::endl;
