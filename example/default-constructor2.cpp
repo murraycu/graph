@@ -9,13 +9,11 @@
 #include <fstream>
 #include <boost/graph/adjacency_list.hpp>
 
-using namespace boost;
-
 template <typename Graph> void
 read_graph_file(std::istream & in, Graph & g)
 {
-  using Vertex = typename graph_traits<Graph>::vertex_descriptor;
-  using size_type = typename graph_traits<Graph>::vertices_size_type;
+  using Vertex = typename boost::graph_traits<Graph>::vertex_descriptor;
+  using size_type = typename boost::graph_traits<Graph>::vertices_size_type;
   size_type n_vertices;
   in >> n_vertices;             // read in number of vertices
   std::vector<Vertex> vertex_set(n_vertices);
@@ -25,7 +23,7 @@ read_graph_file(std::istream & in, Graph & g)
   size_type u, v;
   while (in >> u)
     if (in >> v)
-      add_edge(vertex_set[u], vertex_set[v], g);
+      boost::add_edge(vertex_set[u], vertex_set[v], g);
     else
       break;
 }
@@ -34,16 +32,16 @@ read_graph_file(std::istream & in, Graph & g)
 int
 main()
 {
-  using graph_type = adjacency_list < listS,       // Store out-edges of each vertex in a std::list
-    vecS,                       // Store vertex set in a std::vector
-    directedS                   // The graph is directed
+  using graph_type = boost::adjacency_list < boost::listS,       // Store out-edges of each vertex in a std::list
+    boost::vecS,                       // Store vertex set in a std::vector
+    boost::directedS                   // The graph is directed
   >;
 
   graph_type g;                 // use default constructor to create empty graph
   std::ifstream file_in("makefile-dependencies.dat");
   read_graph_file(file_in, g);
 
-  assert(num_vertices(g) == 15);
-  assert(num_edges(g) == 19);
+  assert(boost::num_vertices(g) == 15);
+  assert(boost::num_edges(g) == 19);
   return 0;
 }
