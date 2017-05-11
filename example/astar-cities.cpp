@@ -23,9 +23,6 @@
 #include <fstream>
 #include <cmath>    // for sqrt
 
-using namespace boost;
-
-
 // auxiliary types
 struct location
 {
@@ -72,10 +69,10 @@ private:
 
 // euclidean distance heuristic
 template <class Graph, class CostType, class LocMap>
-class distance_heuristic : public astar_heuristic<Graph, CostType>
+class distance_heuristic : public boost::astar_heuristic<Graph, CostType>
 {
 public:
-  using Vertex = typename graph_traits<Graph>::vertex_descriptor;
+  using Vertex = typename boost::graph_traits<Graph>::vertex_descriptor;
   distance_heuristic(LocMap l, Vertex goal)
     : m_location(l), m_goal(goal) {}
   CostType operator()(Vertex u)
@@ -112,9 +109,9 @@ int main(int argc, char **argv)
 {
   
   // specify some types
-  using mygraph_t = adjacency_list<listS, vecS, undirectedS, no_property,
-    property<edge_weight_t, cost>>;
-  using WeightMap = property_map<mygraph_t, edge_weight_t>::type;
+  using mygraph_t = boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, boost::no_property,
+    boost::property<boost::edge_weight_t, cost>>;
+  using WeightMap = boost::property_map<mygraph_t, boost::edge_weight_t>::type;
   using vertex = mygraph_t::vertex_descriptor;
   using edge = std::pair<int, int>;
   
@@ -158,9 +155,9 @@ int main(int argc, char **argv)
   
   // create graph
   mygraph_t g(N);
-  auto weightmap = get(edge_weight, g);
+  auto weightmap = boost::get(boost::edge_weight, g);
   for(std::size_t j = 0; j < num_edges; ++j) {
-    const auto [e, inserted] = add_edge(edge_array[j].first,
+    const auto [e, inserted] = boost::add_edge(edge_array[j].first,
                                        edge_array[j].second, g);
     weightmap[e] = weights[j];
   }
@@ -177,23 +174,23 @@ int main(int argc, char **argv)
   
   std::ofstream dotfile;
   dotfile.open("test-astar-cities.dot");
-  write_graphviz(dotfile, g,
+  boost::write_graphviz(dotfile, g,
                  city_writer<const char **, location*>
                   (name, locations, 73.46, 78.86, 40.67, 44.93,
                    480, 400),
                  time_writer<WeightMap>(weightmap));
   
   
-  std::vector<mygraph_t::vertex_descriptor> p(num_vertices(g));
-  std::vector<cost> d(num_vertices(g));
+  std::vector<mygraph_t::vertex_descriptor> p(boost::num_vertices(g));
+  std::vector<cost> d(boost::num_vertices(g));
   try {
     // call astar named parameter interface
-    astar_search_tree
+    boost::astar_search_tree
       (g, start,
        distance_heuristic<mygraph_t, cost, location*>
         (locations, goal),
-       predecessor_map(make_iterator_property_map(p.begin(), get(vertex_index, g))).
-       distance_map(make_iterator_property_map(d.begin(), get(vertex_index, g))).
+       boost::predecessor_map(boost::make_iterator_property_map(p.begin(), boost::get(boost::vertex_index, g))).
+       distance_map(boost::make_iterator_property_map(d.begin(), boost::get(boost::vertex_index, g))).
        visitor(astar_goal_visitor<vertex>(goal)));
   
   
