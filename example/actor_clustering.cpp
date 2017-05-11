@@ -25,8 +25,6 @@
 #include <map>
 #include "range_pair.hpp"
 
-using namespace boost;
-
 struct Actor
 {
   Actor(int id = -1) : id(id) {}
@@ -34,10 +32,10 @@ struct Actor
   int id;
 };
 
-using ActorGraph = adjacency_list<vecS, vecS, undirectedS, Actor,
-  property<edge_centrality_t, double>>;
-using Vertex = graph_traits<ActorGraph>::vertex_descriptor;
-using Edge = graph_traits<ActorGraph>::edge_descriptor;
+using ActorGraph = boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, Actor,
+  boost::property<boost::edge_centrality_t, double>>;
+using Vertex = boost::graph_traits<ActorGraph>::vertex_descriptor;
+using Edge = boost::graph_traits<ActorGraph>::edge_descriptor;
 
 void load_actor_graph(std::istream& in, ActorGraph& g)
 {
@@ -48,13 +46,13 @@ void load_actor_graph(std::istream& in, ActorGraph& g)
     std::vector<Vertex> actors_in_movie;
 
     // Map from the actor numbers on this line to the actor vertices
-    using Tok = tokenizer<char_separator<char>>;
-    Tok tok(line, char_separator<char>(" "));
+    using Tok = boost::tokenizer<boost::char_separator<char>>;
+    Tok tok(line, boost::char_separator<char>(" "));
     for (const auto& id : tok) {
       auto actor_id = std::stoi(id);
       auto v = actors.find(actor_id);
       if (v == actors.end()) {
-        auto new_vertex = add_vertex(Actor(actor_id), g);
+        auto new_vertex = boost::add_vertex(Actor(actor_id), g);
         actors[actor_id] = new_vertex;
         actors_in_movie.emplace_back(new_vertex);
       } else {
@@ -66,7 +64,7 @@ void load_actor_graph(std::istream& in, ActorGraph& g)
          i != actors_in_movie.end(); ++i) {
       for (auto j = i + 1;
            j != actors_in_movie.end(); ++j) {
-        if (!edge(*i, *j, g).second) add_edge(*i, *j, g);
+        if (!edge(*i, *j, g).second) boost::add_edge(*i, *j, g);
       }
     }
   }
@@ -77,22 +75,22 @@ std::ostream&
 write_pajek_graph(std::ostream& out, const Graph& g, 
                   VertexIndexMap vertex_index, VertexNameMap vertex_name)
 {
-  out << "*Vertices " << num_vertices(g) << '\n';
-  for (const auto& vertex : make_range_pair(vertices(g))) {
-    out << get(vertex_index, vertex)+1 << " \"" << get(vertex_name, vertex) << "\"\n";
+  out << "*Vertices " << boost::num_vertices(g) << '\n';
+  for (const auto& vertex : make_range_pair(boost::vertices(g))) {
+    out << boost::get(vertex_index, vertex)+1 << " \"" << boost::get(vertex_name, vertex) << "\"\n";
   }
 
   out << "*Edges\n";
-  for (const auto& edge : make_range_pair(edges(g))) {
-    out << get(vertex_index, source(edge, g))+1 << ' ' 
-        << get(vertex_index, target(edge, g))+1 << " 1.0\n"; // HACK!
+  for (const auto& edge : make_range_pair(boost::edges(g))) {
+    out << boost::get(vertex_index, boost::source(edge, g))+1 << ' ' 
+        << boost::get(vertex_index, boost::target(edge, g))+1 << " 1.0\n"; // HACK!
   }
   return out;
 }
 
-class actor_clustering_threshold : public bc_clustering_threshold<double>
+class actor_clustering_threshold : public boost::bc_clustering_threshold<double>
 {
-  using inherited = bc_clustering_threshold<double>;
+  using inherited = boost::bc_clustering_threshold<double>;
 
  public:
   actor_clustering_threshold(double threshold, const ActorGraph& g,
@@ -169,7 +167,7 @@ int main(int argc, char* argv[])
   std::cout << "Clusting..." << std::endl;
   betweenness_centrality_clustering(g, 
     actor_clustering_threshold(threshold, g, normalize), 
-    get(edge_centrality, g));
+    boost::get(boost::edge_centrality, g));
 
   // Output the graph
   {
@@ -179,7 +177,7 @@ int main(int argc, char* argv[])
       std::cerr << "Unable to open file \"" << out_file << "\" for output.\n";
       return -3;
     }
-    write_pajek_graph(out, g, get(vertex_index, g), get(&Actor::id, g));
+    write_pajek_graph(out, g, boost::get(boost::vertex_index, g), boost::get(&Actor::id, g));
   }
   return 0;
 }
