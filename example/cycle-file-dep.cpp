@@ -13,8 +13,6 @@
 #include <boost/graph/graph_utility.hpp>
 #include "range_pair.hpp"
 
-using namespace boost;
-
 namespace std
 {
   template <typename T>
@@ -25,35 +23,35 @@ namespace std
   }
 }
 
-using file_dep_graph = adjacency_list<listS, // Store out-edges of each vertex in a std::list
-  vecS,                         // Store vertex set in a std::vector
-  directedS                     // The file dependency graph is directed
+using file_dep_graph = boost::adjacency_list<boost::listS, // Store out-edges of each vertex in a std::list
+  boost::vecS,                         // Store vertex set in a std::vector
+  boost::directedS                     // The file dependency graph is directed
 >;
 
-using vertex_t = graph_traits<file_dep_graph>::vertex_descriptor;
-using edge_t = graph_traits<file_dep_graph>::edge_descriptor;
+using vertex_t = boost::graph_traits<file_dep_graph>::vertex_descriptor;
+using edge_t = boost::graph_traits<file_dep_graph>::edge_descriptor;
 
 bool
 has_cycle_dfs(const file_dep_graph & g, vertex_t u,
-              default_color_type * color)
+              boost::default_color_type * color)
 {
-  color[u] = gray_color;
+  color[u] = boost::gray_color;
   for (const auto& vertex : make_range_pair(adjacent_vertices(u, g)))
-    if (color[vertex] == white_color) {
+    if (color[vertex] == boost::white_color) {
       if (has_cycle_dfs(g, vertex, color))
         return true;            // cycle detected, return immediately
-    } else if (color[vertex] == gray_color)        // vertex is an ancestor!
+    } else if (color[vertex] == boost::gray_color)        // vertex is an ancestor!
       return true;
-  color[u] = black_color;
+  color[u] = boost::black_color;
   return false;
 }
 
 bool
 has_cycle(const file_dep_graph & g)
 {
-  std::vector<default_color_type> color(num_vertices(g), white_color);
-  for (const auto& vertex : make_range_pair(vertices(g)))
-    if (color[vertex] == white_color)
+  std::vector<boost::default_color_type> color(boost::num_vertices(g), boost::white_color);
+  for (const auto& vertex : make_range_pair(boost::vertices(g)))
+    if (color[vertex] == boost::white_color)
       if (has_cycle_dfs(g, vertex, &color[0]))
         return true;
   return false;
@@ -64,7 +62,7 @@ int
 main()
 {
   std::ifstream file_in("makefile-dependencies.dat");
-  using size_type = graph_traits<file_dep_graph>::vertices_size_type;
+  using size_type = boost::graph_traits<file_dep_graph>::vertices_size_type;
   size_type n_vertices;
   file_in >> n_vertices;        // read in number of vertices
   std::istream_iterator<std::pair<size_type, size_type>> input_begin(file_in), input_end;
@@ -73,15 +71,15 @@ main()
   file_dep_graph g(n_vertices);
   while (input_begin != input_end) {
     const auto [i, j] = *input_begin++;
-    add_edge(i, j, g);
+    boost::add_edge(i, j, g);
   }
 #else
   file_dep_graph g(input_begin, input_end, n_vertices);
 #endif
 
-  std::vector<std::string> name(num_vertices(g));
+  std::vector<std::string> name(boost::num_vertices(g));
   std::ifstream name_in("makefile-target-names.dat");
-  for (const auto& vertex : make_range_pair(vertices(g)))
+  for (const auto& vertex : make_range_pair(boost::vertices(g)))
     name_in >> name[vertex];
 
   assert(has_cycle(g) == false);
