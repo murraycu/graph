@@ -12,9 +12,8 @@
 
 #include <iostream>
 
-using namespace boost;
-template <typename TimeMap> class bfs_time_visitor:public default_bfs_visitor {
-  using T = typename property_traits<TimeMap>::value_type;
+template <typename TimeMap> class bfs_time_visitor:public boost::default_bfs_visitor {
+  using T = typename boost::property_traits<TimeMap>::value_type;
 public:
   bfs_time_visitor(TimeMap tmap, T & t):m_timemap(tmap), m_time(t) { }
   template <typename Vertex, typename Graph>
@@ -30,9 +29,8 @@ public:
 int
 main()
 {
-  using namespace boost;
   // Select the graph type we wish to use
-  using graph_t = adjacency_list<vecS, vecS, undirectedS>;
+  using graph_t = boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS>;
   // Set up the vertex IDs and names
   enum { r, s, t, u, v, w, x, y, N };
   const char *name = "rstuvwxy";
@@ -49,30 +47,30 @@ main()
   for (std::size_t j = 0; j < n_edges; ++j)
     add_edge(edge_array[j].first, edge_array[j].second, g);
 #else
-  using v_size_t = graph_traits<graph_t>::vertices_size_type;
+  using v_size_t = boost::graph_traits<graph_t>::vertices_size_type;
   graph_t g(edge_array, edge_array + n_edges, v_size_t(N));
 #endif
 
   // Typedefs
-  using Size = graph_traits<graph_t>::vertices_size_type;
+  using Size = boost::graph_traits<graph_t>::vertices_size_type;
 
   // a vector to hold the discover time property for each vertex
-  std::vector<Size> dtime(num_vertices(g));
+  std::vector<Size> dtime(boost::num_vertices(g));
   using dtime_pm_type =
-    iterator_property_map<std::vector<Size>::iterator,
-                          property_map<graph_t, vertex_index_t>::const_type>;
-  dtime_pm_type dtime_pm(dtime.begin(), get(vertex_index, g));
+    boost::iterator_property_map<std::vector<Size>::iterator,
+                          boost::property_map<graph_t, boost::vertex_index_t>::const_type>;
+  dtime_pm_type dtime_pm(dtime.begin(), boost::get(boost::vertex_index, g));
 
   Size time = 0;
   bfs_time_visitor<dtime_pm_type> vis(dtime_pm, time);
-  breadth_first_search(g, vertex(s, g), visitor(vis));
+  boost::breadth_first_search(g, vertex(s, g), boost::visitor(vis));
 
   // Use std::sort to order the vertices by their discover time
-  std::vector<graph_traits<graph_t>::vertices_size_type > discover_order(N);
-  integer_range<int> range(0, N);
+  std::vector<boost::graph_traits<graph_t>::vertices_size_type > discover_order(N);
+  boost::integer_range<int> range(0, N);
   std::copy(range.begin(), range.end(), discover_order.begin());
   std::sort(discover_order.begin(), discover_order.end(),
-            indirect_cmp<dtime_pm_type, std::less<Size>>(dtime_pm));
+            boost::indirect_cmp<dtime_pm_type, std::less<Size>>(dtime_pm));
 
   std::cout << "order of discovery: ";
   for (int i = 0; i < N; ++i)
