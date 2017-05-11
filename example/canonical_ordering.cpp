@@ -17,63 +17,59 @@
 #include <boost/graph/boyer_myrvold_planar_test.hpp>
 #include "range_pair.hpp"
 
-
-using namespace boost;
-
-
 int main(int argc, char** argv)
 {
 
-  using graph = adjacency_list<vecS, vecS,
-    undirectedS,
-    property<vertex_index_t, int>,
-    property<edge_index_t, int>>;
+  using graph = boost::adjacency_list<boost::vecS, boost::vecS,
+    boost::undirectedS,
+    boost::property<boost::vertex_index_t, int>,
+    boost::property<boost::edge_index_t, int>>;
 
   // Create a maximal planar graph on 6 vertices
   graph g(6);
 
-  add_edge(0,1,g);
-  add_edge(1,2,g);
-  add_edge(2,3,g);
-  add_edge(3,4,g);
-  add_edge(4,5,g);
-  add_edge(5,0,g);
+  boost::add_edge(0,1,g);
+  boost::add_edge(1,2,g);
+  boost::add_edge(2,3,g);
+  boost::add_edge(3,4,g);
+  boost::add_edge(4,5,g);
+  boost::add_edge(5,0,g);
 
-  add_edge(0,2,g);
-  add_edge(0,3,g);
-  add_edge(0,4,g);
+  boost::add_edge(0,2,g);
+  boost::add_edge(0,3,g);
+  boost::add_edge(0,4,g);
 
-  add_edge(1,3,g);
-  add_edge(1,4,g);
-  add_edge(1,5,g);
+  boost::add_edge(1,3,g);
+  boost::add_edge(1,4,g);
+  boost::add_edge(1,5,g);
 
   // Initialize the interior edge index
-  auto e_index = get(edge_index, g);
-  graph_traits<graph>::edges_size_type edge_count = 0;
-  for(const auto& edge : make_range_pair(edges(g)))
+  auto e_index = boost::get(boost::edge_index, g);
+  boost::graph_traits<graph>::edges_size_type edge_count = 0;
+  for(const auto& edge : make_range_pair(boost::edges(g)))
     put(e_index, edge, edge_count++);
   
 
   // Test for planarity - we know it is planar, we just want to 
   // compute the planar embedding as a side-effect
-  using vec_t = std::vector<graph_traits<graph>::edge_descriptor>;
-  std::vector<vec_t> embedding(num_vertices(g));
-  if (boyer_myrvold_planarity_test(boyer_myrvold_params::graph = g,
-                                   boyer_myrvold_params::embedding = 
-                                       make_iterator_property_map(
-                                         embedding.begin(), get(vertex_index, g))
+  using vec_t = std::vector<boost::graph_traits<graph>::edge_descriptor>;
+  std::vector<vec_t> embedding(boost::num_vertices(g));
+  if (boost::boyer_myrvold_planarity_test(boost::boyer_myrvold_params::graph = g,
+                                   boost::boyer_myrvold_params::embedding = 
+                                       boost::make_iterator_property_map(
+                                         embedding.begin(), boost::get(boost::vertex_index, g))
                                    )
       )
     std::cout << "Input graph is planar" << std::endl;
   else
     std::cout << "Input graph is not planar" << std::endl;
 
-  using ordering_storage_t = std::vector<graph_traits<graph>::vertex_descriptor>;
+  using ordering_storage_t = std::vector<boost::graph_traits<graph>::vertex_descriptor>;
   
   ordering_storage_t ordering;
   planar_canonical_ordering(g,
-                            make_iterator_property_map(
-                              embedding.begin(), get(vertex_index, g)),
+                            boost::make_iterator_property_map(
+                              embedding.begin(), boost::get(boost::vertex_index, g)),
                             std::back_inserter(ordering));
 
   std::cout << "The planar canonical ordering is: ";
