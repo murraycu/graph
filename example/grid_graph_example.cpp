@@ -12,10 +12,9 @@
 #include <boost/graph/grid_graph.hpp>
 
 #define DIMENSIONS 3
-using namespace boost;
 
-using Graph = grid_graph<DIMENSIONS>;
-using Traits = graph_traits<Graph>;
+using Graph = boost::grid_graph<DIMENSIONS>;
+using Traits = boost::graph_traits<Graph>;
 
 // Define a simple function to print vertices
 void print_vertex(Traits::vertex_descriptor vertex_to_print) {
@@ -32,11 +31,11 @@ int main(int argc, char* argv[]) {
 
   // Do a round-trip test of the vertex index functions
   for (Traits::vertices_size_type v_index = 0;
-       v_index < num_vertices(graph); ++v_index) {
+       v_index < boost::num_vertices(graph); ++v_index) {
 
     // The two indicies should always be equal
     std::cout << "Index of vertex " << v_index << " is " <<
-      get(boost::vertex_index, graph, vertex(v_index, graph)) << std::endl;
+      boost::get(boost::vertex_index, graph, boost::vertex(v_index, graph)) << std::endl;
 
   }
 
@@ -46,7 +45,7 @@ int main(int argc, char* argv[]) {
 
     // The two indicies should always be equal
     std::cout << "Index of edge " << e_index << " is " <<
-      get(boost::edge_index, graph, edge_at(e_index, graph)) << std::endl;
+      boost::get(boost::edge_index, graph, boost::edge_at(e_index, graph)) << std::endl;
 
   }
 
@@ -63,7 +62,7 @@ int main(int argc, char* argv[]) {
     (graph.wrapped(2) ? "W" : "U") << std::endl; // prints "W, U, W"
 
   // Start with the first vertex in the graph
-  auto first_vertex = vertex(0, graph);
+  auto first_vertex = boost::vertex(0, graph);
   print_vertex(first_vertex); // prints "(0, 0, 0)"
 
   // Print the next vertex in dimension 0
