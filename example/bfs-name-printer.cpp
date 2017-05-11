@@ -10,7 +10,6 @@
 #include <fstream>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/breadth_first_search.hpp>
-using namespace boost;
 
 template <typename Graph, typename VertexNameMap, typename TransDelayMap>
 void
@@ -28,25 +27,25 @@ build_router_network(Graph & g, VertexNameMap name_map,
   auto e = add_vertex(g);
   name_map[e] = 'e';
 
-  auto [ed, inserted] = add_edge(a, b, g);
+  auto [ed, inserted] = boost::add_edge(a, b, g);
   delay_map[ed] = 1.2;
-  std::tie(ed, inserted) = add_edge(a, d, g);
+  std::tie(ed, inserted) = boost::add_edge(a, d, g);
   delay_map[ed] = 4.5;
-  std::tie(ed, inserted) = add_edge(b, d, g);
+  std::tie(ed, inserted) = boost::add_edge(b, d, g);
   delay_map[ed] = 1.8;
-  std::tie(ed, inserted) = add_edge(c, a, g);
+  std::tie(ed, inserted) = boost::add_edge(c, a, g);
   delay_map[ed] = 2.6;
-  std::tie(ed, inserted) = add_edge(c, e, g);
+  std::tie(ed, inserted) = boost::add_edge(c, e, g);
   delay_map[ed] = 5.2;
-  std::tie(ed, inserted) = add_edge(d, c, g);
+  std::tie(ed, inserted) = boost::add_edge(d, c, g);
   delay_map[ed] = 0.4;
-  std::tie(ed, inserted) = add_edge(d, e, g);
+  std::tie(ed, inserted) = boost::add_edge(d, e, g);
   delay_map[ed] = 3.3;
 }
 
 
 template <typename VertexNameMap>
-class bfs_name_printer : public default_bfs_visitor {
+class bfs_name_printer : public boost::default_bfs_visitor {
                          // inherit default (empty) event point actions
 public:
   bfs_name_printer(VertexNameMap n_map) : m_name_map(n_map) {
@@ -54,7 +53,7 @@ public:
   template <typename Vertex, typename Graph>
   void discover_vertex(Vertex u, const Graph &) const
   {
-    std::cout << get(m_name_map, u) << ' ';
+    std::cout << boost::get(m_name_map, u) << ' ';
   }
 private:
   VertexNameMap m_name_map;
@@ -72,19 +71,19 @@ struct EP {
 int
 main()
 {
-  using graph_t = adjacency_list < listS, vecS, directedS, VP, EP>;
+  using graph_t = boost::adjacency_list < boost::listS, boost::vecS, boost::directedS, VP, EP>;
   graph_t g;
 
-  auto name_map = get(&VP::name, g);
-  auto delay_map = get(&EP::weight, g);
+  auto name_map = boost::get(&VP::name, g);
+  auto delay_map = boost::get(&EP::weight, g);
 
   build_router_network(g, name_map, delay_map);
 
-  using VertexNameMap = property_map<graph_t, char VP::*>::type;
+  using VertexNameMap = boost::property_map<graph_t, char VP::*>::type;
   auto a = *vertices(g).first;
   bfs_name_printer<VertexNameMap> vis(name_map);
   std::cout << "BFS vertex discover order: ";
-  breadth_first_search(g, a, visitor(vis));
+  boost::breadth_first_search(g, a, boost::visitor(vis));
   std::cout << std::endl;
 
 }
