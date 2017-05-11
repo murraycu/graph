@@ -51,31 +51,29 @@ struct VertexProperties {
 
 int main(int , char* [])
 {
-  using namespace boost;
-
-  using Graph = adjacency_list<vecS, listS, undirectedS, 
+  using Graph = boost::adjacency_list<boost::vecS, boost::listS, boost::undirectedS, 
     VertexProperties, EdgeProperties>;
 
   const int V = 5;
   Graph g(V);
 
-  auto id = get(&VertexProperties::index, g);
-  auto name = get(&EdgeProperties::name, g);
+  auto id = boost::get(&VertexProperties::index, g);
+  auto name = boost::get(&EdgeProperties::name, g);
 
   int vnum = 0;
-  for(const auto& vertex : make_range_pair(vertices(g)))
+  for(const auto& vertex : make_range_pair(boost::vertices(g)))
     id[vertex] = vnum++;
 
-  add_edge(vertex(0, g), vertex(1, g), EdgeProperties("joe"), g);
-  add_edge(vertex(1, g), vertex(2, g), EdgeProperties("curly"), g);
-  add_edge(vertex(1, g), vertex(3, g), EdgeProperties("dick"), g);
-  add_edge(vertex(2, g), vertex(4, g), EdgeProperties("tom"), g);
-  add_edge(vertex(3, g), vertex(4, g), EdgeProperties("harry"), g);
+  boost::add_edge(vertex(0, g), vertex(1, g), EdgeProperties("joe"), g);
+  boost::add_edge(vertex(1, g), vertex(2, g), EdgeProperties("curly"), g);
+  boost::add_edge(vertex(1, g), vertex(3, g), EdgeProperties("dick"), g);
+  boost::add_edge(vertex(2, g), vertex(4, g), EdgeProperties("tom"), g);
+  boost::add_edge(vertex(3, g), vertex(4, g), EdgeProperties("harry"), g);
 
-  for(const auto& vertex : make_range_pair(vertices(g))) {
+  for(const auto& vertex : make_range_pair(boost::vertices(g))) {
     std::cout << id[vertex] << " ";
-    for (const auto out_edge : make_range_pair(out_edges(vertex, g)))
-      std::cout << " --" << name[out_edge] << "--> " << id[target(out_edge, g)] << "  ";
+    for (const auto out_edge : make_range_pair(boost::out_edges(vertex, g)))
+      std::cout << " --" << name[out_edge] << "--> " << id[boost::target(out_edge, g)] << "  ";
     std::cout << std::endl;
   }
   print_edges(g, id);
@@ -83,15 +81,15 @@ int main(int , char* [])
   std::cout << std::endl << "removing edge (1,3): " << std::endl;
   remove_edge(vertex(1, g), vertex(3, g), g);
 
-  auto ei = out_edges(vertex(1, g), g).first;
-  std::cout << "removing edge (" << id[source(*ei, g)] 
-       << "," << id[target(*ei, g)] << ")" << std::endl;
+  auto ei = boost::out_edges(vertex(1, g), g).first;
+  std::cout << "removing edge (" << id[boost::source(*ei, g)] 
+       << "," << id[boost::target(*ei, g)] << ")" << std::endl;
   remove_edge(ei, g);
 
-  for(const auto& vertex : make_range_pair(vertices(g))) {
+  for(const auto& vertex : make_range_pair(boost::vertices(g))) {
     std::cout << id[vertex] << " ";
-    for (const auto out_edge : make_range_pair(out_edges(vertex, g)))
-      std::cout << " --" << name[out_edge] << "--> " << id[target(out_edge, g)] << "  ";
+    for (const auto out_edge : make_range_pair(boost::out_edges(vertex, g)))
+      std::cout << " --" << name[out_edge] << "--> " << id[boost::target(out_edge, g)] << "  ";
     std::cout << std::endl;
   }
 
