@@ -12,8 +12,6 @@
 
 #include "helper.hpp"
 
-using namespace boost;
-
 // The clique_printer is a visitor that will print the vertices that comprise
 // a clique. Note that the vertices are not given in any specific order.
 template <typename OutputStream>
@@ -42,20 +40,20 @@ struct Actor
 };
 
 // Declare the graph type and its vertex and edge types.
-using Graph = undirected_graph<Actor>;
-using Vertex = graph_traits<Graph>::vertex_descriptor;
-using Edge = graph_traits<Graph>::edge_descriptor;
+using Graph = boost::undirected_graph<Actor>;
+using Vertex = boost::graph_traits<Graph>::vertex_descriptor;
+using Edge = boost::graph_traits<Graph>::edge_descriptor;
 
 // The name map provides an abstract accessor for the names of
 // each vertex. This is used during graph creation.
-using NameMap = property_map<Graph, std::string Actor::*>::type;
+using NameMap = boost::property_map<Graph, std::string Actor::*>::type;
 
 int
 main(int argc, char *argv[])
 {
     // Create the graph and and its name map accessor.
     Graph g;
-    NameMap nm(get(&Actor::name, g));
+    NameMap nm(boost::get(&Actor::name, g));
 
     // Read the graph from standard input.
     read_graph(g, nm, std::cin);
