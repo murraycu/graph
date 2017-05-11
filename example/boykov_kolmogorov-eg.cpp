@@ -69,39 +69,38 @@
 
 int main()
 {
-  using namespace boost;
 
-  using Traits = adjacency_list_traits<vecS, vecS, directedS>;
-  using Graph = adjacency_list < vecS, vecS, directedS,
-    property < vertex_name_t, std::string,
-    property < vertex_index_t, long,
-    property < vertex_color_t, boost::default_color_type,
-    property < vertex_distance_t, long,
-    property<vertex_predecessor_t, Traits::edge_descriptor>>>>>,
+  using Traits = boost::adjacency_list_traits<boost::vecS, boost::vecS, boost::directedS>;
+  using Graph = boost::adjacency_list < boost::vecS, boost::vecS, boost::directedS,
+    boost::property < boost::vertex_name_t, std::string,
+    boost::property < boost::vertex_index_t, long,
+    boost::property < boost::vertex_color_t, boost::default_color_type,
+    boost::property < boost::vertex_distance_t, long,
+    boost::property<boost::vertex_predecessor_t, Traits::edge_descriptor>>>>>,
 
-    property < edge_capacity_t, long,
-    property < edge_residual_capacity_t, long,
-    property<edge_reverse_t, Traits::edge_descriptor>>>>;
+    boost::property < boost::edge_capacity_t, long,
+    boost::property < boost::edge_residual_capacity_t, long,
+    boost::property<boost::edge_reverse_t, Traits::edge_descriptor>>>>;
 
   Graph g;
-  auto capacity = get(edge_capacity, g);
-  auto residual_capacity = get(edge_residual_capacity, g);
-  auto rev = get(edge_reverse, g);
+  auto capacity = boost::get(boost::edge_capacity, g);
+  auto residual_capacity = boost::get(boost::edge_residual_capacity, g);
+  auto rev = boost::get(boost::edge_reverse, g);
   Traits::vertex_descriptor s, t;
   read_dimacs_max_flow(g, capacity, rev, s, t);
 
-  std::vector<default_color_type> color(num_vertices(g));
-  std::vector<long> distance(num_vertices(g));
+  std::vector<boost::default_color_type> color(boost::num_vertices(g));
+  std::vector<long> distance(boost::num_vertices(g));
   auto flow = boykov_kolmogorov_max_flow(g ,s, t);
 
   std::cout << "c  The total flow:" << std::endl;
   std::cout << "s " << flow << std::endl << std::endl;
 
   std::cout << "c flow values:" << std::endl;
-  for(const auto& vertex : make_range_pair(vertices(g)))
-    for (const auto& edge : make_range_pair(out_edges(vertex, g)))
+  for(const auto& vertex : make_range_pair(boost::vertices(g)))
+    for (const auto& edge : make_range_pair(boost::out_edges(vertex, g)))
       if (capacity[edge] > 0)
-        std::cout << "f " << vertex << " " << target(edge, g) << " "
+        std::cout << "f " << vertex << " " << boost::target(edge, g) << " "
           << (capacity[edge] - residual_capacity[edge]) << std::endl;
 
   return EXIT_SUCCESS;
