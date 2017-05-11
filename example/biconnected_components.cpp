@@ -20,7 +20,7 @@ namespace boost
   {
     enum
     { num = 555 };
-    using kind = edge_property_tag;
+    using kind = boost::edge_property_tag;
   }
   edge_component;
 }
@@ -28,24 +28,23 @@ namespace boost
 int
 main()
 {
-  using namespace boost;
-  using graph_t = adjacency_list<vecS, vecS, undirectedS,
-    no_property, property<edge_component_t, std::size_t>>;
-  using vertex_t = graph_traits<graph_t>::vertex_descriptor;
+  using graph_t = boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS,
+    boost::no_property, boost::property<boost::edge_component_t, std::size_t>>;
+  using vertex_t = boost::graph_traits<graph_t>::vertex_descriptor;
   graph_t g(9);
-  add_edge(0, 5, g);
-  add_edge(0, 1, g);
-  add_edge(0, 6, g);
-  add_edge(1, 2, g);
-  add_edge(1, 3, g);
-  add_edge(1, 4, g);
-  add_edge(2, 3, g);
-  add_edge(4, 5, g);
-  add_edge(6, 8, g);
-  add_edge(6, 7, g);
-  add_edge(7, 8, g);
+  boost::add_edge(0, 5, g);
+  boost::add_edge(0, 1, g);
+  boost::add_edge(0, 6, g);
+  boost::add_edge(1, 2, g);
+  boost::add_edge(1, 3, g);
+  boost::add_edge(1, 4, g);
+  boost::add_edge(2, 3, g);
+  boost::add_edge(4, 5, g);
+  boost::add_edge(6, 8, g);
+  boost::add_edge(6, 7, g);
+  boost::add_edge(7, 8, g);
 
-  auto component = get(edge_component, g);
+  auto component = boost::get(boost::edge_component, g);
 
   auto num_comps = biconnected_components(g, component);
   std::cerr << "Found " << num_comps << " biconnected components.\n";
@@ -62,9 +61,9 @@ main()
               << std::endl;
   }
 
-  for(const auto& edge : make_range_pair(edges(g)))
-    std::cout << (char)(source(edge, g) + 'A') << " -- " 
-              << (char)(target(edge, g) + 'A')
+  for(const auto& edge : make_range_pair(boost::edges(g)))
+    std::cout << (char)(boost::source(edge, g) + 'A') << " -- " 
+              << (char)(boost::target(edge, g) + 'A')
               << "[label=\"" << component[edge] << "\"]\n";
   std::cout << "}\n";
 
