@@ -15,14 +15,12 @@
 #include <boost/graph/bipartite.hpp>
 #include "range_pair.hpp"
 
-using namespace boost;
-
 /// Example to test for bipartiteness and print the certificates.
 
 template <typename Graph>
 void print_bipartite (const Graph& g)
 {
-  using traits = graph_traits <Graph>;
+  using traits = boost::graph_traits <Graph>;
 
   /// Most simple interface just tests for bipartiteness. 
 
@@ -30,21 +28,21 @@ void print_bipartite (const Graph& g)
 
   if (bipartite)
   {
-    using partition_t = std::vector <default_color_type>;
-    using index_map_t = typename property_map <Graph, vertex_index_t>::type;
-    using partition_map_t = iterator_property_map <partition_t::iterator, index_map_t>;
+    using partition_t = std::vector <boost::default_color_type>;
+    using index_map_t = typename boost::property_map <Graph, boost::vertex_index_t>::type;
+    using partition_map_t = boost::iterator_property_map <partition_t::iterator, index_map_t>;
 
-    partition_t partition (num_vertices (g));
-    partition_map_t partition_map (partition.begin (), get (vertex_index, g));
+    partition_t partition (boost::num_vertices (g));
+    partition_map_t partition_map (partition.begin (), get (boost::vertex_index, g));
 
     /// A second interface yields a bipartition in a color map, if the graph is bipartite.
 
-    is_bipartite (g, get (vertex_index, g), partition_map);
+    is_bipartite (g, get (boost::vertex_index, g), partition_map);
 
     for (const auto& vertex : make_range_pair(vertices (g)))
     {
-      std::cout << "Vertex " << vertex << " has color " << (get (partition_map, vertex) == color_traits <
-          default_color_type>::white () ? "white" : "black") << std::endl;
+      std::cout << "Vertex " << vertex << " has color " << (boost::get (partition_map, vertex) == boost::color_traits <
+          boost::default_color_type>::white () ? "white" : "black") << std::endl;
     }
   }
   else
@@ -54,7 +52,7 @@ void print_bipartite (const Graph& g)
 
     /// A third interface yields an odd-cycle if the graph is not bipartite.
 
-    find_odd_cycle (g, get (vertex_index, g), std::back_inserter (odd_cycle));
+    find_odd_cycle (g, get (boost::vertex_index, g), std::back_inserter (odd_cycle));
 
     std::cout << "Odd cycle consists of the vertices:";
     for (size_t i = 0; i < odd_cycle.size (); ++i)
@@ -67,7 +65,7 @@ void print_bipartite (const Graph& g)
 
 int main (int argc, char **argv)
 {
-  using vector_graph_t = adjacency_list <vecS, vecS, undirectedS>;
+  using vector_graph_t = boost::adjacency_list <boost::vecS, boost::vecS, boost::undirectedS>;
   using E = std::pair <int, int>;
 
   /**
