@@ -72,7 +72,6 @@ private:
 int
 main()
 {
-  using namespace boost;
 
   std::ifstream datafile("./boost_web.dat");
   if (!datafile) {
@@ -83,13 +82,13 @@ main()
   //===========================================================================
   // Declare the graph type and object, and some property maps.
 
-  using Graph = adjacency_list<vecS, vecS, directedS, 
-    property<vertex_name_t, std::string, 
-      property<vertex_color_t, default_color_type>>,
-    property<edge_name_t, std::string, property<edge_weight_t, int>>
+  using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS, 
+    boost::property<boost::vertex_name_t, std::string, 
+      boost::property<boost::vertex_color_t, boost::default_color_type>>,
+    boost::property<boost::edge_name_t, std::string, boost::property<boost::edge_weight_t, int>>
   >;
 
-  using Traits = graph_traits<Graph>;
+  using Traits = boost::graph_traits<Graph>;
   using Vertex = Traits::vertex_descriptor;
   using Edge = Traits::edge_descriptor;
 
@@ -97,8 +96,8 @@ main()
   NameVertexMap name2vertex;
   Graph g;
 
-  auto node_name  = get(vertex_name, g);
-  auto link_name = get(edge_name, g);
+  auto node_name  = boost::get(boost::vertex_name, g);
+  auto link_name = boost::get(boost::edge_name, g);
 
   //===========================================================================
   // Read the data file and construct the graph.
@@ -133,7 +132,7 @@ main()
       v = pos->second;
 
     Edge e;
-    std::tie(e, inserted) = add_edge(u, v, g);
+    std::tie(e, inserted) = boost::add_edge(u, v, g);
     if (inserted) {
       put(link_name, e, hyperlink_name);
     }
@@ -146,14 +145,14 @@ main()
   using IntVector = std::vector<size_type>;
   // Create N x N matrix for storing the shortest distances
   // between each vertex. Initialize all distances to zero.
-  std::vector<IntVector> d_matrix(num_vertices(g),
-                                  IntVector(num_vertices(g), 0));
+  std::vector<IntVector> d_matrix(boost::num_vertices(g),
+                                  IntVector(boost::num_vertices(g), 0));
 
   size_type i;
   for (i = 0; i < num_vertices(g); ++i) {
     calc_distance_visitor<size_type*> vis(&d_matrix[i][0]);
     auto src = vertices(g).first[i];
-    breadth_first_search(g, src, boost::visitor(vis));
+    boost::breadth_first_search(g, src, boost::visitor(vis));
   }
 
   size_type diameter = 0;
@@ -166,7 +165,7 @@ main()
             << std::endl << std::endl;
 
   std::cout << "Number of clicks from the home page: " << std::endl;
-  for (const auto& vertex : make_range_pair(vertices(g)))
+  for (const auto& vertex : make_range_pair(boost::vertices(g)))
     std::cout << d_matrix[0][vertex] << "\t" << node_name[vertex] << std::endl;
   std::cout << std::endl;
   
@@ -174,38 +173,38 @@ main()
   // Print out the breadth-first search tree starting at the home page
 
   // Create storage for a mapping from vertices to their parents
-  std::vector<Traits::vertex_descriptor> parent(num_vertices(g));
-  for (const auto& vertex : make_range_pair(vertices(g)))
+  std::vector<Traits::vertex_descriptor> parent(boost::num_vertices(g));
+  for (const auto& vertex : make_range_pair(boost::vertices(g)))
     parent[vertex] = vertex;
 
   // Do a BFS starting at the home page, recording the parent of each
   // vertex (where parent is with respect to the search tree).
   auto src = vertices(g).first[0];
-  breadth_first_search
+  boost::breadth_first_search
     (g, src, 
-     boost::visitor(make_bfs_visitor(record_predecessors(&parent[0],
-                                                         on_tree_edge()))));
+     boost::visitor(boost::make_bfs_visitor(record_predecessors(&parent[0],
+                                                         boost::on_tree_edge()))));
 
   // Add all the search tree edges into a new graph
-  Graph search_tree(num_vertices(g));
+  Graph search_tree(boost::num_vertices(g));
   auto [vi, vi_end] = vertices(g);
   ++vi;
   for (; vi != vi_end; ++vi)
-    add_edge(parent[*vi], *vi, search_tree);
+    boost::add_edge(parent[*vi], *vi, search_tree);
 
   std::cout << "The breadth-first search tree:" << std::endl;
 
   // Print out the search tree. We use DFS because it visits
   // the tree nodes in the order that we want to print out:
   // a directory-structure like format.
-  std::vector<size_type> dfs_distances(num_vertices(g), 0);
+  std::vector<size_type> dfs_distances(boost::num_vertices(g), 0);
 
-  using NameMap = property_map<Graph, vertex_name_t>::type;
+  using NameMap = boost::property_map<Graph, boost::vertex_name_t>::type;
   print_tree_visitor<NameMap, size_type*>
     tree_printer(node_name, &dfs_distances[0]);
-  for(const auto& vertex : make_range_pair(vertices(g)))
-    get(vertex_color, g)[vertex] = white_color;
-  depth_first_visit(search_tree, src, tree_printer, get(vertex_color, g));
+  for(const auto& vertex : make_range_pair(boost::vertices(g)))
+    boost::get(boost::vertex_color, g)[vertex] = boost::white_color;
+  boost::depth_first_visit(search_tree, src, tree_printer, boost::get(boost::vertex_color, g));
   
   return EXIT_SUCCESS;
 }
