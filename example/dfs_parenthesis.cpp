@@ -24,17 +24,15 @@
 #include "boost/graph/breadth_first_search.hpp"
 #include "boost/graph/depth_first_search.hpp"
 
-using namespace boost;
-
-struct open_paren : public base_visitor<open_paren> {
-  using event_filter = on_discover_vertex;
+struct open_paren : public boost::base_visitor<open_paren> {
+  using event_filter = boost::on_discover_vertex;
   template <class Vertex, class Graph>
   void operator()(Vertex v, Graph&) {
     std::cout << "(" << v;
   }
 };
-struct close_paren : public base_visitor<close_paren> {
-  using event_filter = on_finish_vertex;
+struct close_paren : public boost::base_visitor<close_paren> {
+  using event_filter = boost::on_finish_vertex;
   template <class Vertex, class Graph>
   void operator()(Vertex v, Graph&) {
     std::cout << v << ")";
@@ -46,9 +44,7 @@ int
 main(int, char*[])
 {
 
-  using namespace boost;
-  
-  using Graph = adjacency_list<>;
+  using Graph = boost::adjacency_list<>;
   using E = std::pair<int,int>;
   E edge_array[] = { E(0, 2),
                 E(1, 1), E(1, 3),
@@ -58,13 +54,13 @@ main(int, char*[])
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
   Graph G(5);
   for (std::size_t j = 0; j < sizeof(edge_array) / sizeof(E); ++j)
-    add_edge(edge_array[j].first, edge_array[j].second, G);
+    boost::add_edge(edge_array[j].first, edge_array[j].second, G);
 #else
   Graph G(edge_array, edge_array + sizeof(edge_array)/sizeof(E), 5);
 #endif
 
   std::cout << "DFS parenthesis:" << std::endl;
-  depth_first_search(G, visitor(make_dfs_visitor(std::make_pair(open_paren(), 
+  boost::depth_first_search(G, boost::visitor(boost::make_dfs_visitor(std::make_pair(open_paren(), 
                                                         close_paren()))));
   std::cout << std::endl;
   return 0;
