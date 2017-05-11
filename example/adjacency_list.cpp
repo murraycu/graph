@@ -76,7 +76,7 @@ int main(int , char* [])
       std::cout << " --" << name[out_edge] << "--> " << id[boost::target(out_edge, g)] << "  ";
     std::cout << std::endl;
   }
-  print_edges(g, id);
+  boost::print_edges(g, id);
 
   std::cout << std::endl << "removing edge (1,3): " << std::endl;
   remove_edge(vertex(1, g), vertex(3, g), g);
@@ -93,7 +93,7 @@ int main(int , char* [])
     std::cout << std::endl;
   }
 
-  print_edges(g, id);
+  boost::print_edges(g, id);
 
   return 0;
 }
