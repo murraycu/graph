@@ -46,14 +46,14 @@ void merge_vertex
 {
   using Traits = boost::graph_traits<Graph>;
   typename Traits::edge_descriptor e;
-  for (const auto& e : make_range_pair(out_edges(v, g))) {
-    auto targ = target(e, g);
-    add_edge(u, targ, getp(e), g);
+  for (const auto& e : make_range_pair(boost::out_edges(v, g))) {
+    auto targ = boost::target(e, g);
+    boost::add_edge(u, targ, getp(e), g);
   }
 
-  for (const auto& e : make_range_pair(in_edges(v, g))) {
-    auto src = source(e, g);
-    add_edge(src, u, getp(e), g);
+  for (const auto& e : make_range_pair(boost::in_edges(v, g))) {
+    auto src = boost::source(e, g);
+    boost::add_edge(src, u, getp(e), g);
   }
   clear_vertex(v, g);
   remove_vertex(v, g);
@@ -102,30 +102,29 @@ main()
 #ifdef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
   std::cout << "This program requires partial specialization." << std::endl;
 #else
-  using namespace boost;
-  using EdgeProperty = property<edge_name_t, char>;
-  using graph_type = adjacency_list<ordered_set_by_nameS, vecS, bidirectionalS,
-    no_property, EdgeProperty> ;
+  using EdgeProperty = boost::property<boost::edge_name_t, char>;
+  using graph_type = boost::adjacency_list<ordered_set_by_nameS, boost::vecS, boost::bidirectionalS,
+    boost::no_property, EdgeProperty> ;
 
   graph_type g;
 
-  add_edge(0, 1, EdgeProperty('j'), g);
-  add_edge(0, 2, EdgeProperty('c'), g);
-  add_edge(0, 2, EdgeProperty('x'), g);
-  add_edge(1, 3, EdgeProperty('d'), g);
-  add_edge(1, 2, EdgeProperty('c'), g);
-  add_edge(1, 3, EdgeProperty('d'), g);
-  add_edge(2, 4, EdgeProperty('t'), g);
-  add_edge(3, 4, EdgeProperty('h'), g);
-  add_edge(0, 1, EdgeProperty('c'), g);
+  boost::add_edge(0, 1, EdgeProperty('j'), g);
+  boost::add_edge(0, 2, EdgeProperty('c'), g);
+  boost::add_edge(0, 2, EdgeProperty('x'), g);
+  boost::add_edge(1, 3, EdgeProperty('d'), g);
+  boost::add_edge(1, 2, EdgeProperty('c'), g);
+  boost::add_edge(1, 3, EdgeProperty('d'), g);
+  boost::add_edge(2, 4, EdgeProperty('t'), g);
+  boost::add_edge(3, 4, EdgeProperty('h'), g);
+  boost::add_edge(0, 1, EdgeProperty('c'), g);
   
-  auto id = get(vertex_index, g);
-  auto name = get(edge_name, g);
+  auto id = boost::get(boost::vertex_index, g);
+  auto name = boost::get(boost::edge_name, g);
 
-  for (const auto& vertex : make_range_pair(vertices(g))) {
+  for (const auto& vertex : make_range_pair(boost::vertices(g))) {
     std::cout << id[vertex] << " ";
-    for (const auto& edge : make_range_pair(out_edges(vertex, g)))
-      std::cout << " --" << name[edge] << "--> " << id[target(edge, g)] << "  ";
+    for (const auto& edge : make_range_pair(boost::out_edges(vertex, g)))
+      std::cout << " --" << name[edge] << "--> " << id[boost::target(edge, g)] << "  ";
     std::cout << std::endl;
   }
   std::cout << std::endl;
@@ -133,10 +132,10 @@ main()
   std::cout << "merging vertex 1 into vertex 0" << std::endl << std::endl;
   merge_vertex(0, 1, g, get_edge_name<graph_type>(g));
   
-  for (const auto& vertex : make_range_pair(vertices(g))) {
+  for (const auto& vertex : make_range_pair(boost::vertices(g))) {
     std::cout << id[vertex] << " ";
-    for (const auto& edge : make_range_pair(out_edges(vertex, g)))
-      std::cout << " --" << name[edge] << "--> " << id[target(edge, g)] << "  ";
+    for (const auto& edge : make_range_pair(boost::out_edges(vertex, g)))
+      std::cout << " --" << name[edge] << "--> " << id[boost::target(edge, g)] << "  ";
     std::cout << std::endl;
   }
   std::cout << std::endl;
