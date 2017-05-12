@@ -16,30 +16,28 @@
 #include <boost/pending/disjoint_sets.hpp>
 #include "range_pair.hpp"
 
-using namespace boost;
-
 int main(int argc, char* argv[]) 
 {
-  using Graph = adjacency_list <vecS, vecS, undirectedS>;
-  using Vertex = graph_traits<Graph>::vertex_descriptor;
-  //using Edge = graph_traits<Graph>::edge_descriptor;
-  using VertexIndex = graph_traits<Graph>::vertices_size_type;
+  using Graph = boost::adjacency_list <boost::vecS, boost::vecS, boost::undirectedS>;
+  using Vertex = boost::graph_traits<Graph>::vertex_descriptor;
+  //using Edge = boost::graph_traits<Graph>::edge_descriptor;
+  using VertexIndex = boost::graph_traits<Graph>::vertices_size_type;
  
   // Create a graph
   const int VERTEX_COUNT = 6;
   Graph graph(VERTEX_COUNT);
 
-  add_edge(0, 1, graph);
-  add_edge(1, 4, graph);
+  boost::add_edge(0, 1, graph);
+  boost::add_edge(1, 4, graph);
 
   // reate the disjoint-sets object, which requires rank and parent
   // vertex properties.
-  std::vector<Vertex> rank(num_vertices(graph));
-  std::vector<Vertex> parent(num_vertices(graph));
+  std::vector<Vertex> rank(boost::num_vertices(graph));
+  std::vector<Vertex> parent(boost::num_vertices(graph));
 
   using Rank = VertexIndex*;
   using Parent = Vertex*;
-  disjoint_sets<Rank, Parent> ds(&rank[0], &parent[0]);
+  boost::disjoint_sets<Rank, Parent> ds(&rank[0], &parent[0]);
 
   // Determine the connected components, storing the results in the
   // disjoint-sets object.
@@ -47,8 +45,8 @@ int main(int argc, char* argv[])
   incremental_components(graph, ds);
 
   // Add a couple more edges and update the disjoint-sets
-  add_edge(4, 0, graph);
-  add_edge(2, 5, graph);
+  boost::add_edge(4, 0, graph);
+  boost::add_edge(2, 5, graph);
 
   ds.union_set(4, 0);
   ds.union_set(2, 5);
@@ -62,9 +60,9 @@ int main(int argc, char* argv[])
 
   // Generate component index. NOTE: We would need to pass in a vertex
   // index map into the component_index constructor if our graph type
-  // used listS instead of vecS (identity_property_map is used by
+  // used boost::listS instead of vecS (identity_property_map is used by
   // default).
-  using Components = component_index<VertexIndex>;
+  using Components = boost::component_index<VertexIndex>;
   Components components(parent.begin(), parent.end());
 
   // Iterate through the component indices
