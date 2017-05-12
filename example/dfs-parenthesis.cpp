@@ -33,15 +33,14 @@ struct parenthesis_visitor : public boost::default_dfs_visitor
 int
 main()
 {
-  using namespace boost;
   GraphvizGraph g;
-  read_graphviz("figs/dfs-example.dot", g);
-  for (const auto& edge : make_range_pair(edges(g)))
-    std::cout << '(' << name[source(edge, g)] << ' '
-      << name[target(edge, g)] << ')' << std::endl;
+  boost::read_graphviz("figs/dfs-example.dot", g);
+  for (const auto& edge : make_range_pair(boost::edges(g)))
+    std::cout << '(' << name[boost::source(edge, g)] << ' '
+      << name[boost::target(edge, g)] << ')' << std::endl;
   parenthesis_visitor
     paren_vis;
-  depth_first_search(g, visitor(paren_vis));
+  boost::depth_first_search(g, boost::visitor(paren_vis));
   std::cout << std::endl;
   return 0;
 }
