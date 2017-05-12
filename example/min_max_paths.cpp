@@ -40,11 +40,9 @@
 int 
 main(int , char* [])
 {
-  using namespace boost;
-
-  using Graph = adjacency_list<listS, vecS, directedS, 
-    no_property, property<edge_weight_t, int>>;
-  using Vertex = graph_traits<Graph>::vertex_descriptor;
+  using Graph = boost::adjacency_list<boost::listS, boost::vecS, boost::directedS, 
+    boost::no_property, boost::property<boost::edge_weight_t, int>>;
+  using Vertex = boost::graph_traits<Graph>::vertex_descriptor;
 
   using E = std::pair<int,int>;
 
@@ -58,46 +56,46 @@ main(int , char* [])
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
   // VC++ can't handle iterator constructors
   Graph G(num_nodes);
-  auto weightmap = get(edge_weight, G);
+  auto weightmap = boost::get(boost::edge_weight, G);
   for (std::size_t j = 0; j < sizeof(edges) / sizeof(E); ++j) {
-    auto [e, inserted] = add_edge(edges[j].first, edges[j].second, G);
+    auto [e, inserted] = boost::add_edge(edges[j].first, edges[j].second, G);
     weightmap[e] = weights[j];
   }
 #else
   Graph G(std::begin(edges), std::end(edges), weights, num_nodes);
-  auto = get(edge_weight, G);
+  auto = boost::get(boost::edge_weight, G);
 #endif
 
-  std::vector<Vertex> p(num_vertices(G));
-  std::vector<int> d(num_vertices(G));
+  std::vector<Vertex> p(boost::num_vertices(G));
+  std::vector<int> d(boost::num_vertices(G));
 
-  auto s = *(vertices(G).first);
+  auto s = *(boost::vertices(G).first);
 
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
-  dijkstra_shortest_paths
-    (G, s, &p[0], &d[0], weightmap, get(vertex_index, G),
-     std::greater<int>(), closed_plus<int>(), (std::numeric_limits<int>::max)(), 0,
-     default_dijkstra_visitor());
+  boost::dijkstra_shortest_paths
+    (G, s, &p[0], &d[0], weightmap, boost::get(boost::vertex_index, G),
+     std::greater<int>(), boost::closed_plus<int>(), (std::numeric_limits<int>::max)(), 0,
+     boost::default_dijkstra_visitor());
 #else
-  dijkstra_shortest_paths
-    (G, s, distance_map(&d[0]).
+  boost::dijkstra_shortest_paths
+    (G, s, boost::distance_map(&d[0]).
      predecessor_map(&p[0]).
      distance_compare(std::greater<int>()));
 #endif
 
   std::cout << "distances from start vertex:" << std::endl;
-  for(const auto& vertex : make_range_pair(vertices(G)))
+  for(const auto& vertex : make_range_pair(boost::vertices(G)))
     std::cout << "distance(" << name[vertex] << ") = " << d[vertex] << std::endl;
   std::cout << std::endl;
 
   std::cout << "min-max paths tree" << std::endl;
-  adjacency_list<> tree(num_nodes);
+  boost::adjacency_list<> tree(num_nodes);
   
-  for(const auto& vertex : make_range_pair(vertices(G)))
+  for(const auto& vertex : make_range_pair(boost::vertices(G)))
     if (vertex != p[vertex])
-      add_edge(p[vertex], vertex, tree);
+      boost::add_edge(p[vertex], vertex, tree);
 
-  print_graph(tree, name);
+  boost::print_graph(tree, name);
 
   return 0;
 }
