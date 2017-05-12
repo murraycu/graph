@@ -22,33 +22,33 @@ main(int argc, char *argv[])
       << std::endl;
     return -1;
   }
-  using namespace boost;
-  GraphvizDigraph g_in;
-  read_graphviz(argv[1], g_in);
 
-  using Graph = adjacency_list < vecS, vecS, bidirectionalS,
+  GraphvizDigraph g_in;
+  boost::read_graphviz(argv[1], g_in);
+
+  using Graph = boost::adjacency_list < boost::vecS, boost::vecS, boost::bidirectionalS,
     GraphvizVertexProperty,
     GraphvizEdgeProperty, GraphvizGraphProperty >;
   Graph g;
   copy_graph(g_in, g);
 
-  graph_traits<GraphvizDigraph>::vertex_descriptor loop_tail = 6;
-  using Color = color_traits<default_color_type>;
-  default_color_type c;
+  boost::graph_traits<GraphvizDigraph>::vertex_descriptor loop_tail = 6;
+  using Color = boost::color_traits<boost::default_color_type>;
+  boost::default_color_type c;
 
-  std::vector<default_color_type> reachable_to_tail(num_vertices(g));
+  std::vector<boost::default_color_type> reachable_to_tail(boost::num_vertices(g));
   reverse_graph<Graph> reverse_g(g);
-  depth_first_visit(reverse_g, loop_tail, default_dfs_visitor(),
-                    make_iterator_property_map(reachable_to_tail.begin(),
-                                               get(vertex_index, g), c));
+  boost::depth_first_visit(reverse_g, loop_tail, boost::default_dfs_visitor(),
+                    boost::make_iterator_property_map(reachable_to_tail.begin(),
+                                               boost::get(boost::vertex_index, g), c));
 
   std::ofstream loops_out(argv[2]);
   loops_out << "digraph G {\n"
     << "  graph [ratio=\"fill\",size=\"3,3\"];\n"
     << "  node [shape=\"box\"];\n" << "  edge [style=\"bold\"];\n";
 
-  auto vattr_map = get(vertex_attribute, g);
-  for (const auto& vertex : make_range_pair(vertices(g_in))) {
+  auto vattr_map = boost::get(vertex_attribute, g);
+  for (const auto& vertex : make_range_pair(boost::vertices(g_in))) {
     loops_out << vertex << "[label=\"" << vattr_map[vertex]["label"]
       << "\"";
     if (reachable_to_tail[vertex] != Color::white()) {
@@ -57,8 +57,8 @@ main(int argc, char *argv[])
     loops_out << "]\n";
   }
 
-  for (const auto& edge : make_range_pair(edges(g_in)))
-    loops_out << source(edge, g) << " -> " << target(edge, g) << ";\n";
+  for (const auto& edge : make_range_pair(boost::edges(g_in)))
+    loops_out << boost::source(edge, g) << " -> " << boost::target(edge, g) << ";\n";
   loops_out << "}\n";
   return EXIT_SUCCESS;
 }
