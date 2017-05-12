@@ -18,10 +18,8 @@
 #include <boost/graph/reverse_graph.hpp>
 #include "range_pair.hpp"
 
-using namespace boost;
-
 template <typename OutputIterator> 
-class back_edge_recorder : public default_dfs_visitor
+class back_edge_recorder : public boost::default_dfs_visitor
 {
 public:
   back_edge_recorder(OutputIterator out):m_out(out) { }
@@ -44,18 +42,18 @@ make_back_edge_recorder(OutputIterator out)
 }
 
 template <typename Graph, typename Loops> void
-find_loops(typename graph_traits<Graph>::vertex_descriptor entry, 
+find_loops(typename boost::graph_traits<Graph>::vertex_descriptor entry, 
            const Graph & g, 
            Loops & loops)    // A container of sets of vertices
 {
   BOOST_CONCEPT_ASSERT(( BidirectionalGraphConcept<Graph> ));
-  using Edge = typename graph_traits<Graph>::edge_descriptor;
+  using Edge = typename boost::graph_traits<Graph>::edge_descriptor;
   std::vector<Edge> back_edges;
-  std::vector<default_color_type> color_map(num_vertices(g));
-  depth_first_visit(g, entry,
+  std::vector<boost::default_color_type> color_map(boost::num_vertices(g));
+  boost::depth_first_visit(g, entry,
                     make_back_edge_recorder(std::back_inserter(back_edges)),
-                    make_iterator_property_map(color_map.begin(),
-                                               get(vertex_index, g), color_map[0]));
+                    boost::make_iterator_property_map(color_map.begin(),
+                                               boost::get(boost::vertex_index, g), color_map[0]));
 
   for (typename std::vector<Edge>::size_type i = 0; i < back_edges.size(); ++i) {
     typename Loops::value_type x;
@@ -65,31 +63,31 @@ find_loops(typename graph_traits<Graph>::vertex_descriptor entry,
 }
 
 template <typename Graph, typename Set> void
-compute_loop_extent(typename graph_traits <
+compute_loop_extent(typename boost::graph_traits <
                     Graph >::edge_descriptor back_edge, const Graph & g,
                     Set & loop_set)
 {
   BOOST_CONCEPT_ASSERT(( BidirectionalGraphConcept<Graph> ));
-  using Vertex = typename graph_traits<Graph>::vertex_descriptor;
-  using Color = color_traits<default_color_type>;
+  using Vertex = typename boost::graph_traits<Graph>::vertex_descriptor;
+  using Color = boost::color_traits<boost::default_color_type>;
 
-  auto loop_tail = source(back_edge, g);
-  auto loop_head = target(back_edge, g);
+  auto loop_tail = boost::source(back_edge, g);
+  auto loop_head = boost::target(back_edge, g);
 
-  std::vector<default_color_type>
-    reachable_from_head(num_vertices(g), Color::white());
-  default_color_type c;
-  depth_first_visit(g, loop_head, default_dfs_visitor(),
-                    make_iterator_property_map(reachable_from_head.begin(),
-                                               get(vertex_index, g), c));
+  std::vector<boost::default_color_type>
+    reachable_from_head(boost::num_vertices(g), Color::white());
+  boost::default_color_type c;
+  boost::depth_first_visit(g, loop_head, boost::default_dfs_visitor(),
+                    boost::make_iterator_property_map(reachable_from_head.begin(),
+                                               boost::get(boost::vertex_index, g), c));
 
-  std::vector<default_color_type> reachable_to_tail(num_vertices(g));
+  std::vector<boost::default_color_type> reachable_to_tail(boost::num_vertices(g));
   reverse_graph<Graph> reverse_g(g);
-  depth_first_visit(reverse_g, loop_tail, default_dfs_visitor(),
-                    make_iterator_property_map(reachable_to_tail.begin(),
-                                               get(vertex_index, g), c));
+  boost::depth_first_visit(reverse_g, loop_tail, boost::default_dfs_visitor(),
+                    boost::make_iterator_property_map(reachable_to_tail.begin(),
+                                               boost::get(boost::vertex_index, g), c));
 
-  for (const auto& vertex : make_range_pair(vertices(g)))
+  for (const auto& vertex : make_range_pair(boost::vertices(g)))
     if (reachable_from_head[vertex] != Color::white()
         && reachable_to_tail[vertex] != Color::white())
       loop_set.insert(vertex);
@@ -104,17 +102,17 @@ main(int argc, char *argv[])
     return -1;
   }
   GraphvizDigraph g_in;
-  read_graphviz(argv[1], g_in);
+  boost::read_graphviz(argv[1], g_in);
 
-  using Graph = adjacency_list < vecS, vecS, bidirectionalS,
+  using Graph = boost::adjacency_list < boost::vecS, boost::vecS, boost::bidirectionalS,
     GraphvizVertexProperty,
     GraphvizEdgeProperty, GraphvizGraphProperty >;
-  using Vertex = graph_traits<Graph>::vertex_descriptor;
+  using Vertex = boost::graph_traits<Graph>::vertex_descriptor;
 
   Graph g;
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
   // VC++ has trouble with the get_property() function
-  get_property(g, graph_name) = "loops";
+  boost::get_priority(g, boost::graph_name) = "loops";
 #endif
 
   copy_graph(g_in, g);
@@ -126,17 +124,17 @@ main(int argc, char *argv[])
 
   find_loops(entry, g, loops);
 
-  auto vattr_map = get(vertex_attribute, g);
-  auto eattr_map = get(edge_attribute, g);
+  auto vattr_map = boost::get(vertex_attribute, g);
+  auto eattr_map = boost::get(edge_attribute, g);
 
   for (const auto& loop : loops) {
-    std::vector<bool> in_loop(num_vertices(g), false);
+    std::vector<bool> in_loop(boost::num_vertices(g), false);
     for (const auto& vertex : loop) {
       vattr_map[vertex]["color"] = "gray";
       in_loop[vertex] = true;
     }
-    for (const auto& edge : make_range_pair(edges(g)))
-      if (in_loop[source(edge, g)] && in_loop[target(edge, g)])
+    for (const auto& edge : make_range_pair(boost::edges(g)))
+      if (in_loop[boost::source(edge, g)] && in_loop[boost::target(edge, g)])
         eattr_map[edge]["color"] = "gray";
   }
 
@@ -147,7 +145,7 @@ main(int argc, char *argv[])
             << "size=\"3,3\"\n"
             << "ratio=\"fill\"\n"
             << "shape=\"box\"\n";
-  for (const auto& vertex : make_range_pair(vertices(g))) {
+  for (const auto& vertex : make_range_pair(boost::vertices(g))) {
     loops_out << vertex << "[";
     for (auto ai = vattr_map[vertex].begin();
          ai != vattr_map[vertex].end(); ++ai) {
@@ -158,8 +156,8 @@ main(int argc, char *argv[])
     loops_out<< "]";
   }
 
-  for (const auto& edge : make_range_pair(edges(g))) {
-    loops_out << source(edge, g) << " -> " << target(edge, g) << "[";
+  for (const auto& edge : make_range_pair(boost::edges(g))) {
+    loops_out << boost::source(edge, g) << " -> " << boost::target(edge, g) << "[";
     auto& attr_map = eattr_map[edge];
     for (auto eai = attr_map.begin();
          eai != attr_map.end(); ++eai) {
@@ -171,14 +169,14 @@ main(int argc, char *argv[])
   }
   loops_out << "}\n";
 #else
-  get_property(g, graph_graph_attribute)["size"] = "3,3";
-  get_property(g, graph_graph_attribute)["ratio"] = "fill";
-  get_property(g, graph_vertex_attribute)["shape"] = "box";
+  boost::get_priority(g, graph_graph_attribute)["size"] = "3,3";
+  boost::get_priority(g, graph_graph_attribute)["ratio"] = "fill";
+  boost::get_priority(g, graph_vertex_attribute)["shape"] = "box";
 
-  write_graphviz(loops_out, g,
-                 make_vertex_attributes_writer(g),
+  boost::write_graphviz(loops_out, g,
+                 boost::make_vertex_attributes_writer(g),
                  make_edge_attributes_writer(g),
-                 make_graph_attributes_writer(g));
+                 boost::make_graph_attributes_writer(g));
 #endif
   return 0;
 }
