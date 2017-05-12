@@ -43,26 +43,25 @@
 
 int main(int, char*[])
 {
-  using namespace boost;
   const char* name = "abcdefghij";
 
-  adjacency_list<vecS, vecS, directedS> G;
-  dynamic_properties dp;
-  read_graphviz("scc.dot", G, dp);
+  boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS> G;
+  boost::dynamic_properties dp;
+  boost::read_graphviz("scc.dot", G, dp);
 
   std::cout << "A directed graph:" << std::endl;
-  print_graph(G, name);
+  boost::print_graph(G, name);
   std::cout << std::endl;
 
-  using Vertex = graph_traits<adjacency_list<vecS, vecS, directedS>>::vertex_descriptor;
+  using Vertex = boost::graph_traits<boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS>>::vertex_descriptor;
     
-  std::vector<int> component(num_vertices(G)), discover_time(num_vertices(G));
-  std::vector<default_color_type> color(num_vertices(G));
-  std::vector<Vertex> root(num_vertices(G));
-  auto num = strong_components(G, make_iterator_property_map(component.begin(), get(vertex_index, G)), 
-                              root_map(make_iterator_property_map(root.begin(), get(vertex_index, G))).
-                              color_map(make_iterator_property_map(color.begin(), get(vertex_index, G))).
-                              discover_time_map(make_iterator_property_map(discover_time.begin(), get(vertex_index, G))));
+  std::vector<int> component(boost::num_vertices(G)), discover_time(boost::num_vertices(G));
+  std::vector<boost::default_color_type> color(boost::num_vertices(G));
+  std::vector<Vertex> root(boost::num_vertices(G));
+  auto num = strong_components(G, boost::make_iterator_property_map(component.begin(), boost::get(boost::vertex_index, G)), 
+                              root_map(boost::make_iterator_property_map(root.begin(), boost::get(boost::vertex_index, G))).
+                              color_map(boost::make_iterator_property_map(color.begin(), boost::get(boost::vertex_index, G))).
+                              discover_time_map(boost::make_iterator_property_map(discover_time.begin(), boost::get(boost::vertex_index, G))));
     
   std::cout << "Total number of components: " << num << std::endl;
   std::vector<int>::size_type i;
