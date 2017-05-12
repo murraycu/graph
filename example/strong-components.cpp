@@ -14,22 +14,21 @@
 int
 main()
 {
-  using namespace boost;
-  using Graph = adjacency_list<vecS, vecS, directedS>;
+  using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS>;
   const int N = 6;
   Graph G(N);
-  add_edge(0, 1, G);
-  add_edge(1, 1, G);
-  add_edge(1, 3, G);
-  add_edge(1, 4, G);
-  add_edge(3, 4, G);
-  add_edge(3, 0, G);
-  add_edge(4, 3, G);
-  add_edge(5, 2, G);
+  boost::add_edge(0, 1, G);
+  boost::add_edge(1, 1, G);
+  boost::add_edge(1, 3, G);
+  boost::add_edge(1, 4, G);
+  boost::add_edge(3, 4, G);
+  boost::add_edge(3, 0, G);
+  boost::add_edge(4, 3, G);
+  boost::add_edge(5, 2, G);
 
   std::vector<int> c(N);
   auto num = strong_components
-    (G, make_iterator_property_map(c.begin(), get(vertex_index, G), c[0]));
+    (G, boost::make_iterator_property_map(c.begin(), boost::get(boost::vertex_index, G), c[0]));
 
   std::cout << "Total number of components: " << num << std::endl;
   for (auto i = c.begin(); i != c.end(); ++i)
