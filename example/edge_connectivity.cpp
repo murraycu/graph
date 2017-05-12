@@ -16,31 +16,29 @@
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/edge_connectivity.hpp>
 
-using namespace boost;
-
 int
 main()
 {
   const int N = 8;
-  using UndirectedGraph = adjacency_list<vecS, vecS, undirectedS>;
+  using UndirectedGraph = boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS>;
   UndirectedGraph g(N);
 
-  add_edge(0, 1, g);
-  add_edge(0, 2, g);
-  add_edge(0, 3, g);
-  add_edge(1, 2, g);
-  add_edge(1, 3, g);
-  add_edge(2, 3, g);
-  add_edge(3, 4, g);
-  add_edge(3, 7, g);
-  add_edge(4, 5, g);
-  add_edge(4, 6, g);
-  add_edge(4, 7, g);
-  add_edge(5, 6, g);
-  add_edge(5, 7, g);
-  add_edge(6, 7, g);
+  boost::add_edge(0, 1, g);
+  boost::add_edge(0, 2, g);
+  boost::add_edge(0, 3, g);
+  boost::add_edge(1, 2, g);
+  boost::add_edge(1, 3, g);
+  boost::add_edge(2, 3, g);
+  boost::add_edge(3, 4, g);
+  boost::add_edge(3, 7, g);
+  boost::add_edge(4, 5, g);
+  boost::add_edge(4, 6, g);
+  boost::add_edge(4, 7, g);
+  boost::add_edge(5, 6, g);
+  boost::add_edge(5, 7, g);
+  boost::add_edge(6, 7, g);
 
-  using edge_descriptor = graph_traits<UndirectedGraph>::edge_descriptor;
+  using edge_descriptor = boost::graph_traits<UndirectedGraph>::edge_descriptor;
   std::vector<edge_descriptor> disconnecting_set;
 
   auto c = edge_connectivity(g, std::back_inserter(disconnecting_set));
