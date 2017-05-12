@@ -233,8 +233,8 @@ int read_dimacs_max_flow_internal(Graph& g,
       {
         edge_descriptor e1, e2;
         bool in1, in2;
-        boost::tie(e1, in1) = add_edge(verts[tail], verts[head], g);
-        boost::tie(e2, in2) = add_edge(verts[head], verts[tail], g);
+        std::tie(e1, in1) = add_edge(verts[tail], verts[head], g);
+        std::tie(e2, in2) = add_edge(verts[head], verts[tail], g);
         if (!in1 || !in2) {
           std::cerr << "unable to add edge (" << head << "," << tail << ")"
                     << std::endl;

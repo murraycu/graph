@@ -281,7 +281,7 @@ bron_kerbosch_all_cliques(const Graph& g, Visitor vis, std::size_t min)
     // constant inserts and removals at the end and also a constant size.
 
     VertexIterator i, end;
-    boost::tie(i, end) = vertices(g);
+    std::tie(i, end) = vertices(g);
     VertexSet cands(i, end);    // start with all vertices as candidates
     VertexSet nots;             // start with no vertices visited
 

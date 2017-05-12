@@ -58,7 +58,7 @@ namespace boost {
         for( ; rbegin != rend; rend--){
           percolate_down<Vertex>(i);
           w = (*Qptr)[index_begin+i];
-          for (boost::tie(ei, ei_end) = out_edges(w, g); ei != ei_end; ++ei) {
+          for (std::tie(ei, ei_end) = out_edges(w, g); ei != ei_end; ++ei) {
             v = target(*ei, g);
             put(degree, v, get(degree, v) - 1);
     
@@ -209,7 +209,7 @@ namespace boost {
     queue Q;
     // Copy degree to pseudo_degree
     // initialize the color map
-    for (boost::tie(ui, ui_end) = vertices(g); ui != ui_end; ++ui){
+    for (std::tie(ui, ui_end) = vertices(g); ui != ui_end; ++ui){
       put(pseudo_degree, *ui, get(degree, *ui));
       put(color, *ui, Color::white());
     }

@@ -59,8 +59,8 @@ all_eccentricities(const Graph& g, const DistanceMatrix& dist, EccentricityMap e
             r = numeric_values<Eccentricity>::infinity(),
             d = numeric_values<Eccentricity>::zero();
     VertexIterator i, end;
-    boost::tie(i, end) = vertices(g);
-    for(boost::tie(i, end) = vertices(g); i != end; ++i) {
+    std::tie(i, end) = vertices(g);
+    for(std::tie(i, end) = vertices(g); i != end; ++i) {
         DistanceMap dm = get(dist, *i);
         Eccentricity e = eccentricity(g, dm);
         put(ecc, *i, e);
@@ -86,7 +86,7 @@ radius_and_diameter(const Graph& g, EccentricityMap ecc)
     BOOST_USING_STD_MAX();
 
     VertexIterator i, end;
-    boost::tie(i, end) = vertices(g);
+    std::tie(i, end) = vertices(g);
     Eccentricity radius = get(ecc, *i);
     Eccentricity diameter = get(ecc, *i);
     for(i = boost::next(i); i != end; ++i) {

@@ -321,7 +321,7 @@ namespace boost {
         
         typename graph_traits<Graph>::edge_descriptor e;
         bool found;
-        boost::tie(e, found) = edge(s, t, g);
+        std::tie(e, found) = edge(s, t, g);
         if (!found)
           return false;
         else if (is_valid_edge(e))
@@ -707,7 +707,7 @@ namespace boost {
         ++graph1_verts_iter;
       }
 
-      boost::tie(graph2_verts_iter, graph2_verts_iter_end) = vertices(graph2);
+      std::tie(graph2_verts_iter, graph2_verts_iter_end) = vertices(graph2);
       while (graph2_verts_iter != graph2_verts_iter_end) {
         if (s.possible_candidate2(*graph2_verts_iter)) {
           if (s.feasible(*graph1_verts_iter, *graph2_verts_iter)) {

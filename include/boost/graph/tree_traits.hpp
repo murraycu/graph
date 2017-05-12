@@ -6,7 +6,7 @@
 #ifndef BOOST_TREE_STRUCTURE_HPP
 #define BOOST_TREE_STRUCTURE_HPP
 
-#include <boost/tuple/tuple.hpp> //For boost::tie()
+#include <boost/tuple/tuple.hpp> //For std::tie()
 
 namespace boost {
 
@@ -23,7 +23,7 @@ namespace boost {
   {
     visitor.preorder(v, t);
     typename tree_traits<Tree>::children_iterator i, end;
-    boost::tie(i, end) = children(v, t);
+    std::tie(i, end) = children(v, t);
     if (i != end) {
       traverse_tree(*i++, t, visitor);
       visitor.inorder(v, t);

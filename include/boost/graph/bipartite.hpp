@@ -286,7 +286,7 @@ namespace boost {
     predecessor_map_t predecessor_map (predecessors.begin (), index_map);
 
     /// Initialize predecessor map
-    for (boost::tie (vertex_iter, vertex_end) = vertices (graph); vertex_iter != vertex_end; ++vertex_iter)
+    for (std::tie (vertex_iter, vertex_end) = vertices (graph); vertex_iter != vertex_end; ++vertex_iter)
     {
       put (predecessor_map, *vertex_iter, *vertex_iter);
     }

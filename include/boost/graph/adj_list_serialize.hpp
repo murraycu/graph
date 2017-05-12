@@ -94,7 +94,7 @@ inline void load(
     ar >> BOOST_SERIALIZATION_NVP(u);
     ar >> BOOST_SERIALIZATION_NVP(v);
     Edge e; bool inserted;
-    boost::tie(e,inserted) = add_edge(verts[u], verts[v], graph);
+    std::tie(e,inserted) = add_edge(verts[u], verts[v], graph);
     ar >> serialization::make_nvp("edge_property", get(edge_all_t(), graph, e) );
   }
   ar >> serialization::make_nvp("graph_property", get_property(graph, graph_all_t()) );

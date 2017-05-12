@@ -119,13 +119,13 @@ class bk_max_flow {
       m_last_grow_vertex(graph_traits<Graph>::null_vertex()){
         // initialize the color-map with gray-values
         vertex_iterator vi, v_end;
-        for(boost::tie(vi, v_end) = vertices(m_g); vi != v_end; ++vi){
+        for(std::tie(vi, v_end) = vertices(m_g); vi != v_end; ++vi){
           set_tree(*vi, tColorTraits::gray());
         }
         // Initialize flow to zero which means initializing
         // the residual capacity equal to the capacity
         edge_iterator ei, e_end;
-        for(boost::tie(ei, e_end) = edges(m_g); ei != e_end; ++ei) {
+        for(std::tie(ei, e_end) = edges(m_g); ei != e_end; ++ei) {
           put(m_res_cap_map, *ei, get(m_cap_map, *ei));
           BOOST_ASSERT(get(m_rev_edge_map, get(m_rev_edge_map, *ei)) == *ei); //check if the reverse edge map is build up properly
         }
@@ -143,7 +143,7 @@ class bk_max_flow {
         while(true){
           bool path_found;
           edge_descriptor connecting_edge;
-          boost::tie(connecting_edge, path_found) = grow(); //find a path from source to sink
+          std::tie(connecting_edge, path_found) = grow(); //find a path from source to sink
           if(!path_found){
             //we're finished, no more paths were found
             break;
@@ -165,7 +165,7 @@ class bk_max_flow {
         // connects but shouldn't have an impact on other maxflow problems
         // (this is done in grow() anyway)
         out_edge_iterator ei, e_end;
-        for(boost::tie(ei, e_end) = out_edges(m_source, m_g); ei != e_end; ++ei){
+        for(std::tie(ei, e_end) = out_edges(m_source, m_g); ei != e_end; ++ei){
           edge_descriptor from_source = *ei;
           vertex_descriptor current_node = target(from_source, m_g);
           if(current_node == m_sink){
@@ -176,7 +176,7 @@ class bk_max_flow {
           }
           edge_descriptor to_sink;
           bool is_there;
-          boost::tie(to_sink, is_there) = lookup_edge(current_node, m_sink, m_g);
+          std::tie(to_sink, is_there) = lookup_edge(current_node, m_sink, m_g);
           if(is_there){
             tEdgeVal cap_from_source = get(m_res_cap_map, from_source);
             tEdgeVal cap_to_sink = get(m_res_cap_map, to_sink);
@@ -216,7 +216,7 @@ class bk_max_flow {
             add_active_node(current_node);
           }
         }
-        for(boost::tie(ei, e_end) = out_edges(m_sink, m_g); ei != e_end; ++ei){
+        for(std::tie(ei, e_end) = out_edges(m_sink, m_g); ei != e_end; ++ei){
           edge_descriptor to_sink = get(m_rev_edge_map, *ei);
           vertex_descriptor current_node = source(to_sink, m_g);
           if(get(m_res_cap_map, to_sink)){
@@ -249,7 +249,7 @@ class bk_max_flow {
             out_edge_iterator ei, e_end;
             if(current_node != m_last_grow_vertex){
               m_last_grow_vertex = current_node;
-              boost::tie(m_last_grow_edge_it, m_last_grow_edge_end) = out_edges(current_node, m_g);
+              std::tie(m_last_grow_edge_it, m_last_grow_edge_end) = out_edges(current_node, m_g);
             }
             for(; m_last_grow_edge_it != m_last_grow_edge_end; ++m_last_grow_edge_it) {
               edge_descriptor out_edge = *m_last_grow_edge_it;
@@ -283,7 +283,7 @@ class bk_max_flow {
             out_edge_iterator ei, e_end;
             if(current_node != m_last_grow_vertex){
               m_last_grow_vertex = current_node;
-              boost::tie(m_last_grow_edge_it, m_last_grow_edge_end) = out_edges(current_node, m_g);
+              std::tie(m_last_grow_edge_it, m_last_grow_edge_end) = out_edges(current_node, m_g);
             }
             for(; m_last_grow_edge_it != m_last_grow_edge_end; ++m_last_grow_edge_it){
               edge_descriptor in_edge = get(m_rev_edge_map, *m_last_grow_edge_it);
@@ -420,7 +420,7 @@ class bk_max_flow {
             tDistanceVal min_distance = (std::numeric_limits<tDistanceVal>::max)();
             edge_descriptor new_parent_edge;
             out_edge_iterator ei, e_end;
-            for(boost::tie(ei, e_end) = out_edges(current_node, m_g); ei != e_end; ++ei){
+            for(std::tie(ei, e_end) = out_edges(current_node, m_g); ei != e_end; ++ei){
               const edge_descriptor in_edge = get(m_rev_edge_map, *ei);
               BOOST_ASSERT(target(in_edge, m_g) == current_node); //we should be the target of this edge
               if(get(m_res_cap_map, in_edge) > 0){
@@ -439,7 +439,7 @@ class bk_max_flow {
               put(m_time_map, current_node, m_time);
             } else{
               put(m_time_map, current_node, 0);
-              for(boost::tie(ei, e_end) = out_edges(current_node, m_g); ei != e_end; ++ei){
+              for(std::tie(ei, e_end) = out_edges(current_node, m_g); ei != e_end; ++ei){
                 edge_descriptor in_edge = get(m_rev_edge_map, *ei);
                 vertex_descriptor other_node = source(in_edge, m_g);
                 if(get_tree(other_node) == tColorTraits::black() && other_node != m_source){
@@ -463,7 +463,7 @@ class bk_max_flow {
             out_edge_iterator ei, e_end;
             edge_descriptor new_parent_edge;
             tDistanceVal min_distance = (std::numeric_limits<tDistanceVal>::max)();
-            for(boost::tie(ei, e_end) = out_edges(current_node, m_g); ei != e_end; ++ei){
+            for(std::tie(ei, e_end) = out_edges(current_node, m_g); ei != e_end; ++ei){
               const edge_descriptor out_edge = *ei;
               if(get(m_res_cap_map, out_edge) > 0){
                 const vertex_descriptor other_node = target(out_edge, m_g);
@@ -480,7 +480,7 @@ class bk_max_flow {
               put(m_time_map, current_node, m_time);
             } else{
               put(m_time_map, current_node, 0);
-              for(boost::tie(ei, e_end) = out_edges(current_node, m_g); ei != e_end; ++ei){
+              for(std::tie(ei, e_end) = out_edges(current_node, m_g); ei != e_end; ++ei){
                 const edge_descriptor out_edge = *ei;
                 const vertex_descriptor other_node = target(out_edge, m_g);
                 if(get_tree(other_node) == tColorTraits::white() && other_node != m_sink){

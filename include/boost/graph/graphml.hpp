@@ -298,7 +298,7 @@ write_graphml(std::ostream& out, const Graph& g, VertexIndexMap vertex_index,
 
     typedef typename graph_traits<Graph>::vertex_iterator vertex_iterator;
     vertex_iterator v, v_end;
-    for (boost::tie(v, v_end) = vertices(g); v != v_end; ++v)
+    for (std::tie(v, v_end) = vertices(g); v != v_end; ++v)
     {
         out << "    <node id=\"n" << get(vertex_index, *v) << "\">\n";
         // Output data
@@ -316,7 +316,7 @@ write_graphml(std::ostream& out, const Graph& g, VertexIndexMap vertex_index,
     typedef typename graph_traits<Graph>::edge_iterator edge_iterator;
     edge_iterator e, e_end;
     typename graph_traits<Graph>::edges_size_type edge_count = 0;
-    for (boost::tie(e, e_end) = edges(g); e != e_end; ++e)
+    for (std::tie(e, e_end) = edges(g); e != e_end; ++e)
     {
         out << "    <edge id=\"e" << edge_count++ << "\" source=\"n"
             << get(vertex_index, source(*e, g)) << "\" target=\"n"

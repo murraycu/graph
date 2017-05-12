@@ -149,11 +149,11 @@ namespace boost {
   void print_in_edges(const IncidenceGraph& G, Name name, std::ostream& os = std::cout)
   {
     typename graph_traits<IncidenceGraph>::vertex_iterator ui,ui_end;
-    for (boost::tie(ui,ui_end) = vertices(G); ui != ui_end; ++ui) {
+    for (std::tie(ui,ui_end) = vertices(G); ui != ui_end; ++ui) {
       os << get(name,*ui) << " <-- ";
       typename graph_traits<IncidenceGraph>
         ::in_edge_iterator ei, ei_end;
-      for(boost::tie(ei,ei_end) = in_edges(*ui,G); ei != ei_end; ++ei)
+      for(std::tie(ei,ei_end) = in_edges(*ui,G); ei != ei_end; ++ei)
         os << get(name,source(*ei,G)) << " ";
       os << '\n';
     }
@@ -163,11 +163,11 @@ namespace boost {
   void print_graph_dispatch(const IncidenceGraph& G, Name name, directed_tag, std::ostream& os = std::cout)
   {
     typename graph_traits<IncidenceGraph>::vertex_iterator ui,ui_end;
-    for (boost::tie(ui,ui_end) = vertices(G); ui != ui_end; ++ui) {
+    for (std::tie(ui,ui_end) = vertices(G); ui != ui_end; ++ui) {
       os << get(name,*ui) << " --> ";
       typename graph_traits<IncidenceGraph>
         ::out_edge_iterator ei, ei_end;
-      for(boost::tie(ei,ei_end) = out_edges(*ui,G); ei != ei_end; ++ei)
+      for(std::tie(ei,ei_end) = out_edges(*ui,G); ei != ei_end; ++ei)
         os << get(name,target(*ei,G)) << " ";
       os << '\n';
     }
@@ -176,11 +176,11 @@ namespace boost {
   void print_graph_dispatch(const IncidenceGraph& G, Name name, undirected_tag, std::ostream& os = std::cout)
   {
     typename graph_traits<IncidenceGraph>::vertex_iterator ui,ui_end;
-    for (boost::tie(ui,ui_end) = vertices(G); ui != ui_end; ++ui) {
+    for (std::tie(ui,ui_end) = vertices(G); ui != ui_end; ++ui) {
       os << get(name,*ui) << " <--> ";
       typename graph_traits<IncidenceGraph>
         ::out_edge_iterator ei, ei_end;
-      for(boost::tie(ei,ei_end) = out_edges(*ui,G); ei != ei_end; ++ei)
+      for(std::tie(ei,ei_end) = out_edges(*ui,G); ei != ei_end; ++ei)
         os << get(name,target(*ei,G)) << " ";
       os << '\n';
     }
@@ -201,7 +201,7 @@ namespace boost {
   void print_edges(const EdgeListGraph& G, Name name, std::ostream& os = std::cout)
   {
     typename graph_traits<EdgeListGraph>::edge_iterator ei, ei_end;
-    for (boost::tie(ei, ei_end) = edges(G); ei != ei_end; ++ei)
+    for (std::tie(ei, ei_end) = edges(G); ei != ei_end; ++ei)
       os << "(" << get(name, source(*ei, G))
                 << "," << get(name, target(*ei, G)) << ") ";
     os << '\n';
@@ -211,7 +211,7 @@ namespace boost {
   void print_edges2(const EdgeListGraph& G, VertexName vname, EdgeName ename, std::ostream& os = std::cout)
   {
     typename graph_traits<EdgeListGraph>::edge_iterator ei, ei_end;
-    for (boost::tie(ei, ei_end) = edges(G); ei != ei_end; ++ei)
+    for (std::tie(ei, ei_end) = edges(G); ei != ei_end; ++ei)
       os << get(ename, *ei) << "(" << get(vname, source(*ei, G))
                 << "," << get(vname, target(*ei, G)) << ") ";
     os << '\n';
@@ -221,7 +221,7 @@ namespace boost {
   void print_vertices(const VertexListGraph& G, Name name, std::ostream& os = std::cout)
   {
     typename graph_traits<VertexListGraph>::vertex_iterator vi,vi_end;
-    for (boost::tie(vi,vi_end) = vertices(G); vi != vi_end; ++vi)
+    for (std::tie(vi,vi_end) = vertices(G); vi != vi_end; ++vi)
       os << get(name,*vi) << " ";
     os << '\n';
   }
@@ -231,21 +231,21 @@ namespace boost {
   {
     typename graph_traits<Graph>::adjacency_iterator vi, viend, 
       adj_found;
-    boost::tie(vi, viend) = adjacent_vertices(a, g);
+    std::tie(vi, viend) = adjacent_vertices(a, g);
     adj_found = std::find(vi, viend, b);
     if (adj_found == viend)
       return false;  
 
     typename graph_traits<Graph>::out_edge_iterator oi, oiend, 
       out_found;
-    boost::tie(oi, oiend) = out_edges(a, g);
+    std::tie(oi, oiend) = out_edges(a, g);
     out_found = std::find_if(oi, oiend, incident_to(b, g));
     if (out_found == oiend)
       return false;
 
     typename graph_traits<Graph>::in_edge_iterator ii, iiend, 
       in_found;
-    boost::tie(ii, iiend) = in_edges(b, g);
+    std::tie(ii, iiend) = in_edges(b, g);
     in_found = std::find_if(ii, iiend, incident_from(a, g));
     if (in_found == iiend)
       return false;
@@ -256,14 +256,14 @@ namespace boost {
   bool is_adj_dispatch(Graph& g, Vertex a, Vertex b, directed_tag)
   {
     typename graph_traits<Graph>::adjacency_iterator vi, viend, found;
-    boost::tie(vi, viend) = adjacent_vertices(a, g);
+    std::tie(vi, viend) = adjacent_vertices(a, g);
     found = std::find(vi, viend, b);
     if ( found == viend )
       return false;
 
     typename graph_traits<Graph>::out_edge_iterator oi, oiend, 
       out_found;
-    boost::tie(oi, oiend) = out_edges(a, g);
+    std::tie(oi, oiend) = out_edges(a, g);
 
     out_found = std::find_if(oi, oiend, incident_to(b, g));
     if (out_found == oiend)
@@ -286,7 +286,7 @@ namespace boost {
   bool in_edge_set(Graph& g, Edge e)
   {
     typename Graph::edge_iterator ei, ei_end, found;
-    boost::tie(ei, ei_end) = edges(g);
+    std::tie(ei, ei_end) = edges(g);
     found = std::find(ei, ei_end, e);
     return found != ei_end;
   }
@@ -295,7 +295,7 @@ namespace boost {
   bool in_vertex_set(Graph& g, Vertex v)
   {
     typename Graph::vertex_iterator vi, vi_end, found;
-    boost::tie(vi, vi_end) = vertices(g);
+    std::tie(vi, vi_end) = vertices(g);
     found = std::find(vi, vi_end, v);
     return found != vi_end;
   }
@@ -304,7 +304,7 @@ namespace boost {
   bool in_edge_set(Graph& g, Vertex u, Vertex v)
   {
     typename Graph::edge_iterator ei, ei_end;
-    for (boost::tie(ei,ei_end) = edges(g); ei != ei_end; ++ei)
+    for (std::tie(ei,ei_end) = edges(g); ei != ei_end; ++ei)
       if (source(*ei,g) == u && target(*ei,g) == v)
         return true;
     return false;
@@ -348,10 +348,10 @@ namespace boost {
     typedef color_traits<ColorValue> Color;
     typename graph_traits<VertexListGraph>::vertex_iterator 
       ui, ui_end, vi, vi_end, ci, ci_end;
-    for (boost::tie(ui, ui_end) = vertices(g); ui != ui_end; ++ui)
-      for (boost::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
+    for (std::tie(ui, ui_end) = vertices(g); ui != ui_end; ++ui)
+      for (std::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
         if (*ui != *vi) {
-          for (boost::tie(ci, ci_end) = vertices(g); ci != ci_end; ++ci) 
+          for (std::tie(ci, ci_end) = vertices(g); ci != ci_end; ++ci) 
             put(color, *ci, Color::white());
           if (! is_reachable(*ui, *vi, g, color))
             return false;

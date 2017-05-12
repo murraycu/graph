@@ -75,20 +75,20 @@ namespace boost {
     {
       typename Traits1::vertex_iterator v, v_end;
       int i = 1;
-      for (boost::tie(v, v_end) = vertices(g1); v != v_end; ++v, ++i) {
+      for (std::tie(v, v_end) = vertices(g1); v != v_end; ++v, ++i) {
         typename Traits2::edge_descriptor e; bool z;
-        boost::tie(e, z) = add_edge(s, get(id1, *v) + 1, g2);
+        std::tie(e, z) = add_edge(s, get(id1, *v) + 1, g2);
         put(w, e, zero);
         verts1[i] = *v;
       }
       typename Traits1::edge_iterator e, e_end;
-      for (boost::tie(e, e_end) = edges(g1); e != e_end; ++e) {
+      for (std::tie(e, e_end) = edges(g1); e != e_end; ++e) {
         typename Traits2::edge_descriptor e2; bool z;
-        boost::tie(e2, z) = add_edge(get(id1, source(*e, g1)) + 1, 
+        std::tie(e2, z) = add_edge(get(id1, source(*e, g1)) + 1, 
                                      get(id1, target(*e, g1)) + 1, g2);
         put(w, e2, get(w1, *e));
         if (is_undirected) {
-          boost::tie(e2, z) = add_edge(get(id1, target(*e, g1)) + 1, 
+          std::tie(e2, z) = add_edge(get(id1, target(*e, g1)) + 1, 
                                        get(id1, source(*e, g1)) + 1, g2);
           put(w, e2, get(w1, *e));
         }
@@ -98,7 +98,7 @@ namespace boost {
     typename Traits2::edge_iterator e, e_end;
     shared_array_property_map<DT,VertexID2> h(num_vertices(g2), id2);
 
-    for (boost::tie(v, v_end) = vertices(g2); v != v_end; ++v)
+    for (std::tie(v, v_end) = vertices(g2); v != v_end; ++v)
       put(d, *v, inf);
 
     put(d, s, zero);
@@ -107,19 +107,19 @@ namespace boost {
     dummy_property_map pred; bellman_visitor<> bvis;
     if (bellman_ford_shortest_paths
         (g2, num_vertices(g2), w, pred, d, combine, compare, bvis)) {
-      for (boost::tie(v, v_end) = vertices(g2); v != v_end; ++v)
+      for (std::tie(v, v_end) = vertices(g2); v != v_end; ++v)
         put(h, *v, get(d, *v));
       // Reweight the edges to remove negatives
-      for (boost::tie(e, e_end) = edges(g2); e != e_end; ++e) {
+      for (std::tie(e, e_end) = edges(g2); e != e_end; ++e) {
         typename Traits2::vertex_descriptor a = source(*e, g2),
           b = target(*e, g2);
         put(w_hat, *e, combine((get(h, a) - get(h, b)), get(w, *e)));
       }
-      for (boost::tie(u, u_end) = vertices(g2); u != u_end; ++u) {
+      for (std::tie(u, u_end) = vertices(g2); u != u_end; ++u) {
         dijkstra_visitor<> dvis;
         dijkstra_shortest_paths
           (g2, *u, pred, d, w_hat, id2, compare, combine, inf, zero,dvis);
-        for (boost::tie(v, v_end) = vertices(g2); v != v_end; ++v) {
+        for (std::tie(v, v_end) = vertices(g2); v != v_end; ++v) {
           if (*u != s && *v != s) {
             D[get(id2, *u)-1][get(id2, *v)-1] = combine((get(h, *v) - get(h, *u)), get(d, *v));
           }

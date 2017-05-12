@@ -46,7 +46,7 @@ namespace boost
       return;
 
     vertex_iterator_t vi, vi_end;
-    boost::tie(vi,vi_end) = vertices(g);
+    std::tie(vi,vi_end) = vertices(g);
     std::copy(vi, vi_end, vertices_by_component.begin());
 
     bucket_sort(vertices_by_component.begin(),

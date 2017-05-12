@@ -239,7 +239,7 @@ namespace boost
       (*ordering_begin,0,g,x,delta_x,left,right);
 
     vertex_iterator_t vi, vi_end;
-    for(boost::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
+    for(std::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
       {
         vertex_t v(*vi);
         drawing[v].x = x[v];

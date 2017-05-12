@@ -66,7 +66,7 @@ namespace detail {
         // zero, so it shouldn't be too problematic.
         Distance ret = init;
         VertexIterator i, end;
-        for(boost::tie(i, end) = vertices(g); i != end; ++i) {
+        for(std::tie(i, end) = vertices(g); i != end; ++i) {
             Vertex v = *i;
             if(get(dist, v) != DistanceNumbers::infinity()) {
                 ret = combine(ret, get(dist, v));

@@ -91,7 +91,7 @@ namespace boost {
 
     // Copy degree to pseudo_degree
     // initialize the color map
-    for (boost::tie(ui, ui_end) = vertices(g); ui != ui_end; ++ui){
+    for (std::tie(ui, ui_end) = vertices(g); ui != ui_end; ++ui){
       put(color, *ui, Color::white());
     }
 

@@ -68,7 +68,7 @@ namespace boost {
       disjoint_sets<Rank, Parent>  dset(rank, parent);
 
       typename graph_traits<Graph>::vertex_iterator ui, uiend;
-      for (boost::tie(ui, uiend) = vertices(G); ui != uiend; ++ui)
+      for (std::tie(ui, uiend) = vertices(G); ui != uiend; ++ui)
         dset.make_set(*ui);
 
       typedef indirect_cmp<Weight, std::greater<W_value> > weight_greater;
@@ -76,7 +76,7 @@ namespace boost {
       std::priority_queue<Edge, std::vector<Edge>, weight_greater> Q(wl);
       /*push all edge into Q*/
       typename graph_traits<Graph>::edge_iterator ei, eiend;
-      for (boost::tie(ei, eiend) = edges(G); ei != eiend; ++ei) 
+      for (std::tie(ei, eiend) = edges(G); ei != eiend; ++ei) 
         Q.push(*ei);
 
       while (! Q.empty()) {

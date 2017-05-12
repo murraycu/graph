@@ -32,7 +32,7 @@ namespace boost
     {
       typename graph_traits<Graph>::vertex_iterator vi, vi_end, inner_vi;
       Graph K_5(5);
-      for(boost::tie(vi,vi_end) = vertices(K_5); vi != vi_end; ++vi)
+      for(std::tie(vi,vi_end) = vertices(K_5); vi != vi_end; ++vi)
         for(inner_vi = next(vi); inner_vi != vi_end; ++inner_vi)
           add_edge(*vi, *inner_vi, K_5);
       return K_5;
@@ -46,7 +46,7 @@ namespace boost
         vi, vi_end, bipartition_start, inner_vi;
       Graph K_3_3(6);
       bipartition_start = next(next(next(vertices(K_3_3).first)));
-      for(boost::tie(vi, vi_end) = vertices(K_3_3); vi != bipartition_start; ++vi)
+      for(std::tie(vi, vi_end) = vertices(K_3_3); vi != bipartition_start; ++vi)
         for(inner_vi= bipartition_start; inner_vi != vi_end; ++inner_vi)
           add_edge(*vi, *inner_vi, K_3_3);
       return K_3_3;
@@ -157,7 +157,7 @@ namespace boost
       {
 
         vertex_iterator_t vi, vi_end;
-        for(boost::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
+        for(std::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
           {
             vertex_t v(*vi);
 
@@ -241,7 +241,7 @@ namespace boost
         if (max_size == 3)
           {
             // check to see whether we should go on to find a K_5
-            for(boost::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
+            for(std::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
               if (neighbors[*vi].size() == 4)
                 {
                   target_graph = detail::tg_k_5;
@@ -260,7 +260,7 @@ namespace boost
     v_list_t main_vertices;
     vertex_iterator_t vi, vi_end;
     
-    for(boost::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
+    for(std::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
       {
         if (!neighbors[*vi].empty())
           main_vertices.push_back(*vi);

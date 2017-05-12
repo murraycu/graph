@@ -101,7 +101,7 @@ namespace boost
     // PlanarEmbedding so that get(next_edge, e)[v] is the edge that comes
     // after e in the clockwise embedding around vertex v.
 
-    for(boost::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
+    for(std::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
       {
         vertex_t v(*vi);
         pi_begin = embedding[v].begin();
@@ -125,7 +125,7 @@ namespace boost
     std::vector<edge_t> edges_cache;
     std::vector<vertex_t> vertices_in_edge;
 
-    for(boost::tie(fi,fi_end) = edges(g); fi != fi_end; ++fi)
+    for(std::tie(fi,fi_end) = edges(g); fi != fi_end; ++fi)
       {
         edge_t e(*fi);
         edges_cache.push_back(e);

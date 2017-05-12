@@ -165,7 +165,7 @@ namespace boost {
 
       // Generate the first edge
       vertices_size_type u, v;
-      boost::tie(u, v) = generate_edge(this->gen, n, SCALE, a, b, c, d);
+      std::tie(u, v) = generate_edge(this->gen, n, SCALE, a, b, c, d);
 
       if (permute_vertices)
         current = std::make_pair(vertexPermutation[u],
@@ -182,7 +182,7 @@ namespace boost {
     rmat_iterator& operator++()
     {
       vertices_size_type u, v;
-      boost::tie(u, v) = generate_edge(this->gen, n, SCALE, a, b, c, d);
+      std::tie(u, v) = generate_edge(this->gen, n, SCALE, a, b, c, d);
 
       if (permute_vertices)
         current = std::make_pair(vertexPermutation[u],
@@ -280,7 +280,7 @@ namespace boost {
       for (edges_size_type i = 0; i < m; ++i) {
 
         vertices_size_type u, v;
-        boost::tie(u, v) = generate_edge(this->gen, n, SCALE, a, b, c, d);
+        std::tie(u, v) = generate_edge(this->gen, n, SCALE, a, b, c, d);
 
         if (permute_vertices) {
           if (ep(vertexPermutation[u], vertexPermutation[v]))
@@ -382,7 +382,7 @@ namespace boost {
       edges_size_type edges = 0;
       do {
         vertices_size_type u, v;
-        boost::tie(u, v) = generate_edge(this->gen, n, SCALE, a, b, c, d);
+        std::tie(u, v) = generate_edge(this->gen, n, SCALE, a, b, c, d);
 
         // Lowest vertex number always comes first
         // (this means we don't have to worry about i->j and j->i being in the edge list)
@@ -496,7 +496,7 @@ namespace boost {
       do {
 
         vertices_size_type u, v;
-        boost::tie(u, v) = generate_edge(this->gen, n, SCALE, a, b, c, d);
+        std::tie(u, v) = generate_edge(this->gen, n, SCALE, a, b, c, d);
 
         if (bidirectional) {
           if (edge_map.find(std::make_pair(u, v)) == edge_map.end()) {

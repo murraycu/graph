@@ -42,7 +42,7 @@ namespace boost
     v_size_t size_of_matching = 0;
     vertex_iterator_t vi, vi_end;
 
-    for(boost::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
+    for(std::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
       {
         vertex_descriptor_t v = *vi;
         if (get(mate,v) != graph_traits<Graph>::null_vertex() 
@@ -73,7 +73,7 @@ namespace boost
     typedef typename graph_traits<Graph>::vertex_iterator vertex_iterator_t;
 
     vertex_iterator_t vi, vi_end;
-    for( boost::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
+    for( std::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
       {
         vertex_descriptor_t v = *vi;
         if (get(mate,v) != graph_traits<Graph>::null_vertex() 
@@ -186,7 +186,7 @@ namespace boost
       ds(ds_rank_map, ds_parent_map)
     {
       vertex_iterator_t vi, vi_end;
-      for(boost::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
+      for(std::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
         mate[*vi] = get(arg_mate, *vi);
     }
 
@@ -204,7 +204,7 @@ namespace boost
       even_edges.clear();
       
       vertex_iterator_t vi, vi_end;
-      for(boost::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
+      for(std::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
       {
         vertex_descriptor_t u = *vi;
       
@@ -218,7 +218,7 @@ namespace boost
         {
           vertex_state[u] = graph::detail::V_EVEN;
           out_edge_iterator_t ei, ei_end;
-          for(boost::tie(ei,ei_end) = out_edges(u,g); ei != ei_end; ++ei)
+          for(std::tie(ei,ei_end) = out_edges(u,g); ei != ei_end; ++ei)
           {
             if (target(*ei,g) != u)
             {
@@ -266,7 +266,7 @@ namespace boost
           vertex_descriptor_t w_prime_mate = mate[w_prime];
           vertex_state[w_prime_mate] = graph::detail::V_EVEN;
           out_edge_iterator_t ei, ei_end;
-          for( boost::tie(ei,ei_end) = out_edges(w_prime_mate, g); ei != ei_end; ++ei)
+          for( std::tie(ei,ei_end) = out_edges(w_prime_mate, g); ei != ei_end; ++ei)
           {
             if (target(*ei,g) != w_prime_mate)
             {
@@ -366,7 +366,7 @@ namespace boost
     void get_current_matching(PropertyMap pm)
     {
       vertex_iterator_t vi,vi_end;
-      for(boost::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
+      for(std::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
         put(pm, *vi, mate[*vi]);
     }
 
@@ -377,7 +377,7 @@ namespace boost
     void get_vertex_state_map(PropertyMap pm)
     {
       vertex_iterator_t vi,vi_end;
-      for(boost::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
+      for(std::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
         put(pm, *vi, vertex_state[origin[ds.find_set(*vi)]]);
     }
 
@@ -413,7 +413,7 @@ namespace boost
         {
           bridge[v] = the_bridge;
           out_edge_iterator_t oei, oei_end;
-          for(boost::tie(oei, oei_end) = out_edges(v,g); oei != oei_end; ++oei)
+          for(std::tie(oei, oei_end) = out_edges(v,g); oei != oei_end; ++oei)
           {
             if (target(*oei,g) != v)
             {
@@ -535,11 +535,11 @@ namespace boost
     static void find_matching(const Graph& g, MateMap mate)
     {
       vertex_iterator_t vi, vi_end;
-      for(boost::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
+      for(std::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
         put(mate, *vi, graph_traits<Graph>::null_vertex());
             
       edge_iterator_t ei, ei_end;
-      for( boost::tie(ei, ei_end) = edges(g); ei != ei_end; ++ei)
+      for( std::tie(ei, ei_end) = edges(g); ei != ei_end; ++ei)
       {
         edge_descriptor_t e = *ei;
         vertex_descriptor_t u = source(e,g);
@@ -613,11 +613,11 @@ namespace boost
       
       directed_edges_vector_t edge_list;
       vertex_iterator_t vi, vi_end;
-      for(boost::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
+      for(std::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
         put(mate, *vi, graph_traits<Graph>::null_vertex());
 
       edge_iterator_t ei, ei_end;
-      for(boost::tie(ei, ei_end) = edges(g); ei != ei_end; ++ei)
+      for(std::tie(ei, ei_end) = edges(g); ei != ei_end; ++ei)
       {
         edge_descriptor_t e = *ei;
         vertex_descriptor_t u = source(e,g);
@@ -658,7 +658,7 @@ namespace boost
     static void find_matching(const Graph& g, MateMap mate)
     {
       vertex_iterator_t vi, vi_end;
-      for(boost::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
+      for(std::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
         put(mate, *vi, graph_traits<Graph>::null_vertex());
     }
   };
@@ -807,7 +807,7 @@ namespace boost
       //count the number of graph::detail::V_ODD vertices
       v_size_t num_odd_vertices = 0;
       vertex_iterator_t vi, vi_end;
-      for(boost::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
+      for(std::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
         if (vertex_state[*vi] == graph::detail::V_ODD)
           ++num_odd_vertices;
 

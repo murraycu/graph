@@ -750,7 +750,7 @@ namespace boost {
   {
     typename adjacency_matrix<D,VP,EP,GP,A>::degree_size_type n = 0;
     typename adjacency_matrix<D,VP,EP,GP,A>::out_edge_iterator f, l;
-    for (boost::tie(f, l) = out_edges(u, g); f != l; ++f)
+    for (std::tie(f, l) = out_edges(u, g); f != l; ++f)
       ++n;
     return n;
   }
@@ -832,7 +832,7 @@ namespace boost {
   {
     typename adjacency_matrix<D,VP,EP,GP,A>::degree_size_type n = 0;
     typename adjacency_matrix<D,VP,EP,GP,A>::in_edge_iterator f, l;
-    for (boost::tie(f, l) = in_edges(u, g); f != l; ++f)
+    for (std::tie(f, l) = in_edges(u, g); f != l; ++f)
       ++n;
     return n;
   }
@@ -852,7 +852,7 @@ namespace boost {
       Graph& g = const_cast<Graph&>(cg);
       typedef typename Graph::adjacency_iterator adjacency_iterator;
       typename Graph::out_edge_iterator first, last;
-      boost::tie(first, last) = out_edges(u, g);
+      std::tie(first, last) = out_edges(u, g);
       return std::make_pair(adjacency_iterator(first, &g),
                             adjacency_iterator(last, &g));
   }
@@ -1001,9 +1001,9 @@ namespace boost {
   {
     typename adjacency_matrix<directedS,VP,EP,GP,A>::vertex_iterator
       vi, vi_end;
-    for (boost::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
+    for (std::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
       remove_edge(u, *vi, g);
-    for (boost::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
+    for (std::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
       remove_edge(*vi, u, g);
   }
 
@@ -1016,7 +1016,7 @@ namespace boost {
   {
     typename adjacency_matrix<undirectedS,VP,EP,GP,A>::vertex_iterator
       vi, vi_end;
-    for (boost::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
+    for (std::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
       remove_edge(u, *vi, g);
   }
 

@@ -132,7 +132,7 @@ namespace boost {
 
       put(color, u, Color::gray());
       vis.discover_vertex(u, g);
-      boost::tie(ei, ei_end) = out_edges(u, g);
+      std::tie(ei, ei_end) = out_edges(u, g);
       if (func(u, g)) {
           // If this vertex terminates the search, we push empty range
           stack.push_back(std::make_pair(u, std::make_pair(boost::optional<Edge>(), std::make_pair(ei_end, ei_end))));
@@ -143,7 +143,7 @@ namespace boost {
         VertexInfo& back = stack.back();
         u = back.first;
         src_e = back.second.first;
-        boost::tie(ei, ei_end) = back.second.second;
+        std::tie(ei, ei_end) = back.second.second;
         stack.pop_back();
 	// finish_edge has to be called here, not after the
 	// loop. Think of the pop as the return from a recursive call.
@@ -161,7 +161,7 @@ namespace boost {
             u = v;
             put(color, u, Color::gray());
             vis.discover_vertex(u, g);
-            boost::tie(ei, ei_end) = out_edges(u, g);
+            std::tie(ei, ei_end) = out_edges(u, g);
             if (func(u, g)) {
                 ei = ei_end;
             }
@@ -202,7 +202,7 @@ namespace boost {
       put(color, u, Color::gray());          vis.discover_vertex(u, g);
 
       if (!func(u, g))
-        for (boost::tie(ei, ei_end) = out_edges(u, g); ei != ei_end; ++ei) {
+        for (std::tie(ei, ei_end) = out_edges(u, g); ei != ei_end; ++ei) {
           Vertex v = target(*ei, g);           vis.examine_edge(*ei, g);
           ColorValue v_color = get(color, v);
           if (v_color == Color::white()) {     vis.tree_edge(*ei, g);
@@ -229,7 +229,7 @@ namespace boost {
     typedef color_traits<ColorValue> Color;
 
     typename graph_traits<VertexListGraph>::vertex_iterator ui, ui_end;
-    for (boost::tie(ui, ui_end) = vertices(g); ui != ui_end; ++ui) {
+    for (std::tie(ui, ui_end) = vertices(g); ui != ui_end; ++ui) {
       Vertex u = implicit_cast<Vertex>(*ui);
       put(color, u, Color::white()); vis.initialize_vertex(u, g);
     }
@@ -239,7 +239,7 @@ namespace boost {
                                      detail::nontruth2());
     }
 
-    for (boost::tie(ui, ui_end) = vertices(g); ui != ui_end; ++ui) {
+    for (std::tie(ui, ui_end) = vertices(g); ui != ui_end; ++ui) {
       Vertex u = implicit_cast<Vertex>(*ui);
       ColorValue u_color = get(color, u);
       if (u_color == Color::white()) {       vis.start_vertex(u, g);

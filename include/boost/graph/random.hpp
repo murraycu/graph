@@ -157,7 +157,7 @@ namespace boost {
           b = random_vertex(g, gen);
         } while (self_edges == false && a == b);
         edge_t e; bool inserted;
-        boost::tie(e, inserted) = add_edge(a, b, g);
+        std::tie(e, inserted) = add_edge(a, b, g);
         if (inserted) {
           ++j;
         } else {
@@ -210,7 +210,7 @@ namespace boost {
         b = random_vertex(g, gen);
       } while (self_edges == false && a == b);
       edge_t e; bool inserted;
-      boost::tie(e, inserted) = add_edge(a, b, g);
+      std::tie(e, inserted) = add_edge(a, b, g);
       if (inserted) {
         *edge_out++ = std::make_pair(source(e, g), target(e, g));
         ++j;
@@ -231,7 +231,7 @@ namespace boost {
     {
       typename property_map<G, Property>::type pm = get(Property(), g);
       typename graph_traits<G>::vertex_iterator vi, ve;
-      for (boost::tie(vi, ve) = vertices(g); vi != ve; ++vi) {
+      for (std::tie(vi, ve) = vertices(g); vi != ve; ++vi) {
         pm[*vi] = rg();
       }
     }
@@ -242,7 +242,7 @@ namespace boost {
     {
       typename property_map<G, Property>::type pm = get(Property(), g);
       typename graph_traits<G>::edge_iterator ei, ee;
-      for (boost::tie(ei, ee) = edges(g); ei != ee; ++ei) {
+      for (std::tie(ei, ee) = edges(g); ei != ee; ++ei) {
         pm[*ei] = rg();
       }
     }

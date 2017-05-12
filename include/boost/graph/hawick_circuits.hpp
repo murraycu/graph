@@ -305,7 +305,7 @@ void call_hawick_circuits(Graph const& graph,
     ClosedMatrix closed(n_vertices);
 
     VertexIterator start, last;
-    for (boost::tie(start, last) = vertices(graph); start != last; ++start) {
+    for (std::tie(start, last) = vertices(graph); start != last; ++start) {
         // Note1: The sub algorithm may NOT be reused once it has been called.
 
         // Note2: We reuse the Stack and the ClosedMatrix (after clearing them)
