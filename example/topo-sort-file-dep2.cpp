@@ -13,7 +13,6 @@
 #include <boost/graph/graph_utility.hpp>
 #include "range_pair.hpp"
 
-using namespace boost;
 
 namespace std
 {
@@ -27,40 +26,40 @@ namespace std
   }
 }
 
-using file_dep_graph = adjacency_list <
-  listS,                        // Store out-edges of each vertex in a std::list
-  vecS,                         // Store vertex set in a std::vector
-  directedS                     // The file dependency graph is directed
+using file_dep_graph = boost::adjacency_list <
+  boost::listS,                        // Store out-edges of each vertex in a std::list
+  boost::vecS,                         // Store vertex set in a std::vector
+  boost::directedS                     // The file dependency graph is directed
   >;
 
-using vertex_t = graph_traits <file_dep_graph >::vertex_descriptor;
-using edge_t = graph_traits <file_dep_graph >::edge_descriptor;
+using vertex_t = boost::graph_traits <file_dep_graph >::vertex_descriptor;
+using edge_t = boost::graph_traits <file_dep_graph >::edge_descriptor;
 
 template <typename Visitor> void
-dfs_v1(const file_dep_graph & g, vertex_t u, default_color_type * color,
+dfs_v1(const file_dep_graph & g, vertex_t u, boost::default_color_type * color,
        Visitor vis)
 {
-  color[u] = gray_color;
+  color[u] = boost::gray_color;
   vis.discover_vertex(u, g);
-  for (const auto& edge : make_range_pair(out_edges(u, g))) {
-    if (color[target(edge, g)] == white_color) {
+  for (const auto& edge : make_range_pair(boost::out_edges(u, g))) {
+    if (color[boost::target(edge, g)] == boost::white_color) {
       vis.tree_edge(edge, g);
-      dfs_v1(g, target(edge, g), color, vis);
-    } else if (color[target(edge, g)] == gray_color)
+      dfs_v1(g, boost::target(edge, g), color, vis);
+    } else if (color[boost::target(edge, g)] == boost::gray_color)
       vis.back_edge(edge, g);
     else
       vis.forward_or_cross_edge(edge, g);
   }
-  color[u] = black_color;
+  color[u] = boost::black_color;
   vis.finish_vertex(u, g);
 }
 
 template <typename Visitor> void
 generic_dfs_v1(const file_dep_graph & g, Visitor vis)
 {
-  std::vector<default_color_type> color(num_vertices(g), white_color);
-  for (const auto& vertex : make_range_pair(vertices(g))) {
-    if (color[vertex] == white_color)
+  std::vector<boost::default_color_type> color(boost::num_vertices(g), boost::white_color);
+  for (const auto& vertex : make_range_pair(boost::vertices(g))) {
+    if (color[vertex] == boost::white_color)
       dfs_v1(g, vertex, &color[0], vis);
   }
 }
@@ -118,7 +117,7 @@ int
 main()
 {
   std::ifstream file_in("makefile-dependencies.dat");
-  using size_type = graph_traits<file_dep_graph>::vertices_size_type;
+  using size_type = boost::graph_traits<file_dep_graph>::vertices_size_type;
   size_type n_vertices;
   file_in >> n_vertices;        // read in number of vertices
   std::istream_iterator<std::pair<size_type,
@@ -129,18 +128,18 @@ main()
   file_dep_graph g(n_vertices);
   while (input_begin != input_end) {
     auto [i, j] = *input_begin++;
-    add_edge(i, j, g);
+    boost::add_edge(i, j, g);
   }
 #else
   file_dep_graph g(input_begin, input_end, n_vertices);
 #endif
 
-  std::vector<std::string> name(num_vertices(g));
+  std::vector<std::string> name(boost::num_vertices(g));
   std::ifstream name_in("makefile-target-names.dat");
-  for (const auto& vertex : make_range_pair(vertices(g)))
+  for (const auto& vertex : make_range_pair(boost::vertices(g)))
     name_in >> name[vertex];
 
-  std::vector<vertex_t> order(num_vertices(g));
+  std::vector<vertex_t> order(boost::num_vertices(g));
   topo_sort(g, &order[0] + num_vertices(g));
   for (size_type i = 0; i < num_vertices(g); ++i)
     std::cout << name[order[i]] << std::endl;
