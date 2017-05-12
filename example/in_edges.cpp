@@ -27,22 +27,20 @@
 
 int main(int , char* [])
 {
-  using namespace boost;
-
-  using Graph = adjacency_list<listS,vecS,bidirectionalS>;
+  using Graph = boost::adjacency_list<boost::listS,boost::vecS,boost::bidirectionalS>;
   const int num_vertices = 5;
   Graph g(num_vertices);
 
-  add_edge(0, 1, g);
-  add_edge(1, 2, g);
-  add_edge(1, 3, g);
-  add_edge(2, 4, g);
-  add_edge(3, 4, g);
+  boost::add_edge(0, 1, g);
+  boost::add_edge(1, 2, g);
+  boost::add_edge(1, 3, g);
+  boost::add_edge(2, 4, g);
+  boost::add_edge(3, 4, g);
 
-  for(const auto& vertex : make_range_pair(vertices(g))) {
+  for(const auto& vertex : make_range_pair(boost::vertices(g))) {
     std::cout << vertex << " <-- ";
-    for (const auto& edge : make_range_pair(in_edges(vertex, g)))
-      std::cout << source(edge, g) << "  ";
+    for (const auto& edge : make_range_pair(boost::in_edges(vertex, g)))
+      std::cout << boost::source(edge, g) << "  ";
     std::cout << std::endl;
   }
   return 0;
