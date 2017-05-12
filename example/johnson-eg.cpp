@@ -19,9 +19,8 @@
 int
 main()
 {
-  using namespace boost;
-  using Graph = adjacency_list<vecS, vecS, directedS, no_property,
-    property<edge_weight_t, int, property<edge_weight2_t, int>>>;
+  using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS, boost::no_property,
+    boost::property<boost::edge_weight_t, int, boost::property<boost::edge_weight2_t, int>>>;
   const int V = 6;
   using Edge = std::pair<int, int>;
   Edge edge_array[] =
@@ -34,21 +33,21 @@ main()
   // VC++ can't handle the iterator constructor
   Graph g(V);
   for (std::size_t j = 0; j < E; ++j)
-    add_edge(edge_array[j].first, edge_array[j].second, g);
+    boost::add_edge(edge_array[j].first, edge_array[j].second, g);
 #else
   Graph g(edge_array, edge_array + E, V);
 #endif
 
-  auto w = get(edge_weight, g);
+  auto w = boost::get(boost::edge_weight, g);
   int weights[] = { 0, 0, 0, 0, 0, 3, -4, 8, 1, 7, 4, -5, 2, 6 };
   int *wp = weights;
 
-  for (const auto& edge : make_range_pair(edges(g)))
+  for (const auto& edge : make_range_pair(boost::edges(g)))
     w[edge] = *wp++;
 
   std::vector<int >d(V, (std::numeric_limits < int>::max)());
   int D[V][V];
-  johnson_all_pairs_shortest_paths(g, D, distance_map(&d[0]));
+  johnson_all_pairs_shortest_paths(g, D, boost::distance_map(&d[0]));
 
   std::cout << "       ";
   for (int k = 0; k < V; ++k)
@@ -72,9 +71,9 @@ main()
     << "ratio=\"fill\"\n"
     << "edge[style=\"bold\"]\n" << "node[shape=\"circle\"]\n";
 
-  for (const auto& edge : make_range_pair(edges(g)))
-    fout << source(edge, g) << " -> " << target(edge, g)
-      << "[label=" << get(edge_weight, g)[edge] << "]\n";
+  for (const auto& edge : make_range_pair(boost::edges(g)))
+    fout << boost::source(edge, g) << " -> " << boost::target(edge, g)
+      << "[label=" << boost::get(boost::edge_weight, g)[edge] << "]\n";
 
   fout << "}\n";
   return 0;
