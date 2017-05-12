@@ -42,15 +42,15 @@
 template <class Graph, class Capacity, class Flow>
 void print_network(Graph& G, Capacity capacity, Flow flow)
 {
-  for (const auto& vertex : make_range_pair(vertices(G))) {
+  for (const auto& vertex : make_range_pair(boost::vertices(G))) {
     std::cout << vertex << "\t";
 
-    for (const auto& edge : make_range_pair(out_edges(vertex, G)))
+    for (const auto& edge : make_range_pair(boost::out_edges(vertex, G)))
       std::cout << "--(" << boost::get(capacity, edge) << ", " 
            << boost::get(flow, edge) << ")--> " << boost::target(edge, G) << "\t";
     std::cout << std::endl << "\t";
 
-    for (const auto& edge : make_range_pair(in_edges(vertex, G)))
+    for (const auto& edge : make_range_pair(boost::in_edges(vertex, G)))
       std::cout << "<--(" << boost::get(capacity, edge) << "," << boost::get(flow, edge) << ")-- "
            << boost::source(edge, G) << "\t";
     std::cout << std::endl;
