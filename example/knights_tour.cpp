@@ -20,7 +20,7 @@ using namespace boost;
 
 using Position = std::pair<int, int>;
 Position
-  knight_jumps[8] = {
+  knight_jumps[] = {
     Position(2, -1),
     Position(1, -2),
   Position(-1, -2),
