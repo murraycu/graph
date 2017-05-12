@@ -15,8 +15,6 @@
 #include <boost/graph/r_c_shortest_paths.hpp>
 #include <iostream>
 
-using namespace boost;
-
 struct SPPRC_Example_Graph_Vert_Prop
 {
   SPPRC_Example_Graph_Vert_Prop( int n = 0, int e = 0, int l = 0 ) 
@@ -39,9 +37,9 @@ struct SPPRC_Example_Graph_Arc_Prop
   int time;
 };
 
-using SPPRC_Example_Graph = adjacency_list<vecS, 
-                       vecS, 
-                       directedS, 
+using SPPRC_Example_Graph = boost::adjacency_list<boost::vecS, 
+                       boost::vecS, 
+                       boost::directedS, 
                        SPPRC_Example_Graph_Vert_Prop, 
                        SPPRC_Example_Graph_Arc_Prop>;
 
@@ -80,7 +78,7 @@ public:
   inline bool operator()( const SPPRC_Example_Graph& g, 
                           spp_no_rc_res_cont& new_cont, 
                           const spp_no_rc_res_cont& old_cont, 
-                          graph_traits
+                          boost::graph_traits
                             <SPPRC_Example_Graph>::edge_descriptor ed ) const
   {
     new_cont.cost = old_cont.cost + g[ed].cost;
@@ -155,13 +153,13 @@ public:
   inline bool operator()( const SPPRC_Example_Graph& g, 
                           spp_spptw_res_cont& new_cont, 
                           const spp_spptw_res_cont& old_cont, 
-                          graph_traits
+                          boost::graph_traits
                             <SPPRC_Example_Graph>::edge_descriptor ed ) const
   {
     const SPPRC_Example_Graph_Arc_Prop& arc_prop = 
-      get( edge_bundle, g )[ed];
+      boost::get( boost::edge_bundle, g )[ed];
     const SPPRC_Example_Graph_Vert_Prop& vert_prop = 
-      get( vertex_bundle, g )[target( ed, g )];
+      boost::get( boost::vertex_bundle, g )[boost::target( ed, g )];
     new_cont.cost = old_cont.cost + arc_prop.cost;
     auto& i_time = new_cont.time;
     i_time = old_cont.time + arc_prop.time;
@@ -212,15 +210,15 @@ int main()
   add_vertex( SPPRC_Example_Graph_Vert_Prop( D, 3, 12 ), g );
   add_vertex( SPPRC_Example_Graph_Vert_Prop( E, 0, 100 ), g );
 
-  add_edge( A, C, SPPRC_Example_Graph_Arc_Prop( 0, 1, 5 ), g );
-  add_edge( B, B, SPPRC_Example_Graph_Arc_Prop( 1, 2, 5 ), g );
-  add_edge( B, D, SPPRC_Example_Graph_Arc_Prop( 2, 1, 2 ), g );
-  add_edge( B, E, SPPRC_Example_Graph_Arc_Prop( 3, 2, 7 ), g );
-  add_edge( C, B, SPPRC_Example_Graph_Arc_Prop( 4, 7, 3 ), g );
-  add_edge( C, D, SPPRC_Example_Graph_Arc_Prop( 5, 3, 8 ), g );
-  add_edge( D, E, SPPRC_Example_Graph_Arc_Prop( 6, 1, 3 ), g );
-  add_edge( E, A, SPPRC_Example_Graph_Arc_Prop( 7, 1, 5 ), g );
-  add_edge( E, B, SPPRC_Example_Graph_Arc_Prop( 8, 1, 4 ), g );
+  boost::add_edge( A, C, SPPRC_Example_Graph_Arc_Prop( 0, 1, 5 ), g );
+  boost::add_edge( B, B, SPPRC_Example_Graph_Arc_Prop( 1, 2, 5 ), g );
+  boost::add_edge( B, D, SPPRC_Example_Graph_Arc_Prop( 2, 1, 2 ), g );
+  boost::add_edge( B, E, SPPRC_Example_Graph_Arc_Prop( 3, 2, 7 ), g );
+  boost::add_edge( C, B, SPPRC_Example_Graph_Arc_Prop( 4, 7, 3 ), g );
+  boost::add_edge( C, D, SPPRC_Example_Graph_Arc_Prop( 5, 3, 8 ), g );
+  boost::add_edge( D, E, SPPRC_Example_Graph_Arc_Prop( 6, 1, 3 ), g );
+  boost::add_edge( E, A, SPPRC_Example_Graph_Arc_Prop( 7, 1, 5 ), g );
+  boost::add_edge( E, B, SPPRC_Example_Graph_Arc_Prop( 8, 1, 4 ), g );
 
 
   // the unique shortest path from A to E in the dijkstra-example.cpp is 
@@ -238,19 +236,19 @@ int main()
   // therefore, the code below returns only the former path
 
   // spp without resource constraints
-  graph_traits<SPPRC_Example_Graph>::vertex_descriptor s = A;
-  graph_traits<SPPRC_Example_Graph>::vertex_descriptor t = E;
+  boost::graph_traits<SPPRC_Example_Graph>::vertex_descriptor s = A;
+  boost::graph_traits<SPPRC_Example_Graph>::vertex_descriptor t = E;
 
   std::vector
     <std::vector
-      <graph_traits<SPPRC_Example_Graph>::edge_descriptor>> 
+      <boost::graph_traits<SPPRC_Example_Graph>::edge_descriptor>> 
         opt_solutions;
   std::vector<spp_no_rc_res_cont> pareto_opt_rcs_no_rc;
 
   r_c_shortest_paths
   ( g, 
-    get( &SPPRC_Example_Graph_Vert_Prop::num, g ), 
-    get( &SPPRC_Example_Graph_Arc_Prop::num, g ), 
+    boost::get( &SPPRC_Example_Graph_Vert_Prop::num, g ), 
+    boost::get( &SPPRC_Example_Graph_Arc_Prop::num, g ), 
     s, 
     t, 
     opt_solutions, 
@@ -259,9 +257,9 @@ int main()
     ref_no_res_cont(), 
     dominance_no_res_cont(), 
     std::allocator
-      <r_c_shortest_paths_label
+      <boost::r_c_shortest_paths_label
         <SPPRC_Example_Graph, spp_no_rc_res_cont>>(), 
-    default_r_c_shortest_paths_visitor() );
+    boost::default_r_c_shortest_paths_visitor() );
 
   std::cout << "SPP without resource constraints:" << std::endl;
   std::cout << "Number of optimal solutions: ";
@@ -271,7 +269,7 @@ int main()
     std::cout << "The " << i << "th shortest path from A to E is: ";
     std::cout << std::endl;
     for( int j = static_cast<int>( opt_solutions[i].size() ) - 1; j >= 0; --j )
-      std::cout << name[source( opt_solutions[i][j], g )] << std::endl;
+      std::cout << name[boost::source( opt_solutions[i][j], g )] << std::endl;
     std::cout << "E" << std::endl;
     std::cout << "Length: " << pareto_opt_rcs_no_rc[i].cost << std::endl;
   }
@@ -280,14 +278,14 @@ int main()
   // spptw
   std::vector
     <std::vector
-      <graph_traits<SPPRC_Example_Graph>::edge_descriptor>> 
+      <boost::graph_traits<SPPRC_Example_Graph>::edge_descriptor>> 
         opt_solutions_spptw;
   std::vector<spp_spptw_res_cont> pareto_opt_rcs_spptw;
 
   r_c_shortest_paths
   ( g, 
-    get( &SPPRC_Example_Graph_Vert_Prop::num, g ), 
-    get( &SPPRC_Example_Graph_Arc_Prop::num, g ), 
+    boost::get( &SPPRC_Example_Graph_Vert_Prop::num, g ), 
+    boost::get( &SPPRC_Example_Graph_Arc_Prop::num, g ), 
     s, 
     t, 
     opt_solutions_spptw, 
@@ -296,9 +294,9 @@ int main()
     ref_spptw(), 
     dominance_spptw(), 
     std::allocator
-      <r_c_shortest_paths_label
+      <boost::r_c_shortest_paths_label
         <SPPRC_Example_Graph, spp_spptw_res_cont>>(), 
-          default_r_c_shortest_paths_visitor() );
+          boost::default_r_c_shortest_paths_visitor() );
 
   std::cout << "SPP with time windows:" << std::endl;
   std::cout << "Number of optimal solutions: ";
@@ -310,7 +308,7 @@ int main()
     for( int j = static_cast<int>( opt_solutions_spptw[i].size() ) - 1; 
          j >= 0; 
          --j )
-      std::cout << name[source( opt_solutions_spptw[i][j], g )] << std::endl;
+      std::cout << name[boost::source( opt_solutions_spptw[i][j], g )] << std::endl;
     std::cout << "E" << std::endl;
     std::cout << "Length: " << pareto_opt_rcs_spptw[i].cost << std::endl;
     std::cout << "Time: " << pareto_opt_rcs_spptw[i].time << std::endl;
@@ -322,7 +320,7 @@ int main()
   bool b_feasible = false; 
   bool b_correctly_extended = false;
   spp_spptw_res_cont actual_final_resource_levels( 0, 0 );
-  graph_traits<SPPRC_Example_Graph>::edge_descriptor ed_last_extended_arc;
+  boost::graph_traits<SPPRC_Example_Graph>::edge_descriptor ed_last_extended_arc;
   check_r_c_path( g, 
                   opt_solutions_spptw[0], 
                   spp_spptw_res_cont( 0, 0 ), 
