@@ -45,42 +45,40 @@
 
  */
 
-using namespace boost;
-
 int main(int argc, char* argv[]) 
 {
-  using Graph = adjacency_list <vecS, vecS, undirectedS>;
-  using Vertex = graph_traits<Graph>::vertex_descriptor;
-  using VertexIndex = graph_traits<Graph>::vertices_size_type;
+  using Graph = boost::adjacency_list <boost::vecS, boost::vecS, boost::undirectedS>;
+  using Vertex = boost::graph_traits<Graph>::vertex_descriptor;
+  using VertexIndex = boost::graph_traits<Graph>::vertices_size_type;
 
   const int VERTEX_COUNT = 6;
   Graph graph(VERTEX_COUNT);
 
-  std::vector<VertexIndex> rank(num_vertices(graph));
-  std::vector<Vertex> parent(num_vertices(graph));
+  std::vector<VertexIndex> rank(boost::num_vertices(graph));
+  std::vector<Vertex> parent(boost::num_vertices(graph));
 
   using Rank = VertexIndex*;
   using Parent = Vertex*;
 
-  disjoint_sets<Rank, Parent> ds(&rank[0], &parent[0]);
+  boost::disjoint_sets<Rank, Parent> ds(&rank[0], &parent[0]);
 
   initialize_incremental_components(graph, ds);
   incremental_components(graph, ds);
 
-  auto [edge, flag] = add_edge(0, 1, graph);
+  auto [edge, flag] = boost::add_edge(0, 1, graph);
   ds.union_set(0,1);
 
-  std::tie(edge, flag) = add_edge(1, 4, graph);
+  std::tie(edge, flag) = boost::add_edge(1, 4, graph);
   ds.union_set(1,4);
 
-  std::tie(edge, flag) = add_edge(4, 0, graph);
+  std::tie(edge, flag) = boost::add_edge(4, 0, graph);
   ds.union_set(4,0);
 
-  std::tie(edge, flag) = add_edge(2, 5, graph);
+  std::tie(edge, flag) = boost::add_edge(2, 5, graph);
   ds.union_set(2,5);
     
   std::cout << "An undirected graph:" << std::endl;
-  print_graph(graph, get(boost::vertex_index, graph));
+  boost::print_graph(graph, boost::get(boost::vertex_index, graph));
   std::cout << std::endl;
     
   for ( auto current_vertex : make_range_pair(vertices(graph)) ) {
@@ -90,11 +88,11 @@ int main(int argc, char* argv[])
 
   std::cout << std::endl;
 
-  using Components = component_index<VertexIndex>;
+  using Components = boost::component_index<VertexIndex>;
 
   // NOTE: Because we're using vecS for the graph type, we're
   // effectively using identity_property_map for a vertex index map.
-  // If we were to use listS instead, the index map would need to be
+  // If we were to use boost::listS instead, the index map would need to be
   // explicitly passed to the component_index constructor.
   Components components(parent.begin(), parent.end());
 
