@@ -29,15 +29,14 @@ struct non_zero_degree {
 int
 main()
 {
-  using namespace boost;
-  using graph_t = adjacency_list<vecS, vecS, bidirectionalS,
-    property<vertex_name_t, char>>;
+  using graph_t = boost::adjacency_list<boost::vecS, boost::vecS, boost::bidirectionalS,
+    boost::property<boost::vertex_name_t, char>>;
 
   enum { a, b, c, d, e, f, g, N };
   graph_t G(N);
-  auto name_map = get(vertex_name, G);
+  auto name_map = boost::get(boost::vertex_name, G);
   char name = 'a';
-  for (const auto& vertex : make_range_pair(vertices(G))) {
+  for (const auto& vertex : make_range_pair(boost::vertices(G))) {
     name_map[vertex] = name;
     ++name;
   }
@@ -47,18 +46,18 @@ main()
     E(d, c), E(d, e), E(d, f), E(e, b), E(e, g), E(f, e), E(f, g)
   };
   for (const auto& edge : edges)
-    add_edge(edge.first, edge.second, G);
+    boost::add_edge(edge.first, edge.second, G);
 
-  print_graph(G, name_map);
+  boost::print_graph(G, name_map);
   std::cout << std::endl;
 
   clear_vertex(b, G);
   clear_vertex(d, G);
 
   graph_t G_copy;
-  copy_graph(make_filtered_graph(G, keep_all(), non_zero_degree<graph_t>(G)), G_copy);
+  copy_graph(boost::make_filtered_graph(G, boost::keep_all(), non_zero_degree<graph_t>(G)), G_copy);
 
-  print_graph(G_copy, get(vertex_name, G_copy));
+  boost::print_graph(G_copy, boost::get(boost::vertex_name, G_copy));
 
   return 0;
 }
