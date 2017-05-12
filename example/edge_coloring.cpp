@@ -34,8 +34,7 @@
 
 int main(int, char *[])
 {
-  using namespace boost;
-  using Graph = adjacency_list<vecS, vecS, undirectedS, no_property, size_t, no_property>;
+  using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, boost::no_property, size_t, boost::no_property>;
 
   using Pair = std::pair<std::size_t, std::size_t>;
   Pair edges[] = { Pair(0,3), //a-d
@@ -56,9 +55,9 @@ int main(int, char *[])
   Graph G(10);
 
   for (const auto& edge : edges)
-    add_edge(edge.first, edge.second, G);
+    boost::add_edge(edge.first, edge.second, G);
 
-  auto colors = edge_coloring(G, get(edge_bundle, G));
+  auto colors = edge_coloring(G, boost::get(boost::edge_bundle, G));
 
   std::cout << "Colored using " << colors << " colors" << std::endl;
   for (const auto& edge : edges) {
