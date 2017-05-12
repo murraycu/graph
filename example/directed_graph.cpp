@@ -7,12 +7,12 @@
 // http://www.boost.org/LICENSE_1_0.txt)
 //=======================================================================
 
-#include <boost/graph/directed_graph.hpp> // A subclass to provide reasonable arguments to adjacency_list for a typical directed graph
+#include <boost/graph/directed_graph.hpp> // A subclass to provide reasonable arguments to boost::adjacency_list for a typical directed graph
 
 int main(int,char*[])
 {
-  // directed_graph is a subclass of adjacency_list which gives you object oriented access to functions
-  // like add_vertex and add_edge, which makes the code easier to understand. However, it hard codes many
+  // directed_graph is a subclass of boost::adjacency_list which gives you object oriented access to functions
+  // like add_vertex and boost::add_edge, which makes the code easier to understand. However, it hard codes many
   // of the template parameters, so it is much less flexible.
 
   using Graph = boost::directed_graph<>;
