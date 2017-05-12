@@ -15,23 +15,21 @@
 #include <boost/graph/adjacency_list.hpp>
 #include "range_pair.hpp"
 
-using namespace boost;
-
-using VertexProperty = property<vertex_color_t, default_color_type,
-    property<vertex_distance_t,int,
-      property<vertex_degree_t,int,
-        property<vertex_in_degree_t, int,
-          property<vertex_out_degree_t,int>>>>>;
-using EdgeProperty = property<edge_weight_t,int>;
-using Graph = adjacency_list<vecS, vecS, bidirectionalS, 
+using VertexProperty = boost::property<boost::vertex_color_t, boost::default_color_type,
+    boost::property<boost::vertex_distance_t,int,
+      boost::property<boost::vertex_degree_t,int,
+        boost::property<boost::vertex_in_degree_t, int,
+          boost::property<boost::vertex_out_degree_t,int>>>>>;
+using EdgeProperty = boost::property<boost::edge_weight_t,int>;
+using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::bidirectionalS, 
                        VertexProperty, EdgeProperty>;
 
 template <class Graph>
 void print(Graph& g) {
   for (const auto& vertex : make_range_pair(boost::vertices(g))) {
     std::cout << vertex << " --> ";
-    for (const auto& edge : make_range_pair(out_edges(vertex, g)))
-      std::cout << target(edge, g) << "  ";
+    for (const auto& edge : make_range_pair(boost::out_edges(vertex, g)))
+      std::cout << boost::target(edge, g) << "  ";
     std::cout << std::endl;
   }
 }
@@ -44,7 +42,7 @@ std::size_t myrand(std::size_t N) {
 
 template <class Graph>
 bool check_edge(Graph& g, std::size_t a, std::size_t b) {
-  auto [vi, viend] = adjacent_vertices(vertex(a,g), g);
+  auto [vi, viend] = boost::adjacent_vertices(vertex(a,g), g);
 
   auto found = find(vi, viend, vertex(b, g));
   if ( found == viend )
@@ -67,7 +65,7 @@ int main(int, char*[])
     while ( a == b ) b = myrand(N);
     std::cout << "edge edge (" << a << "," << b <<")" << std::endl;
     //add edges
-    add_edge(a, b, g);
+    boost::add_edge(a, b, g);
     is_failed =  is_failed || (! check_edge(g, a, b) );
   }
   
@@ -112,8 +110,8 @@ int main(int, char*[])
     while ( b == vidp1 ) b = myrand(N);
     std::cout << "add edge (" << vid << "," << a <<")" << std::endl;
     std::cout << "add edge (" << vid << "," << vidp1 <<")" << std::endl;
-    add_edge(vid, a, g);
-    add_edge(b, vidp1, g);
+    boost::add_edge(vid, a, g);
+    boost::add_edge(b, vidp1, g);
     is_failed = is_failed || ! check_edge(g, vid, a);
     is_failed = is_failed || ! check_edge(g, b, vidp1);
   }
