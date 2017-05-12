@@ -16,22 +16,20 @@
 #include <boost/graph/graph_utility.hpp>
 #include <boost/pending/indirect_cmp.hpp>
 
-using namespace boost;
-
 int
 main()
 {
-  using ICmp = indirect_cmp<float*,std::less<float>>;
+  using ICmp = boost::indirect_cmp<float*,std::less<float>>;
   int i;
   boost::mt19937 gen;
   for (int N = 2; N < 200; ++N) {
-    uniform_int<> distrib(0, N-1);
-    variate_generator<boost::mt19937&, uniform_int<>> rand_gen(gen, distrib);
+    boost::uniform_int<> distrib(0, N-1);
+    boost::variate_generator<boost::mt19937&, boost::uniform_int<>> rand_gen(gen, distrib);
     for (std::size_t t = 0; t < 10; ++t) {
       std::vector<float> v, w(N);
 
       ICmp cmp(&w[0], std::less<float>());
-      fibonacci_heap<int, ICmp> Q(N, cmp);
+      boost::fibonacci_heap<int, ICmp> Q(N, cmp);
 
       for (std::size_t c = 0; c < w.size(); ++c)
         w[c] = c;
