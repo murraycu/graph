@@ -35,13 +35,12 @@ int
 main(int , char* [])
 {
   //begin
-  using namespace boost;
 
   /* Topological sort will need to color the graph.  Here we use an
      internal decorator, so we "property" the color to the graph.
      */
-  using Graph = adjacency_list<vecS, vecS, directedS, 
-    property<vertex_color_t, default_color_type>>;
+  using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS, 
+    boost::property<boost::vertex_color_t, boost::default_color_type>>;
 
   using Vertex = boost::graph_traits<Graph>::vertex_descriptor;
 
@@ -54,11 +53,11 @@ main(int , char* [])
     Pair(4, 3) };
   Graph G(std::begin(edges), std::end(edges), 6 /* vertices count */);
 
-  auto id = get(vertex_index, G);
+  auto id = boost::get(boost::vertex_index, G);
 
   using container = std::vector<Vertex>;
   container c;
-  topological_sort(G, std::back_inserter(c));
+  boost::topological_sort(G, std::back_inserter(c));
 
   std::cout << "A topological ordering: ";
   for (auto ii = c.rbegin();
