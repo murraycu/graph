@@ -14,15 +14,13 @@
 #include <boost/graph/adjacency_list.hpp>
 #include "range_pair.hpp"
 
-using namespace boost;
-
 template <typename Graph, typename VertexNamePropertyMap> void
 read_graph_file(std::istream & graph_in, std::istream & name_in,
                 Graph & g, VertexNamePropertyMap name_map)
 {
-  using size_type = typename graph_traits<Graph>::vertices_size_type;
+  using size_type = typename boost::graph_traits<Graph>::vertices_size_type;
   size_type n_vertices;
-  typename property_traits<VertexNamePropertyMap>::value_type name;
+  typename boost::property_traits<VertexNamePropertyMap>::value_type name;
 
   graph_in >> n_vertices;       // read in number of vertices
   for (size_type i = 0; i < n_vertices; ++i) {  // Add n vertices to the graph
@@ -33,7 +31,7 @@ read_graph_file(std::istream & graph_in, std::istream & name_in,
   size_type src, targ;
   while (graph_in >> src)       // Read in edges
     if (graph_in >> targ)
-      add_edge(src, targ, g);   // add an edge to the graph
+      boost::add_edge(src, targ, g);   // add an edge to the graph
     else
       break;
 }
@@ -42,10 +40,10 @@ read_graph_file(std::istream & graph_in, std::istream & name_in,
 int
 main()
 {
-  using graph_type = adjacency_list < listS,       // Store out-edges of each vertex in a std::list
-    vecS,                       // Store vertex set in a std::vector
-    directedS,                  // The graph is directed
-    property<vertex_name_t, std::string>     // Add a vertex property
+  using graph_type = boost::adjacency_list < boost::listS,       // Store out-edges of each vertex in a std::list
+    boost::vecS,                       // Store vertex set in a std::vector
+    boost::directedS,                  // The graph is directed
+    boost::property<boost::vertex_name_t, std::string>     // Add a vertex property
    >;
 
   graph_type g;                 // use default constructor to create empty graph
@@ -57,30 +55,30 @@ main()
     exit(-1);
   }
   // Obtain internal property map from the graph
-  auto name_map = get(vertex_name, g);
+  auto name_map = boost::get(boost::vertex_name, g);
   read_graph_file(file_in, name_in, g, name_map);
 
   // Create storage for last modified times
-  std::vector<time_t> last_mod_vec(num_vertices(g));
+  std::vector<time_t> last_mod_vec(boost::num_vertices(g));
   // Create nickname for the property map type
-  using iter_map_t = iterator_property_map < std::vector<time_t>::iterator,
-    property_map<graph_type, vertex_index_t>::type, time_t, time_t&>;
+  using iter_map_t = boost::iterator_property_map < std::vector<time_t>::iterator,
+    boost::property_map<graph_type, boost::vertex_index_t>::type, time_t, time_t&>;
   // Create last modified time property map
-  iter_map_t mod_time_map(last_mod_vec.begin(), get(vertex_index, g));
+  iter_map_t mod_time_map(last_mod_vec.begin(), boost::get(boost::vertex_index, g));
 
-  auto name = get(vertex_name, g);
+  auto name = boost::get(boost::vertex_name, g);
   struct stat stat_buf;
-  for (const auto& u : make_range_pair(vertices(g))) {
+  for (const auto& u : make_range_pair(boost::vertices(g))) {
     if (stat(name[u].c_str(), &stat_buf) != 0)
       std::cerr << "error in stat() for file " << name[u] << std::endl;
     put(mod_time_map, u, stat_buf.st_mtime);
   }
 
-  for (const auto& vertex : make_range_pair(vertices(g))) {
+  for (const auto& vertex : make_range_pair(boost::vertices(g))) {
     std::cout << name[vertex] << " was last modified at "
       << ctime(&mod_time_map[vertex]);
   }
-  assert(num_vertices(g) == 15);
-  assert(num_edges(g) == 19);
+  assert(boost::num_vertices(g) == 15);
+  assert(boost::num_edges(g) == 19);
   return 0;
 }
