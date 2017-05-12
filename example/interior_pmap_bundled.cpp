@@ -15,8 +15,6 @@
 #include <boost/property_map/property_map.hpp>
 #include <string>
 
-using namespace boost;
-
 /*
   Interior Property Map Basics
 
@@ -48,8 +46,8 @@ template <class EdgeIter, class Graph>
 void who_owes_who(EdgeIter first, EdgeIter last, const Graph& G)
 {
   while (first != last) {
-    std::cout << G[source(*first, G)].first_name << " owes " 
-         << G[target(*first, G)].first_name << " some money" << std::endl;
+    std::cout << G[boost::source(*first, G)].first_name << " owes " 
+         << G[boost::target(*first, G)].first_name << " some money" << std::endl;
     ++first;
   }
 }
@@ -65,7 +63,7 @@ main()
   {
     // Create the graph, and specify that we will use std::string to
     // store the first name's.
-    using MyGraphType = adjacency_list<vecS, vecS, directedS, VertexData>;
+    using MyGraphType = boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS, VertexData>;
     
     using Pair = std::pair<int,int>;
     Pair edge_array[] = { Pair(0,1), Pair(0,2), Pair(0,3), Pair(0,4),
@@ -74,7 +72,7 @@ main()
     
     MyGraphType G(5);
     for (const auto& edge : edge_array)
-      add_edge(edge.first, edge.second, G);
+      boost::add_edge(edge.first, edge.second, G);
 
     G[0].first_name = "Jeremy";
     G[1].first_name = "Rich";
@@ -82,7 +80,7 @@ main()
     G[3].first_name = "Jeff";
     G[4].first_name = "Doug";
     
-    who_owes_who(edges(G).first, edges(G).second, G);
+    who_owes_who(boost::edges(G).first, edges(G).second, G);
   }
 
   std::cout << std::endl;
