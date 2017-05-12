@@ -14,19 +14,17 @@
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 #include "range_pair.hpp"
 
-using namespace boost;
-
 int
 main(int, char *[])
 {
-  using vertex_descriptor = adjacency_list_traits<listS, listS, 
-    directedS>::vertex_descriptor;
-  using graph_t = adjacency_list<listS, listS, directedS,
-    property<vertex_index_t, int, 
-    property<vertex_name_t, char,
-    property<vertex_distance_t, int,
-    property<vertex_predecessor_t, vertex_descriptor>>>>, 
-    property<edge_weight_t, int>>;
+  using vertex_descriptor = boost::adjacency_list_traits<boost::listS, boost::listS, 
+    boost::directedS>::vertex_descriptor;
+  using graph_t = boost::adjacency_list<boost::listS, boost::listS, boost::directedS,
+    boost::property<boost::vertex_index_t, int, 
+    boost::property<boost::vertex_name_t, char,
+    boost::property<boost::vertex_distance_t, int,
+    boost::property<boost::vertex_predecessor_t, vertex_descriptor>>>>, 
+    boost::property<boost::edge_weight_t, int>>;
   using Edge = std::pair<int, int>;
 
   const int num_nodes = 5;
@@ -38,13 +36,13 @@ main(int, char *[])
   int num_arcs = sizeof(edge_array) / sizeof(Edge);
 
   graph_t g(edge_array, edge_array + num_arcs, weights, num_nodes);
-  auto weightmap = get(edge_weight, g);
+  auto weightmap = boost::get(boost::edge_weight, g);
 
   // Manually intialize the vertex index and name maps
-  auto indexmap = get(vertex_index, g);
-  auto name = get(vertex_name, g);
+  auto indexmap = boost::get(boost::vertex_index, g);
+  auto name = boost::get(boost::vertex_name, g);
   int c = 0;
-  for (const auto& vertex : make_range_pair(vertices(g))) {
+  for (const auto& vertex : make_range_pair(boost::vertices(g))) {
     indexmap[vertex] = c;
     name[vertex] = 'A' + c;
     ++c;
@@ -52,12 +50,12 @@ main(int, char *[])
 
   auto s = vertex(A, g);
 
-  auto d = get(vertex_distance, g);
-  auto p = get(vertex_predecessor, g);
-  dijkstra_shortest_paths(g, s, predecessor_map(p).distance_map(d));
+  auto d = boost::get(boost::vertex_distance, g);
+  auto p = boost::get(boost::vertex_predecessor, g);
+  boost::dijkstra_shortest_paths(g, s, boost::predecessor_map(p).distance_map(d));
 
   std::cout << "distances and parents:" << std::endl;
-  for(const auto& vertex : make_range_pair(vertices(g))) {
+  for(const auto& vertex : make_range_pair(boost::vertices(g))) {
     std::cout << "distance(" << name[vertex] << ") = " << d[vertex] << ", ";
     std::cout << "parent(" << name[vertex] << ") = " << name[p[vertex]] << std::endl;
   }
@@ -70,10 +68,10 @@ main(int, char *[])
     << "  ratio=\"fill\"\n"
     << "  edge[style=\"bold\"]\n" << "  node[shape=\"circle\"]\n";
 
-  for (const auto& e : make_range_pair(edges(g))) {
-    auto u = source(e, g), v = target(e, g);
+  for (const auto& e : make_range_pair(boost::edges(g))) {
+    auto u = boost::source(e, g), v = boost::target(e, g);
     dot_file << name[u] << " -> " << name[v]
-      << "[label=\"" << get(weightmap, e) << "\"";
+      << "[label=\"" << boost::get(weightmap, e) << "\"";
     if (p[v] == u)
       dot_file << ", color=\"black\"";
     else
