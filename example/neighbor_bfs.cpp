@@ -38,8 +38,6 @@
 
 */
 
-using namespace boost;
-
 template <class ParentDecorator>
 struct print_parent {
   print_parent(const ParentDecorator& p_) : p(p_) { }
@@ -51,10 +49,10 @@ struct print_parent {
 };
 
 template <class DistanceMap, class PredecessorMap, class ColorMap>
-class distance_and_pred_visitor : public neighbor_bfs_visitor<>
+class distance_and_pred_visitor : public boost::neighbor_bfs_visitor<>
 {
-  using ColorValue = typename property_traits<ColorMap>::value_type;
-  using Color = color_traits<ColorValue>;
+  using ColorValue = typename boost::property_traits<ColorMap>::value_type;
+  using Color = boost::color_traits<ColorValue>;
 public:
   distance_and_pred_visitor(DistanceMap d, PredecessorMap p, ColorMap c)
     : m_distance(d), m_predecessor(p), m_color(c) { }
@@ -62,15 +60,15 @@ public:
   template <class Edge, class Graph>
   void tree_out_edge(Edge e, const Graph& g) const
   {
-    auto u = source(e, g), v = target(e, g);
-    put(m_distance, v, get(m_distance, u) + 1);
+    auto u = boost::source(e, g), v = boost::target(e, g);
+    put(m_distance, v, boost::get(m_distance, u) + 1);
     put(m_predecessor, v, u);
   }
   template <class Edge, class Graph>
   void tree_in_edge(Edge e, const Graph& g) const
   {
-    auto u = source(e, g), v = target(e, g);
-    put(m_distance, u, get(m_distance, v) + 1);
+    auto u = boost::source(e, g), v = boost::target(e, g);
+    put(m_distance, u, boost::get(m_distance, v) + 1);
     put(m_predecessor, u, v);
   }
 
@@ -81,31 +79,31 @@ public:
 
 int main(int , char* []) 
 {
-  using Graph = adjacency_list< 
-    mapS, vecS, bidirectionalS,
-    property<vertex_color_t, default_color_type>
+  using Graph = boost::adjacency_list< 
+    boost::mapS, boost::vecS, boost::bidirectionalS,
+    boost::property<boost::vertex_color_t, boost::default_color_type>
   >;
 
-  using ColorMap = property_map<Graph, vertex_color_t>::type;
+  using ColorMap = boost::property_map<Graph, boost::vertex_color_t>::type;
   
   Graph G(5);
-  add_edge(0, 2, G);
-  add_edge(1, 1, G);
-  add_edge(1, 3, G);
-  add_edge(1, 4, G);
-  add_edge(2, 1, G);
-  add_edge(2, 3, G);
-  add_edge(2, 4, G);
-  add_edge(3, 1, G);
-  add_edge(3, 4, G);
-  add_edge(4, 0, G);
-  add_edge(4, 1, G);
+  boost::add_edge(0, 2, G);
+  boost::add_edge(1, 1, G);
+  boost::add_edge(1, 3, G);
+  boost::add_edge(1, 4, G);
+  boost::add_edge(2, 1, G);
+  boost::add_edge(2, 3, G);
+  boost::add_edge(2, 4, G);
+  boost::add_edge(3, 1, G);
+  boost::add_edge(3, 4, G);
+  boost::add_edge(4, 0, G);
+  boost::add_edge(4, 1, G);
 
   using Vertex = Graph::vertex_descriptor;
 
   // Array to store predecessor (parent) of each vertex. This will be
   // used as a Decorator (actually, its iterator will be).
-  std::vector<Vertex> p(num_vertices(G));
+  std::vector<Vertex> p(boost::num_vertices(G));
   // VC++ version of std::vector has no ::pointer, so
   // I use ::value_type* instead.
   using Piter = std::vector<Vertex>::value_type*;
@@ -113,22 +111,22 @@ int main(int , char* [])
   // Array to store distances from the source to each vertex .  We use
   // a built-in array here just for variety. This will also be used as
   // a Decorator.  
-  using size_type = graph_traits<Graph>::vertices_size_type;
+  using size_type = boost::graph_traits<Graph>::vertices_size_type;
   size_type d[5];
   std::fill_n(d, 5, 0);
 
   // The source vertex
-  auto s = *(vertices(G).first);
+  auto s = *(boost::vertices(G).first);
   p[s] = s;
   distance_and_pred_visitor<size_type*, Vertex*, ColorMap> 
-    vis(d, &p[0], get(vertex_color, G));
+    vis(d, &p[0], boost::get(boost::vertex_color, G));
   neighbor_breadth_first_search
-    (G, s, visitor(vis).
-     color_map(get(vertex_color, G)));
+    (G, s, boost::visitor(vis).
+     color_map(boost::get(boost::vertex_color, G)));
 
-  print_graph(G);
+  boost::print_graph(G);
 
-  if (num_vertices(G) < 11) {
+  if (boost::num_vertices(G) < 11) {
     std::cout << "distances: ";
 #ifdef BOOST_OLD_STREAM_ITERATORS
     std::copy(d, d + 5, std::ostream_iterator<int, char>(std::cout, " "));
@@ -137,7 +135,7 @@ int main(int , char* [])
 #endif
     std::cout << std::endl;
 
-    std::for_each(vertices(G).first, vertices(G).second, 
+    std::for_each(boost::vertices(G).first, vertices(G).second, 
                   print_parent<Piter>(&p[0]));
   }
 
