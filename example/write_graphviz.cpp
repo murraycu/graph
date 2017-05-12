@@ -4,7 +4,7 @@
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-// A simple example of using write_graphviz to output a BGL adjacency_list
+// A simple example of using write_graphviz to output a BGL boost::adjacency_list
 // graph in GraphViz Dot format.
 
 // Author: Doug Gregor
@@ -46,13 +46,12 @@ int main(int,char*[])
   int weights[nedges];
   std::fill(weights, weights + nedges, 1);
 
-  using namespace boost;
 
-  using Graph = adjacency_list<vecS, vecS, directedS, 
-      property<vertex_color_t, default_color_type>,
-      property<edge_weight_t, int>
+  using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS, 
+      boost::property<boost::vertex_color_t, boost::default_color_type>,
+      boost::property<boost::edge_weight_t, int>
     >;
   Graph g(used_by, used_by + nedges, weights, N);
 
-  write_graphviz(std::cout, g, make_label_writer(name));
+  boost::write_graphviz(std::cout, g, boost::make_label_writer(name));
 }
