@@ -13,7 +13,6 @@
 #include <boost/graph/adjacency_list.hpp>
 #include "range_pair.hpp"
 
-using namespace boost;
 
 
 /*
@@ -63,10 +62,10 @@ struct print_edge {
   using Vertex = typename boost::graph_traits<Graph>::vertex_descriptor;
   void operator()(Edge e) const
   {
-    auto id = get(vertex_index, G);
+    auto id = boost::get(boost::vertex_index, G);
 
-    auto src = source(e, G);
-    auto targ = target(e, G);
+    auto src = boost::source(e, G);
+    auto targ = boost::target(e, G);
 
     std::cout << "(" << id[src] << "," << id[targ] << ") ";
   }
@@ -81,7 +80,7 @@ struct print_index {
   using Vertex = typename boost::graph_traits<Graph>::vertex_descriptor;
   void operator()(Vertex c) const
   {
-    auto id = get(vertex_index, G);
+    auto id = boost::get(boost::vertex_index, G);
     std::cout << id[c] << " ";
   }
 
@@ -97,25 +96,25 @@ struct exercise_vertex {
 
   void operator()(Vertex v) const
   {
-    auto id = get(vertex_index, g);
+    auto id = boost::get(boost::vertex_index, g);
 
     std::cout << "vertex id: " << id[v] << std::endl;
     
     std::cout << "out-edges: ";
-    std::for_each(out_edges(v, g).first, out_edges(v,g).second, 
+    std::for_each(boost::out_edges(v, g).first, boost::out_edges(v,g).second, 
              print_edge<Graph>(g));
 
     std::cout << std::endl;
 
     std::cout << "in-edges: ";
-    std::for_each(in_edges(v, g).first, in_edges(v,g).second, 
+    std::for_each(boost::in_edges(v, g).first, boost::in_edges(v,g).second, 
              print_edge<Graph>(g));
 
     std::cout << std::endl;
     
     std::cout << "adjacent vertices: ";
-    std::for_each(adjacent_vertices(v,g).first, 
-             adjacent_vertices(v,g).second, print_index<Graph>(g));
+    std::for_each(boost::adjacent_vertices(v,g).first, 
+             boost::adjacent_vertices(v,g).second, print_index<Graph>(g));
     std::cout << std::endl << std::endl;
   }
 
@@ -126,7 +125,7 @@ struct exercise_vertex {
 int
 main()
 {
-  using MyGraphType = adjacency_list<vecS,vecS,bidirectionalS>;
+  using MyGraphType = boost::adjacency_list<boost::vecS,boost::vecS,boost::bidirectionalS>;
 
   using Pair = std::pair<int,int>;
   Pair edge_array[] = { Pair(0,1), Pair(0,2), Pair(0,3), Pair(0,4),
@@ -136,18 +135,18 @@ main()
   /* Construct a graph using the edge_array*/
   MyGraphType g(5);
   for (const auto& edge : edge_array)
-    add_edge(edge.first, edge.second, g);
+    boost::add_edge(edge.first, edge.second, g);
 
-  auto id = get(vertex_index, g);
+  auto id = boost::get(boost::vertex_index, g);
 
   std::cout << "vertices(g) = ";
-  for (const auto& vertex : make_range_pair(vertices(g)))
+  for (const auto& vertex : make_range_pair(boost::vertices(g)))
     std::cout << id[vertex] <<  " ";
   std::cout << std::endl;
 
   /* Use the STL for_each algorithm to "exercise" all
      of the vertices in the graph */
-  std::for_each(vertices(g).first, vertices(g).second,
+  std::for_each(boost::vertices(g).first, vertices(g).second,
            exercise_vertex<MyGraphType>(g));
 
   return 0;
