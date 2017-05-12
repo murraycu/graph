@@ -18,8 +18,6 @@
 #include <boost/progress.hpp>
 #include "range_pair.hpp"
 
-using namespace boost;
-
 void usage()
 {
   std::cerr << "Usage: fr_layout [options] <width> <height>\n"
@@ -39,10 +37,10 @@ void usage()
 using topology_type = boost::rectangle_topology<>;
 using point_type = topology_type::point_type;
 
-using Graph = adjacency_list<listS, vecS, undirectedS, 
-                       property<vertex_name_t, std::string>>;
+using Graph = boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, 
+                       boost::property<boost::vertex_name_t, std::string>>;
 
-using Vertex = graph_traits<Graph>::vertex_descriptor;
+using Vertex = boost::graph_traits<Graph>::vertex_descriptor;
 
 using NameToVertex = std::map<std::string, Vertex>;
 
@@ -50,18 +48,18 @@ Vertex get_vertex(const std::string& name, Graph& g, NameToVertex& names)
 {
   auto i = names.find(name);
   if (i == names.end())
-    i = names.insert(std::make_pair(name, add_vertex(name, g))).first;
+    i = names.insert(std::make_pair(name, boost::add_vertex(name, g))).first;
   return i->second;
 }
 
-class progress_cooling : public linear_cooling<double>
+class progress_cooling : public boost::linear_cooling<double>
 {
-  using inherited = linear_cooling<double>;
+  using inherited = boost::linear_cooling<double>;
 
  public:
   explicit progress_cooling(std::size_t iterations) : inherited(iterations) 
   {
-    display.reset(new progress_display(iterations + 1, std::cerr));
+    display.reset(new boost::progress_display(iterations + 1, std::cerr));
   }
 
   double operator()()
@@ -109,24 +107,24 @@ int main(int argc, char* argv[])
 
   std::string source, target;
   while (std::cin >> source >> target) {
-    add_edge(get_vertex(source, g, names), get_vertex(target, g, names), g);
+    boost::add_edge(get_vertex(source, g, names), get_vertex(target, g, names), g);
   }
   
   using PositionVec = std::vector<point_type>;
   PositionVec position_vec(num_vertices(g));
-  using PositionMap = iterator_property_map<PositionVec::iterator, 
-                                property_map<Graph, vertex_index_t>::type>;
-  PositionMap position(position_vec.begin(), get(vertex_index, g));
+  using PositionMap = boost::iterator_property_map<PositionVec::iterator, 
+                                boost::property_map<Graph, boost::vertex_index_t>::type>;
+  PositionMap position(position_vec.begin(), get(boost::vertex_index, g));
 
-  minstd_rand gen;
+  boost::minstd_rand gen;
   topology_type topo(gen, -width/2, -height/2, width/2, height/2);
-  random_graph_layout(g, position, topo);
-  fruchterman_reingold_force_directed_layout
+  boost::random_graph_layout(g, position, topo);
+  boost::fruchterman_reingold_force_directed_layout
     (g, position, topo,
      cooling(progress_cooling(iterations)));
 
   for (const auto& vertex : make_range_pair(vertices(g))) {
-    std::cout << get(vertex_name, g, vertex) << '\t'
+    std::cout << boost::get(boost::vertex_name, g, vertex) << '\t'
               << position[vertex][0] << '\t' << position[vertex][1] << std::endl;
   }
   return 0;
