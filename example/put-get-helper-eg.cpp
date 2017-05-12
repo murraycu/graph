@@ -17,9 +17,8 @@
 
 namespace foo
 {
-  using namespace boost;
     template <class RandomAccessIterator, class IndexMap>
-    class iterator_property_map:public boost::put_get_helper <
+    class iterator_property_map : public boost::put_get_helper <
     typename std::iterator_traits<RandomAccessIterator>::reference,
     iterator_property_map<RandomAccessIterator, IndexMap>>
   {
@@ -36,7 +35,7 @@ namespace foo
     }
     reference operator[] (std::ptrdiff_t v) const
     {
-      return *(iter + get(index, v));
+      return *(iter + boost::get(index, v));
     }
   protected:
       RandomAccessIterator iter;
@@ -51,7 +50,6 @@ main()
   using vec_t = std::vector<std::string>;
   using pmap_t = foo::iterator_property_map<vec_t::iterator,
     boost::identity_property_map>;
-  using namespace boost;
-  BOOST_CONCEPT_ASSERT(( Mutable_LvaluePropertyMapConcept<pmap_t, int> ));
+  BOOST_CONCEPT_ASSERT(( boost::Mutable_LvaluePropertyMapConcept<pmap_t, int> ));
   return 0;
 }
