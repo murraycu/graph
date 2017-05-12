@@ -16,8 +16,6 @@
 #include <boost/property_map/property_map.hpp>
 #include "range_pair.hpp"
 
-using namespace boost;
-
 using Position = std::pair<int, int>;
 Position
   knight_jumps[] = {
@@ -104,9 +102,9 @@ struct knights_tour_graph
   using degree_size_type = int;
   using vertices_size_type = int;
   using edges_size_type = int;
-  using directed_category = directed_tag;
-  using edge_parallel_category = disallow_parallel_edge_tag;
-  using traversal_category =  adjacency_graph_tag;
+  using directed_category = boost::directed_tag;
+  using edge_parallel_category = boost::disallow_parallel_edge_tag;
+  using traversal_category =  boost::adjacency_graph_tag;
   knights_tour_graph(int n):
   m_board_size(n)
   {
@@ -153,11 +151,11 @@ struct compare_first
 
 template <typename Graph, typename TimePropertyMap>
   bool backtracking_search(Graph & g,
-                           typename graph_traits <
+                           typename boost::graph_traits <
                            Graph >::vertex_descriptor src,
                            TimePropertyMap time_map)
 {
-  using Vertex = typename graph_traits<Graph>::vertex_descriptor;
+  using Vertex = typename boost::graph_traits<Graph>::vertex_descriptor;
   using P = std::pair<int, Vertex>;
   std::stack<P> S;
 
@@ -171,7 +169,7 @@ template <typename Graph, typename TimePropertyMap>
 
     bool deadend = true;
     for (const auto& vertex : make_range_pair(adjacent_vertices(x, g)))
-      if (get(time_map, vertex) == -1) {
+      if (boost::get(time_map, vertex) == -1) {
         S.push(std::make_pair(time_stamp + 1, vertex));
         deadend = false;
       }
@@ -180,7 +178,7 @@ template <typename Graph, typename TimePropertyMap>
       put(time_map, x, -1);
       S.pop();
       auto [time_stamp, x] = S.top();
-      while (get(time_map, x) != -1) {  // unwind stack to last unexplored vertex
+      while (boost::get(time_map, x) != -1) {  // unwind stack to last unexplored vertex
         put(time_map, x, -1);
         S.pop();
         std::tie(time_stamp, x) = S.top();
@@ -203,10 +201,10 @@ number_of_successors(Vertex x, Graph & g, TimePropertyMap time_map)
 
 template <typename Graph, typename TimePropertyMap>
   bool warnsdorff(Graph & g,
-                  typename graph_traits<Graph>::vertex_descriptor src,
+                  typename boost::graph_traits<Graph>::vertex_descriptor src,
                   TimePropertyMap time_map)
 {
-  using Vertex = typename graph_traits<Graph>::vertex_descriptor;
+  using Vertex = typename boost::graph_traits<Graph>::vertex_descriptor;
   using P = std::pair<int, Vertex>;
   std::stack<P> S;
 
@@ -252,7 +250,7 @@ struct board_map
 {
   using value_type = int;
   using key_type = Position;
-  using category = read_write_property_map_tag;
+  using category = boost::read_write_property_map_tag;
     board_map(int *b, int n):m_board(b), m_size(n)
   {
   }
