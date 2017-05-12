@@ -48,28 +48,26 @@
 int
 main()
 {
-  using namespace boost;
-
-  using Traits = adjacency_list_traits<vecS, vecS, directedS>;
-  using Graph = adjacency_list<listS, vecS, directedS, 
-    property<vertex_name_t, std::string>,
-    property<edge_capacity_t, long,
-      property<edge_residual_capacity_t, long,
-        property<edge_reverse_t, Traits::edge_descriptor>>>
+  using Traits = boost::adjacency_list_traits<boost::vecS, boost::vecS, boost::directedS>;
+  using Graph = boost::adjacency_list<boost::listS, boost::vecS, boost::directedS, 
+    boost::property<boost::vertex_name_t, std::string>,
+    boost::property<boost::edge_capacity_t, long,
+      boost::property<boost::edge_residual_capacity_t, long,
+        boost::property<boost::edge_reverse_t, Traits::edge_descriptor>>>
   >;
 
   Graph g;
 
-  auto capacity = get(edge_capacity, g);
-  auto rev = get(edge_reverse, g);
-  auto residual_capacity = get(edge_residual_capacity, g);
+  auto capacity = boost::get(boost::edge_capacity, g);
+  auto rev = boost::get(boost::edge_reverse, g);
+  auto residual_capacity = boost::get(boost::edge_residual_capacity, g);
 
   Traits::vertex_descriptor s, t;
   read_dimacs_max_flow(g, capacity, rev, s, t);
 
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
   // Use non-named parameter version
-  auto indexmap = get(vertex_index, g);
+  auto indexmap = boost::get(boost::vertex_index, g);
   auto flow = push_relabel_max_flow(g, s, t, capacity, residual_capacity, rev, indexmap);
 #else
   auto flow = push_relabel_max_flow(g, s, t);
@@ -79,10 +77,10 @@ main()
   std::cout << "s " << flow << std::endl << std::endl;
 
   std::cout << "c flow values:" << std::endl;
-  for (const auto& vertex : make_range_pair(vertices(g)))
-    for (const auto& edge : make_range_pair(out_edges(vertex, g)))
+  for (const auto& vertex : make_range_pair(boost::vertices(g)))
+    for (const auto& edge : make_range_pair(boost::out_edges(vertex, g)))
       if (capacity[edge] > 0)
-        std::cout << "f " << vertex << " " << target(edge, g) << " " 
+        std::cout << "f " << vertex << " " << boost::target(edge, g) << " " 
                   << (capacity[edge] - residual_capacity[edge]) << std::endl;
   
   return 0;
