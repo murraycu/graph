@@ -16,10 +16,9 @@
 int
 main()
 {
-  using namespace boost;
   using graph_t = GRAPH<std::string, char>;
   graph_t leda_g;
-  using vertex_t = graph_traits<graph_t>::vertex_descriptor;
+  using vertex_t = boost::graph_traits<graph_t>::vertex_descriptor;
   std::vector<vertex_t> vert(7);
   vert[0] = add_vertex(std::string("pick up kids from school"), leda_g);
   vert[1] = add_vertex(std::string("buy groceries (and snacks)"), leda_g);
@@ -30,16 +29,16 @@ main()
   vert[5] = add_vertex(std::string("pick up kids from soccer"), leda_g);
   vert[6] = add_vertex(std::string("eat dinner"), leda_g);
 
-  add_edge(vert[0], vert[3], leda_g);
-  add_edge(vert[1], vert[3], leda_g);
-  add_edge(vert[1], vert[4], leda_g);
-  add_edge(vert[2], vert[1], leda_g);
-  add_edge(vert[3], vert[5], leda_g);
-  add_edge(vert[4], vert[6], leda_g);
-  add_edge(vert[5], vert[6], leda_g);
+  boost::add_edge(vert[0], vert[3], leda_g);
+  boost::add_edge(vert[1], vert[3], leda_g);
+  boost::add_edge(vert[1], vert[4], leda_g);
+  boost::add_edge(vert[2], vert[1], leda_g);
+  boost::add_edge(vert[3], vert[5], leda_g);
+  boost::add_edge(vert[4], vert[6], leda_g);
+  boost::add_edge(vert[5], vert[6], leda_g);
 
   std::vector<vertex_t> topo_order;
-  node_array<default_color_type> color_array(leda_g);
+  node_array<boost::default_color_type> color_array(leda_g);
 
   topological_sort(leda_g, std::back_inserter(topo_order),
                    color_map(make_leda_node_property_map(color_array)));
