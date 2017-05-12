@@ -17,10 +17,8 @@
 #include "range_pair.hpp"
 #include <map>
 
-using namespace boost;
-
 template <typename DistanceMap>
-class bacon_number_recorder : public default_bfs_visitor
+class bacon_number_recorder : public boost::default_bfs_visitor
 {
 public:
   bacon_number_recorder(DistanceMap dist) : d(dist) { }
@@ -28,8 +26,8 @@ public:
   template <typename Edge, typename Graph>
   void tree_edge(Edge e, const Graph& g) const
   {
-    typename graph_traits<Graph>::vertex_descriptor
-      u = source(e, g), v = target(e, g);
+    typename boost::graph_traits<Graph>::vertex_descriptor
+      u = boost::source(e, g), v = boost::target(e, g);
       d[v] = d[u] + 1;
   }
 private:
@@ -54,21 +52,21 @@ main()
     return EXIT_FAILURE;
   }
 
-  using Graph = adjacency_list <vecS, vecS, undirectedS,
-    property<vertex_name_t, std::string>,
-    property<edge_name_t, std::string>>;
+  using Graph = boost::adjacency_list <boost::vecS, boost::vecS, boost::undirectedS,
+    boost::property<boost::vertex_name_t, std::string>,
+    boost::property<boost::edge_name_t, std::string>>;
   Graph g;
 
-  auto actor_name = get(vertex_name, g);
-  auto connecting_movie = get(edge_name, g);
+  auto actor_name = boost::get(boost::vertex_name, g);
+  auto connecting_movie = boost::get(boost::edge_name, g);
 
-  using Vertex = graph_traits<Graph>::vertex_descriptor;
+  using Vertex = boost::graph_traits<Graph>::vertex_descriptor;
   using NameVertexMap = std::map<std::string, Vertex>;
   NameVertexMap actors;
 
   for (std::string line; std::getline(datafile, line);) {
-    char_delimiters_separator<char> sep(false, "", ";");
-    tokenizer <> line_toks(line, sep);
+    boost::char_delimiters_separator<char> sep(false, "", ";");
+    boost::tokenizer <> line_toks(line, sep);
     auto i = line_toks.begin();
     auto actors_name = *i++;
     Vertex u, v;
@@ -90,21 +88,21 @@ main()
     } else
       v = pos->second;
 
-    auto [e, insertede] = add_edge(u, v, g);
+    auto [e, insertede] = boost::add_edge(u, v, g);
     if (insertede)
       connecting_movie[e] = movie_name;
 
   }
 
-  std::vector<int>bacon_number(num_vertices(g));
+  std::vector<int>bacon_number(boost::num_vertices(g));
 
   Vertex src = actors["Kevin Bacon"];
   bacon_number[src] = 0;
 
-  breadth_first_search(g, src,
-                       visitor(record_bacon_number(&bacon_number[0])));
+  boost::breadth_first_search(g, src,
+                       boost::visitor(record_bacon_number(&bacon_number[0])));
 
-  for (const auto& vertex : make_range_pair(vertices(g))) {
+  for (const auto& vertex : make_range_pair(boost::vertices(g))) {
     std::cout << actor_name[vertex] << " has a Bacon number of "
       << bacon_number[vertex] << std::endl;
   }
