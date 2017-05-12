@@ -42,8 +42,6 @@
 #include <boost/graph/visitors.hpp>
 #include "range_pair.hpp"
 
-using namespace boost;
-
 enum files_e { dax_h, yow_h, boz_h, zow_h, foo_cpp, 
                foo_o, bar_cpp, bar_o, libfoobar_a,
                zig_cpp, zig_o, zag_cpp, zag_o, 
@@ -54,7 +52,7 @@ const char* name[] = { "dax.h", "yow.h", "boz.h", "zow.h", "foo.cpp",
                        "libzigzag.a", "killerapp" };
 
 
-struct print_visitor : public bfs_visitor<> {
+struct print_visitor : public boost:: bfs_visitor<> {
   template <class Vertex, class Graph>
   void discover_vertex(Vertex v, Graph&) {
     std::cout << name[v] << " ";
@@ -62,7 +60,7 @@ struct print_visitor : public bfs_visitor<> {
 };
 
 
-struct cycle_detector : public dfs_visitor<>
+struct cycle_detector : public boost::dfs_visitor<>
 {
   cycle_detector(bool& has_cycle) 
     : m_has_cycle(has_cycle) { }
@@ -98,17 +96,17 @@ int main(int,char*[])
   };
   const std::size_t nedges = sizeof(used_by)/sizeof(Edge);
 
-  using Graph = adjacency_list<vecS, vecS, bidirectionalS>;
+  using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::bidirectionalS>;
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
   // VC++ can't handle the iterator constructor
   Graph g(N);
   for (std::size_t j = 0; j < nedges; ++j) {
-    const auto [e, inserted] = add_edge(used_by[j].first, used_by[j].second, g);
+    const auto [e, inserted] = boost::add_edge(used_by[j].first, used_by[j].second, g);
   }
 #else
   Graph g(used_by, used_by + nedges, N);
 #endif
-  using Vertex = graph_traits<Graph>::vertex_descriptor;
+  using Vertex = boost::graph_traits<Graph>::vertex_descriptor;
 
   // Determine ordering for a full recompilation
   // and the order with files that can be compiled in parallel
@@ -132,8 +130,8 @@ int main(int,char*[])
         int maxdist=0;
         // Through the order from topological sort, we are sure that every 
         // time we are using here is already initialized.
-        for (const auto& edge :  make_range_pair(in_edges(vertex, g)))
-          maxdist=(std::max)(time[source(edge, g)], maxdist);
+        for (const auto& edge :  make_range_pair(boost::in_edges(vertex, g)))
+          maxdist=(std::max)(time[boost::source(edge, g)], maxdist);
         time[*i]=maxdist+1;
       }
     }
@@ -141,7 +139,7 @@ int main(int,char*[])
     std::cout << "parallel make ordering, " << std::endl
          << "vertices with same group number can be made in parallel" << std::endl;
     {
-      for (const auto& vertex : make_range_pair(vertices(g)))
+      for (const auto& vertex : make_range_pair(boost::vertices(g)))
         std::cout << "time_slot[" << name[vertex] << "] = " << time[vertex] << std::endl;
     }
 
@@ -152,7 +150,7 @@ int main(int,char*[])
   {
     std::cout << "A change to yow.h will cause what to be re-made?" << std::endl;
     print_visitor vis;
-    breadth_first_search(g, vertex(yow_h, g), visitor(vis));
+    boost::breadth_first_search(g, vertex(yow_h, g), boost::visitor(vis));
     std::cout << std::endl;
   }
   std::cout << std::endl;
@@ -161,7 +159,7 @@ int main(int,char*[])
   {
     bool has_cycle = false;
     cycle_detector vis(has_cycle);
-    depth_first_search(g, visitor(vis));
+    boost::depth_first_search(g, boost::visitor(vis));
     std::cout << "The graph has a cycle? " << has_cycle << std::endl;
   }
   std::cout << std::endl;
@@ -169,7 +167,7 @@ int main(int,char*[])
   // add a dependency going from bar.cpp to dax.h
   {
     std::cout << "adding edge bar_cpp -> dax_h" << std::endl;
-    add_edge(bar_cpp, dax_h, g);
+    boost::add_edge(bar_cpp, dax_h, g);
   }
   std::cout << std::endl;
 
@@ -177,7 +175,7 @@ int main(int,char*[])
   {
     bool has_cycle = false;
     cycle_detector vis(has_cycle);
-    depth_first_search(g, visitor(vis));
+    boost::depth_first_search(g, boost::visitor(vis));
     std::cout << "The graph has a cycle now? " << has_cycle << std::endl;
   }
 
