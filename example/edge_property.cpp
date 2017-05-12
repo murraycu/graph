@@ -56,10 +56,6 @@
 #include <boost/graph/adjacency_list.hpp>
 #include "range_pair.hpp"
 
-
-using namespace boost;
-
-
 enum edge_myflow_t { edge_myflow };
 enum edge_mycapacity_t { edge_mycapacity };
 
@@ -72,20 +68,20 @@ namespace boost {
 template <class Graph>
 void print_network(const Graph& G)
 {
-  auto capacity = get(edge_mycapacity, G);
-  auto flow = get(edge_myflow, G);
+  auto capacity = boost::get(edge_mycapacity, G);
+  auto flow = boost::get(edge_myflow, G);
 
-  for (const auto& vertex : make_range_pair(vertices(G))) {
+  for (const auto& vertex : make_range_pair(boost::vertices(G))) {
     std::cout << vertex << "\t";
 
-    for (const auto& edge : make_range_pair(out_edges(vertex, G)))
+    for (const auto& edge : make_range_pair(boost::out_edges(vertex, G)))
       std::cout << "--(" << capacity[edge] << ", " << flow[edge] << ")--> "
-           << target(edge,G) << "\t";
+           << boost::target(edge,G) << "\t";
 
     std::cout << std::endl << "\t";
-    for (const auto& edge : make_range_pair(in_edges(vertex, G)))
+    for (const auto& edge : make_range_pair(boost::in_edges(vertex, G)))
       std::cout << "<--(" << capacity[edge] << "," << flow[edge] << ")-- "
-           << source(edge, G) << "\t";
+           << boost::source(edge, G) << "\t";
 
     std::cout << std::endl;
   }
@@ -94,10 +90,10 @@ void print_network(const Graph& G)
 
 int main(int , char* [])
 {
-  using Cap = property<edge_mycapacity_t, int>;
-  using Flow = property<edge_myflow_t, int, Cap>;
-  using Graph = adjacency_list<vecS, vecS, bidirectionalS, 
-     no_property, Flow>;
+  using Cap = boost::property<edge_mycapacity_t, int>;
+  using Flow = boost::property<edge_myflow_t, int, Cap>;
+  using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::bidirectionalS, 
+     boost::no_property, Flow>;
 
   const int num_vertices = 9;
   Graph G(num_vertices);
@@ -113,28 +109,28 @@ int main(int , char* [])
              4----->7
    */
 
-  add_edge(0, 1, Flow(10, Cap(8)), G);
+  boost::add_edge(0, 1, Flow(10, Cap(8)), G);
 
-  add_edge(1, 4, Flow(20, Cap(12)), G);
-  add_edge(4, 7, Flow(20, Cap(12)), G);
-  add_edge(7, 6, Flow(20, Cap(12)), G);
+  boost::add_edge(1, 4, Flow(20, Cap(12)), G);
+  boost::add_edge(4, 7, Flow(20, Cap(12)), G);
+  boost::add_edge(7, 6, Flow(20, Cap(12)), G);
 
-  add_edge(1, 3, Flow(40, Cap(12)), G);
-  add_edge(3, 6, Flow(40, Cap(12)), G);
+  boost::add_edge(1, 3, Flow(40, Cap(12)), G);
+  boost::add_edge(3, 6, Flow(40, Cap(12)), G);
 
-  add_edge(6, 5, Flow(20, Cap(16)), G);
-  add_edge(5, 2, Flow(20, Cap(16)), G);
-  add_edge(2, 1, Flow(20, Cap(16)), G);
+  boost::add_edge(6, 5, Flow(20, Cap(16)), G);
+  boost::add_edge(5, 2, Flow(20, Cap(16)), G);
+  boost::add_edge(2, 1, Flow(20, Cap(16)), G);
 
-  add_edge(6, 8, Flow(10, Cap(8)), G);
+  boost::add_edge(6, 8, Flow(10, Cap(8)), G);
 
   print_network(G);
 
-  auto flow = get(edge_myflow, G);
+  auto flow = boost::get(edge_myflow, G);
 
   int f = 0;
-  for (const auto& vertex : make_range_pair(vertices(G)))
-    for (const auto& edge : make_range_pair(out_edges(vertex, G)))
+  for (const auto& vertex : make_range_pair(boost::vertices(G)))
+    for (const auto& edge : make_range_pair(boost::out_edges(vertex, G)))
       flow[edge] = ++f;
   std::cout << std::endl << std::endl;
 
