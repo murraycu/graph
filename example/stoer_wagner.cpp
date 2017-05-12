@@ -42,10 +42,10 @@ int main()
   
   // define a property map, `parities`, that will store a boolean value for each vertex.
   // Vertices that have the same parity after `stoer_wagner_min_cut` runs are on the same side of the min-cut.
-  BOOST_AUTO(parities, boost::make_one_bit_color_map(num_vertices(g), get(boost::vertex_index, g)));
+  BOOST_AUTO(parities, boost::make_one_bit_color_map(boost::num_vertices(g), boost::get(boost::vertex_index, g)));
   
   // run the Stoer-Wagner algorithm to obtain the min-cut weight. `parities` is also filled in.
-  auto w = boost::stoer_wagner_min_cut(g, get(boost::edge_weight, g), boost::parity_map(parities));
+  auto w = boost::stoer_wagner_min_cut(g, boost::get(boost::edge_weight, g), boost::parity_map(parities));
   
   std::cout << "The min-cut weight of G is " << w << ".\n" << std::endl;
   assert(w == 7);
@@ -53,7 +53,7 @@ int main()
   std::cout << "One set of vertices consists of:" << std::endl;
   size_t i;
   for (i = 0; i < num_vertices(g); ++i) {
-    if (get(parities, i))
+    if (boost::get(parities, i))
       std::cout << i << std::endl;
   }
   std::cout << std::endl;
