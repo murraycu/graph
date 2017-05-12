@@ -39,31 +39,29 @@ struct positive_edge_weight {
 
 int main()
 {
-  using namespace boost;
-  
-  using Graph = adjacency_list<vecS, vecS, directedS,
-    no_property, property<edge_weight_t, int>>;
-  using EdgeWeightMap = property_map<Graph, edge_weight_t>::type;
+  using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS,
+    boost::no_property, boost::property<boost::edge_weight_t, int>>;
+  using EdgeWeightMap = boost::property_map<Graph, boost::edge_weight_t>::type;
 
   enum { A, B, C, D, E, N };
   const char* name = "ABCDE";
   Graph g(N);
-  add_edge(A, B, 2, g);
-  add_edge(A, C, 0, g);
-  add_edge(C, D, 1, g);
-  add_edge(C, E, 0, g);
-  add_edge(D, B, 3, g);
-  add_edge(E, C, 0, g);
+  boost::add_edge(A, B, 2, g);
+  boost::add_edge(A, C, 0, g);
+  boost::add_edge(C, D, 1, g);
+  boost::add_edge(C, E, 0, g);
+  boost::add_edge(D, B, 3, g);
+  boost::add_edge(E, C, 0, g);
   
-  positive_edge_weight<EdgeWeightMap> filter(get(edge_weight, g));
-  filtered_graph<Graph, positive_edge_weight<EdgeWeightMap>>
+  positive_edge_weight<EdgeWeightMap> filter(boost::get(boost::edge_weight, g));
+  boost::filtered_graph<Graph, positive_edge_weight<EdgeWeightMap>>
     fg(g, filter);
 
   std::cout << "filtered edge set: ";
-  print_edges(fg, name);
+  boost::print_edges(fg, name);
 
   std::cout << "filtered out-edges:" << std::endl;
-  print_graph(fg, name);
+  boost::print_graph(fg, name);
   
   return 0;
 }
