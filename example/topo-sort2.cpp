@@ -14,7 +14,6 @@
 int
 main()
 {
-  using namespace boost;
   const char *tasks[] = {
     "pick up kids from school",
     "buy groceries (and snacks)",
@@ -26,20 +25,20 @@ main()
   };
   const int n_tasks = sizeof(tasks) / sizeof(char *);
 
-  adjacency_list<listS, vecS, directedS> g(n_tasks);
+  boost::adjacency_list<boost::listS, boost::vecS, boost::directedS> g(n_tasks);
 
-  add_edge(0, 3, g);
-  add_edge(1, 3, g);
-  add_edge(1, 4, g);
-  add_edge(2, 1, g);
-  add_edge(3, 5, g);
-  add_edge(4, 6, g);
-  add_edge(5, 6, g);
+  boost::add_edge(0, 3, g);
+  boost::add_edge(1, 3, g);
+  boost::add_edge(1, 4, g);
+  boost::add_edge(2, 1, g);
+  boost::add_edge(3, 5, g);
+  boost::add_edge(4, 6, g);
+  boost::add_edge(5, 6, g);
 
   std::deque<int> topo_order;
 
-  topological_sort(g, std::front_inserter(topo_order),
-                   vertex_index_map(identity_property_map()));
+  boost::topological_sort(g, std::front_inserter(topo_order),
+                   boost::vertex_index_map(boost::identity_property_map()));
 
   for (const auto& vertex : topo_order)
     std::cout << tasks[vertex] << std::endl;
