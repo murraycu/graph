@@ -16,22 +16,19 @@
 #include <boost/graph/graphviz.hpp>
 #include "range_pair.hpp"
 
-using namespace boost;
-
 template <class Graph> struct exercise_vertex {
   exercise_vertex(Graph& g_, const char name_[]) : g(g_),name(name_) { }
-  using Vertex = typename graph_traits<Graph>::vertex_descriptor;
+  using Vertex = typename boost::graph_traits<Graph>::vertex_descriptor;
   void operator()(const Vertex& v) const
   {
-    using namespace boost;
-    auto vertex_id = get(vertex_index, g);
+    auto vertex_id = boost::get(boost::vertex_index, g);
     std::cout << "vertex: " << name[get(vertex_id, v)] << std::endl;
 
     // Write out the outgoing edges
     std::cout << "\tout-edges: ";
-    for (const auto& e : make_range_pair(out_edges(v, g)))
+    for (const auto& e : make_range_pair(boost::out_edges(v, g)))
     {
-      auto src = source(e, g), targ = target(e, g);
+      auto src = boost::source(e, g), targ = boost::target(e, g);
       std::cout << "(" << name[get(vertex_id, src)]
                 << "," << name[get(vertex_id, targ)] << ") ";
     }
@@ -39,9 +36,9 @@ template <class Graph> struct exercise_vertex {
 
     // Write out the incoming edges
     std::cout << "\tin-edges: ";
-    for (const auto& e : make_range_pair(in_edges(v, g)))
+    for (const auto& e : make_range_pair(boost::in_edges(v, g)))
     {
-      auto src = source(e, g), targ = target(e, g);
+      auto src = boost::source(e, g), targ = boost::target(e, g);
       std::cout << "(" << name[get(vertex_id, src)]
                 << "," << name[get(vertex_id, targ)] << ") ";
     }
@@ -49,7 +46,7 @@ template <class Graph> struct exercise_vertex {
 
     // Write out all adjacent vertices
     std::cout << "\tadjacent vertices: ";
-    for (const auto& vertex : make_range_pair(adjacent_vertices(v, g)))
+    for (const auto& vertex : make_range_pair(boost::adjacent_vertices(v, g)))
       std::cout << name[get(vertex_id, vertex)] <<  " ";
     std::cout << std::endl;
   }
@@ -61,8 +58,8 @@ template <class Graph> struct exercise_vertex {
 int main(int,char*[])
 {
   // create an alias for the Graph type
-  using Graph = adjacency_list<vecS, vecS, bidirectionalS,
-     no_property, property<edge_weight_t, float>>;
+  using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::bidirectionalS,
+     boost::no_property, boost::property<boost::edge_weight_t, float>>;
 
   // Make convenient labels for the vertices
   enum { A, B, C, D, E, N };
@@ -83,9 +80,9 @@ int main(int,char*[])
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
   // VC++ can't handle the iterator constructor
   Graph g(num_vertices);
-  auto weightmap = get(edge_weight, g);
+  auto weightmap = boost::get(boost::edge_weight, g);
   for (std::size_t j = 0; j < num_edges; ++j) {
-    auto [e, inserted] = add_edge(edge_array[j].first, edge_array[j].second, g);
+    auto [e, inserted] = boost::add_edge(edge_array[j].first, edge_array[j].second, g);
     weightmap[e] = transmission_delay[j];
   }
 #else
@@ -93,21 +90,21 @@ int main(int,char*[])
           transmission_delay, num_vertices);
 #endif
 
-  auto vertex_id = get(vertex_index, g);
-  auto trans_delay = get(edge_weight, g);
+  auto vertex_id = boost::get(boost::vertex_index, g);
+  auto trans_delay = boost::get(boost::edge_weight, g);
 
   std::cout << "vertices(g) = ";
-  for (const auto& vertex : make_range_pair(vertices(g)))
+  for (const auto& vertex : make_range_pair(boost::vertices(g)))
     std::cout << name[get(vertex_id, vertex)] <<  " ";
   std::cout << std::endl;
 
   std::cout << "edges(g) = ";
-  for (const auto& edge : make_range_pair(edges(g)))
-    std::cout << "(" << name[get(vertex_id, source(edge, g))]
-              << "," << name[get(vertex_id, target(edge, g))] << ") ";
+  for (const auto& edge : make_range_pair(boost::edges(g)))
+    std::cout << "(" << name[get(vertex_id, boost::source(edge, g))]
+              << "," << name[get(vertex_id, boost::target(edge, g))] << ") ";
   std::cout << std::endl;
 
-  std::for_each(vertices(g).first, vertices(g).second,
+  std::for_each(boost::vertices(g).first, vertices(g).second,
                 exercise_vertex<Graph>(g, name));
 
   std::map<std::string,std::string> graph_attr, vertex_attr, edge_attr;
@@ -117,9 +114,9 @@ int main(int,char*[])
   vertex_attr["shape"] = "circle";
 
   boost::write_graphviz(std::cout, g,
-                        make_label_writer(name),
-                        make_label_writer(trans_delay),
-                        make_graph_attributes_writer(graph_attr, vertex_attr,
+                        boost::make_label_writer(name),
+                        boost::make_label_writer(trans_delay),
+                        boost::make_graph_attributes_writer(graph_attr, vertex_attr,
                                                      edge_attr));
 
   return 0;
