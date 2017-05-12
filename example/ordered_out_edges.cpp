@@ -77,27 +77,26 @@ main()
 #ifdef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
   std::cout << "This program requires partial specialization" << std::endl;
 #else
-  using namespace boost;
-  using EdgeProperty = property<edge_name_t, std::string>;
-  using graph_type = adjacency_list<ordered_set_by_nameS, vecS, undirectedS,
-    no_property, EdgeProperty>;
+  using EdgeProperty = boost::property<boost::edge_name_t, std::string>;
+  using graph_type = boost::adjacency_list<ordered_set_by_nameS, boost::vecS, boost::undirectedS,
+    boost::no_property, EdgeProperty>;
   graph_type g;
   
-  add_edge(0, 1, EdgeProperty("joe"), g);
-  add_edge(1, 2, EdgeProperty("curly"), g);
-  add_edge(1, 3, EdgeProperty("dick"), g);
-  add_edge(1, 3, EdgeProperty("dick"), g);
-  add_edge(2, 4, EdgeProperty("tom"), g);
-  add_edge(3, 4, EdgeProperty("harry"), g);
-  add_edge(0, 1, EdgeProperty("chandler"), g);
+  boost::add_edge(0, 1, EdgeProperty("joe"), g);
+  boost::add_edge(1, 2, EdgeProperty("curly"), g);
+  boost::add_edge(1, 3, EdgeProperty("dick"), g);
+  boost::add_edge(1, 3, EdgeProperty("dick"), g);
+  boost::add_edge(2, 4, EdgeProperty("tom"), g);
+  boost::add_edge(3, 4, EdgeProperty("harry"), g);
+  boost::add_edge(0, 1, EdgeProperty("chandler"), g);
 
-  auto id = get(vertex_index, g);
-  auto name = get(edge_name, g);
+  auto id = boost::get(boost::vertex_index, g);
+  auto name = boost::get(boost::edge_name, g);
 
-  for (const auto& vertex : make_range_pair(vertices(g))) {
+  for (const auto& vertex : make_range_pair(boost::vertices(g))) {
     std::cout << id[vertex] << " ";
-    for (const auto& edge : make_range_pair(out_edges(vertex, g)))
-      std::cout << " --" << name[edge] << "--> " << id[target(edge, g)] << "  ";
+    for (const auto& edge : make_range_pair(boost::out_edges(vertex, g)))
+      std::cout << " --" << name[edge] << "--> " << id[boost::target(edge, g)] << "  ";
     std::cout << std::endl;
   }
   std::cout << std::endl;
