@@ -44,16 +44,15 @@
 #include <boost/graph/breadth_first_search.hpp>
 #include <boost/graph/depth_first_search.hpp>
 
-using namespace boost;
 
 template <class Tag>
-struct edge_printer : public base_visitor<edge_printer<Tag>> {
+struct edge_printer : public boost::base_visitor<edge_printer<Tag>> {
   using event_filter = Tag;
   edge_printer(std::string edge_t) : m_edge_type(edge_t) { }
   template <class Edge, class Graph>
   void operator()(Edge e, Graph& G) {
-    std::cout << m_edge_type << ": " << source(e, G) 
-              << " --> " <<  target(e, G) << std::endl;
+    std::cout << m_edge_type << ": " << boost::source(e, G) 
+              << " --> " <<  boost::target(e, G) << std::endl;
   }
   std::string m_edge_type;
 };
@@ -66,9 +65,8 @@ int
 main(int, char*[])
 {
 
-  using namespace boost;
   
-  using Graph = adjacency_list<>;
+  using Graph = boost::adjacency_list<>;
   using E = std::pair<int,int>;
   const auto edges = { E(0, 2),
                 E(1, 1), E(1, 3),
@@ -79,21 +77,21 @@ main(int, char*[])
 
   using size_type = boost::graph_traits<Graph>::vertices_size_type;
   
-  std::vector<size_type> d(num_vertices(G));  
-  std::vector<size_type> f(num_vertices(G));
+  std::vector<size_type> d(boost::num_vertices(G));  
+  std::vector<size_type> f(boost::num_vertices(G));
 
   std::cout << "DFS categorized directed graph" << std::endl;
-  depth_first_search(G, visitor(make_dfs_visitor(
-      make_list(print_edge("tree", on_tree_edge()),
-                print_edge("back", on_back_edge()),
-                print_edge("forward or cross", on_forward_or_cross_edge())
+  boost::depth_first_search(G, boost::visitor(boost::make_dfs_visitor(
+      make_list(print_edge("tree", boost::on_tree_edge()),
+                print_edge("back", boost::on_back_edge()),
+                print_edge("forward or cross", boost::on_forward_or_cross_edge())
                 ))));
 
   std::cout << std::endl << "BFS categorized directed graph" << std::endl;
   boost::breadth_first_search
-    (G, vertex(0, G), visitor(make_bfs_visitor(
-     std::make_pair(print_edge("tree", on_tree_edge()),
-                    print_edge("cycle", on_non_tree_edge())))));
+    (G, vertex(0, G), boost::visitor(boost::make_bfs_visitor(
+     std::make_pair(print_edge("tree", boost::on_tree_edge()),
+                    print_edge("cycle", boost::on_non_tree_edge())))));
 
   return 0;
 }
