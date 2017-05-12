@@ -13,7 +13,6 @@
 #include <boost/graph/graph_utility.hpp>
 #include "range_pair.hpp"
 
-using namespace boost;
 
 namespace std
 {
@@ -25,20 +24,20 @@ namespace std
   }
 }
 
-using file_dep_graph = adjacency_list<listS, // Store out-edges of each vertex in a std::list
-  vecS,                         // Store vertex set in a std::vector
-  directedS                     // The file dependency graph is directed
+using file_dep_graph = boost::adjacency_list<boost::listS, // Store out-edges of each vertex in a std::list
+  boost::vecS,                         // Store vertex set in a std::vector
+  boost::directedS                     // The file dependency graph is directed
 >;
 
-using vertex_t = graph_traits<file_dep_graph>::vertex_descriptor;
-using edge_t = graph_traits<file_dep_graph>::edge_descriptor;
+using vertex_t = boost::graph_traits<file_dep_graph>::vertex_descriptor;
+using edge_t = boost::graph_traits<file_dep_graph>::edge_descriptor;
 
 void
 topo_sort_dfs(const file_dep_graph & g, vertex_t u, vertex_t * &topo_order,
               int *mark)
 {
   mark[u] = 1;                  // 1 means visited, 0 means not yet visited
-  for (const auto& vertex : make_range_pair(adjacent_vertices(u, g)))
+  for (const auto& vertex : make_range_pair(boost::adjacent_vertices(u, g)))
     if (mark[vertex] == 0)
       topo_sort_dfs(g, vertex, topo_order, mark);
 
@@ -48,8 +47,8 @@ topo_sort_dfs(const file_dep_graph & g, vertex_t u, vertex_t * &topo_order,
 void
 topo_sort(const file_dep_graph & g, vertex_t * topo_order)
 {
-  std::vector<int>mark(num_vertices(g), 0);
-  for (const auto& vertex : make_range_pair(vertices(g)))
+  std::vector<int>mark(boost::num_vertices(g), 0);
+  for (const auto& vertex : make_range_pair(boost::vertices(g)))
     if (mark[vertex] == 0)
       topo_sort_dfs(g, vertex, topo_order, &mark[0]);
 }
@@ -59,7 +58,7 @@ int
 main()
 {
   std::ifstream file_in("makefile-dependencies.dat");
-  using size_type = graph_traits<file_dep_graph>::vertices_size_type;
+  using size_type = boost::graph_traits<file_dep_graph>::vertices_size_type;
   size_type n_vertices;
   file_in >> n_vertices;        // read in number of vertices
   std::istream_iterator<std::pair<size_type, size_type>> 
@@ -69,18 +68,18 @@ main()
   file_dep_graph g(n_vertices);
   while (input_begin != input_end) {
     auto [i, j] = *input_begin++;
-    add_edge(i, j, g);
+    boost::add_edge(i, j, g);
   }
 #else
   file_dep_graph g(input_begin, input_end, n_vertices);
 #endif
 
-  std::vector<std::string> name(num_vertices(g));
+  std::vector<std::string> name(boost::num_vertices(g));
   std::ifstream name_in("makefile-target-names.dat");
-  for (const auto& vertex : make_range_pair(vertices(g)))
+  for (const auto& vertex : make_range_pair(boost::vertices(g)))
     name_in >> name[vertex];
 
-  std::vector<vertex_t> order(num_vertices(g));
+  std::vector<vertex_t> order(boost::num_vertices(g));
   topo_sort(g, &order[0] + num_vertices(g));
   for (size_type i = 0; i < num_vertices(g); ++i)
     std::cout << name[order[i]] << std::endl;
