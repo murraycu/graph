@@ -36,8 +36,6 @@ struct constant_target {
 
 int main()
 {
-  using namespace boost;
-  
   enum { A, B, C, D, E };
   const char* name = "ABCDE";
   using Graph = std::vector<std::list<int>>;
@@ -49,10 +47,10 @@ int main()
     {C}}; //E
 
   constant_target filter(E);
-  filtered_graph<Graph, constant_target> fg(g, filter);
+  boost::filtered_graph<Graph, constant_target> fg(g, filter);
 
   std::cout << "filtered out-edges:" << std::endl;
-  print_graph(fg, name);
+  boost::print_graph(fg, name);
   
   return 0;
 }
