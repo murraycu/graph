@@ -12,8 +12,6 @@
 
 #include "helper.hpp"
 
-using namespace boost;
-
 // The cycle_printer is a visitor that will print the path that comprises
 // the cycle. Note that the back() vertex of the path is not the same as
 // the front(). It is implicit in the listing of vertices that the back()
@@ -30,11 +28,11 @@ struct cycle_printer
     {
         // Get the property map containing the vertex indices
         // so we can print them.
-        auto indices = get(vertex_index, g);
+        auto indices = boost::get(boost::vertex_index, g);
 
         // Iterate over path printing each vertex that forms the cycle.
         for(const auto& vertex : p) {
-            os << get(indices, vertex) << " ";
+            os << boost::get(indices, vertex) << " ";
         }
         os << std::endl;
     }
@@ -42,9 +40,9 @@ struct cycle_printer
 };
 
 // Declare the graph type and its vertex and edge types.
-using Graph = directed_graph<>;
-using Vertex = graph_traits<Graph>::vertex_descriptor;
-using Edge = graph_traits<Graph>::edge_descriptor;
+using Graph = boost::directed_graph<>;
+using Vertex = boost::graph_traits<Graph>::vertex_descriptor;
+using Edge = boost::graph_traits<Graph>::edge_descriptor;
 
 int
 main(int argc, char *argv[])
