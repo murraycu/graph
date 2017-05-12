@@ -15,38 +15,34 @@
 #include <boost/graph/connected_components.hpp>
 #include <boost/graph/make_connected.hpp>
 
-
-
-using namespace boost;
-
 int main(int argc, char** argv)
 {
 
-  using graph = adjacency_list<vecS, vecS,
-    undirectedS,
-    property<vertex_index_t, int>>;
+  using graph = boost::adjacency_list<boost::vecS, boost::vecS,
+    boost::undirectedS,
+    boost::property<boost::vertex_index_t, int>>;
 
   graph g(11);
-  add_edge(0,1,g);
-  add_edge(2,3,g);
-  add_edge(3,4,g);
-  add_edge(5,6,g);
-  add_edge(6,7,g);
-  add_edge(8,9,g);
-  add_edge(9,10,g);
-  add_edge(10,8,g);
+  boost::add_edge(0,1,g);
+  boost::add_edge(2,3,g);
+  boost::add_edge(3,4,g);
+  boost::add_edge(5,6,g);
+  boost::add_edge(6,7,g);
+  boost::add_edge(8,9,g);
+  boost::add_edge(9,10,g);
+  boost::add_edge(10,8,g);
 
-  std::vector<graph_traits<graph>::vertices_size_type> 
-    component(num_vertices(g));
+  std::vector<boost::graph_traits<graph>::vertices_size_type> 
+    component(boost::num_vertices(g));
   
   std::cout << "Before calling make_connected, the graph has "
-            << connected_components(g, &component[0])
+            << boost::connected_components(g, &component[0])
             << " connected components" << std::endl;
 
-  make_connected(g);
+  boost::make_connected(g);
 
   std::cout << "After calling make_connected, the graph has "
-            << connected_components(g, &component[0])
+            << boost::connected_components(g, &component[0])
             << " connected components" << std::endl;
 
   return 0;
