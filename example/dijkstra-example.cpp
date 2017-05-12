@@ -15,14 +15,12 @@
 #include <boost/property_map/property_map.hpp>
 #include "range_pair.hpp"
 
-using namespace boost;
-
 int
 main(int, char *[])
 {
-  using graph_t = adjacency_list <listS, vecS, directedS,
-    no_property, property<edge_weight_t, int>>;
-  using vertex_descriptor = graph_traits<graph_t>::vertex_descriptor;
+  using graph_t = boost::adjacency_list <boost::listS, boost::vecS, boost::directedS,
+    boost::no_property, boost::property<boost::edge_weight_t, int>>;
+  using vertex_descriptor = boost::graph_traits<graph_t>::vertex_descriptor;
   using Edge = std::pair<int, int>;
 
   const int num_nodes = 5;
@@ -34,17 +32,17 @@ main(int, char *[])
   int weights[] = { 1, 2, 1, 2, 7, 3, 1, 1, 1 };
   int num_arcs = sizeof(edge_array) / sizeof(Edge);
   graph_t g(edge_array, edge_array + num_arcs, weights, num_nodes);
-  auto weightmap = get(edge_weight, g);
-  std::vector<vertex_descriptor> p(num_vertices(g));
-  std::vector<int> d(num_vertices(g));
+  auto weightmap = boost::get(boost::edge_weight, g);
+  std::vector<vertex_descriptor> p(boost::num_vertices(g));
+  std::vector<int> d(boost::num_vertices(g));
   auto s = vertex(A, g);
 
-  dijkstra_shortest_paths(g, s,
-                          predecessor_map(boost::make_iterator_property_map(p.begin(), get(boost::vertex_index, g))).
-                          distance_map(boost::make_iterator_property_map(d.begin(), get(boost::vertex_index, g))));
+  boost::dijkstra_shortest_paths(g, s,
+                          boost::predecessor_map(boost::make_iterator_property_map(p.begin(), boost::get(boost::vertex_index, g))).
+                          distance_map(boost::make_iterator_property_map(d.begin(), boost::get(boost::vertex_index, g))));
 
   std::cout << "distances and parents:" << std::endl;
-  for(const auto& vertex : make_range_pair(vertices(g))) {
+  for(const auto& vertex : make_range_pair(boost::vertices(g))) {
     std::cout << "distance(" << name[vertex] << ") = " << d[vertex] << ", ";
     std::cout << "parent(" << name[vertex] << ") = " << name[p[vertex]] << std::endl;
   }
@@ -58,10 +56,10 @@ main(int, char *[])
     << "  ratio=\"fill\"\n"
     << "  edge[style=\"bold\"]\n" << "  node[shape=\"circle\"]\n";
 
-  for (const auto& e : make_range_pair(edges(g))) {
-    auto u = source(e, g), v = target(e, g);
+  for (const auto& e : make_range_pair(boost::edges(g))) {
+    auto u = boost::source(e, g), v = boost::target(e, g);
     dot_file << name[u] << " -> " << name[v]
-      << "[label=\"" << get(weightmap, e) << "\"";
+      << "[label=\"" << boost::get(weightmap, e) << "\"";
     if (p[v] == u)
       dot_file << ", color=\"black\"";
     else
