@@ -41,9 +41,8 @@
 
 int main(int,char*[])
 {
-  using namespace boost;
-  using Graph = subgraph<adjacency_list<vecS, vecS, directedS,
-    property<vertex_color_t, int>, property<edge_index_t, int>>>;
+  using Graph = boost::subgraph<boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS,
+    boost::property<boost::vertex_color_t, int>, boost::property<boost::edge_index_t, int>>>;
 
   const int N = 6;
   Graph G0(N);
@@ -61,25 +60,25 @@ int main(int,char*[])
   add_vertex(A, G2); // global vertex A becomes local A1 for G2
   add_vertex(B, G2); // global vertex B becomes local B1 for G2
 
-  add_edge(A, B, G0);
-  add_edge(B, C, G0);
-  add_edge(B, D, G0);
-  add_edge(E, B, G0);
-  add_edge(E, F, G0);
-  add_edge(F, D, G0);
+  boost::add_edge(A, B, G0);
+  boost::add_edge(B, C, G0);
+  boost::add_edge(B, D, G0);
+  boost::add_edge(E, B, G0);
+  boost::add_edge(E, F, G0);
+  boost::add_edge(F, D, G0);
 
-  add_edge(A1, C1, G1); // (A1,C1) is subgraph G1 local indices for (C,F).
+  boost::add_edge(A1, C1, G1); // (A1,C1) is subgraph G1 local indices for (C,F).
 
   std::cout << "G0:" << std::endl;
-  print_graph(G0, get(vertex_index, G0));
-  print_edges2(G0, get(vertex_index, G0), get(edge_index, G0));
+  boost::print_graph(G0, boost::get(boost::vertex_index, G0));
+  boost::print_edges2(G0, boost::get(boost::vertex_index, G0), boost::get(boost::edge_index, G0));
   std::cout << std::endl;
 
   int num = 1;
   for (const auto& vertex : make_range_pair(G0.children())) {
     std::cout << "G" << num++ << ":" << std::endl;
-    print_graph(vertex, get(vertex_index, vertex));
-    print_edges2(vertex, get(vertex_index, vertex), get(edge_index, vertex));
+    boost::print_graph(vertex, boost::get(boost::vertex_index, vertex));
+    boost::print_edges2(vertex, boost::get(boost::vertex_index, vertex), boost::get(boost::edge_index, vertex));
     std::cout << std::endl;
   }
 
