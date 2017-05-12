@@ -15,8 +15,6 @@
 #include "helper.hpp"
 #include "range_pair.hpp"
 
-using namespace boost;
-
 // This template structure defines the function that we will apply
 // to compute both the per-vertex mean geodesic distances and the
 // graph's mean geodesic distance.
@@ -31,11 +29,11 @@ struct inclusive_average
 
     result_type operator ()(distance_type d, const Graph& g)
     {
-        if(d == numeric_values<distance_type>::infinity()) {
-            return numeric_values<result_type>::infinity();
+        if(d == boost::numeric_values<distance_type>::infinity()) {
+            return boost::numeric_values<result_type>::infinity();
         }
         else {
-            return div(result_type(d), result_type(num_vertices(g)));
+            return div(result_type(d), result_type(boost::num_vertices(g)));
         }
     }
     Divides div;
@@ -56,28 +54,28 @@ struct Link
 };
 
 // Declare the graph type and its vertex and edge types.
-using Graph = directed_graph<WebPage, Link>;
-using Vertex = graph_traits<Graph>::vertex_descriptor;
-using Edge = graph_traits<Graph>::edge_descriptor;
+using Graph = boost::directed_graph<WebPage, Link>;
+using Vertex = boost::graph_traits<Graph>::vertex_descriptor;
+using Edge = boost::graph_traits<Graph>::edge_descriptor;
 
 // The name map provides an abstract accessor for the names of
 // each vertex. This is used during graph creation.
-using NameMap = property_map<Graph, std::string WebPage::*>::type;
+using NameMap = boost::property_map<Graph, std::string WebPage::*>::type;
 
 // Declare a matrix type and its corresponding property map that
 // will contain the distances between each pair of vertices.
-using DistanceProperty = exterior_vertex_property<Graph, float>;
+using DistanceProperty = boost::exterior_vertex_property<Graph, float>;
 using DistanceMatrix = DistanceProperty::matrix_type;
 using DistanceMatrixMap = DistanceProperty::matrix_map_type;
 
 // Declare the weight map as an accessor into the bundled
 // edge property.
-using WeightMap = property_map<Graph, float Link::*>::type;
+using WeightMap = boost::property_map<Graph, float Link::*>::type;
 
 // Declare a container and its corresponding property map that
 // will contain the resulting mean geodesic distances of each
 // vertex in the graph.
-using GeodesicProperty = exterior_vertex_property<Graph, float>;
+using GeodesicProperty = boost::exterior_vertex_property<Graph, float>;
 using GeodesicContainer = GeodesicProperty::container_type;
 using GeodesicMap = GeodesicProperty::map_type;
 
@@ -91,8 +89,8 @@ main(int argc, char *argv[])
     // to the web page names, and the weight map as an accessor to
     // the edge weights (or probabilities).
     Graph g;
-    NameMap nm(get(&WebPage::name, g));
-    WeightMap wm(get(&Link::probability, g));
+    NameMap nm(boost::get(&WebPage::name, g));
+    WeightMap wm(boost::get(&Link::probability, g));
 
     // Read the weighted graph from standard input.
     read_weighted_graph(g, nm, wm, std::cin);
@@ -100,15 +98,15 @@ main(int argc, char *argv[])
     // Compute the distances between all pairs of vertices using
     // the Floyd-Warshall algorithm. The weight map was created
     // above so it could be populated when the graph was read in.
-    DistanceMatrix distances(num_vertices(g));
+    DistanceMatrix distances(boost::num_vertices(g));
     DistanceMatrixMap dm(distances, g);
     floyd_warshall_all_pairs_shortest_paths(g, dm, weight_map(wm));
 
     // Create the containers and the respective property maps that
     // will contain the mean geodesics averaged both including
     // self-loop distances and excluding them.
-    GeodesicContainer exclude(num_vertices(g));
-    GeodesicContainer include(num_vertices(g));
+    GeodesicContainer exclude(boost::num_vertices(g));
+    GeodesicContainer include(boost::num_vertices(g));
     GeodesicMap exmap(exclude, g);
     GeodesicMap inmap(include, g);
 
@@ -120,11 +118,11 @@ main(int argc, char *argv[])
     std::cout << std::setw(12) << std::setiosflags(std::ios::left) << "vertex";
     std::cout << std::setw(12) << std::setiosflags(std::ios::left) << "excluding";
     std::cout << std::setw(12) << std::setiosflags(std::ios::left) << "including" << std::endl;
-    for(const auto& vertex : make_range_pair(vertices(g))) {
+    for(const auto& vertex : make_range_pair(boost::vertices(g))) {
       std::cout << std::setw(12) << std::setiosflags(std::ios::left)
              << g[vertex].name
-             << std::setw(12) << get(exmap, vertex)
-             << std::setw(12) << get(inmap, vertex) << std::endl;
+             << std::setw(12) << boost::get(exmap, vertex)
+             << std::setw(12) << boost::get(inmap, vertex) << std::endl;
     }
     std::cout << "small world (excluding self-loops): " << ex << std::endl;
     std::cout << "small world (including self-loops): " << in << std::endl;
