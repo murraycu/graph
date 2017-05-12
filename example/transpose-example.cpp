@@ -15,15 +15,14 @@
 int
 main()
 {
-  using namespace boost;
-  using graph_t = adjacency_list<vecS, vecS, bidirectionalS,
-    property<vertex_name_t, char>>;
+  using graph_t = boost::adjacency_list<boost::vecS, boost::vecS, boost::bidirectionalS,
+    boost::property<boost::vertex_name_t, char>>;
 
   enum { a, b, c, d, e, f, g, N };
   graph_t G(N);
-  auto name_map = get(vertex_name, G);
+  auto name_map = boost::get(boost::vertex_name, G);
   char name = 'a';
-  for (const auto& vertex : make_range_pair(vertices(G)))
+  for (const auto& vertex : make_range_pair(boost::vertices(G)))
     name_map[vertex] = name;
 
   using E = std::pair<int, int>;
@@ -31,17 +30,17 @@ main()
     E(d, c), E(d, e), E(d, f), E(e, b), E(e, g), E(f, e), E(f, g)
   };
   for (const auto& edge : edge_array)
-    add_edge(edge.first, edge.second, G);
+    boost::add_edge(edge.first, edge.second, G);
 
-  print_graph(G, name_map);
+  boost::print_graph(G, name_map);
   std::cout << std::endl;
 
   graph_t G_T;
-  transpose_graph(G, G_T);
+  boost::transpose_graph(G, G_T);
 
-  print_graph(G_T, name_map);
+  boost::print_graph(G_T, name_map);
 
-  for (const auto& e : make_range_pair(edges(G)))
-    assert(edge(target(e, G), source(e, G), G_T).second == true);
+  for (const auto& e : make_range_pair(boost::edges(G)))
+    assert(edge(boost::target(e, G), boost::source(e, G), G_T).second == true);
   return 0;
 }
