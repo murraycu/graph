@@ -20,63 +20,61 @@
 int
 main()
 {
-  using namespace boost;
-  
   const int n = 12;
 
-  using graph_t = adjacency_list<vecS, listS, undirectedS,
-    property<vertex_index_t, int>>;
+  using graph_t = boost::adjacency_list<boost::vecS, boost::listS, boost::undirectedS,
+    boost::property<boost::vertex_index_t, int>>;
   graph_t g1(n), g2(n);
 
-  std::vector<graph_traits<graph_t>::vertex_descriptor> v1(n), v2(n);
+  std::vector<boost::graph_traits<graph_t>::vertex_descriptor> v1(n), v2(n);
 
-  auto v1_index_map = get(vertex_index, g1),
-    v2_index_map = get(vertex_index, g2);
+  auto v1_index_map = boost::get(boost::vertex_index, g1),
+    v2_index_map = boost::get(boost::vertex_index, g2);
 
   int id = 0;
-  for (const auto& vertex : make_range_pair(vertices(g1))) {
+  for (const auto& vertex : make_range_pair(boost::vertices(g1))) {
     put(v1_index_map, vertex, id);
     v1[id] = vertex;
     ++id;
   }
   id = 0;
-  for (const auto& vertex : make_range_pair(vertices(g2))) {
+  for (const auto& vertex : make_range_pair(boost::vertices(g2))) {
     put(v2_index_map, vertex, id);
     v2[id] = vertex;
     ++id;
   }
-  add_edge(v1[0], v1[1], g1); add_edge(v1[1], v1[2], g1); 
-  add_edge(v1[0], v1[2], g1);
-  add_edge(v1[3], v1[4], g1);  add_edge(v1[4], v1[5], g1);
-  add_edge(v1[5], v1[6], g1);  add_edge(v1[6], v1[3], g1);
-  add_edge(v1[7], v1[8], g1);  add_edge(v1[8], v1[9], g1);
-  add_edge(v1[9], v1[10], g1);
-  add_edge(v1[10], v1[11], g1);  add_edge(v1[11], v1[7], g1);
+  boost::add_edge(v1[0], v1[1], g1); boost::add_edge(v1[1], v1[2], g1); 
+  boost::add_edge(v1[0], v1[2], g1);
+  boost::add_edge(v1[3], v1[4], g1);  boost::add_edge(v1[4], v1[5], g1);
+  boost::add_edge(v1[5], v1[6], g1);  boost::add_edge(v1[6], v1[3], g1);
+  boost::add_edge(v1[7], v1[8], g1);  boost::add_edge(v1[8], v1[9], g1);
+  boost::add_edge(v1[9], v1[10], g1);
+  boost::add_edge(v1[10], v1[11], g1);  boost::add_edge(v1[11], v1[7], g1);
 
-  add_edge(v2[9], v2[10], g2);  add_edge(v2[10], v2[11], g2);  
-  add_edge(v2[11], v2[9], g2);
-  add_edge(v2[0], v2[1], g2);  add_edge(v2[1], v2[3], g2); 
-  add_edge(v2[3], v2[2], g2);  add_edge(v2[2], v2[0], g2);
-  add_edge(v2[4], v2[5], g2); add_edge(v2[5], v2[7], g2); 
-  add_edge(v2[7], v2[8], g2);
-  add_edge(v2[8], v2[6], g2); add_edge(v2[6], v2[4], g2);
+  boost::add_edge(v2[9], v2[10], g2);  boost::add_edge(v2[10], v2[11], g2);  
+  boost::add_edge(v2[11], v2[9], g2);
+  boost::add_edge(v2[0], v2[1], g2);  boost::add_edge(v2[1], v2[3], g2); 
+  boost::add_edge(v2[3], v2[2], g2);  boost::add_edge(v2[2], v2[0], g2);
+  boost::add_edge(v2[4], v2[5], g2); boost::add_edge(v2[5], v2[7], g2); 
+  boost::add_edge(v2[7], v2[8], g2);
+  boost::add_edge(v2[8], v2[6], g2); boost::add_edge(v2[6], v2[4], g2);
 
-  std::vector<graph_traits<graph_t>::vertex_descriptor> f(n);
+  std::vector<boost::graph_traits<graph_t>::vertex_descriptor> f(n);
 
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
   bool ret = isomorphism
-    (g1, g2, make_iterator_property_map(f.begin(), v1_index_map, f[0]),
-     degree_vertex_invariant(), get(vertex_index, g1), get(vertex_index, g2));
+    (g1, g2, boost::make_iterator_property_map(f.begin(), v1_index_map, f[0]),
+     degree_vertex_invariant(), boost::get(boost::vertex_index, g1), boost::get(boost::vertex_index, g2));
 #else
   bool ret = isomorphism
     (g1, g2, isomorphism_map
-     (make_iterator_property_map(f.begin(), v1_index_map, f[0])));
+     (boost::make_iterator_property_map(f.begin(), v1_index_map, f[0])));
 #endif
   std::cout << "isomorphic? " << ret << std::endl;
 
   std::cout << "f: ";
   for (std::size_t v = 0; v != f.size(); ++v)
-    std::cout << get(get(vertex_index, g2), f[v]) << " ";
+    std::cout << boost::get(boost::get(boost::vertex_index, g2), f[v]) << " ";
   std::cout << std::endl;
   
   return 0;
