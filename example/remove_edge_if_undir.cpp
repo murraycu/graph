@@ -13,8 +13,6 @@
 #include <boost/graph/graph_utility.hpp>
 #include "range_pair.hpp"
 
-using namespace boost;
-
 /*
   Sample output:
 
@@ -40,18 +38,18 @@ using namespace boost;
   
  */
 
-using Graph = adjacency_list<vecS, vecS, undirectedS, 
-  no_property, property<edge_weight_t, int>>;
+using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, 
+  boost::no_property, boost::property<boost::edge_weight_t, int>>;
 
 struct has_weight_greater_than {
   has_weight_greater_than(int w_, Graph& g_) : w(w_), g(g_) { }
-  bool operator()(graph_traits<Graph>::edge_descriptor e) {
+  bool operator()(boost::graph_traits<Graph>::edge_descriptor e) {
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
-    auto weight = get(edge_weight, g);
-    return get(weight, e) > w;
+    auto weight = boost::get(boost::edge_weight, g);
+    return boost::get(weight, e) > w;
 #else
     // This version of get breaks VC++
-    return get(edge_weight, g, e) > w;
+    return boost::get(boost::edge_weight, g, e) > w;
 #endif
   }
   int w;
@@ -70,30 +68,30 @@ main()
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
   Graph g(4);
   for (const auto& edge : edge_array)
-    add_edge(edge.first, edge.second, g);
+    boost::add_edge(edge.first, edge.second, g);
 #else
   Graph g(edge_array, edge_array + 5, 4);
 #endif
-  auto weight = get(edge_weight, g);
+  auto weight = boost::get(boost::edge_weight, g);
 
   int w = 0;
-  for (const auto& edge : make_range_pair(edges(g)))
+  for (const auto& edge : make_range_pair(boost::edges(g)))
     weight[edge] = ++w;
 
   std::cout << "original graph:" << std::endl;
-  print_graph(g, get(vertex_index, g));
-  print_edges2(g, get(vertex_index, g), get(edge_weight, g));
+  boost::print_graph(g, boost::get(boost::vertex_index, g));
+  boost::print_edges2(g, boost::get(boost::vertex_index, g), boost::get(boost::edge_weight, g));
   std::cout << std::endl;
 
   std::cout << "removing edges connecting 0 and 3" << std::endl;
   remove_out_edge_if(vertex(0, g), incident_on(vertex(3, g), g), g);
-  print_graph(g, get(vertex_index, g));
-  print_edges2(g, get(vertex_index, g), get(edge_weight, g));
+  boost::print_graph(g, boost::get(boost::vertex_index, g));
+  boost::print_edges2(g, boost::get(boost::vertex_index, g), boost::get(boost::edge_weight, g));
 
   std::cout << "removing edges with weight greater than 3" << std::endl;
   remove_edge_if(has_weight_greater_than(3, g), g);
-  print_graph(g, get(vertex_index, g));
-  print_edges2(g, get(vertex_index, g), get(edge_weight, g));
+  boost::print_graph(g, boost::get(boost::vertex_index, g));
+  boost::print_edges2(g, boost::get(boost::vertex_index, g), boost::get(boost::edge_weight, g));
 
   return 0;
 }
