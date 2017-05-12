@@ -14,7 +14,6 @@
 int
 main()
 {
-  using namespace boost;
   const int n_vertices = 7;
   auto sgb_g = gb_new_graph(n_vertices);
 
@@ -37,14 +36,14 @@ main()
   gb_new_arc(sgb_g->vertices + 4, sgb_g->vertices + 6, 0);
   gb_new_arc(sgb_g->vertices + 5, sgb_g->vertices + 6, 0);
 
-  using vertex_t = graph_traits<Graph *>::vertex_descriptor;
+  using vertex_t = boost::graph_traits<Graph *>::vertex_descriptor;
   std::vector<vertex_t> topo_order;
   topological_sort(sgb_g, std::back_inserter(topo_order),
-                   vertex_index_map(get(vertex_index, sgb_g)));
+                   vertex_index_map(boost::get(boost::vertex_index, sgb_g)));
   int n = 1;
   for (auto i = topo_order.rbegin();
        i != topo_order.rend(); ++i, ++n)
-    std::cout << n << ": " << tasks[get(vertex_index, sgb_g)[*i]] << std::endl;
+    std::cout << n << ": " << tasks[get(boost::vertex_index, sgb_g)[*i]] << std::endl;
 
   gb_recycle(sgb_g);
   return EXIT_SUCCESS;
