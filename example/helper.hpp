@@ -50,7 +50,7 @@ read_graph(Graph& g, NameMap nm, InputStream& is)
 
         auto u = add_named_vertex(g, nm, first, verts);
         auto v = add_named_vertex(g, nm, second, verts);
-        add_edge(u, v, g);
+        boost::add_edge(u, v, g);
     }
     return verts;
 }
@@ -88,7 +88,7 @@ read_weighted_graph(Graph& g, NameMap nm, WeightMap wm, InputStream& is)
         auto v = add_named_vertex(g, nm, second, verts);
 
         // add the edge and set the weight
-        auto e = add_edge(u, v, g).first;
+        auto e = boost::add_edge(u, v, g).first;
         put(wm, e, p);
     }
     return verts;
