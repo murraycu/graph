@@ -10,13 +10,9 @@
 #include <boost/graph/directed_graph.hpp>
 #include <boost/graph/labeled_graph.hpp>
 
-using namespace boost;
-
 int main() {
 
-    using namespace boost::graph_detail;
-
-    using Digraph = directed_graph<>;
+    using Digraph = boost::directed_graph<>;
 
     {
         using Graph = labeled_graph<Digraph, unsigned>;
@@ -35,7 +31,7 @@ int main() {
     }
 
     {
-        using Graph = labeled_graph<Digraph, std::string, mapS>;
+        using Graph = labeled_graph<Digraph, std::string, boost::mapS>;
         Graph g;
         add_vertex("foo", g);
         add_vertex("bar", g);
@@ -52,7 +48,7 @@ int main() {
 
     {
         // This is actually a fairly complicated specialization.
-        using G = adjacency_list<vecS, vecS, bidirectionalS>;
+        using G = boost::adjacency_list<boost::vecS, boost::vecS, boost::bidirectionalS>;
         using Graph = labeled_graph<G, size_t>;
         Graph g;
         add_vertex(0, g);
