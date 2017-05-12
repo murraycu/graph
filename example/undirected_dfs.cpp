@@ -36,44 +36,43 @@ struct detect_loops : public boost::dfs_visitor<>
 {
   template <class Edge, class Graph>
   void back_edge(Edge e, const Graph& g) {
-    std::cout << name[source(e, g)]
+    std::cout << name[boost::source(e, g)]
               << " -- "
-              << name[target(e, g)] << "\n";
+              << name[boost::target(e, g)] << "\n";
   }
 };
 
 int main(int, char*[])
 {
-  using namespace boost;
-  using graph_t = adjacency_list< vecS, vecS, undirectedS,
-    no_property,
-    property<edge_color_t, default_color_type>>;
-  using vertex_t = graph_traits<graph_t>::vertex_descriptor;
+  using graph_t = boost::adjacency_list< boost::vecS, boost::vecS, boost::undirectedS,
+    boost::no_property,
+    boost::property<boost::edge_color_t, boost::default_color_type>>;
+  using vertex_t = boost::graph_traits<graph_t>::vertex_descriptor;
   
   const std::size_t N = sizeof(name)/sizeof(std::string);
   graph_t g(N);
   
-  add_edge(0, 1, g);
-  add_edge(0, 8, g);
-  add_edge(0, 9, g);
-  add_edge(0, 10, g);
-  add_edge(1, 2, g);
-  add_edge(1, 6, g);
-  add_edge(2, 15, g);
-  add_edge(2, 3, g);
-  add_edge(3, 7, g);
-  add_edge(3, 4, g);
-  add_edge(4, 13, g);
-  add_edge(4, 5, g);
-  add_edge(5, 12, g);
-  add_edge(5, 6, g);
-  add_edge(6, 11, g);
-  add_edge(7, 14, g);
+  boost::add_edge(0, 1, g);
+  boost::add_edge(0, 8, g);
+  boost::add_edge(0, 9, g);
+  boost::add_edge(0, 10, g);
+  boost::add_edge(1, 2, g);
+  boost::add_edge(1, 6, g);
+  boost::add_edge(2, 15, g);
+  boost::add_edge(2, 3, g);
+  boost::add_edge(3, 7, g);
+  boost::add_edge(3, 4, g);
+  boost::add_edge(4, 13, g);
+  boost::add_edge(4, 5, g);
+  boost::add_edge(5, 12, g);
+  boost::add_edge(5, 6, g);
+  boost::add_edge(6, 11, g);
+  boost::add_edge(7, 14, g);
   
   std::cout << "back edges:\n";
   detect_loops vis;
-  undirected_dfs(g, root_vertex(vertex_t(0)).visitor(vis)
-                 .edge_color_map(get(edge_color, g)));
+  boost::undirected_dfs(g, boost::root_vertex(vertex_t(0)).visitor(vis)
+                 .edge_color_map(boost::get(boost::edge_color, g)));
   std::cout << std::endl;
   
   return boost::exit_success;
