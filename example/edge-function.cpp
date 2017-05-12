@@ -12,16 +12,15 @@
 #include <boost/graph/adjacency_list.hpp>
 #include "range_pair.hpp"
 
-using namespace boost;
 
 template <typename Graph, typename VertexNamePropertyMap> void
 read_graph_file(std::istream & graph_in, std::istream & name_in,
                 Graph & g, VertexNamePropertyMap name_map)
 {
-  using size_type = typename graph_traits<Graph>::vertices_size_type;
+  using size_type = typename boost::graph_traits<Graph>::vertices_size_type;
   size_type n_vertices;
-  typename graph_traits<Graph>::vertex_descriptor u;
-  typename property_traits<VertexNamePropertyMap>::value_type name;
+  typename boost::graph_traits<Graph>::vertex_descriptor u;
+  typename boost::property_traits<VertexNamePropertyMap>::value_type name;
 
   graph_in >> n_vertices;       // read in number of vertices
   for (size_type i = 0; i < n_vertices; ++i) {  // Add n vertices to the graph
@@ -32,19 +31,19 @@ read_graph_file(std::istream & graph_in, std::istream & name_in,
   size_type src, targ;
   while (graph_in >> src)       // Read in edges
     if (graph_in >> targ)
-      add_edge(src, targ, g);   // add an edge to the graph
+      boost::add_edge(src, targ, g);   // add an edge to the graph
     else
       break;
 }
 
 template <typename Graph, typename VertexNameMap> void
 output_adjacent_vertices(std::ostream & out,
-                         typename graph_traits<Graph>::vertex_descriptor u,
+                         typename boost::graph_traits<Graph>::vertex_descriptor u,
                          const Graph & g, VertexNameMap name_map)
 {
-  out << get(name_map, u) << " -> { ";
-  for (const auto& vertex : make_range_pair(adjacent_vertices(u, g)))
-    out << get(name_map, vertex) << " ";
+  out << boost::get(name_map, u) << " -> { ";
+  for (const auto& vertex : make_range_pair(boost::adjacent_vertices(u, g)))
+    out << boost::get(name_map, vertex) << " ";
   out << "}" << std::endl;
 }
 
@@ -56,7 +55,7 @@ public:
   }
   template <typename Vertex> bool operator()(Vertex u) const
   {
-    return get(m_name_map, u) == m_name;
+    return boost::get(m_name_map, u) == m_name;
   }
 private:
     std::string m_name;
@@ -75,10 +74,10 @@ name_equals(const std::string & str, NameMap name)
 int
 main()
 {
-  using graph_type = adjacency_list<listS,// Store out-edges of each vertex in a std::list
-    vecS,                      // Store vertex set in a std::vector
-    directedS,                 // The graph is directed
-    property<vertex_name_t, std::string>     // Add a vertex property
+  using graph_type = boost::adjacency_list<boost::listS,// Store out-edges of each vertex in a std::list
+    boost::vecS,                      // Store vertex set in a std::vector
+    boost::directedS,                 // The graph is directed
+    boost::property<boost::vertex_name_t, std::string>     // Add a vertex property
    >;
 
   graph_type g;                 // use default constructor to create empty graph
@@ -98,15 +97,15 @@ main()
   }
 
   // Obtain internal property map from the graph
-  auto name_map = get(vertex_name, g);
+  auto name_map = boost::get(boost::vertex_name, g);
   read_graph_file(file_in, name_in, g, name_map);
 
   // Get vertex name property map from the graph
-  auto name = get(vertex_name, g);
+  auto name = boost::get(boost::vertex_name, g);
   // Get iterators for the vertex set
   const auto [i, end] = vertices(g);
   // Find yow.h
-  using name_map_t = property_map<graph_type, vertex_name_t >::type;
+  using name_map_t = boost::property_map<graph_type, boost::vertex_name_t >::type;
   name_equals_t<name_map_t> predicate1("yow.h", name);
   auto yow = *std::find_if(i, end, predicate1);
   // Find zag.o
@@ -120,15 +119,15 @@ main()
   // Get the edge connecting yow.h to zag.o
   const auto [e1, exists1] = edge(yow, zag, g);
   assert(exists1 == true);
-  assert(source(e1, g) == yow);
-  assert(target(e1, g) == zag);
+  assert(boost::source(e1, g) == yow);
+  assert(boost::target(e1, g) == zag);
 
   // Discover that there is no edge connecting zag.o to bar.o
   const auto [e2, exists2] = edge(zag, bar, g);
   assert(exists2 == false);
 
-  assert(num_vertices(g) == 15);
-  assert(num_edges(g) == 19);
+  assert(boost::num_vertices(g) == 15);
+  assert(boost::num_edges(g) == 19);
 
   return EXIT_SUCCESS;
 }
