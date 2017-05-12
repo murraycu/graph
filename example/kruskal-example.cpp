@@ -14,10 +14,9 @@
 int
 main()
 {
-  using namespace boost;
-  using Graph = adjacency_list<vecS, vecS, undirectedS,
-    no_property, property<edge_weight_t, int>>;
-  using Edge = graph_traits<Graph>::edge_descriptor;
+  using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS,
+    boost::no_property, boost::property<boost::edge_weight_t, int>>;
+  using Edge = boost::graph_traits<Graph>::edge_descriptor;
   using E = std::pair<int, int>;
 
   const int num_nodes = 5;
@@ -28,22 +27,22 @@ main()
   std::size_t num_edges = sizeof(edge_array) / sizeof(E);
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
   Graph g(num_nodes);
-  auto = get(edge_weight, g);
+  auto = boost::get(boost::edge_weight, g);
   for (std::size_t j = 0; j < num_edges; ++j) {
-    auto [e, inserted] = add_edge(edge_array[j].first, edge_array[j].second, g);
+    auto [e, inserted] = boost::add_edge(edge_array[j].first, edge_array[j].second, g);
     weightmap[e] = weights[j];
   }
 #else
   Graph g(edge_array, edge_array + num_edges, weights, num_nodes);
 #endif
-  auto weight = get(edge_weight, g);
+  auto weight = boost::get(boost::edge_weight, g);
   std::vector<Edge> spanning_tree;
 
   kruskal_minimum_spanning_tree(g, std::back_inserter(spanning_tree));
 
   std::cout << "Print the edges in the MST:" << std::endl;
   for (const auto& edge : spanning_tree) {
-    std::cout << source(edge, g) << " <--> " << target(edge, g)
+    std::cout << boost::source(edge, g) << " <--> " << boost::target(edge, g)
       << " with weight of " << weight[edge]
       << std::endl;
   }
@@ -54,14 +53,14 @@ main()
     << " size=\"3,3\"\n"
     << " ratio=\"filled\"\n"
     << " edge[style=\"bold\"]\n" << " node[shape=\"circle\"]\n";
-  for (const auto& edge : make_range_pair(edges(g))) {
-    fout << source(edge, g) << " -- " << target(edge, g);
+  for (const auto& edge : make_range_pair(boost::edges(g))) {
+    fout << boost::source(edge, g) << " -- " << boost::target(edge, g);
     if (std::find(spanning_tree.begin(), spanning_tree.end(), edge)
         != spanning_tree.end())
-      fout << "[color=\"black\", label=\"" << get(edge_weight, g, edge)
+      fout << "[color=\"black\", label=\"" << boost::get(boost::edge_weight, g, edge)
            << "\"];\n";
     else
-      fout << "[color=\"gray\", label=\"" << get(edge_weight, g, edge)
+      fout << "[color=\"gray\", label=\"" << boost::get(boost::edge_weight, g, edge)
            << "\"];\n";
   }
   fout << "}\n";
