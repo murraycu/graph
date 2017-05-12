@@ -8,18 +8,16 @@
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/adjacency_list.hpp>
 
-using namespace boost;
-
 template <typename Graph> void
 generic_foo(Graph & g)
 {
   // Access descriptor types
-  // using Vertex = typename graph_traits<Graph>::vertex_descriptor;
-  // using Edge = typename graph_traits<Graph>::edge_descriptor;
+  // using Vertex = typename boost::graph_traits<Graph>::vertex_descriptor;
+  // using Edge = typename boost::graph_traits<Graph>::edge_descriptor;
 
   // Access category types
-  // using Dir = typename graph_traits<Graph>::directed_category;
-  // using Par = typename graph_traits<Graph>::edge_parallel_category;
+  // using Dir = typename boost::graph_traits<Graph>::directed_category;
+  // using Par = typename boost::graph_traits<Graph>::edge_parallel_category;
 
   // Access iterator types...
   // Access size types...
@@ -31,7 +29,7 @@ generic_bar(Graph & g)
 {
   // Declare some vertex and edge descriptor variables
   auto u = vertex(0,g), v = vertex(1,g);
-  typename graph_traits<Graph>::edge_descriptor e1, e2;
+  typename boost::graph_traits<Graph>::edge_descriptor e1, e2;
   // Set u and e1 to valid descriptors...
   v = u;                        // Make v a handle to the same vertex as u.
   e2 = e1;                      // Make e2 a handle to the same edge as e1.
@@ -64,8 +62,8 @@ foo(Graph & g)
 
 template <typename Digraph> void
 foo(Digraph & digraph,
-    typename graph_traits<Digraph>::vertex_descriptor u,
-    typename graph_traits<Digraph>::vertex_descriptor v)
+    typename boost::graph_traits<Digraph>::vertex_descriptor u,
+    typename boost::graph_traits<Digraph>::vertex_descriptor v)
 {
   auto e1 = edge(u, v, digraph);
   auto e2 = edge(v, u, digraph);
@@ -73,8 +71,8 @@ foo(Digraph & digraph,
 }
 template <typename Undigraph> void
 bar(Undigraph & undigraph,
-    typename graph_traits<Undigraph>::vertex_descriptor u,
-    typename graph_traits<Undigraph>::vertex_descriptor v)
+    typename boost::graph_traits<Undigraph>::vertex_descriptor u,
+    typename boost::graph_traits<Undigraph>::vertex_descriptor v)
 {
   auto e1 = edge(u, v, undigraph);
   auto e2 = edge(v, u, undigraph);
@@ -86,16 +84,16 @@ int
 main()
 {
 
-  boost::adjacency_list<vecS, vecS, directedS> g(2);
-  add_edge(0, 1, g);
-  add_edge(1, 0, g);
+  boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS> g(2);
+  boost::add_edge(0, 1, g);
+  boost::add_edge(1, 0, g);
   generic_foo(g);
   generic_bar(g);
   foo(g);
   foo(g, vertex(0, g), vertex(1, g));
 
-  boost::adjacency_list<vecS, vecS, undirectedS> ug(2);
-  add_edge(0, 1, g);
+  boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS> ug(2);
+  boost::add_edge(0, 1, g);
   bar(ug, vertex(0, g), vertex(1, g));
 
   return 0;
