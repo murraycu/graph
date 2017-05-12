@@ -14,8 +14,6 @@
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/property_map/property_map.hpp>
 
-using namespace boost;
-
 /*
   Exterior Decorator Basics
 
@@ -58,8 +56,8 @@ void who_owes_who(EdgeIter first, EdgeIter last, const Graph& G,
 {
   while (first != last) {
 
-    std::cout << name[source(*first,G)] << " owes " 
-         << name[target(*first,G)] << " some money" << std::endl;
+    std::cout << name[boost::source(*first,G)] << " owes " 
+         << name[boost::target(*first,G)] << " some money" << std::endl;
     ++first;
   }
 }
@@ -76,7 +74,7 @@ main(int, char*[])
   names[3] = "Jeff";
   names[4] = "Kinis";
   
-  using MyGraphType = adjacency_list<>;
+  using MyGraphType = boost::adjacency_list<>;
 
   using Pair = std::pair<int,int>;
   Pair edge_array[] = { Pair(0,1), Pair(0,2), Pair(0,3), Pair(0,4),
@@ -85,9 +83,9 @@ main(int, char*[])
 
     MyGraphType G(5);
     for (const auto& edge : edge_array)
-      add_edge(edge.first, edge.second, G);
+      boost::add_edge(edge.first, edge.second, G);
 
-  who_owes_who(edges(G).first, edges(G).second, G, names);
+  who_owes_who(boost::edges(G).first, edges(G).second, G, names);
 
   return 0;
 }
