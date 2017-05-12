@@ -26,14 +26,9 @@
 // Any maximal planar simple graph on n vertices has 3n - 6 edges and 
 // 2n - 4 faces, a consequence of Euler's formula.
 
-
-
-using namespace boost;
-
-
 // This visitor is passed to planar_face_traversal to count the 
 // number of faces.
-struct face_counter : public planar_face_traversal_visitor
+struct face_counter : public boost::planar_face_traversal_visitor
 {
   face_counter() : count(0) {}
   void begin_face() { ++count; }
@@ -44,22 +39,22 @@ struct face_counter : public planar_face_traversal_visitor
 int main(int argc, char** argv)
 {
 
-  using graph = adjacency_list<vecS, vecS,
-    undirectedS,
-    property<vertex_index_t, int>,
-    property<edge_index_t, int>>;
+  using graph = boost::adjacency_list<boost::vecS, boost::vecS,
+    boost::undirectedS,
+    boost::property<boost::vertex_index_t, int>,
+    boost::property<boost::edge_index_t, int>>;
 
   // Create the graph - a straight line
   graph g(10);
-  add_edge(0,1,g);
-  add_edge(1,2,g);
-  add_edge(2,3,g);
-  add_edge(3,4,g);
-  add_edge(4,5,g);
-  add_edge(5,6,g);
-  add_edge(6,7,g);
-  add_edge(7,8,g);
-  add_edge(8,9,g);
+  boost::add_edge(0,1,g);
+  boost::add_edge(1,2,g);
+  boost::add_edge(2,3,g);
+  boost::add_edge(3,4,g);
+  boost::add_edge(4,5,g);
+  boost::add_edge(5,6,g);
+  boost::add_edge(6,7,g);
+  boost::add_edge(7,8,g);
+  boost::add_edge(8,9,g);
 
   std::cout << "Since the input graph is planar with " << num_vertices(g) 
             << " vertices," << std::endl
@@ -68,17 +63,17 @@ int main(int argc, char** argv)
             << 2*num_vertices(g) - 4 << " faces." << std::endl;
 
   //Initialize the interior edge index
-  auto e_index = get(edge_index, g);
-  graph_traits<graph>::edges_size_type edge_count = 0;
-  for(const auto& edge : make_range_pair(edges(g)))
+  auto e_index = boost::get(boost::edge_index, g);
+  boost::graph_traits<graph>::edges_size_type edge_count = 0;
+  for(const auto& edge : make_range_pair(boost::edges(g)))
     put(e_index, edge, edge_count++);
   
   
   //Test for planarity; compute the planar embedding as a side-effect
-  using vec_t = std::vector<graph_traits<graph>::edge_descriptor>;
-  std::vector<vec_t> embedding(num_vertices(g));
-  if (boyer_myrvold_planarity_test(boyer_myrvold_params::graph = g,
-                                   boyer_myrvold_params::embedding = 
+  using vec_t = std::vector<boost::graph_traits<graph>::edge_descriptor>;
+  std::vector<vec_t> embedding(boost::num_vertices(g));
+  if (boost::boyer_myrvold_planarity_test(boost::boyer_myrvold_params::graph = g,
+                                   boost::boyer_myrvold_params::embedding = 
                                        &embedding[0]
                                    )
       )
@@ -90,13 +85,13 @@ int main(int argc, char** argv)
 
   // Re-initialize the edge index, since we just added a few edges
   edge_count = 0;
-  for(const auto& edge : make_range_pair(edges(g)))
+  for(const auto& edge : make_range_pair(boost::edges(g)))
     put(e_index, edge, edge_count++);
 
 
   //Test for planarity again; compute the planar embedding as a side-effect
-  if (boyer_myrvold_planarity_test(boyer_myrvold_params::graph = g,
-                                   boyer_myrvold_params::embedding = 
+  if (boost::boyer_myrvold_planarity_test(boost::boyer_myrvold_params::graph = g,
+                                   boost::boyer_myrvold_params::embedding = 
                                        &embedding[0]
                                    )
       )
@@ -112,14 +107,14 @@ int main(int argc, char** argv)
 
   // Re-initialize the edge index, since we just added a few edges
   edge_count = 0;
-  for(const auto& edge : make_range_pair(edges(g)))
+  for(const auto& edge : make_range_pair(boost::edges(g)))
     put(e_index, edge, edge_count++);
 
   // Test for planarity one final time; compute the planar embedding as a 
   // side-effect
   std::cout << "After calling make_maximal_planar, the final graph ";
-  if (boyer_myrvold_planarity_test(boyer_myrvold_params::graph = g,
-                                   boyer_myrvold_params::embedding = 
+  if (boost::boyer_myrvold_planarity_test(boost::boyer_myrvold_params::graph = g,
+                                   boost::boyer_myrvold_params::embedding = 
                                        &embedding[0]
                                    )
       )
