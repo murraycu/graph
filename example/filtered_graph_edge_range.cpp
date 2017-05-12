@@ -40,39 +40,37 @@ struct positive_edge_weight {
 
 int main()
 {
-  using namespace boost;
-  
-  using Graph = adjacency_list<multisetS, vecS, directedS,
-    no_property, property<edge_weight_t, int>>;
-  using EdgeWeightMap = property_map<Graph, edge_weight_t>::type;
+  using Graph = boost::adjacency_list<boost::multisetS, boost::vecS, boost::directedS,
+    boost::no_property, boost::property<boost::edge_weight_t, int>>;
+  using EdgeWeightMap = boost::property_map<Graph, boost::edge_weight_t>::type;
 
   enum { A, B, C, D, E, N };
   const char* name = "ABCDE";
   Graph g(N);
-  add_edge(A, B, 2, g);
-  add_edge(A, C, 0, g);
-  add_edge(C, D, 1, g);
-  add_edge(C, D, 0, g);
-  add_edge(C, D, 3, g);
-  add_edge(C, E, 0, g);
-  add_edge(D, B, 3, g);
-  add_edge(E, C, 0, g);
+  boost::add_edge(A, B, 2, g);
+  boost::add_edge(A, C, 0, g);
+  boost::add_edge(C, D, 1, g);
+  boost::add_edge(C, D, 0, g);
+  boost::add_edge(C, D, 3, g);
+  boost::add_edge(C, E, 0, g);
+  boost::add_edge(D, B, 3, g);
+  boost::add_edge(E, C, 0, g);
 
-  auto weight = get(edge_weight, g);
+  auto weight = boost::get(boost::edge_weight, g);
 
   std::cout << "unfiltered edge_range(C,D)\n";
   for (const auto& edge : make_range_pair(edge_range(C, D, g)))
-    std::cout << name[source(edge, g)] << " --" << weight[edge]
-              << "-> " <<  name[target(edge, g)] << "\n";
+    std::cout << name[boost::source(edge, g)] << " --" << weight[edge]
+              << "-> " <<  name[boost::target(edge, g)] << "\n";
 
   positive_edge_weight<EdgeWeightMap> filter(weight);
-  using FGraph = filtered_graph<Graph, positive_edge_weight<EdgeWeightMap>>;
+  using FGraph = boost::filtered_graph<Graph, positive_edge_weight<EdgeWeightMap>>;
   FGraph fg(g, filter);
 
   std::cout << "filtered edge_range(C,D)\n";
   for (const auto& edge : make_range_pair(edge_range(C, D, fg)))
-    std::cout << name[source(edge, fg)] << " --" << weight[edge]
-              << "-> " <<  name[target(edge, fg)] << "\n";
+    std::cout << name[boost::source(edge, fg)] << " --" << weight[edge]
+              << "-> " <<  name[boost::target(edge, fg)] << "\n";
   
   return 0;
 }
