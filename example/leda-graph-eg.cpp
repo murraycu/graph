@@ -11,7 +11,6 @@
 int
 main()
 {
-  using namespace boost;
   using graph_t = leda::GRAPH<std::string, int>;
   graph_t g;
   g.new_node("Philoctetes");
@@ -19,9 +18,9 @@ main()
   g.new_node("Alcmena");
   g.new_node("Eurystheus");
   g.new_node("Amphitryon");
-  using NodeMap = property_map<graph_t, vertex_all_t>::type;
-  auto node_name_map = get(vertex_all, g);
-  for (const auto& vertex : make_range_pair(vertices(g)))
+  using NodeMap = boost::property_map<graph_t, vertex_all_t>::type;
+  auto node_name_map = boost::get(vertex_all, g);
+  for (const auto& vertex : make_range_pair(boost::vertices(g)))
     std::cout << node_name_map[vertex] << std::endl;
   return EXIT_SUCCESS;
 }
