@@ -17,10 +17,6 @@
 #include <boost/graph/chrobak_payne_drawing.hpp>
 #include <boost/graph/boyer_myrvold_planar_test.hpp>
 
-
-
-using namespace boost;
-
 //a class to hold the coordinates of the straight line embedding
 struct coord_t
 {
@@ -31,15 +27,15 @@ struct coord_t
 
 int main(int argc, char** argv)
 {
-  using graph = adjacency_list<vecS, vecS,
-    undirectedS,
-    property<vertex_index_t, int>>;
+  using graph = boost::adjacency_list<boost::vecS, boost::vecS,
+    boost::undirectedS,
+    boost::property<boost::vertex_index_t, int>>;
 
   //Define the storage type for the planar embedding
-  using embedding_storage_t = std::vector<std::vector<graph_traits<graph>::edge_descriptor>>;
+  using embedding_storage_t = std::vector<std::vector<boost::graph_traits<graph>::edge_descriptor>>;
   using embedding_t = boost::iterator_property_map
     < embedding_storage_t::iterator, 
-      property_map<graph, vertex_index_t>::type 
+      boost::property_map<graph, boost::vertex_index_t>::type 
     >;
 
 
@@ -53,36 +49,36 @@ int main(int argc, char** argv)
   // it maximal planar.
   
   graph g(7);
-  add_edge(0,1,g);
-  add_edge(1,2,g);
-  add_edge(2,3,g);
-  add_edge(3,0,g);
-  add_edge(3,4,g);
-  add_edge(4,5,g);
-  add_edge(5,6,g);
-  add_edge(6,3,g);
-  add_edge(0,4,g);
-  add_edge(1,3,g);
-  add_edge(3,5,g);
-  add_edge(2,6,g);
-  add_edge(1,4,g);
-  add_edge(1,5,g);
-  add_edge(1,6,g);
+  boost::add_edge(0,1,g);
+  boost::add_edge(1,2,g);
+  boost::add_edge(2,3,g);
+  boost::add_edge(3,0,g);
+  boost::add_edge(3,4,g);
+  boost::add_edge(4,5,g);
+  boost::add_edge(5,6,g);
+  boost::add_edge(6,3,g);
+  boost::add_edge(0,4,g);
+  boost::add_edge(1,3,g);
+  boost::add_edge(3,5,g);
+  boost::add_edge(2,6,g);
+  boost::add_edge(1,4,g);
+  boost::add_edge(1,5,g);
+  boost::add_edge(1,6,g);
 
 
 
   // Create the planar embedding
-  embedding_storage_t embedding_storage(num_vertices(g));
-  embedding_t embedding(embedding_storage.begin(), get(vertex_index,g));
+  embedding_storage_t embedding_storage(boost::num_vertices(g));
+  embedding_t embedding(embedding_storage.begin(), boost::get(boost::vertex_index,g));
 
-  boyer_myrvold_planarity_test(boyer_myrvold_params::graph = g,
-                               boyer_myrvold_params::embedding = embedding
+  boost::boyer_myrvold_planarity_test(boost::boyer_myrvold_params::graph = g,
+                               boost::boyer_myrvold_params::embedding = embedding
                                );
 
 
 
   // Find a canonical ordering
-  std::vector<graph_traits<graph>::vertex_descriptor> ordering;
+  std::vector<boost::graph_traits<graph>::vertex_descriptor> ordering;
   planar_canonical_ordering(g, embedding, std::back_inserter(ordering));
 
 
@@ -90,14 +86,14 @@ int main(int argc, char** argv)
   using straight_line_drawing_storage_t = std::vector<coord_t>;
   using straight_line_drawing_t = boost::iterator_property_map
     < straight_line_drawing_storage_t::iterator, 
-      property_map<graph, vertex_index_t>::type 
+      boost::property_map<graph, boost::vertex_index_t>::type 
     >;
 
   straight_line_drawing_storage_t straight_line_drawing_storage
-    (num_vertices(g));
+    (boost::num_vertices(g));
   straight_line_drawing_t straight_line_drawing
     (straight_line_drawing_storage.begin(), 
-     get(vertex_index,g)
+     boost::get(boost::vertex_index,g)
      );
 
 
@@ -113,9 +109,9 @@ int main(int argc, char** argv)
 
 
   std::cout << "The straight line drawing is: " << std::endl;
-  for(const auto& vertex : make_range_pair(vertices(g)))
+  for(const auto& vertex : make_range_pair(boost::vertices(g)))
     {
-      coord_t coord(get(straight_line_drawing,vertex));
+      coord_t coord(boost::get(straight_line_drawing,vertex));
       std::cout << vertex << " -> (" << coord.x << ", " << coord.y << ")" 
                 << std::endl;
     }
