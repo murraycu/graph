@@ -15,25 +15,24 @@
 int
 main()
 {
-  using namespace boost;
   GraphvizDigraph g;
-  read_graphviz("figs/scc.dot", g);
+  boost::read_graphviz("figs/scc.dot", g);
 
-  using vertex_t = graph_traits<GraphvizDigraph>::vertex_descriptor;
+  using vertex_t = boost::graph_traits<GraphvizDigraph>::vertex_descriptor;
   std::map<vertex_t, int> component;
 
-  strong_components(g, make_assoc_property_map(component));
+  strong_components(g, boost::make_assoc_property_map(component));
 
-  auto vertex_attr_map = get(vertex_attribute, g);
+  auto vertex_attr_map = boost::get(vertex_attribute, g);
   std::string color[] = {
   "white", "gray", "black", "lightgray"};
-  for (const auto& vertex : make_range_pair(vertices(g))) {
+  for (const auto& vertex : make_range_pair(boost::vertices(g))) {
     vertex_attr_map[vertex]["color"] = color[component[vertex]];
     vertex_attr_map[vertex]["style"] = "filled";
     if (vertex_attr_map[vertex]["color"] == "black")
       vertex_attr_map[vertex]["fontcolor"] = "white";
   }
-  write_graphviz("figs/scc-out.dot", g);
+  boost::write_graphviz("figs/scc-out.dot", g);
 
   return EXIT_SUCCESS;
 }
