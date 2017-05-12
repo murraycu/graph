@@ -15,7 +15,6 @@
 int
 main()
 {
-  using namespace boost;
   const char *tasks[] = {
     "pick up kids from school",
     "buy groceries (and snacks)",
@@ -37,8 +36,8 @@ main()
 
   std::deque<int> topo_order;
 
-  topological_sort(g, std::front_inserter(topo_order),
-                   vertex_index_map(identity_property_map()));
+  boost::topological_sort(g, std::front_inserter(topo_order),
+                   boost::vertex_index_map(boost::identity_property_map()));
 
   for (const auto& vertex : topo_order)
     std::cout << tasks[vertex] << std::endl;
