@@ -18,8 +18,7 @@
 
 int main(int argc, char* argv[])
 {
-  using namespace boost;
-  using vertex_t = graph_traits<Graph*>::vertex_descriptor;
+  using vertex_t = boost::graph_traits<Graph*>::vertex_descriptor;
   unsigned long n = 0;
   unsigned long d = 0;
   unsigned long p = 0;
@@ -55,26 +54,26 @@ int main(int argc, char* argv[])
   //   been visited. The BGL strong_components() function needs
   //   a separate field for marking colors, so we use the w field.
 
-  std::vector<int> comp(num_vertices(g));
-  auto index_map = get(vertex_index, g);
+  std::vector<int> comp(boost::num_vertices(g));
+  auto index_map = boost::get(boost::vertex_index, g);
 
-  auto root = get(v_property<vertex_t>(), g);
+  auto root = boost::get(v_property<vertex_t>(), g);
 
   auto num_comp = strong_components
-    (g, make_iterator_property_map(comp.begin(), index_map),
+    (g, boost::make_iterator_property_map(comp.begin(), index_map),
      root_map(root).
-     discover_time_map(get(z_property<long>(), g)).
-     color_map(get(w_property<long>(), g)));
+     discover_time_map(boost::get(z_property<long>(), g)).
+     color_map(boost::get(w_property<long>(), g)));
 
   std::vector<std::vector<vertex_t>> strong_comp(num_comp);
 
   // First add representative vertices to each component's list
-  for (const auto& vertex : make_range_pair(vertices(g)))
+  for (const auto& vertex : make_range_pair(boost::vertices(g)))
     if (root[vertex] == vertex)
       strong_comp[comp[index_map[vertex]]].emplace_back(vertex);
 
   // Then add the other vertices of the component
-  for (const auto& vertex : make_range_pair(vertices(g)))
+  for (const auto& vertex : make_range_pair(boost::vertices(g)))
     if (root[vertex] != vertex)
       strong_comp[comp[index_map[vertex]]].emplace_back(vertex);
 
@@ -113,8 +112,8 @@ int main(int argc, char* argv[])
     auto u = strong_comp[c][0];
     for (i = 0; i < strong_comp[c].size(); ++i) {
       auto v = strong_comp[c][i];
-      for (const auto& edge : make_range_pair(out_edges(v, g))) {
-        auto x = target(edge, g);
+      for (const auto& edge : make_range_pair(boost::out_edges(v, g))) {
+        auto x = boost::target(edge, g);
         auto comp_x = comp[index_map[x]];
         if (comp_x != c && mark[comp_x] != c) {
           mark[comp_x] = c;
