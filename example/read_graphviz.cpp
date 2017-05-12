@@ -5,7 +5,7 @@
 // http://www.boost.org/LICENSE_1_0.txt)
 
 // A simple example of using read_graphviz to load a GraphViz Dot textual
-// graph into a BGL adjacency_list graph
+// graph into a BGL boost::adjacency_list graph
 
 // Author: Ronald Garcia
 
@@ -15,43 +15,41 @@
 #include <string>
 #include <sstream>
 
-using namespace boost;
-
 int main() {
   // Vertex properties
-  using vertex_p = property<vertex_name_t, std::string,
-    property<vertex_color_t, float>>;  
+  using vertex_p = boost::property<boost::vertex_name_t, std::string,
+    boost::property<boost::vertex_color_t, float>>;  
   // Edge properties
-  using edge_p = property<edge_weight_t, double>;
+  using edge_p = boost::property<boost::edge_weight_t, double>;
   // Graph properties
-  using graph_p = property<graph_name_t, std::string>;
-  // adjacency_list-based type
-  using graph_t = adjacency_list < vecS, vecS, directedS,
+  using graph_p = boost::property<boost::graph_name_t, std::string>;
+  // boost::adjacency_list-based type
+  using graph_t = boost::adjacency_list < boost::vecS, boost::vecS, boost::directedS,
     vertex_p, edge_p, graph_p >;
 
   // Construct an empty graph and prepare the dynamic_property_maps.
   graph_t graph(0);
-  dynamic_properties dp;
+  boost::dynamic_properties dp;
 
-  auto name = get(vertex_name, graph);
+  auto name = boost::get(boost::vertex_name, graph);
   dp.property("node_id",name);
 
-  auto mass = get(vertex_color, graph);
+  auto mass = boost::get(boost::vertex_color, graph);
   dp.property("mass",mass);
 
-  auto weight = get(edge_weight, graph);
+  auto weight = boost::get(boost::edge_weight, graph);
   dp.property("weight",weight);
 
   // Use ref_property_map to turn a graph property into a property map
   boost::ref_property_map<graph_t*,std::string> 
-    gname(get_property(graph,graph_name));
+    gname(boost::get_property(graph, boost::graph_name));
   dp.property("name",gname);
 
   // Sample graph as an std::istream;
   std::istringstream
     gvgraph("digraph { graph [name=\"graphname\"]  a  c e [mass = 6.66] }");
 
-  bool status = read_graphviz(gvgraph,graph,dp,"node_id");
+  bool status = boost::read_graphviz(gvgraph,graph,dp,"node_id");
 
   return status ? EXIT_SUCCESS : EXIT_FAILURE;
 }
