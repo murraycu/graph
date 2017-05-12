@@ -73,14 +73,14 @@ public:
     : k(k_), girth(girth_) { }
 
   void tree_edge(edge_descriptor e, Graph* g) {
-    auto u = source(e, g), v = target(e, g);
+    auto u = boost::source(e, g), v = boost::target(e, g);
     k = d_map[u] + 1;
     d_map[v] = k;
     ++distance_list[k];
     p_map[v] = u;
   }
   void non_tree_edge(edge_descriptor e, Graph* g) {
-    auto u = source(e, g), v = target(e, g);
+    auto u = boost::source(e, g), v = boost::target(e, g);
     k = d_map[u] + 1;
     if (d_map[v] + k < girth && v != p_map[u])
       girth = d_map[v]+ k;
@@ -129,9 +129,9 @@ main()
     distance_list.resize(boost::num_vertices(g), 0);
 
     // obtain property maps
-    d_map = get(dist_t(), g);
-    p_map = get(pred_t(), g);
-    c_map = get(color_t(), g);
+    d_map = boost::get(dist_t(), g);
+    p_map = boost::get(pred_t(), g);
+    c_map = boost::get(color_t(), g);
 
     for (const auto& vertex : make_range_pair(boost::vertices(g)))
       d_map[vertex] = 0;
@@ -142,7 +142,7 @@ main()
 
     vertex_descriptor s = *boost::vertices(g).first;
 
-    boost::breadth_first_search(g, s, visitor(vis).color_map(c_map));
+    boost::breadth_first_search(g, s, boost::visitor(vis).color_map(c_map));
 
     std::cout << "Starting at any given vertex, there are" << std::endl;
 
