@@ -12,9 +12,6 @@
 #include <algorithm>
 #include <boost/graph/adjacency_list.hpp>
 
-using namespace boost;
-
-
 /*
   Edge Basics
 
@@ -23,8 +20,8 @@ using namespace boost;
   There is not much to the Edge interface. Basically just two
   functions to access the source and target vertex:
   
-  source(e)
-  target(e)
+  boost::source(e)
+  boost::target(e)
 
   and one associated type for the vertex type:
 
@@ -49,10 +46,10 @@ struct exercise_edge {
     //begin
     // Get the associated vertex type out of the edge using the
     // edge_traits class
-    // Use the source() and target() functions to access the vertices
+    // Use the boost::source() and boost::target() functions to access the vertices
     // that belong to Edge e
-    auto src = source(e, G);
-    auto targ = target(e, G);
+    auto src = boost::source(e, G);
+    auto targ = boost::target(e, G);
 
     // print out the vertex id's just because 
     std::cout << "(" << src << "," << targ << ") ";
@@ -66,7 +63,7 @@ struct exercise_edge {
 int
 main()
 {
-  using MyGraph = adjacency_list<>;
+  using MyGraph = boost::adjacency_list<>;
 
   using Pair = std::pair<int,int>;
   Pair edge_array[] = { Pair(0,1), Pair(0,2), Pair(0,3), Pair(0,4), 
@@ -77,11 +74,11 @@ main()
   // specifying the number of vertices as 5
   MyGraph G(5);
   for (const auto& edge : edge_array)
-    add_edge(edge.first, edge.second, G);
+    boost::add_edge(edge.first, edge.second, G);
 
   // Use the STL for_each algorithm to "exercise" all of the edges in
   // the graph
-  std::for_each(edges(G).first, edges(G).second, exercise_edge<MyGraph>(G));
+  std::for_each(boost::edges(G).first, edges(G).second, exercise_edge<MyGraph>(G));
   std::cout << std::endl;
   return 0;
 }
