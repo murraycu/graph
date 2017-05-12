@@ -18,14 +18,12 @@
 #include <boost/graph/mcgregor_common_subgraphs.hpp>
 #include <boost/property_map/shared_array_property_map.hpp>
 
-using namespace boost;
-
 // Callback that looks for the first common subgraph whose size
 // matches the user's preference.
 template <typename Graph>
 struct example_callback {
 
-  using VertexSizeFirst = typename graph_traits<Graph>::vertices_size_type;
+  using VertexSizeFirst = typename boost::graph_traits<Graph>::vertices_size_type;
 
   example_callback(const Graph& graph1) :
     m_graph1(graph1) { }
@@ -37,24 +35,24 @@ struct example_callback {
                   VertexSizeFirst subgraph_size) {
 
     // Fill membership map for first graph
-    using VertexIndexMap = typename property_map<Graph, vertex_index_t>::type;
-    using MembershipMap = shared_array_property_map<bool, VertexIndexMap>;
+    using VertexIndexMap = typename boost::property_map<Graph, boost::vertex_index_t>::type;
+    using MembershipMap = boost::shared_array_property_map<bool, VertexIndexMap>;
       
-    MembershipMap membership_map1(num_vertices(m_graph1),
-                                  get(vertex_index, m_graph1));
+    MembershipMap membership_map1(boost::num_vertices(m_graph1),
+                                  boost::get(boost::vertex_index, m_graph1));
 
-    fill_membership_map<Graph>(m_graph1, correspondence_map_1_to_2, membership_map1);
+    boost::fill_membership_map<Graph>(m_graph1, correspondence_map_1_to_2, membership_map1);
 
     // Generate filtered graphs using membership map
     using MembershipFilteredGraph =
-      typename membership_filtered_graph_traits<Graph, MembershipMap>::graph_type;
+      typename boost::membership_filtered_graph_traits<Graph, MembershipMap>::graph_type;
 
     MembershipFilteredGraph subgraph1 =
       make_membership_filtered_graph(m_graph1, membership_map1);
 
     // Print the graph out to the console
     std::cout << "Found common subgraph (size " << subgraph_size << ")" << std::endl;
-    print_graph(subgraph1);
+    boost::print_graph(subgraph1);
     std::cout << std::endl;
 
     // Explore the entire space
@@ -68,31 +66,31 @@ private:
 
 int main (int argc, char *argv[]) {
 
-  // Using a vecS graph here so that we don't have to mess around with
+  // Using a boost::vecS graph here so that we don't have to mess around with
   // a vertex index map; it will be implicit.
-  using Graph = adjacency_list<listS, vecS, directedS,
-    property<vertex_name_t, unsigned int,
-    property<vertex_index_t, unsigned int>>,
-    property<edge_name_t, unsigned int>>;
+  using Graph = boost::adjacency_list<boost::listS, boost::vecS, boost::directedS,
+    boost::property<boost::vertex_name_t, unsigned int,
+    boost::property<boost::vertex_index_t, unsigned int>>,
+    boost::property<boost::edge_name_t, unsigned int>>;
 
   // Test maximum and unique variants on known graphs
   Graph graph_simple1, graph_simple2;
   example_callback<Graph> user_callback(graph_simple1);
 
-  auto vname_map_simple1 = get(vertex_name, graph_simple1);
-  auto vname_map_simple2 = get(vertex_name, graph_simple2);
+  auto vname_map_simple1 = boost::get(boost::vertex_name, graph_simple1);
+  auto vname_map_simple2 = boost::get(boost::vertex_name, graph_simple2);
 
   // Graph that looks like a triangle
   put(vname_map_simple1, add_vertex(graph_simple1), 1);
   put(vname_map_simple1, add_vertex(graph_simple1), 2);
   put(vname_map_simple1, add_vertex(graph_simple1), 3);
 
-  add_edge(0, 1, graph_simple1);
-  add_edge(0, 2, graph_simple1);
-  add_edge(1, 2, graph_simple1);
+  boost::add_edge(0, 1, graph_simple1);
+  boost::add_edge(0, 2, graph_simple1);
+  boost::add_edge(1, 2, graph_simple1);
 
   std::cout << "First graph:" << std::endl;
-  print_graph(graph_simple1);
+  boost::print_graph(graph_simple1);
   std::cout << std::endl;
 
   // Triangle with an extra vertex
@@ -101,41 +99,41 @@ int main (int argc, char *argv[]) {
   put(vname_map_simple2, add_vertex(graph_simple2), 3);
   put(vname_map_simple2, add_vertex(graph_simple2), 4);
 
-  add_edge(0, 1, graph_simple2);
-  add_edge(0, 2, graph_simple2);
-  add_edge(1, 2, graph_simple2);
-  add_edge(1, 3, graph_simple2);
+  boost::add_edge(0, 1, graph_simple2);
+  boost::add_edge(0, 2, graph_simple2);
+  boost::add_edge(1, 2, graph_simple2);
+  boost::add_edge(1, 3, graph_simple2);
 
   std::cout << "Second graph:" << std::endl;
-  print_graph(graph_simple2);
+  boost::print_graph(graph_simple2);
   std::cout << std::endl;
 
   // All subgraphs
   std::cout << "mcgregor_common_subgraphs:" << std::endl;
-  mcgregor_common_subgraphs
+  boost::mcgregor_common_subgraphs
     (graph_simple1, graph_simple2, true, user_callback,
-     vertices_equivalent(make_property_map_equivalent(vname_map_simple1, vname_map_simple2))); 
+     boost::vertices_equivalent(boost::make_property_map_equivalent(vname_map_simple1, vname_map_simple2))); 
   std::cout << std::endl;
 
   // Unique subgraphs
   std::cout << "mcgregor_common_subgraphs_unique:" << std::endl;
-  mcgregor_common_subgraphs_unique
+  boost::mcgregor_common_subgraphs_unique
     (graph_simple1, graph_simple2, true, user_callback,
-     vertices_equivalent(make_property_map_equivalent(vname_map_simple1, vname_map_simple2))); 
+     boost::vertices_equivalent(boost::make_property_map_equivalent(vname_map_simple1, vname_map_simple2))); 
   std::cout << std::endl;
 
   // Maximum subgraphs
   std::cout << "mcgregor_common_subgraphs_maximum:" << std::endl;
-  mcgregor_common_subgraphs_maximum
+  boost::mcgregor_common_subgraphs_maximum
     (graph_simple1, graph_simple2, true, user_callback,
-     vertices_equivalent(make_property_map_equivalent(vname_map_simple1, vname_map_simple2))); 
+     boost::vertices_equivalent(boost::make_property_map_equivalent(vname_map_simple1, vname_map_simple2))); 
   std::cout << std::endl;
 
   // Maximum, unique subgraphs
   std::cout << "mcgregor_common_subgraphs_maximum_unique:" << std::endl;
-  mcgregor_common_subgraphs_maximum_unique
+  boost::mcgregor_common_subgraphs_maximum_unique
     (graph_simple1, graph_simple2, true, user_callback,
-     vertices_equivalent(make_property_map_equivalent(vname_map_simple1, vname_map_simple2))); 
+     boost::vertices_equivalent(boost::make_property_map_equivalent(vname_map_simple1, vname_map_simple2))); 
 
   return 0;
 }
