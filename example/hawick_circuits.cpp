@@ -31,14 +31,14 @@ struct cycle_printer
 
         // Get the property map containing the vertex indices
         // so we can print them.
-        auto indices = get(boost::vertex_index, g);
+        auto indices = boost::get(boost::vertex_index, g);
 
         // Iterate over path printing each vertex that forms the cycle.
         typename Path::const_iterator i, before_end = boost::prior(p.end());
         for (i = p.begin(); i != before_end; ++i) {
-            os << get(indices, *i) << " ";
+            os << boost::get(indices, *i) << " ";
         }
-        os << get(indices, *i) << '\n';
+        os << boost::get(indices, *i) << '\n';
     }
     OutputStream& os;
 };
@@ -67,9 +67,9 @@ void build_graph(Graph& graph, unsigned int const nvertices,
         BOOST_ASSERT_MSG(vertices.count(u) == 1 && vertices.count(v) == 1,
             "specified a vertex over the number of vertices in the graph");
 
-        add_edge(vertices[u], vertices[v], graph);
+        boost::add_edge(vertices[u], vertices[v], graph);
     }
-    BOOST_ASSERT(num_vertices(graph) == nvertices);
+    BOOST_ASSERT(boost::num_vertices(graph) == nvertices);
 }
 
 
