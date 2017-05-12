@@ -14,8 +14,6 @@
 #include <boost/property_map/property_map.hpp>
 #include <string>
 
-using namespace boost;
-
 /*
   Interior Property Map Basics
 
@@ -54,17 +52,17 @@ template <class EdgeIter, class Graph>
 void who_owes_who(EdgeIter first, EdgeIter last, const Graph& G)
 {
   // Access the propety acessor type for this graph
-  using NamePA = typename property_map<Graph, vertex_first_name_t>
+  using NamePA = typename boost::property_map<Graph, vertex_first_name_t>
     ::const_type;
-  auto name = get(vertex_first_name, G);
+  auto name = boost::get(vertex_first_name, G);
 
   using NameType = typename boost::property_traits<NamePA>::value_type;
 
   NameType src_name, targ_name;
 
   while (first != last) {
-    src_name = boost::get(name, source(*first,G));
-    targ_name = boost::get(name, target(*first,G));
+    src_name = boost::get(name, boost::source(*first,G));
+    targ_name = boost::get(name, boost::target(*first,G));
     std::cout << src_name << " owes " 
          << targ_name << " some money" << std::endl;
     ++first;
@@ -77,8 +75,8 @@ main()
   {
     // Create the graph, and specify that we will use std::string to
     // store the first name's.
-    using MyGraphType = adjacency_list<vecS, vecS, directedS, 
-      property<vertex_first_name_t, std::string>>;
+    using MyGraphType = boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS, 
+      boost::property<vertex_first_name_t, std::string>>;
     
     using Pair = std::pair<int,int>;
     Pair edge_array[] = { Pair(0,1), Pair(0,2), Pair(0,3), Pair(0,4),
@@ -87,9 +85,9 @@ main()
     
     MyGraphType G(5);
     for (const auto& edge : edge_array)
-      add_edge(edge.first, edge.second, G);
+      boost::add_edge(edge.first, edge.second, G);
 
-    auto name = get(vertex_first_name, G);
+    auto name = boost::get(vertex_first_name, G);
     
     boost::put(name, 0, "Jeremy");
     boost::put(name, 1, "Rich");
@@ -97,7 +95,7 @@ main()
     boost::put(name, 3, "Jeff");
     name[4] = "Kinis"; // you can use operator[] too
     
-    who_owes_who(edges(G).first, edges(G).second, G);
+    who_owes_who(boost::edges(G).first, edges(G).second, G);
   }
 
   std::cout << std::endl;
