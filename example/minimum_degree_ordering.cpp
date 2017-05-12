@@ -85,8 +85,6 @@ struct harwell_boeing
 
 int main(int argc, char* argv[]) 
 {
-  using namespace boost;
-
   if (argc < 2) {
     std::cout << argv[0] << " HB file"  << std::endl;
     return -1;
@@ -100,7 +98,7 @@ int main(int argc, char* argv[])
   harwell_boeing hbs(argv[1]);
 
   //must be BGL directed graph now
-  using Graph = adjacency_list<vecS, vecS, directedS> ;
+  using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS> ;
 
   auto n = hbs.nrows();
 
@@ -113,8 +111,8 @@ int main(int argc, char* argv[])
   for (int i = 0; i < n; ++i)
     for (int j = hbs.colptr[i]; j < hbs.colptr[i+1]; ++j)
       if ( (hbs.rowind[j - 1] - 1 ) > i ) {
-        add_edge(hbs.rowind[j - 1] - 1, i, G);
-        add_edge(i, hbs.rowind[j - 1] - 1, G);
+        boost::add_edge(hbs.rowind[j - 1] - 1, i, G);
+        boost::add_edge(i, hbs.rowind[j - 1] - 1, G);
         num_edge++;
       }
 
@@ -127,16 +125,16 @@ int main(int argc, char* argv[])
 
   Vector supernode_sizes(n, 1); // init has to be 1
 
-  auto id = get(vertex_index, G);
+  auto id = boost::get(boost::vertex_index, G);
 
   Vector degree(n, 0);
 
   minimum_degree_ordering
     (G,
-     make_iterator_property_map(&degree[0], id, degree[0]),
+     boost::make_iterator_property_map(&degree[0], id, degree[0]),
      &inverse_perm[0],
      &perm[0],
-     make_iterator_property_map(&supernode_sizes[0], id, supernode_sizes[0]), 
+     boost::make_iterator_property_map(&supernode_sizes[0], id, supernode_sizes[0]), 
      delta, id);
 
   if ( argc >= 3 ) {
