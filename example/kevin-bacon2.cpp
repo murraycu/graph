@@ -37,20 +37,18 @@ struct edge_properties {
   }  
 };
 
-using namespace boost;
-
-using Graph = adjacency_list<vecS, vecS, undirectedS, 
+using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, 
                vertex_properties, edge_properties>;
-using Vertex = graph_traits<Graph>::vertex_descriptor;
-using Edge = graph_traits<Graph>::edge_descriptor;
+using Vertex = boost::graph_traits<Graph>::vertex_descriptor;
+using Edge = boost::graph_traits<Graph>::edge_descriptor;
 
-class bacon_number_recorder : public default_bfs_visitor
+class bacon_number_recorder : public boost::default_bfs_visitor
 {
 public:
   bacon_number_recorder(int* dist) : d(dist) { }
 
   void tree_edge(Edge e, const Graph& g) const {
-    auto u = source(e, g), v = target(e, g);
+    auto u = boost::source(e, g), v = boost::target(e, g);
     d[v] = d[u] + 1;
   }
 private:
@@ -64,15 +62,15 @@ int main()
     std::cerr << "No ./kevin-bacon2.dat file" << std::endl;
     return EXIT_FAILURE;
   }
-  archive::text_iarchive ia(ifs);
+  boost::archive::text_iarchive ia(ifs);
   Graph g;
   ia >> g;
 
-  std::vector<int> bacon_number(num_vertices(g));
+  std::vector<int> bacon_number(boost::num_vertices(g));
 
   // Get the vertex for Kevin Bacon
   Vertex src;
-  for (const auto& vertex : make_range_pair(vertices(g)))
+  for (const auto& vertex : make_range_pair(boost::vertices(g)))
     if (g[vertex].name == "Kevin Bacon")
       src = vertex;
 
@@ -80,10 +78,10 @@ int main()
   bacon_number[src] = 0;
 
   // Perform a breadth first search to compute everyone' Bacon number.
-  breadth_first_search(g, src,
-                       visitor(bacon_number_recorder(&bacon_number[0])));
+  boost::breadth_first_search(g, src,
+                       boost::visitor(bacon_number_recorder(&bacon_number[0])));
 
-  for (const auto& vertex : make_range_pair(vertices(g)))
+  for (const auto& vertex : make_range_pair(boost::vertices(g)))
     std::cout << g[vertex].name << " has a Bacon number of "
           << bacon_number[vertex] << std::endl;
 
