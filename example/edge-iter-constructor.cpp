@@ -10,8 +10,6 @@
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graph_utility.hpp>
 
-using namespace boost;
-
 template <typename T>
   std::istream & operator >> (std::istream & in, std::pair<T, T> &p) {
   in >> p.first >> p.second;
@@ -22,14 +20,14 @@ template <typename T>
 int
 main()
 {
-  using graph_type = adjacency_list <
-    listS,                     // Store out-edges of each vertex in a std::list
-    vecS,                      // Store vertex set in a std::vector
-    directedS                  // The graph is directed
+  using graph_type = boost::adjacency_list <
+    boost::listS,                     // Store out-edges of each vertex in a std::list
+    boost::vecS,                      // Store vertex set in a std::vector
+    boost::directedS                  // The graph is directed
     >;
 
   std::ifstream file_in("makefile-dependencies.dat");
-  using size_type = graph_traits<graph_type>::vertices_size_type;
+  using size_type = boost::graph_traits<graph_type>::vertices_size_type;
   size_type n_vertices;
   file_in >> n_vertices;        // read in number of vertices
 
@@ -37,14 +35,14 @@ main()
   g(n_vertices);                // create graph with n vertices
 
   // Read in edges
-  graph_traits<graph_type>::vertices_size_type u, v;
+  boost::graph_traits<graph_type>::vertices_size_type u, v;
   while (file_in >> u)
     if (file_in >> v)
-      add_edge(u, v, g);
+      boost::add_edge(u, v, g);
     else
       break;
 
-  assert(num_vertices(g) == 15);
-  assert(num_edges(g) == 19);
+  assert(boost::num_vertices(g) == 15);
+  assert(boost::num_edges(g) == 19);
   return 0;
 }
