@@ -793,9 +793,9 @@ namespace boost {
 
       typedef typename VertexOrder::iterator order_iterator;
 
-      for (order_iterator order_iter = order.begin(); order_iter != order.end(); ) {
+      for (auto order_iter = order.begin(); order_iter != order.end(); ) {
         size_type count = 0;
-        for (order_iterator count_iter = order_iter;
+        for (auto count_iter = order_iter;
              (count_iter != order.end()) &&
              (in_degree(*order_iter, graph) == in_degree(*count_iter, graph)) &&
              (out_degree(*order_iter, graph) == out_degree(*count_iter, graph)); 

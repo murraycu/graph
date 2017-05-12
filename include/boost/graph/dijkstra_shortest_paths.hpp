@@ -469,7 +469,7 @@ namespace boost {
       put(predecessor, *ui, *ui);
       put(color, *ui, Color::white());
     }
-    for (SourceInputIter it = s_begin; it != s_end; ++it) {
+    for (auto it = s_begin; it != s_end; ++it) {
       put(distance, *it, zero);
     }
 

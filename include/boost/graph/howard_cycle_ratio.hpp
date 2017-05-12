@@ -250,7 +250,7 @@ namespace boost {
         while (!Q.empty())
           {
             vertex_t v = Q.top(); Q.pop();
-            for (typename pinel_t::const_iterator itr = m_inel[v].begin();
+            for (auto itr = m_inel[v].begin();
                  itr != m_inel[v].end(); ++itr)
               //For all in_edges of the policy graph
               {

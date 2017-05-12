@@ -282,7 +282,7 @@ namespace boost {
 
     // Find starting nodes for all vertices
     // TBD: How to do this with a directed graph?
-    for (typename std::deque<Vertex>::iterator i = vertex_queue.begin();
+    for (auto i = vertex_queue.begin();
          i != vertex_queue.end(); ++i)
       *i = find_starting_node(G, *i, color, degree);
     

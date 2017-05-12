@@ -635,7 +635,7 @@ namespace boost
                        less_than_by_degree<select_first>(g));
       
       //construct the extra greedy matching
-      for(typename directed_edges_vector_t::const_iterator itr = edge_list.begin(); itr != edge_list.end(); ++itr)
+      for (auto itr = edge_list.begin(); itr != edge_list.end(); ++itr)
       {
         if (get(mate,itr->first) == get(mate,itr->second)) 
         //only way equality can hold is if mate[itr->first] == mate[itr->second] == null_vertex

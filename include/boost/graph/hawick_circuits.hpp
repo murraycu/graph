@@ -219,7 +219,7 @@ private:
         AdjacentVertices const adj_vertices = GetAdjacentVertices()(v, graph_);
         AdjacencyIterator const w_end = boost::end(adj_vertices);
 
-        for (AdjacencyIterator w_it = boost::begin(adj_vertices);
+        for (auto w_it = boost::begin(adj_vertices);
              w_it != w_end;
              ++w_it)
         {
@@ -246,7 +246,7 @@ private:
         if (found_circuit)
             unblock(v);
         else
-            for (AdjacencyIterator w_it = boost::begin(adj_vertices);
+            for (auto w_it = boost::begin(adj_vertices);
                  w_it != w_end;
                  ++w_it)
             {

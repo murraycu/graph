@@ -487,7 +487,7 @@ namespace boost {
     void operator()(std::ostream& out, Descriptor key) const
     {
       bool first = true;
-      for (dynamic_properties::const_iterator i = dp->begin();
+      for (auto i = dp->begin();
            i != dp->end(); ++i) {
         if (typeid(key) == i->second->key()) {
           if (first) out << " [";
@@ -516,7 +516,7 @@ namespace boost {
     void operator()(std::ostream& out, Descriptor key) const
     {
       bool first = true;
-      for (dynamic_properties::const_iterator i = dp->begin();
+      for (auto i = dp->begin();
            i != dp->end(); ++i) {
         if (typeid(key) == i->second->key()
             && i->first != *node_id) {
@@ -544,7 +544,7 @@ namespace boost {
 
     void operator()(std::ostream& out) const
     {
-      for (dynamic_properties::const_iterator i = dp->begin();
+      for (auto i = dp->begin();
            i != dp->end(); ++i) {
         if (typeid(Graph*) == i->second->key()) {
           // const_cast here is to match interface used in read_graphviz

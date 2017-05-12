@@ -173,7 +173,7 @@ namespace boost {
           color_map(color_vec.begin(), color_vec.size(), index_map1);
         record_dfs_order dfs_visitor(dfs_vertices, ordered_edges);
         typedef color_traits<default_color_type> Color;
-        for (vertex_iter u = V_mult.begin(); u != V_mult.end(); ++u) {
+        for (auto u = V_mult.begin(); u != V_mult.end(); ++u) {
           if (color_map[*u] == Color::white()) {
             dfs_visitor.start_vertex(*u, G1);
             depth_first_visit(G1, *u, dfs_visitor, color_map);
@@ -189,7 +189,7 @@ namespace boost {
 #endif /* BOOST_NO_STD_ITERATOR_TRAITS */
                                                   );
         size_type n = 0;
-        for (vertex_iter v = dfs_vertices.begin(); v != dfs_vertices.end(); ++v)
+        for (auto v = dfs_vertices.begin(); v != dfs_vertices.end(); ++v)
           dfs_num[*v] = n++;
         
         sort(ordered_edges, edge_cmp(G1, dfs_num));

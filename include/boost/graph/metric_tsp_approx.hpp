@@ -198,7 +198,7 @@ namespace boost
         MSTImpl mst(num_vertices(g));
         std::size_t cnt = 0;
         pair<VItr, VItr> mst_verts(vertices(mst));
-        for(typename PredMap::iterator vi(preds.begin()); vi != preds.end(); ++vi, ++cnt)
+        for (auto vi(preds.begin()); vi != preds.end(); ++vi, ++cnt)
         {
             if(indexmap[*vi] != cnt) {
                 add_edge(*next(mst_verts.first, indexmap[*vi]),
@@ -218,7 +218,7 @@ namespace boost
         traverse_tree(indexmap[start], t, tvis);
 
         pair<GVItr, GVItr> g_verts(vertices(g));
-        for(PreorderTraverser<Node, Tree>::const_iterator curr(tvis.begin());
+        for (auto curr(tvis.begin());
             curr != tvis.end(); ++curr)
         {
             // TODO: This is will be O(n^2) if vertex storage of g != vecS.

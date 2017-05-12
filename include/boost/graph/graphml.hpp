@@ -259,7 +259,7 @@ write_graphml(std::ostream& out, const Graph& g, VertexIndexMap vertex_index,
     int key_count = 0;
 
     // Output keys
-    for (dynamic_properties::const_iterator i = dp.begin(); i != dp.end(); ++i)
+    for (auto i = dp.begin(); i != dp.end(); ++i)
     {
         std::string key_id = "key" + lexical_cast<std::string>(key_count++);
         if (i->second->key() == typeid(Graph*))
@@ -285,7 +285,7 @@ write_graphml(std::ostream& out, const Graph& g, VertexIndexMap vertex_index,
         << " parse.edgeids=\"canonical\" parse.order=\"nodesfirst\">\n";
 
     // Output graph data
-    for (dynamic_properties::const_iterator i = dp.begin(); i != dp.end(); ++i)
+    for (auto i = dp.begin(); i != dp.end(); ++i)
     {
         if (i->second->key() == typeid(Graph*))
         {
@@ -302,7 +302,7 @@ write_graphml(std::ostream& out, const Graph& g, VertexIndexMap vertex_index,
     {
         out << "    <node id=\"n" << get(vertex_index, *v) << "\">\n";
         // Output data
-        for (dynamic_properties::const_iterator i = dp.begin(); i != dp.end(); ++i)
+        for (auto i = dp.begin(); i != dp.end(); ++i)
         {
             if (i->second->key() == typeid(vertex_descriptor))
             {
@@ -323,7 +323,7 @@ write_graphml(std::ostream& out, const Graph& g, VertexIndexMap vertex_index,
             << get(vertex_index, target(*e, g)) << "\">\n";
 
         // Output data
-        for (dynamic_properties::const_iterator i = dp.begin(); i != dp.end(); ++i)
+        for (auto i = dp.begin(); i != dp.end(); ++i)
         {
             if (i->second->key() == typeid(edge_descriptor))
             {

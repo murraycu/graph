@@ -330,7 +330,7 @@ namespace detail { namespace graph {
         typedef typename property_traits<DependencyMap>::value_type 
           dependency_type;
         
-        for (incoming_iterator vw = incoming[w].begin();
+        for (auto vw = incoming[w].begin();
              vw != incoming[w].end(); ++vw) {
           vertex_descriptor v = source(*vw, g);
           dependency_type factor = dependency_type(get(path_count, v))

@@ -73,10 +73,10 @@ namespace boost {
         ::const_iterator edge_iter;
       typedef typename graph_traits<Graph>::out_edge_iterator out_edge_iter;
 
-      for (vertex_iter ui = vertex_set.begin(); ui != vertex_set.end(); ++ui) {
+      for (auto ui = vertex_set.begin(); ui != vertex_set.end(); ++ui) {
         vertex_t u = *ui;
         std::vector<vertex_t> adj;
-        for (edge_iter e = edge_set.begin(); e != edge_set.end(); ++e)
+        for (auto e = edge_set.begin(); e != edge_set.end(); ++e)
           if (e->first == u)
             adj.push_back(e->second);
         
@@ -102,10 +102,10 @@ namespace boost {
         ::const_iterator edge_iter;
       typedef typename graph_traits<Graph>::in_edge_iterator in_edge_iter;
 
-      for (vertex_iter vi = vertex_set.begin(); vi != vertex_set.end(); ++vi) {
+      for (auto vi = vertex_set.begin(); vi != vertex_set.end(); ++vi) {
         vertex_t v = *vi;
         std::vector<vertex_t> inv_adj;
-        for (edge_iter e = edge_set.begin(); e != edge_set.end(); ++e)
+        for (auto e = edge_set.begin(); e != edge_set.end(); ++e)
           if (e->second == v)
             inv_adj.push_back(e->first);
 
@@ -131,10 +131,10 @@ namespace boost {
         ::const_iterator edge_iter;
       typedef typename graph_traits<Graph>::adjacency_iterator adj_iter;
 
-      for (vertex_iter ui = vertex_set.begin(); ui != vertex_set.end(); ++ui) {
+      for (auto ui = vertex_set.begin(); ui != vertex_set.end(); ++ui) {
         vertex_t u = *ui;
         std::vector<vertex_t> adj;
-        for (edge_iter e = edge_set.begin(); e != edge_set.end(); ++e)
+        for (auto e = edge_set.begin(); e != edge_set.end(); ++e)
           if (e->first == u)
             adj.push_back(e->second);
 

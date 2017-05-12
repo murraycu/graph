@@ -69,7 +69,7 @@ namespace boost {
         typename std::vector<vertex_descriptor>::iterator it = std::find(path.begin(), path.end(), t);
         BOOST_ASSERT (it != path.end());
         ++it;
-        for (typename std::vector<vertex_descriptor>::iterator j = it; j != path.end(); ++j) {
+        for (auto j = it; j != path.end(); ++j) {
           put(color, *j, color_gen::white());
         }
         path.erase(it, path.end());

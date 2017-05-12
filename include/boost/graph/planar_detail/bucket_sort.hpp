@@ -104,12 +104,12 @@ namespace boost
 
     ForwardIterator orig_seq_itr = begin;
     typename vector_of_vectors_t::iterator itr_end = temp_values.end();
-    for(typename vector_of_vectors_t::iterator itr = temp_values.begin(); 
+    for (auto itr = temp_values.begin(); 
         itr != itr_end; ++itr
         )
       {
         typename vector_of_values_t::iterator jtr_end = itr->end();
-        for(typename vector_of_values_t::iterator jtr = itr->begin(); 
+        for (auto jtr = itr->begin(); 
             jtr != jtr_end; ++jtr
             )
         {

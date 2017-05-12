@@ -409,7 +409,7 @@ namespace boost {
       remove_directed_edge_dispatch(edge_descriptor, EdgeList& el,
                                     StoredProperty& p)
       {
-        for (typename EdgeList::iterator i = el.begin();
+        for (auto i = el.begin();
              i != el.end(); ++i)
           if (&(*i).get_property() == &p) {
             el.erase(i);
@@ -444,7 +444,7 @@ namespace boost {
                                        Predicate pred,
                                        boost::disallow_parallel_edge_tag)
       {
-        for (incidence_iterator next = first;
+        for (auto next = first;
              first != last; first = next) {
           ++next;
           if (pred(*first))
@@ -510,7 +510,7 @@ namespace boost {
         typedef typename Graph::global_edgelist_selector EdgeListS;
         BOOST_STATIC_ASSERT((!is_same<EdgeListS, vecS>::value));
 
-        for (incidence_iterator next = first;
+        for (auto next = first;
              first != last; first = next) {
           ++next;
           if (pred(*first)) {
@@ -537,7 +537,7 @@ namespace boost {
       remove_directed_edge_dispatch(edge_descriptor e, EdgeList& el,
                                     no_property&)
       {
-        for (typename EdgeList::iterator i = el.begin();
+        for (auto i = el.begin();
              i != el.end(); ++i)
           if ((*i).get_target() == e.m_target) {
             el.erase(i);
@@ -1336,7 +1336,7 @@ namespace boost {
         (first, last, g.out_edge_list(u), pred, Cat());
 
       // Now delete the edge properties from the g.m_edges list
-      for (typename Garbage::iterator i = garbage.begin();
+      for (auto i = garbage.begin();
            i != garbage.end(); ++i)
         g.m_edges.erase(*i);
     }
@@ -1376,7 +1376,7 @@ namespace boost {
         (first, last, in_edge_list(g, v), pred, Cat());
 
       // Now delete the edge properties from the g.m_edges list
-      for (typename Garbage::iterator i = garbage.begin();
+      for (auto i = garbage.begin();
            i != garbage.end(); ++i)
         g.m_edges.erase(*i);
     }
@@ -1810,7 +1810,7 @@ namespace boost {
         return *this;
       }
       inline void clear() {
-        for (typename StoredVertexList::iterator i = m_vertices.begin();
+        for (auto i = m_vertices.begin();
              i != m_vertices.end(); ++i)
           delete (stored_vertex*)*i;
         m_vertices.clear();
@@ -1851,7 +1851,7 @@ namespace boost {
         delete [] v;
       }
       ~adj_list_impl() {
-        for (typename StoredVertexList::iterator i = m_vertices.begin();
+        for (auto i = m_vertices.begin();
              i != m_vertices.end(); ++i)
           delete (stored_vertex*)*i;
       }

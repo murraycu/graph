@@ -123,7 +123,7 @@ std::map<unsigned long, double> weight_degree_dist( Graph& g ) {
       dist[out_degree( v, g )] += tmp;
   }
 
-  for( std::map<unsigned long, double>::iterator iter = dist.begin();
+  for (auto iter = dist.begin();
        iter != dist.end(); ++iter ) {
     BOOST_ASSERT( n[iter->first] != 0 );
     dist[iter->first] /= n[iter->first];

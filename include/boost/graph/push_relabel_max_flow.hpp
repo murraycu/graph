@@ -373,7 +373,7 @@ namespace boost {
         r = empty_distance - 1;
 
         // Set the distance for the vertices beyond the gap to "infinity".
-        for (layer_iterator l = layers.begin() + empty_distance + 1;
+        for (auto l = layers.begin() + empty_distance + 1;
              l < layers.begin() + max_distance; ++l) {
           list_iterator i;
           for (i = l->inactive_vertices.begin(); 

@@ -163,7 +163,7 @@ namespace boost {
       
       //step 2
       //initialize the the disance std-vector with 0
-      for(typename std::vector<typename graph_traits<Graph>::vertices_size_type>::iterator iter = dist.begin(); iter != dist.end(); ++iter) *iter = 0;
+      for (auto iter = dist.begin(); iter != dist.end(); ++iter) *iter = 0;
       
       //generating the RLS (rooted level structure)
       breadth_first_search
@@ -210,7 +210,7 @@ namespace boost {
         degree_queue.pop();           //ereasing the node with the lowest degree from the degree queue
         
         //generating a RLS          
-        for(typename std::vector<typename graph_traits<Graph>::vertices_size_type>::iterator iter = dist.begin(); iter != dist.end(); ++iter) *iter = 0;
+        for (auto iter = dist.begin(); iter != dist.end(); ++iter) *iter = 0;
         
         breadth_first_search
           (G, i, boost::visitor

@@ -62,7 +62,7 @@ namespace boost {
   template <class ParentIterator>
   void compress_components(ParentIterator first, ParentIterator last)
   {
-    for (ParentIterator current = first; current != last; ++current) 
+    for (auto current = first; current != last; ++current) 
       detail::find_representative_with_full_compression(first, current-first);
   }
   
@@ -71,7 +71,7 @@ namespace boost {
   component_count(ParentIterator first, ParentIterator last)
   {
     std::ptrdiff_t count = 0;
-    for (ParentIterator current = first; current != last; ++current) 
+    for (auto current = first; current != last; ++current) 
       if (*current == current - first) ++count; 
     return count;
   }
@@ -82,7 +82,7 @@ namespace boost {
   template <class ParentIterator>
   void normalize_components(ParentIterator first, ParentIterator last)
   {
-    for (ParentIterator current = first; current != last; ++current) 
+    for (auto current = first; current != last; ++current) 
       detail::normalize_node(first, current - first);
   }
   

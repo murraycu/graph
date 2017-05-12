@@ -59,7 +59,7 @@ namespace boost {
 
       typedef typename graph_traits<Graph>::vertex_iterator vertex_iterator;
 
-      for (vertex_iterator ui = vertices(g).first, end = vertices(g).second;
+      for (auto end = vertices(g).second;
            ui != end; ++ui) {
         vertex_iterator vi = ui;
         for (++vi; vi != end; ++vi) {

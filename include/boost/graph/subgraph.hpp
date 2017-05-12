@@ -158,7 +158,7 @@ public:
 
 
     ~subgraph() {
-      for(typename ChildrenList::iterator i = m_children.begin();
+      for (auto i = m_children.begin();
           i != m_children.end(); ++i)
         {
             delete *i;
@@ -518,7 +518,7 @@ namespace detail {
     void children_add_edge(Vertex u_global, Vertex v_global, Edge e_global,
                            Children& c, subgraph<G>* orig)
     {
-        for(typename Children::iterator i = c.begin(); i != c.end(); ++i) {
+        for (auto i = c.begin(); i != c.end(); ++i) {
             if ((*i)->find_vertex(u_global).second &&
                 (*i)->find_vertex(v_global).second)
             {
@@ -609,7 +609,7 @@ namespace detail {
     void children_remove_edge(Vertex u_global, Vertex v_global,
                               Children& c)
     {
-        for(typename Children::iterator i = c.begin(); i != c.end(); ++i) {
+        for (auto i = c.begin(); i != c.end(); ++i) {
             if((*i)->find_vertex(u_global).second &&
                (*i)->find_vertex(v_global).second)
             {
@@ -647,7 +647,7 @@ namespace detail {
     template <typename G, typename Edge, typename Children>
     void children_remove_edge(Edge e_global, Children& c)
     {
-        for(typename Children::iterator i = c.begin(); i != c.end(); ++i) {
+        for (auto i = c.begin(); i != c.end(); ++i) {
             std::pair<typename subgraph<G>::edge_descriptor, bool> found =
               (*i)->find_edge(e_global);
             if (!found.second) {
@@ -695,7 +695,7 @@ remove_edge_if(Predicate p, subgraph<G>& g) {
   while (true) {
     bool any_removed = false;
     typedef typename subgraph<G>::edge_iterator ei_type;
-    for (std::pair<ei_type, ei_type> ep = edges(g);
+    for (auto ep = edges(g);
          ep.first != ep.second; ++ep.first) {
       if (p(*ep.first)) {
         any_removed = true;

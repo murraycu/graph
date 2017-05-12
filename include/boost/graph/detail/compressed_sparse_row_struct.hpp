@@ -186,7 +186,7 @@ namespace detail {
       EdgeIndex current_edge = 0;
       Vertex current_vertex_plus_one = 1;
       m_rowstart[0] = 0;
-      for (InputIterator ei = edge_begin; ei != edge_end; ++ei) {
+      for (auto ei = edge_begin; ei != edge_end; ++ei) {
         if (!source_pred(ei->first)) continue;
         Vertex src = get(global_to_local, ei->first);
         Vertex tgt = ei->second;
@@ -228,7 +228,7 @@ namespace detail {
       EdgeIndex current_edge = 0;
       Vertex current_vertex_plus_one = 1;
       m_rowstart[0] = 0;
-      for (InputIterator ei = edge_begin; ei != edge_end; ++ei, ++ep_iter) {
+      for (auto ei = edge_begin; ei != edge_end; ++ei, ++ep_iter) {
         if (!source_pred(ei->first)) continue;
         Vertex src = get(global_to_local, ei->first);
         Vertex tgt = ei->second;

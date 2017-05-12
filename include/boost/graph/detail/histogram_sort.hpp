@@ -57,7 +57,7 @@ count_starts
   typedef typename std::iterator_traits<RowstartIterator>::value_type EdgeIndex;
 
   // Put the degree of each vertex v into m_rowstart[v + 1]
-  for (KeyIterator i = begin; i != end; ++i) {
+  for (auto i = begin; i != end; ++i) {
     if (key_filter(*i)) {
       BOOST_ASSERT (key_transform(*i) < numkeys);
       ++starts[key_transform(*i) + 1];
@@ -95,7 +95,7 @@ histogram_sort(KeyIterator key_begin, KeyIterator key_end,
   std::vector<EdgeIndex>
     current_insert_positions(rowstart, rowstart + numkeys);
   Value1InputIter v1i = values1_begin;
-  for (KeyIterator i = key_begin; i != key_end; ++i, ++v1i) {
+  for (auto i = key_begin; i != key_end; ++i, ++v1i) {
     if (key_filter(*i)) {
       NumKeys source = key_transform(*i);
       BOOST_ASSERT (source < numkeys);
@@ -133,7 +133,7 @@ histogram_sort(KeyIterator key_begin, KeyIterator key_end,
     current_insert_positions(rowstart, rowstart + numkeys);
   Value1InputIter v1i = values1_begin;
   Value2InputIter v2i = values2_begin;
-  for (KeyIterator i = key_begin; i != key_end; ++i, ++v1i, ++v2i) {
+  for (auto i = key_begin; i != key_end; ++i, ++v1i, ++v2i) {
     if (key_filter(*i)) {
       NumKeys source = key_transform(*i);
       BOOST_ASSERT (source < numkeys);

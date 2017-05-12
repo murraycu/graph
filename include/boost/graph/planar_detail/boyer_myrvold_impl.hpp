@@ -377,7 +377,7 @@ namespace boost
       // vertex's representation in its parent's list, which allows merging
       //in constant time.
 
-      for(typename vertex_vector_t::iterator itr =
+      for (auto itr =
             vertices_by_lowpoint.begin();
           itr != vertices_by_lowpoint.end(); ++itr)
         {
@@ -878,7 +878,7 @@ namespace boost
 
     void store_old_face_handles(graph::detail::store_old_handles)
     {
-      for(typename std::vector<vertex_t>::iterator mp_itr
+      for (auto mp_itr
             = current_merge_points.begin();
           mp_itr != current_merge_points.end(); ++mp_itr)
         {

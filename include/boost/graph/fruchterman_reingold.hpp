@@ -131,7 +131,7 @@ struct grid_force_pairs
       for (std::size_t column = 0; column < columns; ++column) {
         bucket_t& bucket = buckets[row * columns + column];
         typedef typename bucket_t::iterator bucket_iterator;
-        for (bucket_iterator u = bucket.begin(); u != bucket.end(); ++u) {
+        for (auto u = bucket.begin(); u != bucket.end(); ++u) {
           // Repulse vertices in this bucket
           bucket_iterator v = u;
           for (++v; v != bucket.end(); ++v) {
@@ -143,9 +143,9 @@ struct grid_force_pairs
           std::size_t adj_end_row = row == rows - 1? row : row + 1;
           std::size_t adj_start_column = column == 0? 0 : column - 1;
           std::size_t adj_end_column = column == columns - 1? column : column + 1;
-          for (std::size_t other_row = adj_start_row; other_row <= adj_end_row;
+          for (auto other_row = adj_start_row; other_row <= adj_end_row;
                ++other_row)
-            for (std::size_t other_column = adj_start_column;
+            for (auto other_column = adj_start_column;
                  other_column <= adj_end_column; ++other_column)
               if (other_row != row || other_column != column) {
                 // Repulse vertices in this bucket

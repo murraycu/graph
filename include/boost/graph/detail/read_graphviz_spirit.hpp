@@ -317,7 +317,7 @@ struct dot_grammar : public boost::spirit::classic::grammar<dot_grammar> {
 #endif // BOOST_GRAPH_DEBUG
         // Set the default properties for this edge
         // RG: Here I  would actually set the properties
-        for(props_t::iterator i = node_props.begin();
+        for (auto i = node_props.begin();
             i != node_props.end(); ++i) {
           set_node_property(node,i->first,i->second);
         }
@@ -325,7 +325,7 @@ struct dot_grammar : public boost::spirit::classic::grammar<dot_grammar> {
           subgraph.nodes().insert(node);
           // Set the subgraph's default properties as well
           props_t& props = subgraph_node_props[subgraph.name()];
-          for(props_t::iterator i = props.begin(); i != props.end(); ++i) {
+          for (auto i = props.begin(); i != props.end(); ++i) {
             set_node_property(node,i->first,i->second);
           }
         }
@@ -339,8 +339,8 @@ struct dot_grammar : public boost::spirit::classic::grammar<dot_grammar> {
     void activate_edge(nodes_t& sources, nodes_t& dests, edges_t& edges,
                        props_t& edge_props) {
       edge_stack_t& edge_stack = data_stmt.edge_stack();
-      for(nodes_t::iterator i = sources.begin(); i != sources.end(); ++i) {
-        for(nodes_t::iterator j = dests.begin(); j != dests.end(); ++j) {
+      for (auto i = sources.begin(); i != sources.end(); ++i) {
+        for (auto j = dests.begin(); j != dests.end(); ++j) {
           // Create the edge and push onto the edge stack.
 #ifdef BOOST_GRAPH_DEBUG
           std::cout << "Edge " << *i << " to " << *j << std::endl;
@@ -355,7 +355,7 @@ struct dot_grammar : public boost::spirit::classic::grammar<dot_grammar> {
           self.graph_.do_add_edge(edge, *i, *j);
 
           // Set the default properties for this edge
-          for(props_t::iterator k = edge_props.begin();
+          for (auto k = edge_props.begin();
               k != edge_props.end(); ++k) {
             set_edge_property(edge,k->first,k->second);
           }
@@ -363,7 +363,7 @@ struct dot_grammar : public boost::spirit::classic::grammar<dot_grammar> {
             subgraph.edges().insert(edge);
             // Set the subgraph's default properties as well
             props_t& props = subgraph_edge_props[subgraph.name()];
-            for(props_t::iterator k = props.begin(); k != props.end(); ++k) {
+            for (auto k = props.begin(); k != props.end(); ++k) {
               set_edge_property(edge,k->first,k->second);
             }
           }
@@ -380,7 +380,7 @@ struct dot_grammar : public boost::spirit::classic::grammar<dot_grammar> {
     // edge_prop - Assign the property for the current active edges.
     void edge_prop(id_t const& key, id_t const& value) {
       edge_stack_t const& active_edges_ = data_stmt.edge_stack();
-      for (edge_stack_t::const_iterator i = active_edges_.begin();
+      for (auto i = active_edges_.begin();
            i != active_edges_.end(); ++i) {
         set_edge_property(*i,key,value);
       }
@@ -408,7 +408,7 @@ struct dot_grammar : public boost::spirit::classic::grammar<dot_grammar> {
       // for each node, set its property to default-constructed value 
       //   if it hasn't been set already.
       // set the dynamic property map value
-      for(nodes_t::iterator i = nodes_.begin(); i != nodes_.end(); ++i)
+      for (auto i = nodes_.begin(); i != nodes_.end(); ++i)
         if(node_map[*i].find(key) == node_map[*i].end()) {
           set_node_property(*i,key,id_t());
         }
@@ -427,7 +427,7 @@ struct dot_grammar : public boost::spirit::classic::grammar<dot_grammar> {
       edge_props_[key] = value;
       // for each edge, set its property to be empty string
       // set the dynamic property map value
-      for(edges_t::iterator i = edges_.begin(); i != edges_.end(); ++i)
+      for (auto i = edges_.begin(); i != edges_.end(); ++i)
         if(edge_map[*i].find(key) == edge_map[*i].end())
           set_edge_property(*i,key,id_t());
     }

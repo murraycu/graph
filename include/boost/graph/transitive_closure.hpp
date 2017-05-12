@@ -112,7 +112,7 @@ namespace boost
         std::unique(adj.begin(), adj.end());
       if (di != adj.end())
         adj.erase(di, adj.end());
-      for (typename std::vector<cg_vertex>::const_iterator i = adj.begin();
+      for (auto i = adj.begin();
            i != adj.end(); ++i) {
         add_edge(s, *i, CG);
       }
@@ -124,7 +124,7 @@ namespace boost
                      vertex_index_map(identity_property_map()));
     std::reverse(topo_order.begin(), topo_order.end());
     size_type n = 0;
-    for (typename std::vector<cg_vertex>::iterator iter = topo_order.begin();
+    for (auto iter = topo_order.begin();
          iter != topo_order.end(); ++iter)
       topo_number[*iter] = n++;
 
@@ -142,7 +142,7 @@ namespace boost
     std::vector<std::vector<cg_vertex> > chains;
     {
       std::vector<cg_vertex> in_a_chain(CG_vec.size());
-      for (typename std::vector<cg_vertex>::iterator i = topo_order.begin();
+      for (auto i = topo_order.begin();
            i != topo_order.end(); ++i) {
         cg_vertex v = *i;
         if (!in_a_chain[v]) {
