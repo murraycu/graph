@@ -60,7 +60,7 @@ struct linear_cooling {
 
   T operator()()
   {
-    T old_temp = temp;
+    auto old_temp = temp;
     temp -= step;
     if (temp < T(0)) temp = T(0);
     return old_temp;
@@ -79,7 +79,7 @@ struct all_force_pairs
     typedef typename graph_traits<Graph>::vertex_iterator vertex_iterator;
     vertex_iterator v, end;
     for (std::tie(v, end) = vertices(g); v != end; ++v) {
-      vertex_iterator u = v;
+      auto u = v;
       for (++u; u != end; ++u) {
         apply_force(*u, *v);
         apply_force(*v, *u);
@@ -112,12 +112,12 @@ struct grid_force_pairs
     typedef std::list<vertex_descriptor> bucket_t;
     typedef std::vector<bucket_t> buckets_t;
 
-    std::size_t columns = std::size_t(topology.extent()[0] / two_k + 1.);
-    std::size_t rows = std::size_t(topology.extent()[1] / two_k + 1.);
+    auto columns = std::size_t(topology.extent()[0] / two_k + 1.);
+    auto rows = std::size_t(topology.extent()[1] / two_k + 1.);
     buckets_t buckets(rows * columns);
     vertex_iterator v, v_end;
     for (std::tie(v, v_end) = vertices(g); v != v_end; ++v) {
-      std::size_t column =
+      auto column =
         std::size_t((get(position, *v)[0] + topology.extent()[0] / 2) / two_k);
       std::size_t row    =
         std::size_t((get(position, *v)[1] + topology.extent()[1] / 2) / two_k);
@@ -129,11 +129,11 @@ struct grid_force_pairs
 
     for (std::size_t row = 0; row < rows; ++row)
       for (std::size_t column = 0; column < columns; ++column) {
-        bucket_t& bucket = buckets[row * columns + column];
+        auto& bucket = buckets[row * columns + column];
         typedef typename bucket_t::iterator bucket_iterator;
         for (auto u = bucket.begin(); u != bucket.end(); ++u) {
           // Repulse vertices in this bucket
-          bucket_iterator v = u;
+          auto v = u;
           for (++v; v != bucket.end(); ++v) {
             apply_force(*u, *v);
             apply_force(*v, *u);
@@ -185,20 +185,20 @@ scale_graph(const Graph& g, PositionMap position, const Topology& topology,
   typedef typename Topology::point_difference_type point_difference_type;
 
   // Find min/max ranges
-  Point min_point = get(position, *vertices(g).first), max_point = min_point;
+  auto min_point = get(position, *vertices(g).first), max_point = min_point;
   BGL_FORALL_VERTICES_T(v, g, Graph) {
     min_point = topology.pointwise_min(min_point, get(position, v));
     max_point = topology.pointwise_max(max_point, get(position, v));
   }
 
-  Point old_origin = topology.move_position_toward(min_point, 0.5, max_point);
-  Point new_origin = topology.move_position_toward(upper_left, 0.5, lower_right);
-  point_difference_type old_size = topology.difference(max_point, min_point);
-  point_difference_type new_size = topology.difference(lower_right, upper_left);
+  auto old_origin = topology.move_position_toward(min_point, 0.5, max_point);
+  auto new_origin = topology.move_position_toward(upper_left, 0.5, lower_right);
+  auto old_size = topology.difference(max_point, min_point);
+  auto new_size = topology.difference(lower_right, upper_left);
 
   // Scale to bounding box provided
   BGL_FORALL_VERTICES_T(v, g, Graph) {
-    point_difference_type relative_loc = topology.difference(get(position, v), old_origin);
+    auto relative_loc = topology.difference(get(position, v), old_origin);
     relative_loc = (relative_loc / old_size) * new_size;
     put(position, v, topology.adjust(new_origin, relative_loc));
   }
@@ -243,7 +243,7 @@ namespace detail {
         maybe_jitter_point(topology, position, u, get(position, v));
 
         double dist = topology.distance(get(position, u), get(position, v));
-        typename Topology::point_difference_type dispv = get(displacement, v);
+        auto dispv = get(displacement, v);
         if (dist == 0.) {
           for (std::size_t i = 0; i < Point::dimensions; ++i) {
             dispv[i] += 0.01;
@@ -305,14 +305,14 @@ fruchterman_reingold_force_directed_layout
     // Calculate attractive forces
     edge_iterator e, e_end;
     for (std::tie(e, e_end) = edges(g); e != e_end; ++e) {
-      vertex_descriptor v = source(*e, g);
-      vertex_descriptor u = target(*e, g);
+      auto v = source(*e, g);
+      auto u = target(*e, g);
 
       // When the vertices land on top of each other, move the
       // first vertex away from the boundaries.
       ::boost::detail::maybe_jitter_point(topology, position, u, get(position, v));
 
-      typename Topology::point_difference_type delta =
+      auto delta =
         topology.difference(get(position, v), get(position, u));
       double dist = topology.distance(get(position, u), get(position, v));
       double fa = attractive_force(*e, k, dist, g);

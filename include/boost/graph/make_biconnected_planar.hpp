@@ -38,9 +38,6 @@ namespace boost
     typedef typename graph_traits<Graph>::vertex_descriptor vertex_t;
     typedef typename graph_traits<Graph>::edge_descriptor edge_t;
     typedef typename graph_traits<Graph>::edges_size_type edge_size_t;
-    typedef typename 
-      property_traits<PlanarEmbedding>::value_type embedding_value_t;
-    typedef typename embedding_value_t::const_iterator embedding_iterator_t;
     typedef iterator_property_map
       <std::vector<std::size_t>::iterator, EdgeIndexMap> component_map_t;
 
@@ -57,10 +54,10 @@ namespace boost
     for(ap = articulation_points.begin(); ap != ap_end; ++ap)
       {
         vertex_t v(*ap);
-        embedding_iterator_t pi = embedding[v].begin();
-        embedding_iterator_t pi_end = embedding[v].end();
+        auto pi = embedding[v].begin();
+        auto pi_end = embedding[v].end();
         edge_size_t previous_component(n_edges + 1);
-        vertex_t previous_vertex = graph_traits<Graph>::null_vertex();
+        auto previous_vertex = graph_traits<Graph>::null_vertex();
 
         for(; pi != pi_end; ++pi)
           {
@@ -72,8 +69,8 @@ namespace boost
             if (e_source == e_target || previous_vertex == e_target)
               continue;
 
-            vertex_t current_vertex = e_source == v ? e_target : e_source;
-            edge_size_t current_component = component_map[e];
+            auto current_vertex = e_source == v ? e_target : e_source;
+            auto current_component = component_map[e];
             if (previous_vertex != graph_traits<Graph>::null_vertex() &&
                 current_component != previous_component)
               {

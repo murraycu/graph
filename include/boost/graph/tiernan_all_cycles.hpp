@@ -142,8 +142,7 @@ namespace detail
     {
         // the path from u to v is closed if v can be found in the list
         // of closed vertices associated with u.
-        typedef typename ClosedMatrix::const_reference Row;
-        Row r = closed[get(vertex_index, g, u)];
+        auto r = closed[get(vertex_index, g, u)];
         if(find(r.begin(), r.end(), v) != r.end()) {
             return true;
         }
@@ -211,17 +210,16 @@ namespace detail
                 ClosedMatrix& closed)
     {
         BOOST_CONCEPT_ASSERT(( IncidenceGraphConcept<Graph> ));
-        typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
         typedef typename graph_traits<Graph>::out_edge_iterator OutIterator;
 
         // get the current vertex
-        Vertex u = p.back();
-        Vertex ret = graph_traits<Graph>::null_vertex();
+        auto u = p.back();
+        auto ret = graph_traits<Graph>::null_vertex();
 
         // AdjacencyIterator i, end;
         OutIterator i, end;
         for(std::tie(i, end) = out_edges(u, g); i != end; ++i) {
-            Vertex v = target(*i, g);
+            auto v = target(*i, g);
 
             // if we can actually extend along this edge,
             // then that's what we want to do
@@ -281,7 +279,7 @@ namespace detail
 
         Path p;
         ClosedMatrix closed(num_vertices(g), VertexList());
-        Vertex null = graph_traits<Graph>::null_vertex();
+        auto null = graph_traits<Graph>::null_vertex();
 
         // each path investigation starts at the ith vertex
         p.push_back(v);
@@ -289,7 +287,7 @@ namespace detail
         while(1) {
             // extend the path until we've reached the end or the
             // maxlen-sized cycle
-            Vertex j = null;
+            auto j = null;
             while(((j = detail::extend_path(g, p, closed)) != null)
                     && (p.size() < maxlen))
                 ; // empty loop

@@ -103,7 +103,7 @@ mean_geodesic(const Graph& g,
     BOOST_CONCEPT_ASSERT(( DistanceMeasureConcept<Measure,Graph> ));
     typedef typename Measure::distance_type Distance;
 
-    Distance n = detail::combine_distances(g, dist, combine, Distance(0));
+    auto n = detail::combine_distances(g, dist, combine, Distance(0));
     return measure(n, g);
 }
 
@@ -144,7 +144,6 @@ all_mean_geodesics(const Graph& g,
     typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
     typedef typename graph_traits<Graph>::vertex_iterator VertexIterator;
     BOOST_CONCEPT_ASSERT(( ReadablePropertyMapConcept<DistanceMatrixMap,Vertex> ));
-    typedef typename property_traits<DistanceMatrixMap>::value_type DistanceMap;
     BOOST_CONCEPT_ASSERT(( DistanceMeasureConcept<Measure,Graph> ));
     typedef typename Measure::result_type Result;
     BOOST_CONCEPT_ASSERT(( WritablePropertyMapConcept<GeodesicMap,Vertex> ));
@@ -154,12 +153,12 @@ all_mean_geodesics(const Graph& g,
     // computations (i.e., adding and dividing). However, I don't really feel
     // like fully genericizing the entire operation yet so I'm not going to.
 
-    Result inf = numeric_values<Result>::infinity();
-    Result sum = numeric_values<Result>::zero();
+    auto inf = numeric_values<Result>::infinity();
+    auto sum = numeric_values<Result>::zero();
     VertexIterator i, end;
     for(std::tie(i, end) = vertices(g); i != end; ++i) {
-        DistanceMap dm = get(dist, *i);
-        Result r = mean_geodesic(g, dm, measure);
+        auto dm = get(dist, *i);
+        auto r = mean_geodesic(g, dm, measure);
         put(geo, *i, r);
 
         // compute the sum along with geodesics
@@ -197,7 +196,7 @@ small_world_distance(const Graph& g, GeodesicMap geo, Measure measure)
     BOOST_CONCEPT_ASSERT(( DistanceMeasureConcept<Measure,Graph> ));
     typedef typename Measure::result_type Result;
 
-    Result sum = detail::combine_distances(g, geo, std::plus<Result>(), Result(0));
+    auto sum = detail::combine_distances(g, geo, std::plus<Result>(), Result(0));
     return measure(sum, g);
 }
 

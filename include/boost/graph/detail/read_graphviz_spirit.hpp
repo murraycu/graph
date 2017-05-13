@@ -324,7 +324,7 @@ struct dot_grammar : public boost::spirit::classic::grammar<dot_grammar> {
         if(subgraph_depth > 0) {
           subgraph.nodes().insert(node);
           // Set the subgraph's default properties as well
-          props_t& props = subgraph_node_props[subgraph.name()];
+          auto& props = subgraph_node_props[subgraph.name()];
           for (auto i = props.begin(); i != props.end(); ++i) {
             set_node_property(node,i->first,i->second);
           }
@@ -338,7 +338,7 @@ struct dot_grammar : public boost::spirit::classic::grammar<dot_grammar> {
 
     void activate_edge(nodes_t& sources, nodes_t& dests, edges_t& edges,
                        props_t& edge_props) {
-      edge_stack_t& edge_stack = data_stmt.edge_stack();
+      auto& edge_stack = data_stmt.edge_stack();
       for (auto i = sources.begin(); i != sources.end(); ++i) {
         for (auto j = dests.begin(); j != dests.end(); ++j) {
           // Create the edge and push onto the edge stack.
@@ -346,7 +346,7 @@ struct dot_grammar : public boost::spirit::classic::grammar<dot_grammar> {
           std::cout << "Edge " << *i << " to " << *j << std::endl;
 #endif // BOOST_GRAPH_DEBUG
 
-          edge_t edge = edge_t::new_edge();
+          auto edge = edge_t::new_edge();
           edge_stack.push_back(edge);
           edges.insert(edge);
           edge_map.insert(std::make_pair(edge,ids_t()));
@@ -362,7 +362,7 @@ struct dot_grammar : public boost::spirit::classic::grammar<dot_grammar> {
           if(subgraph_depth > 0) {
             subgraph.edges().insert(edge);
             // Set the subgraph's default properties as well
-            props_t& props = subgraph_edge_props[subgraph.name()];
+            auto& props = subgraph_edge_props[subgraph.name()];
             for (auto k = props.begin(); k != props.end(); ++k) {
               set_edge_property(edge,k->first,k->second);
             }
@@ -373,13 +373,13 @@ struct dot_grammar : public boost::spirit::classic::grammar<dot_grammar> {
 
     // node_prop - Assign the property for the current active node.
     void node_prop(id_t const& key, id_t const& value) {
-      node_t& active_object = data_stmt.active_node();
+      auto& active_object = data_stmt.active_node();
       set_node_property(active_object, key, value);
     }
 
     // edge_prop - Assign the property for the current active edges.
     void edge_prop(id_t const& key, id_t const& value) {
-      edge_stack_t const& active_edges_ = data_stmt.edge_stack();
+      auto const& active_edges_ = data_stmt.edge_stack();
       for (auto i = active_edges_.begin();
            i != active_edges_.end(); ++i) {
         set_edge_property(*i,key,value);
@@ -396,9 +396,9 @@ struct dot_grammar : public boost::spirit::classic::grammar<dot_grammar> {
 
     // default_node_prop - declare default properties for any future new nodes
     void default_node_prop(id_t const& key, id_t const& value) {
-      nodes_t& nodes_ =
+      auto& nodes_ =
         subgraph_depth == 0 ? nodes : subgraph.nodes();
-      props_t& node_props_ =
+      auto& node_props_ =
         subgraph_depth == 0 ?
         default_node_props :
         subgraph_node_props[subgraph.name()];
@@ -416,9 +416,9 @@ struct dot_grammar : public boost::spirit::classic::grammar<dot_grammar> {
 
     // default_edge_prop - declare default properties for any future new edges
    void default_edge_prop(id_t const& key, id_t const& value) {
-      edges_t& edges_ =
+      auto& edges_ =
         subgraph_depth == 0 ? edges : subgraph.edges();
-      props_t& edge_props_ =
+      auto& edge_props_ =
         subgraph_depth == 0 ?
         default_edge_props :
         subgraph_edge_props[subgraph.name()];
@@ -438,7 +438,7 @@ struct dot_grammar : public boost::spirit::classic::grammar<dot_grammar> {
     }
 
     void call_prop_actor(std::string const& lhs, std::string const& rhs) {
-      actor_t& actor = attr_list.prop_actor();
+      auto& actor = attr_list.prop_actor();
       // If first and last characters of the rhs are double-quotes,
       // remove them.
       if (!rhs.empty() && rhs[0] == '"' && rhs[rhs.size() - 1] == '"')

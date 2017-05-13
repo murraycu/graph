@@ -91,12 +91,12 @@ namespace boost
         }
       
       // Find vertex on face of minimum degree
-      degree_size_t min_degree = num_vertices(g);
+      auto min_degree = num_vertices(g);
       typename vertex_vector_t::iterator min_degree_vertex_itr;
-      face_iterator fi_end = vertices_on_face.end();
-      for(face_iterator fi = vertices_on_face.begin(); fi != fi_end; ++fi)
+      auto fi_end = vertices_on_face.end();
+      for(auto fi = vertices_on_face.begin(); fi != fi_end; ++fi)
         {
-          degree_size_t deg = get(degree,*fi);
+          auto deg = get(degree,*fi);
           if (deg < min_degree)
             {
               min_degree_vertex_itr = fi;
@@ -130,7 +130,7 @@ namespace boost
       // The iterator manipulations on the next two lines are safe because 
       // vertices_on_face.size() > 3 (from the first test in this function)
       fi_end = prior(vertices_on_face.end());
-      for(face_iterator fi = boost::next(boost::next(vertices_on_face.begin())); 
+      for(auto fi = boost::next(boost::next(vertices_on_face.begin())); 
           fi != fi_end; ++fi
           )
         {

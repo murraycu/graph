@@ -34,8 +34,10 @@ namespace boost {
     int set_lex_order(const std::set<K,C,A>& x,
                       const std::set<K,C,A>& y)
     {
-      typename std::set<K,C,A>::iterator
-        xi = x.begin(), yi = y.begin(), xend = x.end(), yend = y.end();
+      auto xi = x.begin();
+      auto yi = y.begin();
+      auto xend = x.end();
+      auto yend = y.end();
       for (; xi != xend && yi != yend; ++xi, ++yi) {
         if (*xi < *yi)
           return 1;

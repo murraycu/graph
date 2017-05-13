@@ -34,7 +34,7 @@ namespace boost {
          PropMap prop_map,
          const typename boost::property_traits<PropMap>::key_type& ka, 
          const typename boost::property_traits<PropMap>::key_type& kb) {
-    typename boost::property_traits<PropMap>::value_type va = get(prop_map, ka);
+    auto va = get(prop_map, ka);
     put(prop_map, ka, get(prop_map, kb));
     put(prop_map, kb, va);
   }
@@ -118,7 +118,7 @@ namespace boost {
     }
 
     void push(const Value& v) {
-      size_type index = data.size();
+      auto index = data.size();
       data.push_back(v);
       put(index_in_heap, v, index);
       preserve_heap_property_up(index);
@@ -153,18 +153,18 @@ namespace boost {
     // to the distance map or such)
     // See http://coding.derkeiler.com/Archive/General/comp.theory/2007-05/msg00043.html
     void update(const Value& v) { /* decrease-key */
-      size_type index = get(index_in_heap, v);
+      auto index = get(index_in_heap, v);
       preserve_heap_property_up(index);
       verify_heap();
     }
 
     bool contains(const Value& v) const {
-      size_type index = get(index_in_heap, v);
+      auto index = get(index_in_heap, v);
       return (index != (size_type)(-1));
     }
 
     void push_or_update(const Value& v) { /* insert if not present, else update */
-      size_type index = get(index_in_heap, v);
+      auto index = get(index_in_heap, v);
       if (index == (size_type)(-1)) {
         index = data.size();
         data.push_back(v);
@@ -201,8 +201,8 @@ namespace boost {
     // Swap two elements in the heap by index, updating index_in_heap
     void swap_heap_elements(size_type index_a, size_type index_b) {
       using std::swap;
-      Value value_a = data[index_a];
-      Value value_b = data[index_b];
+      auto value_a = data[index_a];
+      auto value_b = data[index_b];
       data[index_a] = value_b;
       data[index_b] = value_a;
       put(index_in_heap, value_a, index_b);
@@ -230,19 +230,19 @@ namespace boost {
     // Starting at a node, move up the tree swapping elements to preserve the
     // heap property
     void preserve_heap_property_up(size_type index) {
-      size_type orig_index = index;
+      auto orig_index = index;
       size_type num_levels_moved = 0;
       // The first loop just saves swaps that need to be done in order to avoid
       // aliasing issues in its search; there is a second loop that does the
       // necessary swap operations
       if (index == 0) return; // Do nothing on root
-      Value currently_being_moved = data[index];
+      auto currently_being_moved = data[index];
       distance_type currently_being_moved_dist =
         get(distance, currently_being_moved);
       for (;;) {
         if (index == 0) break; // Stop at root
-        size_type parent_index = parent(index);
-        Value parent_value = data[parent_index];
+        auto parent_index = parent(index);
+        auto parent_value = data[parent_index];
         if (compare(currently_being_moved_dist, get(distance, parent_value))) {
           ++num_levels_moved;
           index = parent_index;
@@ -255,8 +255,8 @@ namespace boost {
       // tree, then put currently_being_moved at the top
       index = orig_index;
       for (size_type i = 0; i < num_levels_moved; ++i) {
-        size_type parent_index = parent(index);
-        Value parent_value = data[parent_index];
+        auto parent_index = parent(index);
+        auto parent_value = data[parent_index];
         put(index_in_heap, parent_value, index);
         data[index] = parent_value;
         index = parent_index;
@@ -271,21 +271,21 @@ namespace boost {
     void preserve_heap_property_down() {
       if (data.empty()) return;
       size_type index = 0;
-      Value currently_being_moved = data[0];
+      auto currently_being_moved = data[0];
       distance_type currently_being_moved_dist =
         get(distance, currently_being_moved);
-      size_type heap_size = data.size();
-      Value* data_ptr = &data[0];
+      auto heap_size = data.size();
+      auto data_ptr = &data[0];
       for (;;) {
-        size_type first_child_index = child(index, 0);
+        auto first_child_index = child(index, 0);
         if (first_child_index >= heap_size) break; /* No children */
-        Value* child_base_ptr = data_ptr + first_child_index;
+        auto child_base_ptr = data_ptr + first_child_index;
         size_type smallest_child_index = 0;
         distance_type smallest_child_dist = get(distance, child_base_ptr[smallest_child_index]);
         if (first_child_index + Arity <= heap_size) {
           // Special case for a statically known loop count (common case)
           for (size_t i = 1; i < Arity; ++i) {
-            Value i_value = child_base_ptr[i];
+            auto i_value = child_base_ptr[i];
             distance_type i_dist = get(distance, i_value);
             if (compare(i_dist, smallest_child_dist)) {
               smallest_child_index = i;

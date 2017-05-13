@@ -46,8 +46,6 @@ namespace boost {
          ColorMap color,
          std::vector<typename boost::graph_traits<Graph>::vertex_descriptor>& path
   ) {
-    typedef typename boost::graph_traits<Graph>::vertex_descriptor vertex_descriptor;
-    typedef typename boost::graph_traits<Graph>::edge_descriptor edge_descriptor;
     typedef typename boost::property_traits<ColorMap>::value_type color_t;
     typedef boost::color_traits<color_t> color_gen;
     
@@ -56,9 +54,9 @@ namespace boost {
     path.push_back(s);
     put(color, s, color_gen::gray());
     while (true) {
-      edge_descriptor e = next_edge(s, g);
-      vertex_descriptor t = target(e, g);
-      color_t t_color = get(color, t);
+      auto e = next_edge(s, g);
+      auto t = target(e, g);
+      auto t_color = get(color, t);
       if (t_color == color_gen::white()) {
         path.push_back(t);
         put(color, t, color_gen::gray());
@@ -66,7 +64,7 @@ namespace boost {
       } else if (t_color == color_gen::gray()) {
         // Found a loop; delete from path from the first occurrence of t to the
         // end, coloring vertices white.
-        typename std::vector<vertex_descriptor>::iterator it = std::find(path.begin(), path.end(), t);
+        auto it = std::find(path.begin(), path.end(), t);
         BOOST_ASSERT (it != path.end());
         ++it;
         for (auto j = it; j != path.end(); ++j) {

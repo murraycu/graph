@@ -83,7 +83,7 @@ closeness_centrality(const Graph& g,
     BOOST_CONCEPT_ASSERT(( NumericValueConcept<Distance> ));
     BOOST_CONCEPT_ASSERT(( DistanceMeasureConcept<Measure,Graph> ));
 
-    Distance n = detail::combine_distances(g, dist, combine, Distance(0));
+    auto n = detail::combine_distances(g, dist, combine, Distance(0));
     return measure(n, g);
 }
 
@@ -123,12 +123,11 @@ all_closeness_centralities(const Graph& g,
     typedef typename property_traits<DistanceMatrixMap>::value_type DistanceMap;
     BOOST_CONCEPT_ASSERT(( ReadablePropertyMapConcept<DistanceMap,Vertex> ));
     BOOST_CONCEPT_ASSERT(( WritablePropertyMapConcept<CentralityMap,Vertex> ));
-    typedef typename property_traits<CentralityMap>::value_type Centrality;
 
     typename graph_traits<Graph>::vertex_iterator i, end;
     for(std::tie(i, end) = vertices(g); i != end; ++i) {
-        DistanceMap dm = get(dist, *i);
-        Centrality c = closeness_centrality(g, dm, measure);
+        auto dm = get(dist, *i);
+        auto c = closeness_centrality(g, dm, measure);
         put(cent, *i, c);
     }
 }

@@ -333,7 +333,7 @@ namespace boost { namespace graph { namespace detail {
     {
       vertex_t s(source(initial_edge,g));
       vertex_t t(target(initial_edge,g));
-      vertex_t other_vertex = s == anchor ? t : s;
+      auto other_vertex = s == anchor ? t : s;
       pimpl->anchor = anchor;
       pimpl->cached_first_edge = initial_edge;
       pimpl->cached_second_edge = initial_edge;

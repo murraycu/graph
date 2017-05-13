@@ -166,10 +166,10 @@ class bk_max_flow {
         // (this is done in grow() anyway)
         out_edge_iterator ei, e_end;
         for(std::tie(ei, e_end) = out_edges(m_source, m_g); ei != e_end; ++ei){
-          edge_descriptor from_source = *ei;
-          vertex_descriptor current_node = target(from_source, m_g);
+          auto from_source = *ei;
+          auto current_node = target(from_source, m_g);
           if(current_node == m_sink){
-            tEdgeVal cap = get(m_res_cap_map, from_source);
+            auto cap = get(m_res_cap_map, from_source);
             put(m_res_cap_map, from_source, 0);
             m_flow += cap;
             continue;
@@ -178,8 +178,8 @@ class bk_max_flow {
           bool is_there;
           std::tie(to_sink, is_there) = lookup_edge(current_node, m_sink, m_g);
           if(is_there){
-            tEdgeVal cap_from_source = get(m_res_cap_map, from_source);
-            tEdgeVal cap_to_sink = get(m_res_cap_map, to_sink);
+            auto cap_from_source = get(m_res_cap_map, from_source);
+            auto cap_to_sink = get(m_res_cap_map, to_sink);
             if(cap_from_source > cap_to_sink){
               set_tree(current_node, tColorTraits::black());
               add_active_node(current_node);
@@ -217,8 +217,8 @@ class bk_max_flow {
           }
         }
         for(std::tie(ei, e_end) = out_edges(m_sink, m_g); ei != e_end; ++ei){
-          edge_descriptor to_sink = get(m_rev_edge_map, *ei);
-          vertex_descriptor current_node = source(to_sink, m_g);
+          auto to_sink = get(m_rev_edge_map, *ei);
+          auto current_node = source(to_sink, m_g);
           if(get(m_res_cap_map, to_sink)){
             set_tree(current_node, tColorTraits::white());
             set_edge_to_parent(current_node, to_sink);
@@ -252,9 +252,9 @@ class bk_max_flow {
               std::tie(m_last_grow_edge_it, m_last_grow_edge_end) = out_edges(current_node, m_g);
             }
             for(; m_last_grow_edge_it != m_last_grow_edge_end; ++m_last_grow_edge_it) {
-              edge_descriptor out_edge = *m_last_grow_edge_it;
+              auto out_edge = *m_last_grow_edge_it;
               if(get(m_res_cap_map, out_edge) > 0){ //check if we have capacity left on this edge
-                vertex_descriptor other_node = target(out_edge, m_g);
+                auto other_node = target(out_edge, m_g);
                 if(get_tree(other_node) == tColorTraits::gray()){ //it's a free node
                   set_tree(other_node, tColorTraits::black()); //aquire other node to our search tree
                   set_edge_to_parent(other_node, out_edge);   //set us as parent
@@ -286,9 +286,9 @@ class bk_max_flow {
               std::tie(m_last_grow_edge_it, m_last_grow_edge_end) = out_edges(current_node, m_g);
             }
             for(; m_last_grow_edge_it != m_last_grow_edge_end; ++m_last_grow_edge_it){
-              edge_descriptor in_edge = get(m_rev_edge_map, *m_last_grow_edge_it);
+              auto in_edge = get(m_rev_edge_map, *m_last_grow_edge_it);
               if(get(m_res_cap_map, in_edge) > 0){ //check if there is capacity left
-                vertex_descriptor other_node = source(in_edge, m_g);
+                auto other_node = source(in_edge, m_g);
                 if(get_tree(other_node) == tColorTraits::gray()){ //it's a free node
                   set_tree(other_node, tColorTraits::white());      //aquire that node to our search tree
                   set_edge_to_parent(other_node, in_edge);          //set us as parent
@@ -337,7 +337,7 @@ class bk_max_flow {
         BOOST_ASSERT(get_tree(source(e, m_g)) == tColorTraits::black());
         BOOST_ASSERT(m_orphans.empty());
 
-        const tEdgeVal bottleneck = find_bottleneck(e);
+        const auto bottleneck = find_bottleneck(e);
         //now we push the found flow through the path
         //for each edge we saturate we have to look for the verts that belong to that edge, one of them becomes an orphans
         //now process the connecting edge
@@ -346,9 +346,9 @@ class bk_max_flow {
         put(m_res_cap_map, get(m_rev_edge_map, e), get(m_res_cap_map, get(m_rev_edge_map, e)) + bottleneck);
 
         //now we follow the path back to the source
-        vertex_descriptor current_node = source(e, m_g);
+        auto current_node = source(e, m_g);
         while(current_node != m_source){
-          edge_descriptor pred = get_edge_to_parent(current_node);
+          auto pred = get_edge_to_parent(current_node);
           put(m_res_cap_map, pred, get(m_res_cap_map, pred) - bottleneck);
           BOOST_ASSERT(get(m_res_cap_map, pred) >= 0);
           put(m_res_cap_map, get(m_rev_edge_map, pred), get(m_res_cap_map, get(m_rev_edge_map, pred)) + bottleneck);
@@ -361,7 +361,7 @@ class bk_max_flow {
         //then go forward in the sink-tree
         current_node = target(e, m_g);
         while(current_node != m_sink){
-          edge_descriptor pred = get_edge_to_parent(current_node);
+          auto pred = get_edge_to_parent(current_node);
           put(m_res_cap_map, pred, get(m_res_cap_map, pred) - bottleneck);
           BOOST_ASSERT(get(m_res_cap_map, pred) >= 0);
           put(m_res_cap_map, get(m_rev_edge_map, pred), get(m_res_cap_map, get(m_rev_edge_map, pred)) + bottleneck);
@@ -381,18 +381,18 @@ class bk_max_flow {
        */
       inline tEdgeVal find_bottleneck(edge_descriptor e){
         BOOST_USING_STD_MIN();
-        tEdgeVal minimum_cap = get(m_res_cap_map, e);
-        vertex_descriptor current_node = source(e, m_g);
+        auto minimum_cap = get(m_res_cap_map, e);
+        auto current_node = source(e, m_g);
         //first go back in the source tree
         while(current_node != m_source){
-          edge_descriptor pred = get_edge_to_parent(current_node);
+          auto pred = get_edge_to_parent(current_node);
           minimum_cap = min BOOST_PREVENT_MACRO_SUBSTITUTION(minimum_cap, get(m_res_cap_map, pred));
           current_node = source(pred, m_g);
         }
         //then go forward in the sink-tree
         current_node = target(e, m_g);
         while(current_node != m_sink){
-          edge_descriptor pred = get_edge_to_parent(current_node);
+          auto pred = get_edge_to_parent(current_node);
           minimum_cap = min BOOST_PREVENT_MACRO_SUBSTITUTION(minimum_cap, get(m_res_cap_map, pred));
           current_node = target(pred, m_g);
         }
@@ -417,14 +417,14 @@ class bk_max_flow {
           }
           if(get_tree(current_node) == tColorTraits::black()){
             //we're in the source-tree
-            tDistanceVal min_distance = (std::numeric_limits<tDistanceVal>::max)();
+            auto min_distance = (std::numeric_limits<tDistanceVal>::max)();
             edge_descriptor new_parent_edge;
             out_edge_iterator ei, e_end;
             for(std::tie(ei, e_end) = out_edges(current_node, m_g); ei != e_end; ++ei){
-              const edge_descriptor in_edge = get(m_rev_edge_map, *ei);
+              const auto in_edge = get(m_rev_edge_map, *ei);
               BOOST_ASSERT(target(in_edge, m_g) == current_node); //we should be the target of this edge
               if(get(m_res_cap_map, in_edge) > 0){
-                vertex_descriptor other_node = source(in_edge, m_g);
+                auto other_node = source(in_edge, m_g);
                 if(get_tree(other_node) == tColorTraits::black() && has_source_connect(other_node)){
                   if(get(m_dist_map, other_node) < min_distance){
                     min_distance = get(m_dist_map, other_node);
@@ -440,8 +440,8 @@ class bk_max_flow {
             } else{
               put(m_time_map, current_node, 0);
               for(std::tie(ei, e_end) = out_edges(current_node, m_g); ei != e_end; ++ei){
-                edge_descriptor in_edge = get(m_rev_edge_map, *ei);
-                vertex_descriptor other_node = source(in_edge, m_g);
+                auto in_edge = get(m_rev_edge_map, *ei);
+                auto other_node = source(in_edge, m_g);
                 if(get_tree(other_node) == tColorTraits::black() && other_node != m_source){
                   if(get(m_res_cap_map, in_edge) > 0){
                     add_active_node(other_node);
@@ -462,11 +462,11 @@ class bk_max_flow {
             BOOST_ASSERT(get_tree(current_node) == tColorTraits::white());
             out_edge_iterator ei, e_end;
             edge_descriptor new_parent_edge;
-            tDistanceVal min_distance = (std::numeric_limits<tDistanceVal>::max)();
+            auto min_distance = (std::numeric_limits<tDistanceVal>::max)();
             for(std::tie(ei, e_end) = out_edges(current_node, m_g); ei != e_end; ++ei){
-              const edge_descriptor out_edge = *ei;
+              const auto out_edge = *ei;
               if(get(m_res_cap_map, out_edge) > 0){
-                const vertex_descriptor other_node = target(out_edge, m_g);
+                const auto other_node = target(out_edge, m_g);
                 if(get_tree(other_node) == tColorTraits::white() && has_sink_connect(other_node))
                   if(get(m_dist_map, other_node) < min_distance){
                     min_distance = get(m_dist_map, other_node);
@@ -481,8 +481,8 @@ class bk_max_flow {
             } else{
               put(m_time_map, current_node, 0);
               for(std::tie(ei, e_end) = out_edges(current_node, m_g); ei != e_end; ++ei){
-                const edge_descriptor out_edge = *ei;
-                const vertex_descriptor other_node = target(out_edge, m_g);
+                const auto out_edge = *ei;
+                const auto other_node = target(out_edge, m_g);
                 if(get_tree(other_node) == tColorTraits::white() && other_node != m_sink){
                   if(get(m_res_cap_map, out_edge) > 0){
                     add_active_node(other_node);
@@ -507,7 +507,7 @@ class bk_max_flow {
         while(true){
           if(m_active_nodes.empty())
             return graph_traits<Graph>::null_vertex();
-          vertex_descriptor v = m_active_nodes.front();
+          auto v = m_active_nodes.front();
 
       //if it has no parent, this node can't be active (if its not source or sink)
       if(!has_parent(v) && v != m_source && v != m_sink){
@@ -609,7 +609,7 @@ class bk_max_flow {
        */
       inline bool has_sink_connect(vertex_descriptor v){
         tDistanceVal current_distance = 0;
-        vertex_descriptor current_vertex = v;
+        auto current_vertex = v;
         while(true){
           if(get(m_time_map, current_vertex) == m_time){
             //we found a node which was already checked this round. use it for distance calculations
@@ -646,7 +646,7 @@ class bk_max_flow {
        */
       inline bool has_source_connect(vertex_descriptor v){
         tDistanceVal current_distance = 0;
-        vertex_descriptor current_vertex = v;
+        auto current_vertex = v;
         while(true){
           if(get(m_time_map, current_vertex) == m_time){
             //we found a node which was already checked this round. use it for distance calculations
@@ -785,7 +785,7 @@ boykov_kolmogorov_max_flow(Graph& g,
                            typename graph_traits<Graph>::vertex_descriptor src,
                            typename graph_traits<Graph>::vertex_descriptor sink)
 {
-  typename graph_traits<Graph>::vertices_size_type n_verts = num_vertices(g);
+  auto n_verts = num_vertices(g);
   std::vector<typename graph_traits<Graph>::edge_descriptor> predecessor_vec(n_verts);
   std::vector<default_color_type> color_vec(n_verts);
   std::vector<typename graph_traits<Graph>::vertices_size_type> distance_vec(n_verts);
@@ -819,7 +819,7 @@ boykov_kolmogorov_max_flow(Graph& g,
                            typename graph_traits<Graph>::vertex_descriptor src,
                            typename graph_traits<Graph>::vertex_descriptor sink)
 {
-  typename graph_traits<Graph>::vertices_size_type n_verts = num_vertices(g);
+  auto n_verts = num_vertices(g);
   std::vector<typename graph_traits<Graph>::edge_descriptor> predecessor_vec(n_verts);
   std::vector<typename graph_traits<Graph>::vertices_size_type> distance_vec(n_verts);
   return

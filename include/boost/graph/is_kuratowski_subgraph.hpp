@@ -67,7 +67,7 @@ namespace boost
       typedef typename AdjacencyList::value_type::iterator 
         adjacency_iterator_t;
       
-      adjacency_iterator_t u_neighbor_end = neighbors[u].end();
+      auto u_neighbor_end = neighbors[u].end();
       for(adjacency_iterator_t u_neighbor_itr = neighbors[u].begin();
           u_neighbor_itr != u_neighbor_end; ++u_neighbor_itr
           )
@@ -117,14 +117,13 @@ namespace boost
     typedef typename graph_traits<Graph>::edges_size_type e_size_t;
     typedef typename graph_traits<Graph>::vertices_size_type v_size_t;
     typedef typename std::vector<vertex_t> v_list_t;
-    typedef typename v_list_t::iterator v_list_iterator_t;
     typedef iterator_property_map
       <typename std::vector<v_list_t>::iterator, VertexIndexMap> 
       vertex_to_v_list_map_t;
 
     typedef adjacency_list<vecS, vecS, undirectedS> small_graph_t;
 
-    detail::target_graph_t target_graph = detail::tg_k_3_3; //unless we decide otherwise later
+    auto target_graph = detail::tg_k_3_3; //unless we decide otherwise later
 
     static small_graph_t K_5(detail::make_K_5<small_graph_t>());
 
@@ -137,7 +136,7 @@ namespace boost
     vertex_to_v_list_map_t neighbors(neighbors_vector.begin(), vm);
 
     e_size_t count = 0;
-    for(ForwardIterator itr = begin; itr != end; ++itr)
+    for(auto itr = begin; itr != end; ++itr)
       {
 
         if (count++ > max_num_edges)
@@ -183,25 +182,25 @@ namespace boost
                 
                 bool neighbor_sets_intersect = false;
                 
-                vertex_t min_u = graph_traits<Graph>::null_vertex();
+                auto min_u = graph_traits<Graph>::null_vertex();
                 vertex_t u;
-                v_list_iterator_t v_neighbor_end = neighbors[v].end();
-                for(v_list_iterator_t v_neighbor_itr = neighbors[v].begin();
+                auto v_neighbor_end = neighbors[v].end();
+                for(auto v_neighbor_itr = neighbors[v].begin();
                     v_neighbor_itr != v_neighbor_end; 
                     ++v_neighbor_itr
                     )
                   {
                     neighbor_sets_intersect = false;
                     u = *v_neighbor_itr;
-                    v_list_iterator_t u_neighbor_end = neighbors[u].end();
-                    for(v_list_iterator_t u_neighbor_itr = 
+                    auto u_neighbor_end = neighbors[u].end();
+                    for(auto u_neighbor_itr = 
                           neighbors[u].begin();
                         u_neighbor_itr != u_neighbor_end && 
                           !neighbor_sets_intersect; 
                         ++u_neighbor_itr
                         )
                       {
-                        for(v_list_iterator_t inner_v_neighbor_itr = 
+                        for(auto inner_v_neighbor_itr = 
                               neighbors[v].begin();
                             inner_v_neighbor_itr != v_neighbor_end; 
                             ++inner_v_neighbor_itr

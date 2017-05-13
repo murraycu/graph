@@ -99,10 +99,10 @@ namespace boost
     for (cg_vertex s = 0; s < components.size(); ++s) {
       std::vector < cg_vertex > adj;
       for (size_type i = 0; i < components[s].size(); ++i) {
-        vertex u = components[s][i];
+        auto u = components[s][i];
         adjacency_iterator v, v_end;
         for (std::tie(v, v_end) = adjacent_vertices(u, g); v != v_end; ++v) {
-          cg_vertex t = component_number[*v];
+          auto t = component_number[*v];
           if (s != t)           // Avoid loops in the condensation graph
             adj.push_back(t);
         }
@@ -130,8 +130,7 @@ namespace boost
 
     std::vector<std::vector<cg_vertex> > CG_vec(num_vertices(CG));
     for (size_type i = 0; i < num_vertices(CG); ++i) {
-      typedef typename boost::graph_traits<CG_t>::adjacency_iterator cg_adj_iter;
-      std::pair<cg_adj_iter, cg_adj_iter> pr = adjacent_vertices(i, CG);
+      auto pr = adjacent_vertices(i, CG);
       CG_vec[i].assign(pr.first, pr.second);
       std::sort(CG_vec[i].begin(), CG_vec[i].end(),
                 boost::bind(std::less<cg_vertex>(),
@@ -144,10 +143,10 @@ namespace boost
       std::vector<cg_vertex> in_a_chain(CG_vec.size());
       for (auto i = topo_order.begin();
            i != topo_order.end(); ++i) {
-        cg_vertex v = *i;
+        auto v = *i;
         if (!in_a_chain[v]) {
           chains.resize(chains.size() + 1);
-          std::vector<cg_vertex>& chain = chains.back();
+          auto& chain = chains.back();
           for (;;) {
             chain.push_back(v);
             in_a_chain[v] = true;
@@ -167,22 +166,22 @@ namespace boost
     std::vector<size_type> pos_in_chain(CG_vec.size());
     for (size_type i = 0; i < chains.size(); ++i)
       for (size_type j = 0; j < chains[i].size(); ++j) {
-        cg_vertex v = chains[i][j];
+        auto v = chains[i][j];
         chain_number[v] = i;
         pos_in_chain[v] = j;
       }
 
-    cg_vertex inf = (std::numeric_limits< cg_vertex >::max)();
+    auto inf = (std::numeric_limits< cg_vertex >::max)();
     std::vector<std::vector<cg_vertex> > successors(CG_vec.size(),
                                                     std::vector<cg_vertex>
                                                     (chains.size(), inf));
     for (typename std::vector<cg_vertex>::reverse_iterator
            i = topo_order.rbegin(); i != topo_order.rend(); ++i) {
-      cg_vertex u = *i;
+      auto u = *i;
       typename std::vector<cg_vertex>::const_iterator adj, adj_last;
       for (adj = CG_vec[u].begin(), adj_last = CG_vec[u].end();
            adj != adj_last; ++adj) {
-        cg_vertex v = *adj;
+        auto v = *adj;
         if (topo_number[v] < successors[u][chain_number[v]]) {
           // Succ(u) = Succ(u) U Succ(v)
           detail::union_successor_sets(successors[u], successors[v],
@@ -199,7 +198,7 @@ namespace boost
       for (size_type j = 0; j < chains.size(); ++j) {
         size_type topo_num = successors[i][j];
         if (topo_num < inf) {
-          cg_vertex v = topo_order[topo_num];
+          auto v = topo_order[topo_num];
           for (size_type k = pos_in_chain[v]; k < chains[j].size(); ++k)
             CG_vec[i].push_back(chains[j][k]);
         }
@@ -218,7 +217,7 @@ namespace boost
       cg_vertex s = si - CG_vec.begin();
       typename std::vector<cg_vertex>::const_iterator i, i_end;
       for (i = CG_vec[s].begin(), i_end = CG_vec[s].end(); i != i_end; ++i) {
-        cg_vertex t = *i;
+        auto t = *i;
         for (size_type k = 0; k < components[s].size(); ++k)
           for (size_type l = 0; l < components[t].size(); ++l)
             add_edge(g_to_tc_map[components[s][k]],
@@ -230,7 +229,7 @@ namespace boost
       if (components[i].size() > 1)
         for (size_type k = 0; k < components[i].size(); ++k)
           for (size_type l = 0; l < components[i].size(); ++l) {
-            vertex u = components[i][k], v = components[i][l];
+            auto u = components[i][k], v = components[i][l];
             add_edge(g_to_tc_map[u], g_to_tc_map[v], tc);
           }
 
@@ -258,7 +257,7 @@ namespace boost
       return;
     typedef typename property_map<Graph, vertex_index_t>::const_type
       VertexIndexMap;
-    VertexIndexMap index_map = get(vertex_index, g);
+    auto index_map = get(vertex_index, g);
 
     typedef typename graph_traits<GraphTC>::vertex_descriptor tc_vertex;
     std::vector<tc_vertex> to_tc_vec(num_vertices(g));

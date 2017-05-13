@@ -67,7 +67,7 @@ namespace boost {
       }
 
       inline value_type& front() {
-        value_type& u =  base::front();
+        auto& u =  base::front();
         if ( _size == 0 ) 
           w = u;
         else if (get(degree,u) < get(degree,w) )
@@ -76,7 +76,7 @@ namespace boost {
       }
 
       inline const value_type& front() const {
-        const value_type& u =  base::front();
+        const auto& u =  base::front();
         if ( _size == 0 ) 
           w = u;
         else if (get(degree,u) < get(degree,w) )

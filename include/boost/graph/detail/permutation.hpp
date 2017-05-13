@@ -128,8 +128,8 @@ inline void serialize_permutation(Iter1 q, Iter1 q_end, Iter2 q_inv, Iter3 p)
 #endif
   D n = q_end - q;
   for (D i = 0; i < n; ++i) {
-    P1 qi = q[i];
-    P2 qii = q_inv[i];
+    auto qi = q[i];
+    auto qii = q_inv[i];
     *p++ = qii;
     std::swap(q[i], q[qii]);
     std::swap(q_inv[i], q_inv[qi]);
@@ -141,7 +141,7 @@ template <typename Iter, typename Compare>
 void merge_sort(Iter first, Iter last, Compare cmp)
 {
   if (first + 1 < last) {
-    Iter mid = first + (last - first)/2;
+    auto mid = first + (last - first)/2;
     merge_sort(first, mid, cmp);
     merge_sort(mid, last, cmp);
     std::inplace_merge(first, mid, last, cmp);

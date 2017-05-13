@@ -80,10 +80,10 @@ namespace boost {
         Q.push(*ei);
 
       while (! Q.empty()) {
-        Edge e = Q.top();
+        auto e = Q.top();
         Q.pop();
-        Vertex u = dset.find_set(source(e, G));
-        Vertex v = dset.find_set(target(e, G));
+        auto u = dset.find_set(source(e, G));
+        auto v = dset.find_set(target(e, G));
         if ( u != v ) {
           *spanning_tree_edges++ = e;
           dset.link(u, v);

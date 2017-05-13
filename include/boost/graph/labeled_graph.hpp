@@ -110,15 +110,13 @@ namespace graph_detail {
     insert_labeled_vertex(Container& c, Graph& g, Label const& l, Prop const& p,
                           random_access_container_tag)
     {
-        typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
-
         // If the label is out of bounds, resize the vector to accommodate.
         // Resize by 2x the index so we don't cause quadratic insertions over
         // time.
         if(l >= c.size()) {
             c.resize((l + 1) * 2);
         }
-        Vertex v = add_vertex(p, g);
+        auto v = add_vertex(p, g);
         c[l] = v;
         return std::make_pair(c[l], true);
     }
@@ -131,8 +129,7 @@ namespace graph_detail {
     {
         // Note that insertion always succeeds so we can add the vertex first
         // and then the mapping to the label.
-        typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
-        Vertex v = add_vertex(p, g);
+        auto v = add_vertex(p, g);
         c.insert(std::make_pair(l, v));
         return std::make_pair(v, true);
     }
@@ -146,8 +143,7 @@ namespace graph_detail {
         // Here, we actually have to try the insertion first, and only add
         // the vertex if we get a new element.
         typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
-        typedef typename Container::iterator Iterator;
-        std::pair<Iterator, bool> x = c.insert(std::make_pair(l, Vertex()));
+        auto x = c.insert(std::make_pair(l, Vertex()));
         if(x.second) {
             x.first->second = add_vertex(g);
             put(boost::vertex_all, g, x.first->second, p);
@@ -177,7 +173,7 @@ namespace graph_detail {
     find_labeled_vertex(Container const& c, Graph const&, Label const& l,
                         associative_container_tag)
     {
-        typename Container::const_iterator i = c.find(l);
+        auto i = c.find(l);
         return i != c.end() ? i->second : graph_traits<Graph>::null_vertex();
     }
 
@@ -307,7 +303,7 @@ public:
                   graph_property_type const& gp = graph_property_type())
         : _graph(n, gp), _map()
     {
-        std::pair<vertex_iterator, vertex_iterator> rng = vertices(_graph);
+         auto rng = vertices(_graph);
         _map.insert(_map.end(), rng.first, rng.second);
     }
 

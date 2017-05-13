@@ -58,7 +58,7 @@ namespace boost {
       do {
         extended = false;
         BGL_FORALL_OUTEDGES_T(x, e, g, Graph) {
-          vertex_t v = target(e, g);
+          auto v = target(e, g);
           if (is_free(g, color, fan.back(), get(color, e)) &&
               std::find(fan.begin(), fan.end(), v) == fan.end()) {
             fan.push_back(v);
@@ -125,9 +125,9 @@ namespace boost {
       if (begin == end) {
         return;
       }
-      edge_t previous = edge(x, *begin, g).first;
+      auto previous = edge(x, *begin, g).first;
       for (begin++; begin != end; begin++) {
-        edge_t current = edge(x, *begin, g).first;
+        auto current = edge(x, *begin, g).first;
         put(color, previous, get(color, current));
         previous = current;
       }
@@ -163,12 +163,12 @@ namespace boost {
     typedef typename boost::property_traits<ColorMap>::value_type color_t;
     typedef typename std::vector<vertex_t>::iterator fan_iterator;
     using namespace detail;
-    vertex_t x = source(e, g), y = target(e, g);
-    std::vector<vertex_t> fan = maximal_fan(g, color, x, y);
-    color_t c = find_free_color(g, color, x);
-    color_t d = find_free_color(g, color, fan.back());
+    auto x = source(e, g), y = target(e, g);
+    auto fan = maximal_fan(g, color, x, y);
+    auto c = find_free_color(g, color, x);
+    auto d = find_free_color(g, color, fan.back());
     invert_cd_path(g, color, x, c, d);
-    fan_iterator w = std::find_if(fan.begin(),
+    auto w = std::find_if(fan.begin(),
                                   fan.end(),
                                   find_free_in_fan<Graph, ColorMap>(g, color, d));
     rotate_fan(g, color, x, fan.begin(), w + 1);

@@ -61,9 +61,9 @@ namespace boost {
 
       for (auto end = vertices(g).second;
            ui != end; ++ui) {
-        vertex_iterator vi = ui;
+        auto vi = ui;
         for (++vi; vi != end; ++vi) {
-          T dij = distance[get(index, *ui)][get(index, *vi)];
+          auto dij = distance[get(index, *ui)][get(index, *vi)];
           if (dij > result) result = dij;
         }
       }
@@ -173,8 +173,8 @@ namespace boost {
 
         deriv_type result;
         if (i != m) {
-          point_difference_type diff = topology.difference(position[m], position[i]);
-          weight_type dist = topology.norm(diff);
+          auto diff = topology.difference(position[m], position[i]);
+          auto dist = topology.norm(diff);
           result = spring_strength[get(index, m)][get(index, i)] 
             * (diff - distance[get(index, m)][get(index, i)]/dist*diff);
         }
@@ -194,7 +194,7 @@ namespace boost {
 
         // TBD: looks like an accumulate to me
         BGL_FORALL_VERTICES_T(i, g, Graph) {
-          deriv_type deriv = compute_partial_derivative(m, i);
+          auto deriv = compute_partial_derivative(m, i);
           result += deriv;
         }
 
@@ -214,19 +214,19 @@ namespace boost {
           return false;
 
         // Compute L based on side length (if needed), or retrieve L
-        weight_type edge_length = 
+        auto edge_length = 
           detail::graph::compute_edge_length(g, distance, index,
                                              edge_or_side_length);
 
         // std::cerr << "edge_length = " << edge_length << std::endl;
         
         // Compute l_{ij} and k_{ij}
-        const weight_type K = spring_constant;
+        const auto K = spring_constant;
         vertex_iterator ui, end;
         for (ui = vertices(g).first, end = vertices(g).second; ui != end; ++ui) {
-          vertex_iterator vi = ui;
+          auto vi = ui;
           for (++vi; vi != end; ++vi) {
-            weight_type dij = distance[get(index, *ui)][get(index, *vi)];
+            auto dij = distance[get(index, *ui)][get(index, *vi)];
             if (dij == (std::numeric_limits<weight_type>::max)())
               return false;
             distance[get(index, *ui)][get(index, *vi)] = edge_length * dij;
@@ -237,14 +237,14 @@ namespace boost {
         }
         
         // Compute Delta_i and find max
-        vertex_descriptor p = *vertices(g).first;
+        auto p = *vertices(g).first;
         weight_type delta_p(0);
 
         for (ui = vertices(g).first, end = vertices(g).second; ui != end; ++ui) {
-          deriv_type deriv = compute_partial_derivatives(*ui);
+          auto deriv = compute_partial_derivatives(*ui);
           put(partial_derivatives, *ui, deriv);
 
-          weight_type delta = topology.norm(deriv);
+          auto delta = topology.norm(deriv);
 
           if (delta > delta_p) {
             p = *ui;
@@ -259,7 +259,7 @@ namespace boost {
           // time.
           std::vector<deriv_type> p_partials(num_vertices(g));
           for (ui = vertices(g).first, end = vertices(g).second; ui != end; ++ui) {
-            vertex_descriptor i = *ui;
+            auto i = *ui;
             p_partials[get(index, i)] = compute_partial_derivative(i, p);
           }
 
@@ -267,11 +267,11 @@ namespace boost {
             // For debugging, compute the energy value E
             double E = 0.;
             for (ui = vertices(g).first, end = vertices(g).second; ui != end; ++ui) {
-              vertex_iterator vi = ui;
+              auto vi = ui;
               for (++vi; vi != end; ++vi) {
                 double dist = topology.distance(position[*ui], position[*vi]);
-                weight_type k_ij = spring_strength[get(index,*ui)][get(index,*vi)];
-                weight_type l_ij = distance[get(index, *ui)][get(index, *vi)];
+                auto k_ij = spring_strength[get(index,*ui)][get(index,*vi)];
+                auto l_ij = distance[get(index, *ui)][get(index, *vi)];
                 E += .5 * k_ij * (dist - l_ij) * (dist - l_ij);
               }
             }
@@ -286,14 +286,14 @@ namespace boost {
               for (std::size_t j = 0; j < Point::dimensions; ++j)
                 dE_d_d[i][j] = 0.;
             for (ui = vertices(g).first, end = vertices(g).second; ui != end; ++ui) {
-              vertex_descriptor i = *ui;
+              auto i = *ui;
               if (i != p) {
-                point_difference_type diff = topology.difference(position[p], position[i]);
-                weight_type dist = topology.norm(diff);
-                weight_type dist_squared = dist * dist;
+                auto diff = topology.difference(position[p], position[i]);
+                auto dist = topology.norm(diff);
+                auto dist_squared = dist * dist;
                 weight_type inv_dist_cubed = 1. / (dist_squared * dist);
-                weight_type k_mi = spring_strength[get(index,p)][get(index,i)];
-                weight_type l_mi = distance[get(index, p)][get(index, i)];
+                auto k_mi = spring_strength[get(index,p)][get(index,i)];
+                auto l_mi = distance[get(index, p)][get(index, i)];
                 for (std::size_t i = 0; i < Point::dimensions; ++i) {
                   for (std::size_t j = 0; j < Point::dimensions; ++j) {
                     if (i == j) {
@@ -307,33 +307,33 @@ namespace boost {
               }
             }
 
-            deriv_type dE_d = get(partial_derivatives, p);
+            auto dE_d = get(partial_derivatives, p);
 
             // Solve dE_d_d * delta = -dE_d to get delta
-            point_difference_type delta = -linear_solver<Point::dimensions>::solve(dE_d_d, dE_d);
+            auto delta = -linear_solver<Point::dimensions>::solve(dE_d_d, dE_d);
 
             // Move p by delta
             position[p] = topology.adjust(position[p], delta);
 
             // Recompute partial derivatives and delta_p
-            deriv_type deriv = compute_partial_derivatives(p);
+            auto deriv = compute_partial_derivatives(p);
             put(partial_derivatives, p, deriv);
 
             delta_p = topology.norm(deriv);
           } while (!done(delta_p, p, g, false));
 
           // Select new p by updating each partial derivative and delta
-          vertex_descriptor old_p = p;
+          auto old_p = p;
           for (ui = vertices(g).first, end = vertices(g).second; ui != end; ++ui) {
-            deriv_type old_deriv_p = p_partials[get(index, *ui)];
-            deriv_type old_p_partial = 
+            auto old_deriv_p = p_partials[get(index, *ui)];
+            auto old_p_partial = 
               compute_partial_derivative(*ui, old_p);
-            deriv_type deriv = get(partial_derivatives, *ui);
+            auto deriv = get(partial_derivatives, *ui);
 
             deriv += old_p_partial - old_deriv_p;
 
             put(partial_derivatives, *ui, deriv);
-            weight_type delta = topology.norm(deriv);
+            auto delta = topology.norm(deriv);
 
             if (delta > delta_p) {
               p = *ui;
@@ -395,7 +395,7 @@ namespace boost {
           return false;
         }
           
-        T diff = last_energy - delta_p;
+        auto diff = last_energy - delta_p;
         if (diff < T(0)) diff = -diff;
         bool done = (delta_p == T(0) || diff / last_energy < tolerance);
         last_energy = delta_p;
@@ -406,7 +406,7 @@ namespace boost {
           return delta_p == T(0);
         }
           
-        T diff = last_local_energy - delta_p;
+        auto diff = last_local_energy - delta_p;
         bool done = (delta_p == T(0) || (diff / last_local_energy) < tolerance);
         last_local_energy = delta_p;
         return done;
@@ -543,7 +543,7 @@ namespace boost {
   {
     typedef typename property_traits<WeightMap>::value_type weight_type;
 
-    typename graph_traits<Graph>::vertices_size_type n = num_vertices(g);
+    auto n = num_vertices(g);
     typedef std::vector<weight_type> weight_vec;
 
     std::vector<weight_vec> distance(n, weight_vec(n));

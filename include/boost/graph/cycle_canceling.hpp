@@ -41,7 +41,7 @@ public:
 
     template <typename Graph, typename Edge>
     void edge_not_minimized(Edge e, const Graph & g) const {
-        typename graph_traits<Graph>::vertices_size_type n = num_vertices(g) + 1;
+        auto n = num_vertices(g) + 1;
 
         //edge e is not minimized but does not have to be on the negative weight cycle
         //to find vertex on negative wieight cycle we move n+1 times backword in the PredEdgeMap graph.
@@ -62,14 +62,13 @@ private:
 template <class Graph, class Pred, class Distance, class Reversed, class ResidualCapacity, class Weight>
 void cycle_canceling(const Graph &g, Weight weight, Reversed rev, ResidualCapacity residual_capacity, Pred pred, Distance distance) {
     typedef filtered_graph<const Graph, is_residual_edge<ResidualCapacity> > ResGraph;
-    ResGraph gres = detail::residual_graph(g, residual_capacity);
+    auto gres = detail::residual_graph(g, residual_capacity);
     
     typedef graph_traits<ResGraph> ResGTraits;
-    typedef graph_traits<Graph> GTraits;
     typedef typename ResGTraits::edge_descriptor edge_descriptor;
     typedef typename ResGTraits::vertex_descriptor vertex_descriptor;
     
-    typename GTraits::vertices_size_type N = num_vertices(g);
+    auto N = num_vertices(g);
     
     BGL_FORALL_VERTICES_T(v, g, Graph) {
         put(pred, v, edge_descriptor());

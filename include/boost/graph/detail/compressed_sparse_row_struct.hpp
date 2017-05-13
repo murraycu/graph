@@ -188,8 +188,8 @@ namespace detail {
       m_rowstart[0] = 0;
       for (auto ei = edge_begin; ei != edge_end; ++ei) {
         if (!source_pred(ei->first)) continue;
-        Vertex src = get(global_to_local, ei->first);
-        Vertex tgt = ei->second;
+        auto src = get(global_to_local, ei->first);
+        auto tgt = ei->second;
         for (; current_vertex_plus_one != src + 1; ++current_vertex_plus_one)
           m_rowstart[current_vertex_plus_one] = current_edge;
         m_column.push_back(tgt);
@@ -216,7 +216,7 @@ namespace detail {
       // Reserving storage in advance can save us lots of time and
       // memory, but it can only be done if we have forward iterators or
       // the user has supplied the number of edges.
-      edges_size_type numedges = numedges_or_zero;
+      auto numedges = numedges_or_zero;
       if (numedges == 0) {
         numedges = boost::graph::detail::reserve_count_for_single_pass(edge_begin, edge_end);
       }
@@ -230,8 +230,8 @@ namespace detail {
       m_rowstart[0] = 0;
       for (auto ei = edge_begin; ei != edge_end; ++ei, ++ep_iter) {
         if (!source_pred(ei->first)) continue;
-        Vertex src = get(global_to_local, ei->first);
-        Vertex tgt = ei->second;
+        auto src = get(global_to_local, ei->first);
+        auto tgt = ei->second;
         for (; current_vertex_plus_one != src + 1; ++current_vertex_plus_one)
           m_rowstart[current_vertex_plus_one] = current_edge;
         m_column.push_back(tgt);
@@ -320,7 +320,7 @@ namespace detail {
       }
       for (Vertex i = 0; i != numverts; ++i) {
         m_rowstart[i] = current_edge;
-        g_vertex v = ordered_verts_of_g[i];
+        auto v = ordered_verts_of_g[i];
         g_out_edge_iter ei, ei_end;
         for (std::tie(ei, ei_end) = out_edges(v, g); ei != ei_end; ++ei) {
           m_column[current_edge++] = get(vi, target(*ei, g));
@@ -344,19 +344,18 @@ namespace detail {
       // Flip sequence
       BidirectionalIterator first(last_sorted);
       BidirectionalIterator last(first_sorted);
-      typedef Vertex vertex_num;
       typedef EdgeIndex edge_num;
-      edge_num new_edge_count = std::distance(first, last);
+      auto new_edge_count = std::distance(first, last);
 
       EPIter ep_iter(ep_iter_sorted);
       std::advance(ep_iter, -(std::ptrdiff_t)new_edge_count);
-      edge_num edges_added_before_i = new_edge_count; // Count increment to add to rowstarts
+      auto edges_added_before_i = new_edge_count; // Count increment to add to rowstarts
       m_column.resize(m_column.size() + new_edge_count);
       inherited_edge_properties::resize(inherited_edge_properties::size() + new_edge_count);
-      BidirectionalIterator current_new_edge = first, prev_new_edge = first;
-      EPIter current_new_edge_prop = ep_iter;
-      for (vertex_num i_plus_1 = m_rowstart.size() - 1; i_plus_1 > 0; --i_plus_1) {
-        vertex_num i = i_plus_1 - 1;
+      auto current_new_edge = first, prev_new_edge = first;
+      auto current_new_edge_prop = ep_iter;
+      for (auto i_plus_1 = m_rowstart.size() - 1; i_plus_1 > 0; --i_plus_1) {
+        auto i = i_plus_1 - 1;
         prev_new_edge = current_new_edge;
         // edges_added_to_this_vertex = #mbrs of new_edges with first == i
         edge_num edges_added_to_this_vertex = 0;
@@ -368,10 +367,10 @@ namespace detail {
         }
         edges_added_before_i -= edges_added_to_this_vertex;
         // Invariant: edges_added_before_i = #mbrs of new_edges with first < i
-        edge_num old_rowstart = m_rowstart[i];
-        edge_num new_rowstart = m_rowstart[i] + edges_added_before_i;
-        edge_num old_degree = m_rowstart[i + 1] - m_rowstart[i];
-        edge_num new_degree = old_degree + edges_added_to_this_vertex;
+        auto old_rowstart = m_rowstart[i];
+        auto new_rowstart = m_rowstart[i] + edges_added_before_i;
+        auto old_degree = m_rowstart[i + 1] - m_rowstart[i];
+        auto new_degree = old_degree + edges_added_to_this_vertex;
         // Move old edges forward (by #new_edges before this i) to make room
         // new_rowstart > old_rowstart, so use copy_backwards
         if (old_rowstart != new_rowstart) {
@@ -382,8 +381,8 @@ namespace detail {
         }
         // Add new edges (reversed because current_new_edge is a
         // const_reverse_iterator)
-        BidirectionalIterator temp = current_new_edge;
-        EPIter temp_prop = current_new_edge_prop;
+        auto temp = current_new_edge;
+        auto temp_prop = current_new_edge_prop;
         for (; temp != prev_new_edge; ++old_degree) {
           --temp;
           --temp_prop;
@@ -636,7 +635,7 @@ namespace detail {
     std::size_t operator()
                   (detail::csr_edge_descriptor<Vertex, EdgeIndex> const& x) const
     {
-      std::size_t hash = hash_value(x.src);
+      auto hash = hash_value(x.src);
       hash_combine(hash, x.idx);
       return hash;
     }

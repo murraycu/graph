@@ -106,7 +106,7 @@ inline T
 clustering_coefficient(const Graph& g, Vertex v)
 {
     T zero(0);
-    T routes = T(num_paths_through_vertex(g, v));
+    auto routes = T(num_paths_through_vertex(g, v));
     return (routes > zero) ?
         T(num_triangles_on_vertex(g, v)) / routes : zero;
 }
@@ -129,7 +129,7 @@ all_clustering_coefficients(const Graph& g, ClusteringMap cm)
     Coefficient sum(0);
     VertexIterator i, end;
     for(std::tie(i, end) = vertices(g); i != end; ++i) {
-        Coefficient cc = clustering_coefficient<Coefficient>(g, *i);
+        auto cc = clustering_coefficient<Coefficient>(g, *i);
         put(cm, *i, cc);
         sum += cc;
     }

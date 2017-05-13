@@ -48,7 +48,7 @@ namespace boost {
     typedef typename property_traits<ColorMap>::value_type size_type;
     
     size_type max_color = 0;
-    const size_type V = num_vertices(G);
+    const auto V = num_vertices(G);
 
     // We need to keep track of which colors are used by
     // adjacent vertices. We do this by marking the colors
@@ -66,7 +66,7 @@ namespace boost {
     
     //Determine the color for every vertex one by one
     for ( size_type i = 0; i < V; i++) {
-      Vertex current = get(order,i);
+      auto current = get(order,i);
       typename GraphTraits::adjacency_iterator v, vend;
       
       //Mark the colors of vertices adjacent to current.
@@ -104,7 +104,7 @@ namespace boost {
     typedef typename graph_traits<VertexListGraph>::vertex_iterator
       vertex_iterator;
 
-    std::pair<vertex_iterator, vertex_iterator> v = vertices(G);
+     auto v = vertices(G);
 #ifndef BOOST_NO_TEMPLATED_ITERATOR_CONSTRUCTORS
     std::vector<vertex_descriptor> order(v.first, v.second);
 #else

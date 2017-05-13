@@ -33,13 +33,13 @@ namespace boost {
       to_cg_vertex[s] = add_vertex(cg);
 
     for (size_type si = 0; si < components.size(); ++si) {
-      cg_vertex s = to_cg_vertex[si];
+      auto s = to_cg_vertex[si];
       std::vector<cg_vertex> adj;
       for (size_type i = 0; i < components[si].size(); ++i) {
-        vertex u = components[s][i];
+        auto u = components[s][i];
         typename graph_traits<Graph>::adjacency_iterator v, v_end;
         for (std::tie(v, v_end) = adjacent_vertices(u, g); v != v_end; ++v) {
-          cg_vertex t = to_cg_vertex[component_number[*v]];
+          auto t = to_cg_vertex[component_number[*v]];
           if (s != t) // Avoid loops in the condensation graph
             adj.push_back(t);
         }

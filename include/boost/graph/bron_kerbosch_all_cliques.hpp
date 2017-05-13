@@ -156,8 +156,8 @@ namespace detail
         BOOST_CONCEPT_ASSERT(( GraphConcept<Graph> ));
 
         typename graph_traits<Graph>::directed_category cat;
-        typename Container::const_iterator i, end = in.end();
-        for(i = in.begin(); i != end; ++i) {
+        auto end = in.end();
+        for(auto i = in.begin(); i != end; ++i) {
             if(is_connected_to_clique(g, v, *i, cat)) {
                 out.push_back(*i);
             }
@@ -178,16 +178,17 @@ namespace detail
     {
         BOOST_CONCEPT_ASSERT(( GraphConcept<Graph> ));
         BOOST_CONCEPT_ASSERT(( CliqueVisitorConcept<Visitor,Clique,Graph> ));
-        typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
 
         // Is there vertex in nots that is connected to all vertices
         // in the candidate set? If so, no clique can ever be found.
         // This could be broken out into a separate function.
         {
-            typename Container::iterator ni, nend = nots.end();
-            typename Container::iterator ci, cend = cands.end();
-            for(ni = nots.begin(); ni != nend; ++ni) {
-                for(ci = cands.begin(); ci != cend; ++ci) {
+            auto nend = nots.end();
+            auto cend = cands.end();
+            auto ni = nots.begin();
+            for(; ni != nend; ++ni) {
+                auto ci = cands.begin();
+                for(; ci != cend; ++ci) {
                     // if we don't find an edge, then we're okay.
                     if(!lookup_edge(*ni, *ci, g).second) break;
                 }
@@ -226,7 +227,7 @@ namespace detail
         // for maxmimal cliquiness.
         typename Container::iterator i, j;
         for(i = cands.begin(); i != cands.end(); ) {
-            Vertex candidate = *i;
+            auto candidate = *i;
 
             // add the candidate to the clique (keeping the iterator!)
             // typename Clique::iterator ci = clique.insert(clique.end(), candidate);

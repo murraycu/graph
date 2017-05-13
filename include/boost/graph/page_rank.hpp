@@ -143,7 +143,7 @@ remove_dangling_links(MutableGraph& g
 
     typename graph_traits<MutableGraph>::vertex_iterator vi, vi_end;
     for (std::tie(vi, vi_end) = vertices(g); vi != vi_end; /* in loop */) {
-      typename graph_traits<MutableGraph>::vertex_descriptor v = *vi++;
+      auto v = *vi++;
       if (out_degree(v, g) == 0) {
         clear_vertex(v, g);
         remove_vertex(v, g);

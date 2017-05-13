@@ -78,7 +78,7 @@ namespace boost {
     ui_type ui(0, out_degree(src, g) - 1);
     boost::variate_generator<RandomNumGen&, ui_type>
       variate(gen, ui);
-    typename graph_traits<Graph>::out_edge_iterator it = out_edges(src, g).first;
+    auto it = out_edges(src, g).first;
     std::advance(it, variate());
     return *it;
   }
@@ -93,9 +93,9 @@ namespace boost {
     ur_type ur(0, weight_sum);
     boost::variate_generator<RandomNumGen&, ur_type>
       variate(gen, ur);
-    weight_type chosen_weight = variate();
+    auto chosen_weight = variate();
     BGL_FORALL_OUTEDGES_T(src, e, g, Graph) {
-      weight_type w = get(weight, e);
+      auto w = get(weight, e);
       if (chosen_weight < w) {
         return e;
       } else {

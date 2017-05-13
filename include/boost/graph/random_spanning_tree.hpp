@@ -51,7 +51,7 @@ namespace boost {
              boost::next(i) !=
                (typename std::vector<vertex_descriptor>::const_reverse_iterator)path.rend();
              ++i) {
-          typename std::vector<vertex_descriptor>::const_reverse_iterator j = i;
+          auto j = i;
           ++j;
           BOOST_ASSERT (get(color, *j) == color_gen::gray());
           put(color, *j, color_gen::black());

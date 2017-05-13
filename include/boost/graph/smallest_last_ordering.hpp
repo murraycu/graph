@@ -43,7 +43,7 @@ namespace boost {
     //typedef typename GraphTraits::size_type size_type;
     typedef std::size_t size_type;
     
-    const size_type num = num_vertices(G);
+    const auto num = num_vertices(G);
     
     typedef typename boost::property_map<VertexListGraph, vertex_index_t>::type ID;
     typedef bucket_sorter<size_type, Vertex, Degree, ID> BucketSorter;
@@ -65,7 +65,7 @@ namespace boost {
     //typedef typename GraphTraits::size_type size_type;
     typedef std::size_t size_type;
 
-    const size_type num = num_vertices(G);
+    const auto num = num_vertices(G);
     
     typename GraphTraits::vertex_iterator v, vend;
     for (std::tie(v, vend) = vertices(G); v != vend; ++v) {
@@ -79,11 +79,11 @@ namespace boost {
     
     while ( 1 ) {
       typedef typename BucketSorter::stack MDStack;
-      MDStack minimum_degree_stack = degree_buckets[minimum_degree];
+      auto minimum_degree_stack = degree_buckets[minimum_degree];
       while (minimum_degree_stack.empty())
         minimum_degree_stack = degree_buckets[++minimum_degree];
       
-      Vertex node = minimum_degree_stack.top();
+      auto node = minimum_degree_stack.top();
       put(order, current_order, node);
       
       if ( current_order == 0 ) //find all vertices

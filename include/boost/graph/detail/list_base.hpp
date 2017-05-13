@@ -42,7 +42,7 @@ namespace boost {
     slist_remove_after(Node pos, 
                        Next next)
     {
-      Node n = next(pos);
+      auto n = next(pos);
       next(pos) = next(n);
       return n;
     }
@@ -72,8 +72,8 @@ namespace boost {
                        Next next)
     {
       if (pos != before_first && pos != before_last) {
-        Node first = next(before_first);
-        Node after = next(pos);
+        auto first = next(before_first);
+        auto after = next(pos);
         next(before_first) = next(before_last);
         next(pos) = first;
         next(before_last) = after;
@@ -85,11 +85,11 @@ namespace boost {
     slist_reverse(Node node, Node empty,
                   Next next)
     {
-      Node result = node;
+      auto result = node;
       node = next(node);
       next(result) = empty;
       while(node) {
-        Node next = next(node);
+        auto next = next(node);
         next(node) = result;
         result = node;
         node = next;
@@ -151,8 +151,8 @@ namespace boost {
     dlist_remove(Node pos, 
                  Next next, Prev prev)
     {
-      Node next_node = next(pos);
-      Node prev_node = prev(pos);
+      auto next_node = next(pos);
+      auto prev_node = prev(pos);
       next(prev_node) = next_node;
       prev(next_node) = prev_node;
     }
@@ -191,7 +191,7 @@ namespace boost {
         next(prev(pos)) = first;
 
         // Splice [first,last) into its new position
-        Node tmp = prev(pos);
+        auto tmp = prev(pos);
         prev(pos) = prev(last);
         prev(last) = prev(first);
         prev(first) = tmp;

@@ -312,8 +312,7 @@ template<typename VertexIterStability>
 inline void BGL_NAMED_GRAPH::removing_vertex(Vertex vertex, VertexIterStability)
 {
   BOOST_STATIC_ASSERT_MSG ((boost::is_base_of<boost::graph_detail::stable_tag, VertexIterStability>::value), "Named graphs cannot use vecS as vertex container and remove vertices; the lack of vertex descriptor stability (which iterator stability is a proxy for) means that the name -> vertex mapping would need to be completely rebuilt after each deletion.  See https://svn.boost.org/trac/boost/ticket/7863 for more information and a test case.");
-  typedef typename BGL_NAMED_GRAPH::vertex_name_type vertex_name_type;
-  const vertex_name_type& vertex_name = extract_name(derived()[vertex]);
+  const auto& vertex_name = extract_name(derived()[vertex]);
   named_vertices.erase(vertex_name);
 }
 

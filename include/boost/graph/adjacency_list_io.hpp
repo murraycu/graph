@@ -133,7 +133,7 @@ struct GraphParser
                 typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
                 std::vector<Vertex> nodes;
 
-                GraphParserState state = PARSE_VERTEX;
+                auto state = PARSE_VERTEX;
 
                 unsigned int numLine = 1;
                 char c;
@@ -215,7 +215,7 @@ struct PropertyPrinter
         template<class Val>
         PropertyPrinter& operator () ( std::ostream& out, const Val& v )
         {
-                typename property_map<Graph,Tag>::const_type ps = get(Tag(), *graph);
+                auto ps = get(Tag(), *graph);
                 out << ps[ v ] <<" ";
                 PropertyPrinter<Graph,Next> print(*graph);
                 print(out, v);
@@ -248,7 +248,7 @@ struct PropertyPrinter<Graph, property<Tag, Value, Next> >
         template<class Val>
         PropertyPrinter& operator () ( std::ostream& out, const Val& v )
         {
-                typename property_map<Graph,Tag>::const_type ps = get(Tag(), *graph);
+                auto ps = get(Tag(), *graph);
                 out << ps[ v ] <<" ";
                 PropertyPrinter<Graph,Next> print(*graph);
                 print(out, v);

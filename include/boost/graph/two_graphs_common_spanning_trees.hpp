@@ -84,7 +84,7 @@ namespace detail {
     template <typename Vertex, typename Graph>
     void finish_vertex(const Vertex& u, const Graph& g)
     {
-      Vertex parent = get(mPred, u);
+      auto parent = get(mPred, u);
       if(get(mLow, u) > get(mDist, parent))
         mBuffer.push(get(mTree, u));
       put(mLow, parent,

@@ -125,7 +125,7 @@ namespace boost {
                                    const std::string& name,
                                    std::ostream& out)
   {
-    typename Attributes::const_iterator i = attributes.begin(),
+    auto i = attributes.begin(),
                                         end = attributes.end();
     if (i != end) {
       out << name << " [\n";
@@ -186,9 +186,9 @@ namespace boost {
       NAttrMap;
     typedef typename graph_property<Graph, graph_edge_attribute_t>::type
       EAttrMap;
-    GAttrMap gam = get_property(g, graph_graph_attribute);
-    NAttrMap nam = get_property(g, graph_vertex_attribute);
-    EAttrMap eam = get_property(g, graph_edge_attribute);
+    auto gam = get_property(g, graph_graph_attribute);
+    auto nam = get_property(g, graph_vertex_attribute);
+    auto eam = get_property(g, graph_edge_attribute);
     graph_attributes_writer<GAttrMap, NAttrMap, EAttrMap> writer(gam, nam, eam);
     return writer;
   }
@@ -329,12 +329,10 @@ namespace boost {
                                   VertexID vertex_id)
     {
       typedef subgraph<Graph_> Graph;
-      typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
       typedef typename graph_traits<Graph>::directed_category cat_type;
       typedef graphviz_io_traits<cat_type> Traits;
 
-      typedef typename graph_property<Graph, graph_name_t>::type NameType;
-      const NameType& g_name = get_property(g, graph_name);
+      const auto& g_name = get_property(g, graph_name);
 
       if ( g.is_root() )
         out << Traits::name() ;
@@ -360,7 +358,7 @@ namespace boost {
       typename graph_traits<Graph>::edge_iterator ei, edge_end;
 
       for(std::tie(i,end) = vertices(g); i != end; ++i) {
-        Vertex v = g.local_to_global(*i);
+        auto v = g.local_to_global(*i);
         int pos = get(vertex_id, v);
         if ( vertex_marker[pos] ) {
           vertex_marker[pos] = false;
@@ -371,7 +369,7 @@ namespace boost {
       }
 
       for (std::tie(ei, edge_end) = edges(g); ei != edge_end; ++ei) {
-        Vertex u = g.local_to_global(source(*ei,g)),
+        auto u = g.local_to_global(source(*ei,g)),
           v = g.local_to_global(target(*ei, g));
         int pos = get(get(edge_index, g.root()), g.local_to_global(*ei));
         if ( edge_marker[pos] ) {
@@ -736,7 +734,7 @@ class mutate_graph_impl : public mutate_graph
   virtual void do_add_vertex(const node_t& node)
   {
     // Add the node to the graph.
-    bgl_vertex_t v = add_vertex(graph_);
+    auto v = add_vertex(graph_);
 
     // Set up a mapping from name to BGL vertex.
     bgl_nodes.insert(std::make_pair(node, v));
@@ -748,7 +746,7 @@ class mutate_graph_impl : public mutate_graph
   void
   do_add_edge(const edge_t& edge, const node_t& source, const node_t& target)
   {
-    std::pair<bgl_edge_t, bool> result =
+     auto result =
      add_edge(bgl_nodes[source], bgl_nodes[target], graph_);
 
     if(!result.second) {
@@ -843,7 +841,7 @@ class mutate_graph_impl<compressed_sparse_row_graph<Directed, VertexProperty, Ed
   virtual void do_add_vertex(const node_t& node)
   {
     // Add the node to the graph.
-    bgl_vertex_t v = vertex_count++;
+    auto v = vertex_count++;
 
     // Set up a mapping from name to BGL vertex.
     bgl_nodes.insert(std::make_pair(node, v));
@@ -855,7 +853,7 @@ class mutate_graph_impl<compressed_sparse_row_graph<Directed, VertexProperty, Ed
   void
   do_add_edge(const edge_t& edge, const node_t& source, const node_t& target)
   {
-    bgl_edge_t result = edges_to_add.size();
+    auto result = edges_to_add.size();
     edges_to_add.push_back(std::make_pair(bgl_nodes[source], bgl_nodes[target]));
     bgl_edges.insert(std::make_pair(edge, result));
   }

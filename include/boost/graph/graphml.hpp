@@ -86,7 +86,7 @@ class mutate_graph_impl : public mutate_graph
 
     virtual std::pair<any,bool> do_add_edge(any source, any target)
     {
-        std::pair<edge_descriptor,bool> retval = add_edge(any_cast<vertex_descriptor>(source),
+         auto retval = add_edge(any_cast<vertex_descriptor>(source),
                                                           any_cast<vertex_descriptor>(target), m_g);
         return std::make_pair(any(retval.first), retval.second);
     }

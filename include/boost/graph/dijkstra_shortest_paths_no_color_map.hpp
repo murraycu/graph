@@ -40,7 +40,6 @@ namespace boost {
      DijkstraVisitor visitor)
   {
     typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
-    typedef typename property_traits<DistanceMap>::value_type Distance;
     
     typedef indirect_cmp<DistanceMap, DistanceCompare> DistanceIndirectCompare;
     DistanceIndirectCompare
@@ -64,7 +63,7 @@ namespace boost {
       VertexQueue;
   
     boost::scoped_array<std::size_t> index_in_heap_map_holder;
-    IndexInHeapMap index_in_heap =
+    auto index_in_heap =
       IndexInHeapMapHelper::build(graph, index_map,
                                   index_in_heap_map_holder);  
     VertexQueue vertex_queue(distance_map, index_in_heap, distance_compare);
@@ -77,12 +76,13 @@ namespace boost {
     visitor.discover_vertex(start_vertex, graph);
   
     while (!vertex_queue.empty()) {
-      Vertex min_vertex = vertex_queue.top();
+      auto min_vertex = vertex_queue.top();
       vertex_queue.pop();
       
       visitor.examine_vertex(min_vertex, graph);
   
       // Check if any other vertices can be reached
+      typedef typename property_traits<DistanceMap>::value_type Distance;
       Distance min_vertex_distance = get(distance_map, min_vertex);
       
       if (!distance_compare(min_vertex_distance, distance_infinity)) {
@@ -100,7 +100,7 @@ namespace boost {
         }
   
         // Extract the neighboring vertex and get its distance
-        Vertex neighbor_vertex = target(current_edge, graph);
+        auto neighbor_vertex = target(current_edge, graph);
         Distance neighbor_vertex_distance = get(distance_map, neighbor_vertex);
         bool is_neighbor_undiscovered = 
           !distance_compare(neighbor_vertex_distance, distance_infinity);
@@ -185,7 +185,7 @@ namespace boost {
       dummy_property_map predecessor_map;
 
       typedef typename property_traits<DistanceMap>::value_type DistanceType;
-      DistanceType inf =
+      auto inf =
         choose_param(get_param(params, distance_inf_t()),
                      (std::numeric_limits<DistanceType>::max)());
       dijkstra_shortest_paths_no_color_map

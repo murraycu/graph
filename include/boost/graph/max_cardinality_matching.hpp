@@ -35,8 +35,6 @@ namespace boost
   matching_size(const Graph& g, MateMap mate, VertexIndexMap vm)
   {
     typedef typename graph_traits<Graph>::vertex_iterator vertex_iterator_t;
-    typedef typename graph_traits<Graph>::vertex_descriptor
-      vertex_descriptor_t;
     typedef typename graph_traits<Graph>::vertices_size_type v_size_t;
 
     v_size_t size_of_matching = 0;
@@ -44,7 +42,7 @@ namespace boost
 
     for(std::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
       {
-        vertex_descriptor_t v = *vi;
+        auto v = *vi;
         if (get(mate,v) != graph_traits<Graph>::null_vertex() 
             && get(vm,v) < get(vm,get(mate,v)))
         ++size_of_matching;
@@ -68,14 +66,12 @@ namespace boost
   template <typename Graph, typename MateMap, typename VertexIndexMap>
   bool is_a_matching(const Graph& g, MateMap mate, VertexIndexMap)
   {
-    typedef typename graph_traits<Graph>::vertex_descriptor
-      vertex_descriptor_t;
     typedef typename graph_traits<Graph>::vertex_iterator vertex_iterator_t;
 
     vertex_iterator_t vi, vi_end;
     for( std::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
       {
-        vertex_descriptor_t v = *vi;
+        auto v = *vi;
         if (get(mate,v) != graph_traits<Graph>::null_vertex() 
             && v != get(mate,get(mate,v)))
         return false;
@@ -206,7 +202,7 @@ namespace boost
       vertex_iterator_t vi, vi_end;
       for(std::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
       {
-        vertex_descriptor_t u = *vi;
+        auto u = *vi;
       
         origin[u] = u;
         pred[u] = u;
@@ -242,14 +238,14 @@ namespace boost
         // since we push even edges onto the back of the list as
         // they're discovered, taking them off the back will search
         // for augmenting paths depth-first.
-        edge_descriptor_t current_edge = even_edges.back();
+        auto current_edge = even_edges.back();
         even_edges.pop_back();
 
         v = source(current_edge,g);
         w = target(current_edge,g);
       
-        vertex_descriptor_t v_prime = origin[ds.find_set(v)];
-        vertex_descriptor_t w_prime = origin[ds.find_set(w)];
+        auto v_prime = origin[ds.find_set(v)];
+        auto w_prime = origin[ds.find_set(w)];
       
         // because of the way we put all of the edges on the queue,
         // v_prime should be labeled V_EVEN; the following is a
@@ -263,7 +259,7 @@ namespace boost
         if (vertex_state[w_prime] == graph::detail::V_UNREACHED)
         {
           vertex_state[w_prime] = graph::detail::V_ODD;
-          vertex_descriptor_t w_prime_mate = mate[w_prime];
+          auto w_prime_mate = mate[w_prime];
           vertex_state[w_prime_mate] = graph::detail::V_EVEN;
           out_edge_iterator_t ei, ei_end;
           for( std::tie(ei,ei_end) = out_edges(w_prime_mate, g); ei != ei_end; ++ei)
@@ -280,8 +276,8 @@ namespace boost
         //shrunk into a blossom
         else if (vertex_state[w_prime] == graph::detail::V_EVEN && w_prime != v_prime) 
         {                                                             
-          vertex_descriptor_t w_up = w_prime;
-          vertex_descriptor_t v_up = v_prime;
+          auto w_up = w_prime;
+          auto v_up = v_prime;
           vertex_descriptor_t nearest_common_ancestor 
                 = graph_traits<Graph>::null_vertex();
           w_free_ancestor = graph_traits<Graph>::null_vertex();
@@ -541,9 +537,9 @@ namespace boost
       edge_iterator_t ei, ei_end;
       for( std::tie(ei, ei_end) = edges(g); ei != ei_end; ++ei)
       {
-        edge_descriptor_t e = *ei;
-        vertex_descriptor_t u = source(e,g);
-        vertex_descriptor_t v = target(e,g);
+        auto e = *ei;
+        auto u = source(e,g);
+        auto v = target(e,g);
       
         if (u != v && get(mate,u) == get(mate,v))  
         //only way equality can hold is if
@@ -619,9 +615,9 @@ namespace boost
       edge_iterator_t ei, ei_end;
       for(std::tie(ei, ei_end) = edges(g); ei != ei_end; ++ei)
       {
-        edge_descriptor_t e = *ei;
-        vertex_descriptor_t u = source(e,g);
-        vertex_descriptor_t v = target(e,g);
+        auto e = *ei;
+        auto u = source(e,g);
+        auto v = target(e,g);
         if (u == v) continue;
         edge_list.push_back(std::make_pair(u,v));
         edge_list.push_back(std::make_pair(v,u));

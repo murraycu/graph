@@ -66,11 +66,10 @@ namespace boost {
       template <typename Edge, typename Graph>
       void operator() (Edge e, const Graph& g)
       {
-        typedef typename graph_traits <Graph>::vertex_descriptor vertex_descriptor_t;
         typedef color_traits <typename property_traits <PartitionMap>::value_type> color_traits;
 
-        vertex_descriptor_t source_vertex = source (e, g);
-        vertex_descriptor_t target_vertex = target (e, g);
+        auto source_vertex = source (e, g);
+        auto target_vertex = target (e, g);
         if (get (partition_map_, source_vertex) == color_traits::white ())
           put (partition_map_, target_vertex, color_traits::black ());
         else
@@ -115,8 +114,8 @@ namespace boost {
       {
         typedef typename graph_traits <Graph>::vertex_descriptor vertex_descriptor_t;
 
-        vertex_descriptor_t source_vertex = source (e, g);
-        vertex_descriptor_t target_vertex = target (e, g);
+        auto source_vertex = source (e, g);
+        auto target_vertex = target (e, g);
         if (get (partition_map_, source_vertex) == get (partition_map_, target_vertex))
           throw bipartite_visitor_error <vertex_descriptor_t> (source_vertex, target_vertex);
       }
@@ -327,7 +326,7 @@ namespace boost {
       while (current != next);
 
       /// Find beginning of common suffix
-      std::pair <typename path_t::iterator, typename path_t::iterator> mismatch = detail::reverse_mismatch (
+      auto mismatch = detail::reverse_mismatch (
           std::make_pair (path1.begin (), path1.end ()), std::make_pair (path2.begin (), path2.end ()));
 
       /// Copy the odd-length cycle

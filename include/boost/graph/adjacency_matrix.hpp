@@ -704,10 +704,10 @@ namespace boost {
      const adjacency_matrix<directedS,VP,EP,GP,A>& g_)
   {
     typedef adjacency_matrix<directedS,VP,EP,GP,A> Graph;
-    Graph& g = const_cast<Graph&>(g_);
-    typename Graph::vertices_size_type offset = u * g.m_vertex_set.size();
-    typename Graph::MatrixIter f = g.m_matrix.begin() + offset;
-    typename Graph::MatrixIter l = f + g.m_vertex_set.size();
+    auto& g = const_cast<Graph&>(g_);
+    auto offset = u * g.m_vertex_set.size();
+    auto f = g.m_matrix.begin() + offset;
+    auto l = f + g.m_vertex_set.size();
     typename Graph::unfiltered_out_edge_iter
           first(f, u, g.m_vertex_set.size())
         , last(l, u, g.m_vertex_set.size());
@@ -727,10 +727,10 @@ namespace boost {
      const adjacency_matrix<undirectedS,VP,EP,GP,A>& g_)
   {
     typedef adjacency_matrix<undirectedS,VP,EP,GP,A> Graph;
-    Graph& g = const_cast<Graph&>(g_);
+    auto& g = const_cast<Graph&>(g_);
     typename Graph::vertices_size_type offset = u * (u + 1) / 2;
-    typename Graph::MatrixIter f = g.m_matrix.begin() + offset;
-    typename Graph::MatrixIter l = g.m_matrix.end();
+    auto f = g.m_matrix.begin() + offset;
+    auto l = g.m_matrix.end();
 
     typename Graph::unfiltered_out_edge_iter
         first(f, u, g.m_vertex_set.size())
@@ -787,9 +787,9 @@ namespace boost {
      const adjacency_matrix<directedS,VP,EP,GP,A>& g_)
   {
     typedef adjacency_matrix<directedS,VP,EP,GP,A> Graph;
-    Graph& g = const_cast<Graph&>(g_);
-    typename Graph::MatrixIter f = g.m_matrix.begin() + u;
-    typename Graph::MatrixIter l = g.m_matrix.end();
+    auto& g = const_cast<Graph&>(g_);
+    auto f = g.m_matrix.begin() + u;
+    auto l = g.m_matrix.end();
     typename Graph::unfiltered_in_edge_iter
         first(f, l, u, g.m_vertex_set.size())
       , last(l, l, u, g.m_vertex_set.size());
@@ -809,10 +809,10 @@ namespace boost {
      const adjacency_matrix<undirectedS,VP,EP,GP,A>& g_)
   {
     typedef adjacency_matrix<undirectedS,VP,EP,GP,A> Graph;
-    Graph& g = const_cast<Graph&>(g_);
+    auto& g = const_cast<Graph&>(g_);
     typename Graph::vertices_size_type offset = u * (u + 1) / 2;
-    typename Graph::MatrixIter f = g.m_matrix.begin() + offset;
-    typename Graph::MatrixIter l = g.m_matrix.end();
+    auto f = g.m_matrix.begin() + offset;
+    auto l = g.m_matrix.end();
 
     typename Graph::unfiltered_in_edge_iter
         first(f, u, g.m_vertex_set.size())
@@ -848,8 +848,8 @@ namespace boost {
      const adjacency_matrix<D,VP,EP,GP,A>& g_)
   {
       typedef adjacency_matrix<D,VP,EP,GP,A> Graph;
-      const Graph& cg = static_cast<const Graph&>(g_);
-      Graph& g = const_cast<Graph&>(cg);
+      const auto& cg = static_cast<const Graph&>(g_);
+      auto& g = const_cast<Graph&>(cg);
       typedef typename Graph::adjacency_iterator adjacency_iterator;
       typename Graph::out_edge_iterator first, last;
       std::tie(first, last) = out_edges(u, g);
@@ -865,7 +865,7 @@ namespace boost {
             typename adjacency_matrix<D,VP,EP,GP,A>::vertex_iterator>
   vertices(const adjacency_matrix<D,VP,EP,GP,A>& g_) {
     typedef adjacency_matrix<D,VP,EP,GP,A> Graph;
-    Graph& g = const_cast<Graph&>(g_);
+    auto& g = const_cast<Graph&>(g_);
     return std::make_pair(g.m_vertex_set.begin(), g.m_vertex_set.end());
   }
 
@@ -884,7 +884,7 @@ namespace boost {
   edges(const adjacency_matrix<D,VP,EP,GP,A>& g_)
   {
     typedef adjacency_matrix<D,VP,EP,GP,A> Graph;
-    Graph& g = const_cast<Graph&>(g_);
+    auto& g = const_cast<Graph&>(g_);
 
     typename Graph::unfiltered_edge_iter
       first(g.m_matrix.begin(), g.m_matrix.begin(),

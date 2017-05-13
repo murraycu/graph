@@ -117,9 +117,9 @@ namespace boost {
     typedef typename property_map<Graph, vertex_index_t>::const_type VertexID;
     
     s = *(vertices(G).first);
-    Vertex e = s;
+    auto e = s;
     Vertex i;
-    Degree my_degree = get(degree, s ); 
+    auto my_degree = get(degree, s ); 
     Degree dummy, h_i, h_s, w_i, w_e;
     bool new_start = true;
     Degree maximum_degree = 0;

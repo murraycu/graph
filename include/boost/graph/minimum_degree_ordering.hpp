@@ -118,7 +118,7 @@ namespace boost {
         { return data[get(id, node)] >= multiple_tag; }
 
       void increment_tag() {
-        const size_type num = data.size();
+        const auto num = data.size();
         ++tag;
         if ( tag >= done() ) {
           tag = 1 - (std::numeric_limits<value_type>::max)();
@@ -130,7 +130,7 @@ namespace boost {
       
       void set_multiple_tag(value_type mdeg0) 
       { 
-        const size_type num = data.size();
+        const auto num = data.size();
         multiple_tag = tag + mdeg0; 
         
         if ( multiple_tag >= done() ) {
@@ -205,7 +205,7 @@ namespace boost {
           neighbor_elements(&n_e), id(id) {}
 
       bool operator()(edge_t e) {
-        vertex_t dist = target(e, *g);
+        auto dist = target(e, *g);
         if ( marker->is_tagged(dist) )
           return true;
         marker->mark_tagged(dist);
@@ -234,7 +234,7 @@ namespace boost {
         : g(&_g), marker(&_marker) {}
 
       bool operator()(edge_t e) {
-        vertex_t dist = target(e, *g);
+        auto dist = target(e, *g);
         if ( marker->is_tagged(dist) )
           return true;
         return false;
@@ -328,16 +328,16 @@ namespace boost {
         // with no neighbors, which are accessible as a list (really, a
         // stack) at location 0.  Since these don't affect any other
         // nodes, we can eliminate them without doing degree updates.
-        typename DegreeLists::stack list_isolated = degreelists[0];
+        auto list_isolated = degreelists[0];
         while (!list_isolated.empty()) {
-          vertex_t node = list_isolated.top();
+          auto node = list_isolated.top();
           marker.mark_done(node);
           numbering(node);
           numbering.increment();
           list_isolated.pop();
         }
         size_type min_degree = 1;
-        typename DegreeLists::stack list_min_degree = degreelists[min_degree];
+        auto list_min_degree = degreelists[min_degree];
 
         while (list_min_degree.empty()) {
           ++min_degree;
@@ -347,8 +347,8 @@ namespace boost {
         // check if the whole eliminating process is done
         while (!numbering.all_done()) {
 
-          size_type min_degree_limit = min_degree + delta; // WARNING
-          typename Workspace::stack llist = work_space.make_stack();
+          auto min_degree_limit = min_degree + delta; // WARNING
+          auto llist = work_space.make_stack();
 
           // multiple elimination
           while (delta >= 0) {
@@ -361,8 +361,8 @@ namespace boost {
             if (min_degree > min_degree_limit)
               break;
 
-            const vertex_t node = list_min_degree.top();
-            const size_type node_id = get(vertex_index_map, node);
+            const auto node = list_min_degree.top();
+            const auto node_id = get(vertex_index_map, node);
             list_min_degree.pop();
             numbering(node);
 
@@ -390,7 +390,7 @@ namespace boost {
 
       void eliminate(vertex_t node)
       {
-        typename Workspace::stack element_neighbor = work_space.make_stack();
+        auto element_neighbor = work_space.make_stack();
 
         // Create two function objects for edge removal
         typedef typename Workspace::stack WorkStack;
@@ -406,11 +406,11 @@ namespace boost {
 
         while (!element_neighbor.empty()) {
           // element absorb
-          size_type e_id = element_neighbor.top();
-          vertex_t element = get(index_vertex_map, e_id);
+          auto e_id = element_neighbor.top();
+          auto element = get(index_vertex_map, e_id);
           adj_iter i, i_end;
           for (std::tie(i, i_end) = adjacent_vertices(element, G); i != i_end; ++i){
-            vertex_t i_node = *i;
+            auto i_node = *i;
             if (!marker.is_tagged(i_node) && !numbering.is_numbered(i_node)) {
               marker.mark_tagged(i_node);
               add_edge(node, i_node, G);
@@ -420,7 +420,7 @@ namespace boost {
         }
         adj_iter v, ve;
         for (std::tie(v, ve) = adjacent_vertices(node, G); v != ve; ++v) {
-          vertex_t v_node = *v;
+          auto v_node = *v;
           if (!degree_lists_marker.need_update(v_node) 
               && !degree_lists_marker.outmatched_or_done(v_node)) {
             degreelists.remove(v_node);
@@ -445,20 +445,20 @@ namespace boost {
       template <class Stack>
       void update(Stack llist, size_type& min_degree)
       {
-        size_type min_degree0 = min_degree + delta + 1;
+        auto min_degree0 = min_degree + delta + 1;
 
         while (! llist.empty()) {
           size_type deg, deg0 = 0;
 
           marker.set_multiple_tag(min_degree0);
-          typename Workspace::stack q2list = work_space.make_stack();
-          typename Workspace::stack qxlist = work_space.make_stack();
+          auto q2list = work_space.make_stack();
+          auto qxlist = work_space.make_stack();
 
-          vertex_t current = get(index_vertex_map, llist.top());
+          auto current = get(index_vertex_map, llist.top());
           adj_iter i, ie;
           for (std::tie(i,ie) = adjacent_vertices(current, G); i != ie; ++i) {
-            vertex_t i_node = *i;
-            const size_type i_id = get(vertex_index_map, i_node);
+            auto i_node = *i;
+            const auto i_id = get(vertex_index_map, i_node);
             if (supernode_size[i_node] != 0) {
               deg0 += supernode_size[i_node];
               marker.mark_multiple_tagged(i_node);
@@ -472,8 +472,8 @@ namespace boost {
           }
 
           while (!q2list.empty()) {
-            const size_type u_id = q2list.top();
-            vertex_t u_node = get(index_vertex_map, u_id);
+            const auto u_id = q2list.top();
+            auto u_node = get(index_vertex_map, u_id);
             // if u_id is outmatched by others, no need to update degree
             if (degree_lists_marker.outmatched_or_done(u_node)) {
               q2list.pop();
@@ -482,8 +482,8 @@ namespace boost {
             marker.increment_tag();
             deg = deg0;
 
-            adj_iter nu = adjacent_vertices(u_node, G).first;
-            vertex_t neighbor = *nu;
+            auto nu = adjacent_vertices(u_node, G).first;
+            auto neighbor = *nu;
             if (neighbor == u_node) {
               ++nu;
               neighbor = *nu;
@@ -492,7 +492,7 @@ namespace boost {
               adj_iter i, ie;
               for (std::tie(i,ie) = adjacent_vertices(neighbor, G);
                    i != ie; ++i) {
-                const vertex_t i_node = *i;
+                const auto i_node = *i;
                 if (i_node == u_node || supernode_size[i_node] == 0)
                   continue;
                 if (marker.is_tagged(i_node)) {
@@ -525,8 +525,8 @@ namespace boost {
           } // while (!q2list.empty())
 
           while (!qxlist.empty()) {
-            const size_type u_id = qxlist.top();
-            const vertex_t u_node = get(index_vertex_map, u_id);
+            const auto u_id = qxlist.top();
+            const auto u_node = get(index_vertex_map, u_id);
 
             // if u_id is outmatched by others, no need to update degree
             if (degree_lists_marker.outmatched_or_done(u_node)) {
@@ -537,7 +537,7 @@ namespace boost {
             deg = deg0;
             adj_iter i, ie;
             for (std::tie(i, ie) = adjacent_vertices(u_node, G); i != ie; ++i) {
-              vertex_t i_node = *i;
+              auto i_node = *i;
               if (marker.is_tagged(i_node)) 
                 continue;
               marker.mark_tagged(i_node);
@@ -545,7 +545,7 @@ namespace boost {
               if (numbering.is_numbered(i_node)) {
                 adj_iter j, je;
                 for (std::tie(j, je) = adjacent_vertices(i_node, G); j != je; ++j) {
-                  const vertex_t j_node = *j;
+                  const auto j_node = *j;
                   if (marker.is_not_tagged(j_node)) {
                     marker.mark_tagged(j_node);
                     deg += supernode_size[j_node];
@@ -588,18 +588,18 @@ namespace boost {
         for (i = 1; i < n + 1; ++i) {
           if ( prev[i-1] > 0 )
             continue;
-          diff_t parent = i;
+          auto parent = i;
           while ( prev[parent - 1] < 0 ) {
             parent = - prev[parent - 1];
           }
 
-          diff_t root = parent;
-          diff_t num = prev[root - 1] + 1;
+          auto root = parent;
+          auto num = prev[root - 1] + 1;
           next[i-1] = - num;
           prev[root-1] = num;
 
           parent = i;
-          diff_t next_node = - prev[parent - 1];
+          auto next_node = - prev[parent - 1];
           while (next_node > 0) {
             prev[parent-1] = - root;
             parent = next_node;
@@ -607,7 +607,7 @@ namespace boost {
           }
         }
         for (i = 0; i < n; i++) {
-          diff_t num = - next[i] - 1;
+          auto num = - next[i] - 1;
           next[i] = num;
           prev[num] = i;
         }

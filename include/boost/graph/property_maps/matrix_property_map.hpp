@@ -53,8 +53,7 @@ namespace boost
 
         inline reference operator [](key_type k) const
         {
-            typedef typename indexer_type::value_type Index;
-            Index x = indexer_type::index(k, *m_graph);
+            auto x = indexer_type::index(k, *m_graph);
             return map_type((*m_matrix)[x], *m_graph);
         }
 

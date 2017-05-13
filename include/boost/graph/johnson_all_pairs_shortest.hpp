@@ -65,13 +65,13 @@ namespace boost {
     typename property_map<Graph2, vertex_distance_t>::type 
       d = get(vertex_distance, g2);
     typedef typename property_map<Graph2, vertex_index_t>::type VertexID2;
-    VertexID2 id2 = get(vertex_index, g2);
+    auto id2 = get(vertex_index, g2);
 
     // Construct g2 where V[g2] = V[g1] U {s}
     //   and  E[g2] = E[g1] U {(s,v)| v in V[g1]}
     std::vector<typename Traits1::vertex_descriptor> 
       verts1(num_vertices(g1) + 1);
-    typename Traits2::vertex_descriptor s = *vertices(g2).first;
+    auto s = *vertices(g2).first;
     {
       typename Traits1::vertex_iterator v, v_end;
       int i = 1;
@@ -111,7 +111,7 @@ namespace boost {
         put(h, *v, get(d, *v));
       // Reweight the edges to remove negatives
       for (std::tie(e, e_end) = edges(g2); e != e_end; ++e) {
-        typename Traits2::vertex_descriptor a = source(*e, g2),
+        auto a = source(*e, g2),
           b = target(*e, g2);
         put(w_hat, *e, combine((get(h, a) - get(h, b)), get(w, *e)));
       }

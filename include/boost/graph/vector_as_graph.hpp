@@ -206,7 +206,7 @@ namespace boost {
        std::vector<EdgeList, Allocator>& g)
   {
     typedef typename detail::val_edge<EdgeList>::type edge_type;
-    typename EdgeList::iterator i = g[u].begin(), end = g[u].end();
+    auto i = g[u].begin(), end = g[u].end();
     for (; i != end; ++i)
       if (*i == v)
         return std::make_pair(edge_type(u, v), true);
@@ -218,7 +218,7 @@ namespace boost {
   remove_edge(typename EdgeList::value_type u, typename EdgeList::value_type v,
               std::vector<EdgeList, Allocator>& g)
   {
-    typename EdgeList::iterator i = std::remove(g[u].begin(), g[u].end(), v);
+    auto i = std::remove(g[u].begin(), g[u].end(), v);
     if (i != g[u].end())
       g[u].erase(i, g[u].end());
   }
@@ -232,7 +232,7 @@ namespace boost {
     u = e.first;
     v = e.second;
     // FIXME: edge type does not fully specify the edge to be deleted
-    typename EdgeList::iterator i = std::remove(g[u].begin(), g[u].end(), v);
+    auto i = std::remove(g[u].begin(), g[u].end(), v);
     if (i != g[u].end())
       g[u].erase(i, g[u].end());
   }
@@ -245,8 +245,7 @@ namespace boost {
       for (std::size_t u = 0; u < g.size(); ++u) {
           // Oops! gcc gets internal compiler error on compose_.......
 
-          typedef typename EdgeList::iterator iterator;
-          iterator b = g[u].begin(), e = g[u].end();
+          auto b = g[u].begin(), e = g[u].end();
 
           if (!g[u].empty()) {
 
@@ -291,7 +290,6 @@ namespace boost {
   remove_vertex(typename EdgeList::value_type u,
                 std::vector<EdgeList, Allocator>& g)
   {
-    typedef typename EdgeList::iterator iterator;
     clear_vertex(u, g);
     g.erase(g.begin() + u);
     for (std::size_t i = 0; i < g.size(); ++i)

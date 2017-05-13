@@ -62,8 +62,8 @@ namespace boost
 
     std::list<vertex_t> ready_to_be_processed;
     
-    vertex_t first_vertex = *vertices(g).first;
-    vertex_t second_vertex = first_vertex;
+    auto first_vertex = *vertices(g).first;
+    auto second_vertex = first_vertex;
     adjacency_iterator_t ai, ai_end;
     for(std::tie(ai,ai_end) = adjacent_vertices(first_vertex,g); ai != ai_end; ++ai)
       {
@@ -80,7 +80,7 @@ namespace boost
 
     while(!ready_to_be_processed.empty())
       {
-        vertex_t u = ready_to_be_processed.front();
+        auto u = ready_to_be_processed.front();
         ready_to_be_processed.pop_front();
 
         if (status[u] != detail::PCO_READY_TO_BE_PROCESSED && u != second_vertex)
@@ -100,11 +100,11 @@ namespace boost
             
             edge_t e(*ei); // e = (u,v)
             next_edge_itr = boost::next(ei) == ei_end ? ei_start : boost::next(ei);
-            vertex_t v = source(e,g) == u ? target(e,g) : source(e,g);
+            auto v = source(e,g) == u ? target(e,g) : source(e,g);
 
-            vertex_t prior_vertex = source(*prior_edge_itr, g) == u ? 
+            auto prior_vertex = source(*prior_edge_itr, g) == u ? 
               target(*prior_edge_itr, g) : source(*prior_edge_itr, g);
-            vertex_t next_vertex = source(*next_edge_itr, g) == u ? 
+            auto next_vertex = source(*next_edge_itr, g) == u ? 
               target(*next_edge_itr, g) : source(*next_edge_itr, g);
 
             // Need prior_vertex, u, v, and next_vertex to all be

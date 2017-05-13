@@ -55,7 +55,7 @@ namespace boost {
     vis.discover_vertex(s, g);
     typename std::vector<Vertex>::reverse_iterator i;
     for (i = rev_topo_order.rbegin(); i != rev_topo_order.rend(); ++i) {
-      Vertex u = *i;
+      auto u = *i;
       vis.examine_vertex(u, g);
       typename graph_traits<VertexListGraph>::out_edge_iterator e, e_end;
       for (std::tie(e, e_end) = out_edges(u, g); e != e_end; ++e) {

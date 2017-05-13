@@ -153,9 +153,8 @@ namespace boost
                 property_map_tuple_adaptor<edge_event_t, 1>()
                 );
 
-    typedef typename edge_event_queue_t::iterator event_queue_iterator_t;
-    event_queue_iterator_t itr_end = edge_event_queue.end();
-    for(event_queue_iterator_t itr = edge_event_queue.begin(); 
+    auto itr_end = edge_event_queue.end();
+    for(auto itr = edge_event_queue.begin(); 
         itr != itr_end; ++itr
         )
       {
@@ -171,7 +170,7 @@ namespace boost
                              get(drawing, target_v).x
                              );
 
-        active_map_iterator_t a_itr = active_edges.find(key);
+        auto a_itr = active_edges.find(key);
         if (a_itr == active_edges.end())
           {
             active_edges[key] = e;
@@ -188,7 +187,7 @@ namespace boost
             if (before != active_edges.end())
               {
                 
-                edge_t f = before->second;
+                auto f = before->second;
                 vertex_t e_source(source(e,g));
                 vertex_t e_target(target(e,g));
                 vertex_t f_source(source(f,g));
@@ -210,7 +209,7 @@ namespace boost
             if (after != active_edges.end())
               {
                 
-                edge_t f = after->second;
+                auto f = after->second;
                 vertex_t e_source(source(e,g));
                 vertex_t e_target(target(e,g));
                 vertex_t f_source(source(f,g));

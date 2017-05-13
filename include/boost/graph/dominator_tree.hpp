@@ -123,7 +123,7 @@ namespace boost {
         typename graph_traits<Graph>::in_edge_iterator inItr, inEnd;
         for (std::tie(inItr, inEnd) = in_edges(n, g); inItr != inEnd; ++inItr)
           {
-            const Vertex v = source(*inItr, g);
+            const auto v = source(*inItr, g);
             // To deal with unreachable nodes
             if (get(dfnumMap, v) < 0 || get(dfnumMap, v) >= numOfVertices_)
               continue;
@@ -249,7 +249,7 @@ namespace boost {
 
     BOOST_CONCEPT_ASSERT(( BidirectionalGraphConcept<Graph> ));
 
-    const VerticesSizeType numOfVertices = num_vertices(g);
+    const auto numOfVertices = num_vertices(g);
     if (numOfVertices == 0) return;
 
     // 1. Visit each vertex in reverse post order and calculate sdom.
@@ -273,7 +273,7 @@ namespace boost {
         if (n == entry || n == graph_traits<Graph>::null_vertex())
           continue;
 
-        Vertex u = get(visitor.samedomMap, n);
+        auto u = get(visitor.samedomMap, n);
         if (u != graph_traits<Graph>::null_vertex())
           {
             put(domTreePredMap, n, get(domTreePredMap, u));
@@ -305,10 +305,10 @@ namespace boost {
     BOOST_CONCEPT_ASSERT(( BidirectionalGraphConcept<Graph> ));
 
     // 1. Depth first visit
-    const VerticesSizeType numOfVertices = num_vertices(g);
+    const auto numOfVertices = num_vertices(g);
     if (numOfVertices == 0) return;
 
-    VerticesSizeType time =
+    auto time =
       (std::numeric_limits<VerticesSizeType>::max)();
     std::vector<default_color_type>
       colors(numOfVertices, color_traits<default_color_type>::white());
@@ -351,10 +351,10 @@ namespace boost {
       PredMap;
 
     // Make property maps
-    const VerticesSizeType numOfVertices = num_vertices(g);
+    const auto numOfVertices = num_vertices(g);
     if (numOfVertices == 0) return;
 
-    const IndexMap indexMap = get(vertex_index, g);
+    const auto indexMap = get(vertex_index, g);
 
     std::vector<VerticesSizeType> dfnum(numOfVertices, 0);
     TimeMap dfnumMap(make_iterator_property_map(dfnum.begin(), indexMap));
@@ -386,7 +386,6 @@ namespace boost {
   {
     typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
     typedef typename graph_traits<Graph>::vertex_iterator vertexItr;
-    typedef typename graph_traits<Graph>::vertices_size_type VerticesSizeType;
     typedef
       iterator_property_map<typename std::vector< std::set<Vertex> >::iterator,
                             IndexMap> vertexSetMap;
@@ -395,7 +394,7 @@ namespace boost {
 
     // 1. Finding dominator
     // 1.1. Initialize
-    const VerticesSizeType numOfVertices = num_vertices(g);
+    const auto numOfVertices = num_vertices(g);
     if (numOfVertices == 0) return;
 
     vertexItr vi, viend;
@@ -421,7 +420,7 @@ namespace boost {
             typename graph_traits<Graph>::in_edge_iterator inItr, inEnd;
             for (std::tie(inItr, inEnd) = in_edges(*vi, g); inItr != inEnd; ++inItr)
               {
-                const Vertex p = source(*inItr, g);
+                const auto p = source(*inItr, g);
 
                 std::set<Vertex> tempSet;
                 std::set_intersection(T.begin(), T.end(),
@@ -458,7 +457,7 @@ namespace boost {
             typename std::set<Vertex>::iterator t;
             for (t = get(domMap, *vi).begin(); t != get(domMap, *vi).end(); )
               {
-        typename std::set<Vertex>::iterator old_t = t;
+        auto old_t = t;
         ++t; // Done early because t may become invalid
                 if (*old_t == *s) continue;
                 if (get(domMap, *s).find(*old_t) != get(domMap, *s).end())
@@ -471,7 +470,7 @@ namespace boost {
       {
         if (*vi != entry && get(domMap, *vi).size() == 1)
           {
-            Vertex temp = *get(domMap, *vi).begin();
+            auto temp = *get(domMap, *vi).begin();
             put(domTreePredMap, *vi, temp);
           }
       }

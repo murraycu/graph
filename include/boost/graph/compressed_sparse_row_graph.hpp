@@ -529,11 +529,11 @@ class compressed_sparse_row_graph<directedS, VertexProperty, EdgeProperty, Graph
   compressed_sparse_row_graph(const Graph& g, const VertexIndexMap& vi)
     : m_property()
   {
-    typename graph_traits<Graph>::edges_size_type numedges = num_edges(g);
+    auto numedges = num_edges(g);
     if (is_same<typename graph_traits<Graph>::directed_category, undirectedS>::value) {
       numedges *= 2; // Double each edge (actual doubling done by out_edges function)
     }
-    vertices_size_type numverts = num_vertices(g);
+    auto numverts = num_vertices(g);
     assign(g, vi, numverts, numedges);
     inherited_vertex_properties::resize(numverts);
   }
@@ -543,7 +543,7 @@ class compressed_sparse_row_graph<directedS, VertexProperty, EdgeProperty, Graph
   explicit compressed_sparse_row_graph(const Graph& g)
     : m_property()
   {
-    typename graph_traits<Graph>::edges_size_type numedges = num_edges(g);
+    auto numedges = num_edges(g);
     if (is_same<typename graph_traits<Graph>::directed_category, undirectedS>::value) {
       numedges *= 2; // Double each edge (actual doubling done by out_edges function)
     }
@@ -567,11 +567,11 @@ class compressed_sparse_row_graph<directedS, VertexProperty, EdgeProperty, Graph
   template<typename Graph, typename VertexIndexMap>
   void assign(const Graph& g, const VertexIndexMap& vi)
   {
-    typename graph_traits<Graph>::edges_size_type numedges = num_edges(g);
+    auto numedges = num_edges(g);
     if (is_same<typename graph_traits<Graph>::directed_category, undirectedS>::value) {
       numedges *= 2; // Double each edge (actual doubling done by out_edges function)
     }
-    vertices_size_type numverts = num_vertices(g);
+    auto numverts = num_vertices(g);
     m_forward.assign(g, vi, numverts, numedges);
     inherited_vertex_properties::resize(numverts);
   }
@@ -580,11 +580,11 @@ class compressed_sparse_row_graph<directedS, VertexProperty, EdgeProperty, Graph
   template<typename Graph>
   void assign(const Graph& g)
   {
-    typename graph_traits<Graph>::edges_size_type numedges = num_edges(g);
+    auto numedges = num_edges(g);
     if (is_same<typename graph_traits<Graph>::directed_category, undirectedS>::value) {
       numedges *= 2; // Double each edge (actual doubling done by out_edges function)
     }
-    vertices_size_type numverts = num_vertices(g);
+    auto numverts = num_vertices(g);
     m_forward.assign(g, get(vertex_index, g), numverts, numedges);
     inherited_vertex_properties::resize(numverts);
   }
@@ -809,7 +809,7 @@ class compressed_sparse_row_graph<bidirectionalS, VertexProperty, EdgeProperty, 
   private:
 
   void set_up_backward_property_links() {
-    std::pair<edge_iterator, edge_iterator> e = edges(*this);
+     auto e = edges(*this);
     m_backward.assign_unsorted_multi_pass_edges
       (detail::transpose_edges(
          detail::make_edge_to_index_pair_iter
@@ -901,11 +901,11 @@ class compressed_sparse_row_graph<bidirectionalS, VertexProperty, EdgeProperty, 
   compressed_sparse_row_graph(const Graph& g, const VertexIndexMap& vi)
     : m_property()
   {
-    typename graph_traits<Graph>::edges_size_type numedges = num_edges(g);
+    auto numedges = num_edges(g);
     if (is_same<typename graph_traits<Graph>::directed_category, undirectedS>::value) {
       numedges *= 2; // Double each edge (actual doubling done by out_edges function)
     }
-    vertices_size_type numverts = num_vertices(g);
+    auto numverts = num_vertices(g);
     assign(g, vi, numverts, numedges);
     inherited_vertex_properties::resize(numverts);
   }
@@ -915,7 +915,7 @@ class compressed_sparse_row_graph<bidirectionalS, VertexProperty, EdgeProperty, 
   explicit compressed_sparse_row_graph(const Graph& g)
     : m_property()
   {
-    typename graph_traits<Graph>::edges_size_type numedges = num_edges(g);
+    auto numedges = num_edges(g);
     if (is_same<typename graph_traits<Graph>::directed_category, undirectedS>::value) {
       numedges *= 2; // Double each edge (actual doubling done by out_edges function)
     }
@@ -940,11 +940,11 @@ class compressed_sparse_row_graph<bidirectionalS, VertexProperty, EdgeProperty, 
   template<typename Graph, typename VertexIndexMap>
   void assign(const Graph& g, const VertexIndexMap& vi)
   {
-    typename graph_traits<Graph>::edges_size_type numedges = num_edges(g);
+    auto numedges = num_edges(g);
     if (is_same<typename graph_traits<Graph>::directed_category, undirectedS>::value) {
       numedges *= 2; // Double each edge (actual doubling done by out_edges function)
     }
-    vertices_size_type numverts = num_vertices(g);
+    auto numverts = num_vertices(g);
     m_forward.assign(g, vi, numverts, numedges);
     inherited_vertex_properties::resize(numverts);
     set_up_backward_property_links();
@@ -954,11 +954,11 @@ class compressed_sparse_row_graph<bidirectionalS, VertexProperty, EdgeProperty, 
   template<typename Graph>
   void assign(const Graph& g)
   {
-    typename graph_traits<Graph>::edges_size_type numedges = num_edges(g);
+    auto numedges = num_edges(g);
     if (is_same<typename graph_traits<Graph>::directed_category, undirectedS>::value) {
       numedges *= 2; // Double each edge (actual doubling done by out_edges function)
     }
-    vertices_size_type numverts = num_vertices(g);
+    auto numverts = num_vertices(g);
     m_forward.assign(g, get(vertex_index, g), numverts, numedges);
     inherited_vertex_properties::resize(numverts);
     set_up_backward_property_links();
@@ -995,7 +995,7 @@ template<BOOST_DIR_CSR_GRAPH_TEMPLATE_PARMS>
 inline Vertex
 add_vertex(BOOST_DIR_CSR_GRAPH_TYPE& g,
            typename BOOST_DIR_CSR_GRAPH_TYPE::vertex_bundled const& p) {
-  Vertex old_num_verts_plus_one = g.m_forward.m_rowstart.size();
+  auto old_num_verts_plus_one = g.m_forward.m_rowstart.size();
   g.m_forward.m_rowstart.push_back(g.m_forward.m_rowstart.back());
   g.vertex_properties().push_back(p);
   return old_num_verts_plus_one - 1;
@@ -1005,7 +1005,7 @@ template<BOOST_BIDIR_CSR_GRAPH_TEMPLATE_PARMS>
 inline Vertex
 add_vertex(BOOST_BIDIR_CSR_GRAPH_TYPE& g,
            typename BOOST_BIDIR_CSR_GRAPH_TYPE::vertex_bundled const& p) {
-  Vertex old_num_verts_plus_one = g.m_forward.m_rowstart.size();
+  auto old_num_verts_plus_one = g.m_forward.m_rowstart.size();
   g.m_forward.m_rowstart.push_back(g.m_forward.m_rowstart.back());
   g.m_backward.m_rowstart.push_back(g.m_backward.m_rowstart.back());
   g.vertex_properties().push_back(p);
@@ -1015,8 +1015,8 @@ add_vertex(BOOST_BIDIR_CSR_GRAPH_TYPE& g,
 template<BOOST_DIR_CSR_GRAPH_TEMPLATE_PARMS>
 inline Vertex
 add_vertices(typename BOOST_DIR_CSR_GRAPH_TYPE::vertices_size_type count, BOOST_DIR_CSR_GRAPH_TYPE& g) {
-  Vertex old_num_verts_plus_one = g.m_forward.m_rowstart.size();
-  EdgeIndex numedges = g.m_forward.m_rowstart.back();
+  auto old_num_verts_plus_one = g.m_forward.m_rowstart.size();
+  auto numedges = g.m_forward.m_rowstart.back();
   g.m_forward.m_rowstart.resize(old_num_verts_plus_one + count, numedges);
   g.vertex_properties().resize(num_vertices(g));
   return old_num_verts_plus_one - 1;
@@ -1145,8 +1145,8 @@ out_edges(Vertex v, const BOOST_CSR_GRAPH_TYPE& g)
 {
   typedef typename BOOST_CSR_GRAPH_TYPE::edge_descriptor ed;
   typedef typename BOOST_CSR_GRAPH_TYPE::out_edge_iterator it;
-  EdgeIndex v_row_start = g.m_forward.m_rowstart[v];
-  EdgeIndex next_row_start = g.m_forward.m_rowstart[v + 1];
+  auto v_row_start = g.m_forward.m_rowstart[v];
+  auto next_row_start = g.m_forward.m_rowstart[v + 1];
   return std::make_pair(it(ed(v, v_row_start)),
                         it(ed(v, next_row_start)));
 }
@@ -1155,8 +1155,8 @@ template<BOOST_CSR_GRAPH_TEMPLATE_PARMS>
 inline EdgeIndex
 out_degree(Vertex v, const BOOST_CSR_GRAPH_TYPE& g)
 {
-  EdgeIndex v_row_start = g.m_forward.m_rowstart[v];
-  EdgeIndex next_row_start = g.m_forward.m_rowstart[v + 1];
+  auto v_row_start = g.m_forward.m_rowstart[v];
+  auto next_row_start = g.m_forward.m_rowstart[v + 1];
   return next_row_start - v_row_start;
 }
 
@@ -1166,8 +1166,8 @@ inline std::pair<typename BOOST_BIDIR_CSR_GRAPH_TYPE::in_edge_iterator,
 in_edges(Vertex v, const BOOST_BIDIR_CSR_GRAPH_TYPE& g)
 {
   typedef typename BOOST_BIDIR_CSR_GRAPH_TYPE::in_edge_iterator it;
-  EdgeIndex v_row_start = g.m_backward.m_rowstart[v];
-  EdgeIndex next_row_start = g.m_backward.m_rowstart[v + 1];
+  auto v_row_start = g.m_backward.m_rowstart[v];
+  auto next_row_start = g.m_backward.m_rowstart[v + 1];
   return std::make_pair(it(g, v_row_start),
                         it(g, next_row_start));
 }
@@ -1176,8 +1176,8 @@ template<BOOST_BIDIR_CSR_GRAPH_TEMPLATE_PARMS>
 inline EdgeIndex
 in_degree(Vertex v, const BOOST_BIDIR_CSR_GRAPH_TYPE& g)
 {
-  EdgeIndex v_row_start = g.m_backward.m_rowstart[v];
-  EdgeIndex next_row_start = g.m_backward.m_rowstart[v + 1];
+  auto v_row_start = g.m_backward.m_rowstart[v];
+  auto next_row_start = g.m_backward.m_rowstart[v + 1];
   return next_row_start - v_row_start;
 }
 
@@ -1187,8 +1187,8 @@ inline std::pair<typename BOOST_CSR_GRAPH_TYPE::adjacency_iterator,
                  typename BOOST_CSR_GRAPH_TYPE::adjacency_iterator>
 adjacent_vertices(Vertex v, const BOOST_CSR_GRAPH_TYPE& g)
 {
-  EdgeIndex v_row_start = g.m_forward.m_rowstart[v];
-  EdgeIndex next_row_start = g.m_forward.m_rowstart[v + 1];
+  auto v_row_start = g.m_forward.m_rowstart[v];
+  auto next_row_start = g.m_forward.m_rowstart[v + 1];
   return std::make_pair(g.m_forward.m_column.begin() + v_row_start,
                         g.m_forward.m_column.begin() + next_row_start);
 }
@@ -1208,8 +1208,7 @@ template<BOOST_CSR_GRAPH_TEMPLATE_PARMS>
 inline std::pair<typename BOOST_CSR_GRAPH_TYPE::edge_descriptor, bool>
 edge(Vertex i, Vertex j, const BOOST_CSR_GRAPH_TYPE& g)
 {
-  typedef typename BOOST_CSR_GRAPH_TYPE::out_edge_iterator out_edge_iter;
-  std::pair<out_edge_iter, out_edge_iter> range = out_edges(i, g);
+  auto range = out_edges(i, g);
   for (; range.first != range.second; ++range.first) {
     if (target(*range.first, g) == j)
       return std::make_pair(*range.first, true);
@@ -1223,15 +1222,14 @@ template<BOOST_CSR_GRAPH_TEMPLATE_PARMS>
 inline typename BOOST_CSR_GRAPH_TYPE::edge_descriptor
 edge_from_index(EdgeIndex idx, const BOOST_CSR_GRAPH_TYPE& g)
 {
-  typedef typename std::vector<EdgeIndex>::const_iterator row_start_iter;
   BOOST_ASSERT (idx < num_edges(g));
-  row_start_iter src_plus_1 =
+  auto src_plus_1 =
     std::upper_bound(g.m_forward.m_rowstart.begin(),
                      g.m_forward.m_rowstart.end(),
                      idx);
     // Get last source whose rowstart is at most idx
     // upper_bound returns this position plus 1
-  Vertex src = (src_plus_1 - g.m_forward.m_rowstart.begin()) - 1;
+  auto src = (src_plus_1 - g.m_forward.m_rowstart.begin()) - 1;
   return typename BOOST_CSR_GRAPH_TYPE::edge_descriptor(src, idx);
 }
 

@@ -32,13 +32,12 @@ augment(const Graph& g,
         ResCapMap residual_capacity,
         RevEdgeMap reverse_edge)
 {
-    typename graph_traits<Graph>::edge_descriptor e;
     typename graph_traits<Graph>::vertex_descriptor u;
     typedef typename property_traits<ResCapMap>::value_type FlowValue;
 
     // find minimum residual capacity along the augmenting path
-    FlowValue delta = (std::numeric_limits<FlowValue>::max)();
-    e = get(p, sink);
+    auto delta = (std::numeric_limits<FlowValue>::max)();
+    auto e = get(p, sink);
     do {
         BOOST_USING_STD_MIN();
         delta = min BOOST_PREVENT_MACRO_SUBSTITUTION(delta, get(residual_capacity, e));

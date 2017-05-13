@@ -68,19 +68,14 @@ namespace boost {
         const std::vector< std::pair<vertex_t, vertex_t> >& edge_set,
         const Graph& g)
     {
-      typedef typename std::vector<vertex_t>::const_iterator vertex_iter;
-      typedef typename std::vector< std::pair<vertex_t, vertex_t> >
-        ::const_iterator edge_iter;
-      typedef typename graph_traits<Graph>::out_edge_iterator out_edge_iter;
-
       for (auto ui = vertex_set.begin(); ui != vertex_set.end(); ++ui) {
-        vertex_t u = *ui;
+        auto u = *ui;
         std::vector<vertex_t> adj;
         for (auto e = edge_set.begin(); e != edge_set.end(); ++e)
           if (e->first == u)
             adj.push_back(e->second);
         
-        std::pair<out_edge_iter, out_edge_iter> p = out_edges(u, g);
+         auto p = out_edges(u, g);
         BOOST_CHECK(out_degree(u, g) == adj.size());
         BOOST_CHECK(deg_size_t(std::distance(p.first, p.second))
                    == out_degree(u, g));
@@ -97,24 +92,19 @@ namespace boost {
        const std::vector< std::pair<vertex_t, vertex_t> >& edge_set,
        const Graph& g)
     {
-      typedef typename std::vector<vertex_t>::const_iterator vertex_iter;
-      typedef typename std::vector< std::pair<vertex_t, vertex_t> >
-        ::const_iterator edge_iter;
-      typedef typename graph_traits<Graph>::in_edge_iterator in_edge_iter;
-
       for (auto vi = vertex_set.begin(); vi != vertex_set.end(); ++vi) {
-        vertex_t v = *vi;
+        auto v = *vi;
         std::vector<vertex_t> inv_adj;
         for (auto e = edge_set.begin(); e != edge_set.end(); ++e)
           if (e->second == v)
             inv_adj.push_back(e->first);
 
-        std::pair<in_edge_iter, in_edge_iter> p = in_edges(v, g);
+         auto p = in_edges(v, g);
         BOOST_CHECK(in_degree(v, g) == inv_adj.size());
         BOOST_CHECK(deg_size_t(std::distance(p.first, p.second))
                    == in_degree(v, g));
         for (; p.first != p.second; ++p.first) {
-          edge_t e = *p.first;
+          auto e = *p.first;
           BOOST_CHECK(target(e, g) == v);
           BOOST_CHECK(container_contains(inv_adj, source(e, g)) == true);
         }
@@ -126,22 +116,17 @@ namespace boost {
        const std::vector< std::pair<vertex_t,vertex_t> >& edge_set,
        const Graph& g)
     {
-      typedef typename std::vector<vertex_t>::const_iterator vertex_iter;
-      typedef typename std::vector<std::pair<vertex_t,vertex_t> >
-        ::const_iterator edge_iter;
-      typedef typename graph_traits<Graph>::adjacency_iterator adj_iter;
-
       for (auto ui = vertex_set.begin(); ui != vertex_set.end(); ++ui) {
-        vertex_t u = *ui;
+        auto u = *ui;
         std::vector<vertex_t> adj;
         for (auto e = edge_set.begin(); e != edge_set.end(); ++e)
           if (e->first == u)
             adj.push_back(e->second);
 
-        std::pair<adj_iter, adj_iter> p = adjacent_vertices(u, g);
+         auto p = adjacent_vertices(u, g);
         BOOST_CHECK(deg_size_t(std::distance(p.first, p.second)) == adj.size());
         for (; p.first != p.second; ++p.first) {
-          vertex_t v = *p.first;
+          auto v = *p.first;
           BOOST_CHECK(container_contains(adj, v) == true);
         }
       }
@@ -150,13 +135,12 @@ namespace boost {
     void test_vertex_list_graph
       (const std::vector<vertex_t>& vertex_set, const Graph& g)
     {
-      typedef typename graph_traits<Graph>::vertex_iterator v_iter;
-      std::pair<v_iter, v_iter> p = vertices(g);
+      auto p = vertices(g);
       BOOST_CHECK(num_vertices(g) == vertex_set.size());
-      v_size_t n = (size_t)std::distance(p.first, p.second);
+      auto n = (size_t)std::distance(p.first, p.second);
       BOOST_CHECK(n == num_vertices(g));
       for (; p.first != p.second; ++p.first) {
-        vertex_t v = *p.first;
+        auto v = *p.first;
         BOOST_CHECK(container_contains(vertex_set, v) == true);
       }
     }
@@ -166,10 +150,9 @@ namespace boost {
        const std::vector< std::pair<vertex_t, vertex_t> >& edge_set, 
        const Graph& g)
     {
-      typedef typename graph_traits<Graph>::edge_iterator e_iter;
-      std::pair<e_iter, e_iter> p = edges(g);
+      auto p = edges(g);
       BOOST_CHECK(num_edges(g) == edge_set.size());
-      e_size_t m = std::distance(p.first, p.second);
+      auto m = std::distance(p.first, p.second);
       BOOST_CHECK(m == num_edges(g));
       for (; p.first != p.second; ++p.first) {
         edge_t e = *p.first;
@@ -215,7 +198,7 @@ namespace boost {
 
       BOOST_CHECK((verify_isomorphism(g, cpy, iso_map)));
 
-      vertex_t v = add_vertex(g);
+      auto v = add_vertex(g);
       
       BOOST_CHECK(num_vertices(g) == num_vertices(cpy) + 1);
 
@@ -236,8 +219,8 @@ namespace boost {
 
       bool parallel_edge_exists = container_contains(adjacent_vertices(u, g), v);
       
-      std::pair<edge_t, bool> p = add_edge(u, v, g);
-      edge_t e = p.first;
+       auto p = add_edge(u, v, g);
+      auto e = p.first;
       bool added = p.second;
 
       if (is_undirected(g) && u == v) // self edge
@@ -275,7 +258,7 @@ namespace boost {
       IsoMap iso_map(iso_vec.begin(), get(vertex_index, g));
       copy_graph(g, cpy, orig_to_copy(iso_map));
 
-      deg_size_t occurances = count(adjacent_vertices(u, g), v);
+      auto occurances = count(adjacent_vertices(u, g), v);
 
       remove_edge(u, v, g);
       
@@ -292,8 +275,8 @@ namespace boost {
       IsoMap iso_map(iso_vec.begin(), get(vertex_index, g));
       copy_graph(g, cpy, orig_to_copy(iso_map));
 
-      vertex_t u = source(e, g), v = target(e, g);
-      deg_size_t occurances = count(adjacent_vertices(u, g), v);
+      auto u = source(e, g), v = target(e, g);
+      auto occurances = count(adjacent_vertices(u, g), v);
       
       remove_edge(e, g);
 
@@ -329,7 +312,7 @@ namespace boost {
     {
       typedef typename property_map<Graph, PropertyTag>::const_type const_Map;
       const_Map pmap = get(tag, g);
-      typename std::vector<PropVal>::const_iterator i = vertex_prop.begin();
+      auto i = vertex_prop.begin();
 
   for (typename boost::graph_traits<Graph>::vertex_iterator 
            bgl_first_9 = vertices(g).first, bgl_last_9 = vertices(g).second;
@@ -349,9 +332,8 @@ namespace boost {
     void test_vertex_property_graph
       (const std::vector<PropVal>& vertex_prop, PropertyTag tag, Graph& g)
     {
-      typedef typename property_map<Graph, PropertyTag>::type PMap;
-      PMap pmap = get(tag, g);
-      typename std::vector<PropVal>::const_iterator i = vertex_prop.begin();
+      auto pmap = get(tag, g);
+      auto i = vertex_prop.begin();
   for (typename boost::graph_traits<Graph>::vertex_iterator 
            bgl_first_9 = vertices(g).first, bgl_last_9 = vertices(g).second;
        bgl_first_9 != bgl_last_9; bgl_first_9 = bgl_last_9)
@@ -366,7 +348,7 @@ namespace boost {
       BGL_FORALL_VERTICES_T(v, g, Graph)
         put(pmap, v, vertex_prop[0]);
       
-      typename std::vector<PropVal>::const_iterator j = vertex_prop.begin();
+      auto j = vertex_prop.begin();
       BGL_FORALL_VERTICES_T(v, g, Graph)
         put(tag, g, v, *j++);
       

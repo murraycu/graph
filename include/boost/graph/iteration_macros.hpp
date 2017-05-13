@@ -47,7 +47,7 @@
   macros to expand to
   
     for (std::pair<typename boost::graph_traits<graph_t>::vertex_iterator,
-                   typename boost::graph_traits<graph_t>::vertex_iterator> bgl_range_9 = vertices(g);
+                   auto bgl_range_9 = vertices(g);
        bgl_range_9.first != bgl_range_9.second;
        bgl_range_9.first = bgl_range_9.second)
     for (typename boost::graph_traits<graph_t>::vertex_descriptor v;

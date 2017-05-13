@@ -170,8 +170,7 @@ private:
 
     //! @internal Return whether a vertex `v` is closed to a vertex `u`.
     bool is_closed_to(Vertex u, Vertex v) const {
-        typedef typename ClosedMatrix::const_reference VertexList;
-        VertexList closed_to_u = closed_[index_of(u)];
+        auto closed_to_u = closed_[index_of(u)];
         return contains(closed_to_u, v);
     }
 
@@ -194,10 +193,8 @@ private:
 
     //! @internal Unblock a given vertex.
     void unblock(Vertex u) {
-        typedef typename ClosedMatrix::reference VertexList;
-
         put(blocked_, u, blocked_false_color());
-        VertexList closed_to_u = closed_[index_of(u)];
+        auto closed_to_u = closed_[index_of(u)];
 
         while (!closed_to_u.empty()) {
             Vertex const w = closed_to_u.back();

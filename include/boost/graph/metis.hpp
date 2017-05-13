@@ -226,7 +226,7 @@ void metis_reader::edge_iterator::advance(bool skip_initial_read)
     self->line_in.clear();
 
     // Read the next line
-    std::size_t weights_left = self->n_vertex_weights;
+    auto weights_left = self->n_vertex_weights;
     vertex_weight_type weight;
     while (weights_left > 0) {
       if (self->line_in >> weight) self->vertex_weights.push_back(weight);
@@ -320,7 +320,7 @@ metis_distribution::size_type metis_distribution::local(size_type n) const
 metis_distribution::size_type 
 metis_distribution::global(process_id_type id, size_type n) const
 {
-  std::vector<process_id_type>::const_iterator i = vertices.begin();
+  auto i = vertices.begin();
   while (*i != id) ++i;
 
   while (n > 0) {

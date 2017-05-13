@@ -91,7 +91,7 @@ namespace boost {
   std::pair<typename edge_list_impl<G,EI,T,D>::edge_iterator,
             typename edge_list_impl<G,EI,T,D>::edge_iterator>
   edges(const edge_list_impl<G,EI,T,D>& g_) {
-    const G& g = static_cast<const G&>(g_);
+    const auto& g = static_cast<const G&>(g_);
     typedef typename edge_list_impl<G,EI,T,D>::edge_iterator edge_iterator;
     return std::make_pair(edge_iterator(g._first), edge_iterator(g._last));
   }
@@ -177,7 +177,7 @@ namespace boost {
             typename edge_list_impl_ra<G,EI,T,D>::edge_iterator>
   edges(const edge_list_impl_ra<G,EI,T,D>& g_)
   {
-    const G& g = static_cast<const G&>(g_);
+    const auto& g = static_cast<const G&>(g_);
     typedef typename edge_list_impl_ra<G,EI,T,D>::edge_iterator edge_iterator;
     return std::make_pair(edge_iterator(0), edge_iterator(g._last - g._first));
   }
@@ -186,7 +186,7 @@ namespace boost {
   source(typename edge_list_impl_ra<G,EI,T,D>::edge_descriptor e,
          const edge_list_impl_ra<G,EI,T,D>& g_)
   {
-    const G& g = static_cast<const G&>(g_);
+    const auto& g = static_cast<const G&>(g_);
     return g._first[e].first;
   }
   template <class G, class EI, class T, class D>
@@ -194,7 +194,7 @@ namespace boost {
   target(typename edge_list_impl_ra<G,EI,T,D>::edge_descriptor  e,
          const edge_list_impl_ra<G,EI,T,D>& g_)
   {
-    const G& g = static_cast<const G&>(g_);
+    const auto& g = static_cast<const G&>(g_);
     return g._first[e].second;
   }
   template <class E>

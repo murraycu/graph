@@ -158,8 +158,8 @@ namespace boost {
       BOOST_ASSERT (src != (std::numeric_limits<vertices_size_type>::max)() &&
                     src != n);
       while (src != n) {
-        vertices_size_type increment = rand_vertex(*gen);
-        size_t tgt_index_limit =
+        auto increment = rand_vertex(*gen);
+        auto tgt_index_limit =
                  (is_undirected ? src + 1 : n) +
                  (allow_self_loops ? 0 : -1);
         if (tgt_index + increment >= tgt_index_limit) {

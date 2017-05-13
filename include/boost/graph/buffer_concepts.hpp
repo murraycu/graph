@@ -21,20 +21,16 @@ namespace boost {
     typedef typename B::size_type size_type;
     
     BOOST_CONCEPT_USAGE(Buffer) {
-      typedef typename boost::add_reference<value_type>::type reference;
-      
       BOOST_CONCEPT_ASSERT((Assignable<value_type>));
       
       buf.push(g_ct);
       buf.pop();
-      reference t = buf.top();
+      auto t = buf.top();
       boost::ignore_unused_variable_warning(t);
     }
     
     void const_constraints(const B& cbuf) {
-      typedef typename boost::add_const<typename boost::remove_reference<value_type>::type>::type& const_reference;
-      
-      const_reference ct = cbuf.top();
+      auto ct = cbuf.top();
       s = cbuf.size();
       if (cbuf.empty())
         dummy = __LINE__;

@@ -122,7 +122,7 @@ namespace boost {
   typename property_map<Graph, Property>::const_type
   get(Property p, const graph_as_tree<Graph,P,N,C>& g)
   {
-    const Graph& gref = g._g; // in case GRef is non-const
+    const auto& gref = g._g; // in case GRef is non-const
     return get(p, gref);
   }
 

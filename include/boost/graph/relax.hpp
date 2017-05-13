@@ -45,13 +45,11 @@ namespace boost {
     {
       typedef typename graph_traits<Graph>::directed_category DirCat;
       bool is_undirected = is_same<DirCat, undirected_tag>::value;
-      typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
-      Vertex u = source(e, g), v = target(e, g);
+      auto u = source(e, g), v = target(e, g);
       typedef typename property_traits<DistanceMap>::value_type D;
-      typedef typename property_traits<WeightMap>::value_type W;
       const D d_u = get(d, u);
       const D d_v = get(d, v);
-      const W& w_e = get(w, e);
+      const auto& w_e = get(w, e);
       
       // The seemingly redundant comparisons after the distance puts are to
       // ensure that extra floating-point precision in x87 registers does not

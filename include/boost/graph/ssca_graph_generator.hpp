@@ -72,9 +72,9 @@ namespace boost {
         std::vector<vertices_size_type> cliqueVertices;
 
         cliqueVertices.clear();
-        vertices_size_type size = min BOOST_PREVENT_MACRO_SUBSTITUTION (clique_size(*gen), verticesRemaining);
+        auto size = min BOOST_PREVENT_MACRO_SUBSTITUTION (clique_size(*gen), verticesRemaining);
         while (cliqueVertices.size() < size) {
-          vertices_size_type v = rand_vertex(*gen);
+          auto v = rand_vertex(*gen);
           if (cliqueNum[v] == -1) {
             cliqueNum[v] = currentClique;
             cliqueVertices.push_back(v);

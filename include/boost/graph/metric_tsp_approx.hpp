@@ -222,7 +222,7 @@ namespace boost
             curr != tvis.end(); ++curr)
         {
             // TODO: This is will be O(n^2) if vertex storage of g != vecS.
-            GVertex v = *next(g_verts.first, get(vertex_index, mst)[*curr]);
+            auto v = *next(g_verts.first, get(vertex_index, mst)[*curr]);
             vis.visit_vertex(v, g);
         }
 

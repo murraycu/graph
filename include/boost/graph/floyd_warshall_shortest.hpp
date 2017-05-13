@@ -164,7 +164,7 @@ namespace boost
       const bgl_named_params<P, T, R>& params)
     {
       typedef typename property_traits<WeightMap>::value_type WM;
-      WM inf =
+      auto inf =
         choose_param(get_param(params, distance_inf_t()), 
           std::numeric_limits<WM>::max BOOST_PREVENT_MACRO_SUBSTITUTION());
     
@@ -188,7 +188,7 @@ namespace boost
     {
       typedef typename property_traits<WeightMap>::value_type WM;
     
-      WM inf =
+      auto inf =
         choose_param(get_param(params, distance_inf_t()), 
           std::numeric_limits<WM>::max BOOST_PREVENT_MACRO_SUBSTITUTION());
       return floyd_warshall_all_pairs_shortest_paths(g, d, w,

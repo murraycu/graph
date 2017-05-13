@@ -49,7 +49,7 @@ struct bc_clustering_threshold
     : threshold(threshold), dividend(1.0)
   {
     if (normalize) {
-      typename graph_traits<Graph>::vertices_size_type n = num_vertices(g);
+      auto n = num_vertices(g);
       dividend = T((n - 1) * (n - 2)) / T(2);
     }
   }

@@ -215,7 +215,7 @@ namespace boost {
         for ( std::tie(vi, vie) = vertices(m_g); vi != vie; ++vi )
           {
             std::tie(oei, oeie) = out_edges(*vi, m_g);
-            typename graph_traits<Graph>::out_edge_iterator mei =
+            auto mei =
               std::max_element(oei, oeie,
                                boost::bind(m_cmp,
                                            boost::bind(&EdgeWeight1::operator[], m_ew1m, _1),
@@ -249,7 +249,7 @@ namespace boost {
         Q.push(sv);
         while (!Q.empty())
           {
-            vertex_t v = Q.top(); Q.pop();
+            auto v = Q.top(); Q.pop();
             for (auto itr = m_inel[v].begin();
                  itr != m_inel[v].end(); ++itr)
               //For all in_edges of the policy graph
@@ -279,7 +279,7 @@ namespace boost {
        */
       vertex_t find_cycle_vertex(vertex_t sv)
       {
-        vertex_t gv = sv;
+        auto gv = sv;
         std::fill(m_colcv.begin(), m_colcv.end(), my_white);
         color_map_t cm(m_colcv.begin(), m_vim);
         do
@@ -305,7 +305,7 @@ namespace boost {
       {
         if (sv == m_sink) return m_bound;
         std::pair<float_t, float_t> sums_(float_t(0), float_t(0));
-        vertex_t v = sv;
+        auto v = sv;
         critical_cycle_t cc;
         do
           {
@@ -315,7 +315,7 @@ namespace boost {
             v = target(m_policy[v], m_g);
           }
         while (v != sv);
-        float_t cr = sums_.first / sums_.second;
+        auto cr = sums_.first / sums_.second;
         if ( m_cmp(m_cr, cr) )
           {
             m_cr = cr;
@@ -330,10 +330,10 @@ namespace boost {
       float_t policy_mcr()
       {
         std::fill(m_col_bfs.begin(), m_col_bfs.end(), my_white);
-        color_map_t vcm_ = color_map_t(m_col_bfs.begin(), m_vim);
+        auto vcm_ = color_map_t(m_col_bfs.begin(), m_vim);
         typename graph_traits<Graph>::vertex_iterator uv_itr, vie;
         std::tie(uv_itr, vie) = vertices(m_g);
-        float_t mcr = m_bound;
+        auto mcr = m_bound;
         while ( (uv_itr = std::find_if(uv_itr, vie,
                                        boost::bind(std::equal_to<my_color_type>(),
                                                    my_white,
@@ -343,8 +343,8 @@ namespace boost {
                  ) != vie )
           ///While there are undiscovered vertices
           {
-            vertex_t gv = find_cycle_vertex(*uv_itr);
-            float_t cr = cycle_ratio(gv) ;
+            auto gv = find_cycle_vertex(*uv_itr);
+            auto cr = cycle_ratio(gv) ;
             mcr_bfv(gv, cr, vcm_);
             if ( m_cmp(mcr, cr) )  mcr = cr;
             ++uv_itr;
@@ -357,8 +357,8 @@ namespace boost {
        */
       void improve_policy(vertex_t s, edge_t new_edge)
       {
-        vertex_t t = target(m_policy[s], m_g);
-        typename property_traits<VertexIndexMap>::value_type ti = m_vim[t];
+        auto t = target(m_policy[s], m_g);
+        auto ti = m_vim[t];
         m_inelc[ti].erase( std::find(m_inelc[ti].begin(), m_inelc[ti].end(), s));
         m_policy[s] = new_edge;
         t = target(new_edge, m_g);
@@ -380,9 +380,9 @@ namespace boost {
               {
                 for (std::tie(oei, oeie) = out_edges(*vi, m_g); oei != oeie; ++oei)
                   {
-                    vertex_t t = target(*oei, m_g);
+                    auto t = target(*oei, m_g);
                     //Current distance from *vi to some vertex
-                    float_t dis_ = m_ew1m[*oei] - m_ew2m[*oei] * cr + m_dm[t];
+                    auto dis_ = m_ew1m[*oei] - m_ew2m[*oei] * cr + m_dm[t];
                     if ( m_cmp(m_dm[*vi] + eps_, dis_) )
                       {
                         improve_policy(*vi, *oei);
@@ -393,7 +393,7 @@ namespace boost {
               }
             else
               {
-                float_t dis_ = m_bound - cr + m_dm[m_sink];
+                auto dis_ = m_bound - cr + m_dm[m_sink];
                 if ( m_cmp(m_dm[*vi] + eps_, dis_) )
                   {
                     m_dm[*vi] = dis_;

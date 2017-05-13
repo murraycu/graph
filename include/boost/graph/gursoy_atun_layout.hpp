@@ -76,7 +76,7 @@ struct update_position_visitor {
 
     if (get(node_distance, v) > distance_limit)
       BOOST_THROW_EXCEPTION(over_distance_limit());
-    Point old_position = get(position_map, v);
+    auto old_position = get(position_map, v);
     double distance = get(node_distance, v);
     double fraction = 
       learning_constant * pow(falloff_ratio, distance * distance);
@@ -141,7 +141,6 @@ gursoy_atun_step
     vertex_iterator;
   typedef typename graph_traits<VertexListAndIncidenceGraph>::vertex_descriptor
     vertex_descriptor;
-  typedef typename Topology::point_type point_type;
   vertex_iterator i, iend;
   std::vector<double> distance_from_input_vector(num_vertices(graph));
   typedef boost::iterator_property_map<std::vector<double>::iterator, 
@@ -157,7 +156,7 @@ gursoy_atun_step
     NodeDistanceMap;
   NodeDistanceMap node_distance(node_distance_map_vector.begin(),
                                 vertex_index_map);
-  point_type input_vector = space.random_point();
+  auto input_vector = space.random_point();
   vertex_descriptor min_distance_loc 
     = graph_traits<VertexListAndIncidenceGraph>::null_vertex();
   double min_distance = 0.0;

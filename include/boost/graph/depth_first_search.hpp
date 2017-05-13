@@ -140,7 +140,7 @@ namespace boost {
           stack.push_back(std::make_pair(u, std::make_pair(boost::optional<Edge>(), std::make_pair(ei, ei_end))));
       }
       while (!stack.empty()) {
-        VertexInfo& back = stack.back();
+        auto& back = stack.back();
         u = back.first;
         src_e = back.second.first;
         std::tie(ei, ei_end) = back.second.second;
@@ -151,7 +151,7 @@ namespace boost {
 	  call_finish_edge(vis, src_e.get(), g);
 	}
         while (ei != ei_end) {
-          Vertex v = target(*ei, g);
+          auto v = target(*ei, g);
           vis.examine_edge(*ei, g);
           ColorValue v_color = get(color, v);
           if (v_color == Color::white()) {
@@ -203,8 +203,8 @@ namespace boost {
 
       if (!func(u, g))
         for (std::tie(ei, ei_end) = out_edges(u, g); ei != ei_end; ++ei) {
-          Vertex v = target(*ei, g);           vis.examine_edge(*ei, g);
-          ColorValue v_color = get(color, v);
+          auto v = target(*ei, g);           vis.examine_edge(*ei, g);
+          auto v_color = get(color, v);
           if (v_color == Color::white()) {     vis.tree_edge(*ei, g);
           depth_first_visit_impl(g, v, vis, color, func);
           } else if (v_color == Color::gray()) vis.back_edge(*ei, g);
@@ -230,7 +230,7 @@ namespace boost {
 
     typename graph_traits<VertexListGraph>::vertex_iterator ui, ui_end;
     for (std::tie(ui, ui_end) = vertices(g); ui != ui_end; ++ui) {
-      Vertex u = implicit_cast<Vertex>(*ui);
+      auto u = implicit_cast<Vertex>(*ui);
       put(color, u, Color::white()); vis.initialize_vertex(u, g);
     }
 
@@ -240,7 +240,7 @@ namespace boost {
     }
 
     for (std::tie(ui, ui_end) = vertices(g); ui != ui_end; ++ui) {
-      Vertex u = implicit_cast<Vertex>(*ui);
+      auto u = implicit_cast<Vertex>(*ui);
       ColorValue u_color = get(color, u);
       if (u_color == Color::white()) {       vis.start_vertex(u, g);
         detail::depth_first_visit_impl(g, u, vis, color, detail::nontruth2());
@@ -252,8 +252,7 @@ namespace boost {
   void
   depth_first_search(const VertexListGraph& g, DFSVisitor vis, ColorMap color)
   {
-    typedef typename boost::graph_traits<VertexListGraph>::vertex_iterator vi;
-    std::pair<vi, vi> verts = vertices(g);
+    auto verts = vertices(g);
     if (verts.first == verts.second)
       return;
 

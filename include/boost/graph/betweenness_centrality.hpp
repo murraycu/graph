@@ -59,7 +59,7 @@ namespace detail { namespace graph {
      */
     void edge_relaxed(edge_descriptor e, const Graph& g) 
     { 
-      vertex_descriptor v = source(e, g), w = target(e, g);
+      auto v = source(e, g), w = target(e, g);
       incoming[w].clear();
       incoming[w].push_back(e);
       put(path_count, w, get(path_count, v));
@@ -73,11 +73,10 @@ namespace detail { namespace graph {
      */
     void edge_not_relaxed(edge_descriptor e, const Graph& g) 
     {
-      typedef typename property_traits<WeightMap>::value_type weight_type;
       typedef typename property_traits<DistanceMap>::value_type distance_type;
-      vertex_descriptor v = source(e, g), w = target(e, g);
-      distance_type d_v = get(distance, v), d_w = get(distance, w);
-      weight_type w_e = get(weight, e);
+      auto v = source(e, g), w = target(e, g);
+      auto d_v = get(distance, v), d_w = get(distance, w);
+      auto w_e = get(weight, e);
 
       closed_plus<distance_type> combine;
       if (d_w == combine(d_v, w_e)) {
@@ -175,8 +174,8 @@ namespace detail { namespace graph {
        */
       void tree_edge(edge_descriptor e, Graph& g)
       {
-        vertex_descriptor v = source(e, g);
-        vertex_descriptor w = target(e, g);
+        auto v = source(e, g);
+        auto w = target(e, g);
         put(distance, w, get(distance, v) + 1);
         
         put(path_count, w, get(path_count, v));
@@ -191,8 +190,8 @@ namespace detail { namespace graph {
        */
       void non_tree_edge(edge_descriptor e, Graph& g)
       {
-        vertex_descriptor v = source(e, g);
-        vertex_descriptor w = target(e, g);
+        auto v = source(e, g);
+        auto w = target(e, g);
         if (get(distance, w) == get(distance, v) + 1) {
           put(path_count, w, get(path_count, w) + get(path_count, v));
           incoming[w].push_back(e);
@@ -321,19 +320,16 @@ namespace detail { namespace graph {
                      path_count, vertex_index);
       
       while (!ordered_vertices.empty()) {
-        vertex_descriptor w = ordered_vertices.top();
+        auto w = ordered_vertices.top();
         ordered_vertices.pop();
         
-        typedef typename property_traits<IncomingMap>::value_type
-          incoming_type;
-        typedef typename incoming_type::iterator incoming_iterator;
         typedef typename property_traits<DependencyMap>::value_type 
           dependency_type;
         
         for (auto vw = incoming[w].begin();
              vw != incoming[w].end(); ++vw) {
-          vertex_descriptor v = source(*vw, g);
-          dependency_type factor = dependency_type(get(path_count, v))
+          auto v = source(*vw, g);
+          auto factor = dependency_type(get(path_count, v))
             / dependency_type(get(path_count, w));
           factor *= (dependency_type(1) + get(dependency, w));
           put(dependency, v, get(dependency, v) + factor);
@@ -428,7 +424,7 @@ namespace detail { namespace graph {
     typedef typename property_traits<a_centrality_map>::value_type 
       centrality_type;
 
-    typename graph_traits<Graph>::vertices_size_type V = num_vertices(g);
+    auto V = num_vertices(g);
     
     std::vector<std::vector<edge_descriptor> > incoming(V);
     std::vector<centrality_type> distance(V);
@@ -463,7 +459,7 @@ namespace detail { namespace graph {
     typedef typename property_traits<a_centrality_map>::value_type 
       centrality_type;
 
-    typename graph_traits<Graph>::vertices_size_type V = num_vertices(g);
+    auto V = num_vertices(g);
     
     std::vector<std::vector<edge_descriptor> > incoming(V);
     std::vector<centrality_type> distance(V);
@@ -575,8 +571,8 @@ relative_betweenness_centrality(const Graph& g, CentralityMap centrality)
   typedef typename graph_traits<Graph>::vertex_iterator vertex_iterator;
   typedef typename property_traits<CentralityMap>::value_type centrality_type;
 
-  typename graph_traits<Graph>::vertices_size_type n = num_vertices(g);
-  centrality_type factor = centrality_type(2)/centrality_type(n*n - 3*n + 2);
+  auto n = num_vertices(g);
+  auto factor = centrality_type(2)/centrality_type(n*n - 3*n + 2);
   vertex_iterator v, v_end;
   for (std::tie(v, v_end) = vertices(g); v != v_end; ++v) {
     put(centrality, *v, factor * get(centrality, *v));
@@ -594,7 +590,7 @@ central_point_dominance(const Graph& g, CentralityMap centrality
   typedef typename graph_traits<Graph>::vertex_iterator vertex_iterator;
   typedef typename property_traits<CentralityMap>::value_type centrality_type;
 
-  typename graph_traits<Graph>::vertices_size_type n = num_vertices(g);
+  auto n = num_vertices(g);
 
   // Find max centrality
   centrality_type max_centrality(0);

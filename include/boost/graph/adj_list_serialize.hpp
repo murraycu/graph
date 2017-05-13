@@ -85,7 +85,7 @@ inline void load(
   std::vector<Vertex> verts(V);
   int i = 0;
   while(V-- > 0){
-    Vertex v = add_vertex(graph);
+    auto v = add_vertex(graph);
     verts[i++] = v;
     ar >> serialization::make_nvp("vertex_property", get(vertex_all_t(), graph, v) );
   }

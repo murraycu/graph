@@ -37,10 +37,8 @@ namespace boost {
         typename graph_traits<Graph>::out_edge_iterator ei, ei_end;
         Vertex v, w;
 
-        typedef typename std::deque<Vertex>::reverse_iterator reverse_iterator;
-
-        reverse_iterator rend = Qptr->rend()-index_begin;
-        reverse_iterator rbegin = Qptr->rbegin();
+        auto rend = Qptr->rend()-index_begin;
+        auto rbegin = Qptr->rbegin();
 
 
         //heap the vertices already there
@@ -226,7 +224,7 @@ namespace boost {
     Visitor vis(&permutation, &Q, comp, pseudo_degree, loc, colors, index_map);
     
     while( !vertex_queue.empty() ) {
-      Vertex s = vertex_queue.front();
+      auto s = vertex_queue.front();
       vertex_queue.pop_front();
       
       //call BFS with visitor

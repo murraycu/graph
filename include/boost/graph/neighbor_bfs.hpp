@@ -137,7 +137,6 @@ namespace boost {
       BOOST_CONCEPT_ASSERT(( BidirectionalGraphConcept<BidirectionalGraph> ));
       typedef graph_traits<BidirectionalGraph> GTraits;
       typedef typename GTraits::vertex_descriptor Vertex;
-      typedef typename GTraits::edge_descriptor Edge;
       BOOST_CONCEPT_ASSERT(( 
         NeighborBFSVisitorConcept<BFSVisitor, BidirectionalGraph> ));
       BOOST_CONCEPT_ASSERT(( ReadWritePropertyMapConcept<ColorMap, Vertex> ));
@@ -148,16 +147,16 @@ namespace boost {
       vis.discover_vertex(s, g);
       Q.push(s);
       while (! Q.empty()) {
-        Vertex u = Q.top();
+        auto u = Q.top();
         Q.pop(); // pop before push to avoid problem if Q is priority_queue.
         vis.examine_vertex(u, g);
 
         typename GTraits::out_edge_iterator ei, ei_end;
         for (std::tie(ei, ei_end) = out_edges(u, g); ei != ei_end; ++ei) {
-          Edge e = *ei;
+          auto e = *ei;
           vis.examine_out_edge(e, g);
-          Vertex v = target(e, g);
-          ColorValue v_color = get(color, v);
+          auto v = target(e, g);
+          auto v_color = get(color, v);
           if (v_color == Color::white()) {
             vis.tree_out_edge(e, g);
             put(color, v, Color::gray());
@@ -175,10 +174,10 @@ namespace boost {
         typename GTraits::in_edge_iterator in_ei, in_ei_end;
         for (std::tie(in_ei, in_ei_end) = in_edges(u, g); 
              in_ei != in_ei_end; ++in_ei) {
-          Edge e = *in_ei;
+          auto e = *in_ei;
           vis.examine_in_edge(e, g);
-          Vertex v = source(e, g);
-          ColorValue v_color = get(color, v);
+          auto v = source(e, g);
+          auto v_color = get(color, v);
           if (v_color == Color::white()) {
             vis.tree_in_edge(e, g);
             put(color, v, Color::gray());
@@ -287,7 +286,7 @@ namespace boost {
     // (temporaries) can be passed into this function. However, the
     // graph is not really const since we may write to property maps
     // of the graph.
-    VertexListGraph& ng = const_cast<VertexListGraph&>(g);
+    auto& ng = const_cast<VertexListGraph&>(g);
     typedef typename get_param_type< vertex_color_t, bgl_named_params<P,T,R> >::type C;
     detail::neighbor_bfs_dispatch<C>::apply(ng, s, params, 
                                             get_param(params, vertex_color));

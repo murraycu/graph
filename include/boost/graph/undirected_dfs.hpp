@@ -54,16 +54,16 @@ namespace boost {
       vis.discover_vertex(u, g);
       stack.push_back(std::make_pair(u, std::make_pair(boost::optional<Edge>(), out_edges(u, g))));
       while (!stack.empty()) {
-        VertexInfo& back = stack.back();
+        auto& back = stack.back();
         u = back.first;
-        boost::optional<Edge> src_e = back.second.first;
-        Iter ei = back.second.second.first, ei_end = back.second.second.second;
+        auto src_e = back.second.first;
+        auto ei = back.second.second.first, ei_end = back.second.second.second;
         stack.pop_back();
         while (ei != ei_end) {
-          Vertex v = target(*ei, g);
+          auto v = target(*ei, g);
           vis.examine_edge(*ei, g);
-          ColorValue v_color = get(vertex_color, v);
-          EColorValue uv_color = get(edge_color, *ei);
+          auto v_color = get(vertex_color, v);
+          auto uv_color = get(edge_color, *ei);
           put(edge_color, *ei, EColor::black());
           if (v_color == Color::white()) {
             vis.tree_edge(*ei, g);
@@ -115,9 +115,9 @@ namespace boost {
 
       put(vertex_color, u, Color::gray());   vis.discover_vertex(u, g);
       for (std::tie(ei, ei_end) = out_edges(u, g); ei != ei_end; ++ei) {
-        Vertex v = target(*ei, g);           vis.examine_edge(*ei, g);
-        ColorValue v_color = get(vertex_color, v);
-        EColorValue uv_color = get(edge_color, *ei);
+        auto v = target(*ei, g);           vis.examine_edge(*ei, g);
+        auto v_color = get(vertex_color, v);
+        auto uv_color = get(edge_color, *ei);
         put(edge_color, *ei, EColor::black());
         if (v_color == Color::white()) {     vis.tree_edge(*ei, g);
           undir_dfv_impl(g, v, vis, vertex_color, edge_color);
@@ -159,7 +159,7 @@ namespace boost {
     }
 
     for (std::tie(ui, ui_end) = vertices(g); ui != ui_end; ++ui) {
-      ColorValue u_color = get(vertex_color, *ui);
+      auto u_color = get(vertex_color, *ui);
       if (u_color == Color::white()) {       vis.start_vertex(*ui, g);
         detail::undir_dfv_impl(g, *ui, vis, vertex_color, edge_color);
       }
@@ -204,7 +204,7 @@ namespace boost {
             param_not_found)
       {
         std::vector<default_color_type> color_vec(num_vertices(g));
-        default_color_type c = white_color; // avoid warning about un-init
+        auto c = white_color; // avoid warning about un-init
         undirected_dfs
           (g, vis, make_iterator_property_map
            (color_vec.begin(),

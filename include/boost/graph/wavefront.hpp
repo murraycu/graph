@@ -31,7 +31,7 @@ namespace boost {
     typename graph_traits<Graph>::vertex_descriptor v, w;
     typename graph_traits<Graph>::vertices_size_type b = 1;
     typename graph_traits<Graph>::out_edge_iterator edge_it2, edge_it2_end; 
-    typename graph_traits<Graph>::vertices_size_type index_i = index[i];
+    auto index_i = index[i];
     std::vector<bool> rows_active(num_vertices(g), false);
 
     rows_active[index_i] = true;

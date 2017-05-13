@@ -71,14 +71,14 @@ namespace boost {
     typename GTraits::out_edge_iterator ei, ei_end;
 
     for (; sources_begin != sources_end; ++sources_begin) {
-      Vertex s = *sources_begin;
+      auto s = *sources_begin;
       put(color, s, Color::gray());           vis.discover_vertex(s, g);
       Q.push(s);
     }
     while (! Q.empty()) {
-      Vertex u = Q.top(); Q.pop();            vis.examine_vertex(u, g);
+      auto u = Q.top(); Q.pop();            vis.examine_vertex(u, g);
       for (std::tie(ei, ei_end) = out_edges(u, g); ei != ei_end; ++ei) {
-        Vertex v = target(*ei, g);            vis.examine_edge(*ei, g);
+        auto v = target(*ei, g);            vis.examine_edge(*ei, g);
         ColorValue v_color = get(color, v);
         if (v_color == Color::white()) {      vis.tree_edge(*ei, g);
           put(color, v, Color::gray());       vis.discover_vertex(v, g);
@@ -339,7 +339,7 @@ namespace boost {
     // (temporaries) can be passed into this function. However, the
     // graph is not really const since we may write to property maps
     // of the graph.
-    VertexListGraph& ng = const_cast<VertexListGraph&>(g);
+    auto& ng = const_cast<VertexListGraph&>(g);
     typedef typename get_param_type< vertex_color_t, bgl_named_params<P,T,R> >::type C;
     detail::bfs_dispatch<C>::apply(ng, s, params,
                                    get_param(params, vertex_color));
@@ -359,7 +359,7 @@ namespace boost {
     // (temporaries) can be passed into this function. However, the
     // graph is not really const since we may write to property maps
     // of the graph.
-    IncidenceGraph& ng = const_cast<IncidenceGraph&>(g);
+    auto& ng = const_cast<IncidenceGraph&>(g);
 
     typedef graph_traits<IncidenceGraph> Traits;
     // Buffer default

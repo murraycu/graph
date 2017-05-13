@@ -235,8 +235,8 @@ public:
     void
     remove_vertex_and_renumber_indices(vertex_iterator i)
     {
-        vertex_iterator j = next(i), end = vertices(m_graph).second;
-        vertex_index_type n = get(vertex_index, m_graph, *i);
+        auto j = next(i), end = vertices(m_graph).second;
+        auto n = get(vertex_index, m_graph, *i);
 
         // remove the offending vertex and renumber everything after
         remove_vertex(*i);
@@ -258,8 +258,8 @@ public:
     void
     remove_edge_and_renumber_indices(edge_iterator i)
     {
-        edge_iterator j = next(i), end = edges(m_graph).second;
-        edge_index_type n = get(edge_index, m_graph, *i);
+        auto j = next(i), end = edges(m_graph).second;
+        auto n = get(edge_index, m_graph, *i);
 
         // remove the offending edge and renumber everything after
         remove_edge(*i);
@@ -320,8 +320,7 @@ private:
                             vertex_iterator end,
                             vertices_size_type n)
     {
-        typedef typename property_map<graph_type, vertex_index_t>::type IndexMap;
-        IndexMap indices = get(vertex_index, m_graph);
+        auto indices = get(vertex_index, m_graph);
         for( ; i != end; ++i) {
             indices[*i] = n++;
         }
@@ -333,8 +332,7 @@ private:
                         edge_iterator end,
                         vertices_size_type n)
     {
-        typedef typename property_map<graph_type, edge_index_t>::type IndexMap;
-        IndexMap indices = get(edge_index, m_graph);
+        auto indices = get(edge_index, m_graph);
         for( ; i != end; ++i) {
             indices[*i] = n++;
         }

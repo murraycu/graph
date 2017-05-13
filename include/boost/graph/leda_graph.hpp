@@ -893,7 +893,7 @@ namespace boost {
       const Key& key, const Value& value)
   {
     typedef typename property_map<leda::GRAPH<vtype, etype>, PropertyTag>::type Map;
-    Map pmap = get(p, g);
+    auto pmap = get(p, g);
     put(pmap, key, value);
   }
 

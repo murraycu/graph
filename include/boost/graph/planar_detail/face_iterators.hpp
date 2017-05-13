@@ -228,8 +228,8 @@ namespace boost
     void increment()
     {
       face_handle_t curr_face_handle(m_face_handles[m_lead]);
-      vertex_t first = get_first_vertex(curr_face_handle, Time());
-      vertex_t second = get_second_vertex(curr_face_handle, Time());
+      auto first = get_first_vertex(curr_face_handle, Time());
+      auto second = get_second_vertex(curr_face_handle, Time());
       if (first == m_follow)
         {
           m_follow = m_lead;

@@ -62,10 +62,10 @@ public:
         return ArrayBinaryTreeNode(r, i, n, id); }
       inline iterator& operator++() { ++i; return *this; }
       inline iterator operator++(int)
-        { iterator t = *this; ++(*this); return t; }
+        { auto t = *this; ++(*this); return t; }
       inline iterator& operator--() { --i; return *this; }
       inline iterator operator--(int)
-        { iterator t = *this; --(*this); return t; }
+        { auto t = *this; --(*this); return t; }
       inline bool operator==(const iterator& x) const { return i == x.i; }
       inline bool operator!=(const iterator& x) const
         { return !(*this == x); }
@@ -140,7 +140,7 @@ public:
   inline void swap(ArrayBinaryTreeNode x, ExternalData& edata ) {
     using boost::get;
 
-    value_type tmp = x.value();
+    auto tmp = x.value();
 
     /*swap external data*/
     edata[ get(id, tmp) ]     = i;

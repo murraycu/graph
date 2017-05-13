@@ -252,8 +252,7 @@ namespace boost { // should use a different namespace for this
   put(P p, property_graph_archetype<G, P, V>& g, 
       const Key& key, const V& value)
   {
-    typedef typename boost::property_map<property_graph_archetype<G, P, V>, P>::type Map;
-    Map pmap = get(p, g);
+    auto pmap = get(p, g);
     put(pmap, key, value);
   }
 

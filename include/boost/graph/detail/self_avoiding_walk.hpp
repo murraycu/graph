@@ -104,7 +104,7 @@ namespace boost {
 
     /*Make it in order*/
     if ( l.first > l.second ) {
-      typename Line::first_type i = l.first;
+      auto i = l.first;
       l.first = l.second;
       l.second = i;
     }
@@ -175,19 +175,19 @@ namespace boost {
     bool tree_edge(Edge e, Graph& G) {
           using std::make_pair;
       typedef typename boost::graph_traits<Graph>::vertex_descriptor Vertex;
-      Vertex tau = target(e, G);
-      Vertex i   = source(e, G); 
+      auto tau = target(e, G);
+      auto i   = source(e, G); 
 
       get_vertex_sharing<TriangleDecorator, Vertex, Line> get_sharing_line(td);
       
-      Line tau_i = get_sharing_line(tau, i);
+      auto tau_i = get_sharing_line(tau, i);
       
-      iter w_end = hlist->end();
+      auto w_end = hlist->end();
 
-      iter w_i = iter_d[i];
+      auto w_i = iter_d[i];
 
-      iter w_i_m_1 = w_i;
-      iter w_i_p_1 = w_i;
+      auto w_i_m_1 = w_i;
+      auto w_i_p_1 = w_i;
 
       /*----------------------------------------------------------
        *             true             false
@@ -215,12 +215,12 @@ namespace boost {
             
             w(i-1) |- w(i) |- w(i+1)
           */
-          Line l1 = get_sharing_line(*w_i_m_1, tau);
+          auto l1 = get_sharing_line(*w_i_m_1, tau);
 
           iter w_i_m_2 = w_i_m_1;
           --w_i_m_2;
 
-          bool c = true;
+          auto c = true;
           
           if ( w_i_m_2 != w_end ) {
             c = w_i_m_2->second != l1;
@@ -237,7 +237,7 @@ namespace boost {
             
             bool d = true;
             //need to handle the case when w_i_p_1 is null
-            Line l3 = get_sharing_line(*w_i_p_1, tau);
+            auto l3 = get_sharing_line(*w_i_p_1, tau);
             if ( w_i_p_1 != w_end )
               d = w_i_p_1->second != l3;
             if ( d ) { /* w(i+1) ^ tau != w(i+1) ^ w(i+2) */
@@ -246,7 +246,7 @@ namespace boost {
               iter_d[tau] = hlist->insert(w_i_p_1, make_pair(tau, l3));
             } else { /* w(i+1) ^ tau == w(i+1) ^ w(i+2) */
               /*must be w(1+1) ~> w(i+2) */
-              Line l5 = get_sharing_line(*w_i_m_1, *w_i_p_1);
+              auto l5 = get_sharing_line(*w_i_m_1, *w_i_p_1);
               if ( l5 != w_i_p_1->second ) { /* w(i-1) ^ w(i+1) != w(i+1) ^ w(i+2) */
                 /*extension: w(i-2) -> tau |- w(i) |- w(i-1) -> w(i+1) */
                 w_i_m_2->second = get_sharing_line(*w_i_m_2, tau);
@@ -273,12 +273,12 @@ namespace boost {
                || w_i->second.second == tau_i.second ) {  /*w(i) ^ w(i+1) < w(i) ^ tau*/
             /*extension: w(i) |- tau -> w(i+1) */
             w_i->second = tau_i;
-            Line l1 = get_sharing_line(*w_i_p_1, tau);
+            auto l1 = get_sharing_line(*w_i_p_1, tau);
             iter_d[tau] = hlist->insert(w_i_p_1, make_pair(tau, l1));
           } else { /*w(i) ^ w(i+1) !< w(i) ^ tau*/
-            Line l1 = get_sharing_line(*w_i_m_1, tau);
+            auto l1 = get_sharing_line(*w_i_m_1, tau);
             bool c = true;
-            iter w_i_m_2 = w_i_m_1;
+            auto w_i_m_2 = w_i_m_1;
             --w_i_m_2;
             if ( w_i_m_2 != w_end )
               c =  l1 != w_i_m_2->second;
@@ -334,13 +334,13 @@ namespace boost {
             } else {
               /*must be w(i+1) ~> w(i+2)*/
               /*extension: w(i-1) -> w(i+1) |- w(i) |- tau -> w(i+2) */
-              iter w_i_p_2 = w_i_p_1;
+              auto w_i_p_2 = w_i_p_1;
               ++w_i_p_2;
               
               w_i_p_1->second = w_i->second;
               iter_d[i] = hlist->insert(w_i_p_2, make_pair(i, tau_i));
               hlist->erase(w_i);
-              Line l2 = get_sharing_line(*w_i_p_2, tau);
+              auto l2 = get_sharing_line(*w_i_p_2, tau);
               iter_d[tau] = hlist->insert(w_i_p_2, make_pair(tau, l2));
             }
           }

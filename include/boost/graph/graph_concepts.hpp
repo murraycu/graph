@@ -418,7 +418,7 @@ typename T::ThereReallyIsNoMemberByThisNameInT vertices(T const&);
         BOOST_CONCEPT_USAGE(PropertyGraph) {
         BOOST_CONCEPT_ASSERT((ReadWritePropertyMapConcept<Map, X>));
 
-        Map pmap = get(Property(), g);
+        auto pmap = get(Property(), g);
         pval = get(Property(), g, x);
         put(Property(), g, x, pval);
         ignore_unused_variable_warning(pmap);
@@ -459,10 +459,8 @@ typename T::ThereReallyIsNoMemberByThisNameInT vertices(T const&);
         BOOST_CONCEPT_USAGE(VertexIndexGraph)
         {
             typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
-            typedef typename property_map<Graph, vertex_index_t>::type Map;
-            typedef unsigned Index; // This could be Graph::vertex_index_type
-            Map m = get(vertex_index, g);
-            Index x = get(vertex_index, g, Vertex());
+            auto m = get(vertex_index, g);
+            auto x = get(vertex_index, g, Vertex());
             ignore_unused_variable_warning(m);
             ignore_unused_variable_warning(x);
 
@@ -473,8 +471,7 @@ typename T::ThereReallyIsNoMemberByThisNameInT vertices(T const&);
         }
         void const_constraints(const Graph& g_)
         {
-            typedef typename property_map<Graph, vertex_index_t>::const_type Map;
-            Map m = get(vertex_index, g_);
+            auto m = get(vertex_index, g_);
             ignore_unused_variable_warning(m);
         }
     private:
@@ -486,10 +483,8 @@ typename T::ThereReallyIsNoMemberByThisNameInT vertices(T const&);
         BOOST_CONCEPT_USAGE(EdgeIndexGraph)
         {
             typedef typename graph_traits<Graph>::edge_descriptor Edge;
-            typedef typename property_map<Graph, edge_index_t>::type Map;
-            typedef unsigned Index; // This could be Graph::vertex_index_type
-            Map m = get(edge_index, g);
-            Index x = get(edge_index, g, Edge());
+            auto m = get(edge_index, g);
+            auto x = get(edge_index, g, Edge());
             ignore_unused_variable_warning(m);
             ignore_unused_variable_warning(x);
 
@@ -500,8 +495,7 @@ typename T::ThereReallyIsNoMemberByThisNameInT vertices(T const&);
         }
         void const_constraints(const Graph& g_)
         {
-            typedef typename property_map<Graph, edge_index_t>::const_type Map;
-            Map m = get(edge_index, g_);
+            auto m = get(edge_index, g_);
             ignore_unused_variable_warning(m);
         }
     private:
@@ -523,12 +517,12 @@ typename T::ThereReallyIsNoMemberByThisNameInT vertices(T const&);
     BOOST_concept(BasicMatrix,(M)(I)(V))
     {
         BOOST_CONCEPT_USAGE(BasicMatrix) {
-        V& elt = A[i][j];
+        auto& elt = A[i][j];
         const_constraints(A);
         ignore_unused_variable_warning(elt);
         }
         void const_constraints(const M& cA) {
-        const V& elt = cA[i][j];
+        const auto& elt = cA[i][j];
         ignore_unused_variable_warning(elt);
         }
         M A;
@@ -554,10 +548,9 @@ typename T::ThereReallyIsNoMemberByThisNameInT vertices(T const&);
     {
         BOOST_CONCEPT_USAGE(DegreeMeasure)
         {
-            typedef typename Measure::degree_type Degree;
             typedef typename Measure::vertex_type Vertex;
 
-            Degree d = m(Vertex(), g);
+            auto d = m(Vertex(), g);
             ignore_unused_variable_warning(d);
         }
     private:
@@ -570,8 +563,7 @@ typename T::ThereReallyIsNoMemberByThisNameInT vertices(T const&);
         BOOST_CONCEPT_USAGE(DistanceMeasure)
         {
             typedef typename Measure::distance_type Distance;
-            typedef typename Measure::result_type Result;
-            Result r = m(Distance(), g);
+            auto r = m(Distance(), g);
             ignore_unused_variable_warning(r);
         }
     private:

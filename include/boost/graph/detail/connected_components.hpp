@@ -98,7 +98,7 @@ namespace boost {
                             OutputIterator header,
                             Integer num_nodes)
     {
-      Parent component = p;
+      auto component = p;
       Integer component_num = 0;
       for (Integer v = 0; v != num_nodes; ++v) 
         if (p[v] == v) {
@@ -113,7 +113,7 @@ namespace boost {
     template <class Next, class T, class V>
     inline void push_front(Next next, T& head, V x)
     {
-      T tmp = head;
+      auto tmp = head;
       head = x;
       next[x] = tmp;
     }
@@ -128,7 +128,7 @@ namespace boost {
                     Integer num_nodes, Integer num_components)
     {
       // Make the non-representative vertices point to their component
-      Parent1 representative = component;
+      auto representative = component;
       for (Integer v = 0; v != num_nodes; ++v)
         if (component[v] >= num_components || header[component[v]] != v)
           component[v] = component[representative[v]];
@@ -137,7 +137,7 @@ namespace boost {
       std::fill_n(header, num_components, num_nodes);
       
       // Add each vertex to the linked list for its component
-      Parent1 next = component;
+      auto next = component;
       for (Integer k = 0; k != num_nodes; ++k)
         push_front(next, header[component[k]], k);
     }

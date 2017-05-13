@@ -121,8 +121,6 @@ namespace boost {
      VertexEquivalencePredicate vertices_equivalent,
      bool only_connected_subgraphs)
     {
-      typedef typename graph_traits<GraphSecond>::vertex_descriptor VertexSecond;
-      
       typedef typename graph_traits<GraphFirst>::edge_descriptor EdgeFirst;
       typedef typename graph_traits<GraphSecond>::edge_descriptor EdgeSecond;
 
@@ -141,7 +139,7 @@ namespace boost {
       // Verify edges with existing sub-graph
       BGL_FORALL_VERTICES_T(existing_vertex1, graph1, GraphFirst) {
 
-        VertexSecond existing_vertex2 = get(correspondence_map_1_to_2, existing_vertex1);
+        auto existing_vertex2 = get(correspondence_map_1_to_2, existing_vertex1);
 
         // Skip unassociated vertices
         if (existing_vertex2 == graph_traits<GraphSecond>::null_vertex()) {
@@ -276,8 +274,6 @@ namespace boost {
      bool only_connected_subgraphs,
      SubGraphInternalCallback subgraph_callback)
     {
-      typedef typename graph_traits<GraphFirst>::vertex_descriptor VertexFirst;
-      typedef typename graph_traits<GraphSecond>::vertex_descriptor VertexSecond;
       typedef typename graph_traits<GraphFirst>::vertices_size_type VertexSizeFirst;
 
       // Get iterators for vertices from both graphs
@@ -294,7 +290,7 @@ namespace boost {
       // Iterate until all vertices have been visited
       BGL_FORALL_VERTICES_T(new_vertex1, graph1, GraphFirst) {
 
-        VertexSecond existing_vertex2 = get(correspondence_map_1_to_2, new_vertex1);
+        auto existing_vertex2 = get(correspondence_map_1_to_2, new_vertex1);
 
         // Skip already matched vertices in first graph
         if (existing_vertex2 != graph_traits<GraphSecond>::null_vertex()) {
@@ -303,7 +299,7 @@ namespace boost {
     
         BGL_FORALL_VERTICES_T(new_vertex2, graph2, GraphSecond) {
 
-          VertexFirst existing_vertex1 = get(correspondence_map_2_to_1, new_vertex2);
+          auto existing_vertex1 = get(correspondence_map_2_to_1, new_vertex2);
 
           // Skip already matched vertices in second graph
           if (existing_vertex1 != graph_traits<GraphFirst>::null_vertex()) {
@@ -319,7 +315,7 @@ namespace boost {
                                only_connected_subgraphs)) {
 
             // Keep track of old graph size for restoring later
-            VertexSizeFirst old_graph_size = (VertexSizeFirst)vertex_stack1.size(),
+            auto old_graph_size = (VertexSizeFirst)vertex_stack1.size(),
               new_graph_size = old_graph_size + 1;
 
             // Extend subgraph
@@ -351,8 +347,8 @@ namespace boost {
             // Restore previous state
             if (vertex_stack1.size() > old_graph_size) {
               
-              VertexFirst stack_vertex1 = vertex_stack1.top();
-              VertexSecond stack_vertex2 = get(correspondence_map_1_to_2,
+              auto stack_vertex1 = vertex_stack1.top();
+              auto stack_vertex2 = get(correspondence_map_1_to_2,
                                                stack_vertex1);
 
               // Contract subgraph
@@ -561,7 +557,7 @@ namespace boost {
              subgraph_iter != m_subgraphs->end();
              ++subgraph_iter) {
 
-          SubGraph subgraph_cached = *subgraph_iter;
+          auto subgraph_cached = *subgraph_iter;
 
           // Compare subgraph sizes
           if (subgraph_size != subgraph_cached.first) {
@@ -780,7 +776,7 @@ namespace boost {
              subgraph_iter != m_subgraphs->end();
              ++subgraph_iter) {
 
-          SubGraph subgraph_cached = *subgraph_iter;
+          auto subgraph_cached = *subgraph_iter;
           m_user_callback(subgraph_cached.second.first,
                           subgraph_cached.second.second,
                           subgraph_cached.first);
@@ -941,7 +937,7 @@ namespace boost {
                subgraph_iter != m_subgraphs->end();
                ++subgraph_iter) {
   
-            SubGraph subgraph_cached = *subgraph_iter;
+            auto subgraph_cached = *subgraph_iter;
   
             if (!are_property_maps_different(correspondence_map_1_to_2,
                                              subgraph_cached.second.first,
@@ -983,7 +979,7 @@ namespace boost {
              subgraph_iter != m_subgraphs->end();
              ++subgraph_iter) {
 
-          SubGraph subgraph_cached = *subgraph_iter;
+          auto subgraph_cached = *subgraph_iter;
           m_user_callback(subgraph_cached.second.first,
                           subgraph_cached.second.second,
                           subgraph_cached.first);

@@ -273,7 +273,7 @@ edge(const typename graph_traits<BidirectionalGraph>::vertex_descriptor u,
      const reverse_graph<BidirectionalGraph,GRef>& g)
 {
     typedef typename graph_traits<BidirectionalGraph>::edge_descriptor underlying_edge_descriptor;
-    std::pair<underlying_edge_descriptor, bool> e = edge(v, u, g.m_g);
+     auto e = edge(v, u, g.m_g);
     return std::make_pair(detail::reverse_graph_edge_descriptor<underlying_edge_descriptor>(e.first), e.second);
 }
 
@@ -402,7 +402,7 @@ typename disable_if<
   typename property_map<reverse_graph<BidirGraph,GRef>, Property>::const_type>::type
 get(Property p, const reverse_graph<BidirGraph,GRef>& g)
 {
-  const BidirGraph& gref = g.m_g; // in case GRef is non-const
+  const auto& gref = g.m_g; // in case GRef is non-const
   return typename property_map<reverse_graph<BidirGraph,GRef>, Property>::const_type(get(p, gref));
 }
 

@@ -41,8 +41,8 @@ namespace boost
       std::stack<stack_entry> st;
       st.push(stack_entry(v, offset));
       while (!st.empty()) {
-        vertex_descriptor v = st.top().first;
-        std::size_t offset = st.top().second;
+        auto v = st.top().first;
+        auto offset = st.top().second;
         st.pop();
         if (v != graph_traits<Graph>::null_vertex()) {
           x[v] += delta_x[v] + offset;
@@ -115,10 +115,10 @@ namespace boost
     v_size_t timestamp = 1;
     vertex_vector_t installed_neighbors;
 
-    ForwardIterator itr = ordering_begin;
-    vertex_t v1 = *itr; ++itr;
-    vertex_t v2 = *itr; ++itr;
-    vertex_t v3 = *itr; ++itr;
+    auto itr = ordering_begin;
+    auto v1 = *itr; ++itr;
+    auto v2 = *itr; ++itr;
+    auto v3 = *itr; ++itr;
 
     delta_x[v2] = 1; 
     delta_x[v3] = 1;
@@ -132,9 +132,9 @@ namespace boost
 
     installed[v1] = installed[v2] = installed[v3] = true;
 
-    for(ForwardIterator itr_end = ordering_end; itr != itr_end; ++itr)
+    for(auto itr_end = ordering_end; itr != itr_end; ++itr)
       {
-        vertex_t v = *itr;
+        auto v = *itr;
 
         // First, find the leftmost and rightmost neighbor of v on the outer 
         // cycle of the embedding. 
@@ -143,17 +143,17 @@ namespace boost
         // outer face (since v will be installed above them all) looking for 
         // the leftmost and rightmost installed neigbhors
 
-        vertex_t leftmost = graph_traits<Graph>::null_vertex();
-        vertex_t rightmost = graph_traits<Graph>::null_vertex();
+        auto leftmost = graph_traits<Graph>::null_vertex();
+        auto rightmost = graph_traits<Graph>::null_vertex();
 
         installed_neighbors.clear();
 
-        vertex_t prev_vertex = graph_traits<Graph>::null_vertex();
+        auto prev_vertex = graph_traits<Graph>::null_vertex();
         edge_permutation_iterator_t pi, pi_end;
         pi_end = embedding[v].end();
         for(pi = embedding[v].begin(); pi != pi_end; ++pi)
           {
-            vertex_t curr_vertex = source(*pi,g) == v ? 
+            auto curr_vertex = source(*pi,g) == v ? 
               target(*pi,g) : source(*pi,g);
             
             // Skip any self-loops or parallel edges
@@ -194,8 +194,8 @@ namespace boost
 
         //adjust offsets
         std::size_t delta_p_q = 0;
-        vertex_t stopping_vertex = right[rightmost];
-        for(vertex_t temp = right[leftmost]; temp != stopping_vertex; 
+        auto stopping_vertex = right[rightmost];
+        for(auto temp = right[leftmost]; temp != stopping_vertex; 
             temp = right[temp]
             )
           {
@@ -215,7 +215,7 @@ namespace boost
           {
             left[v] = right[leftmost];
             vertex_t next_to_rightmost;
-            for(vertex_t temp = leftmost; temp != rightmost; 
+            for(auto temp = leftmost; temp != rightmost; 
                 temp = right[temp]
                 )
               {

@@ -62,7 +62,7 @@ transitive_reduction(const Graph& g, GraphTR& tr,
     size_type, size_type&> topo_number( &topo_number_storage[0], g_index_map );
 
     {
-        typename std::vector<Vertex>::reverse_iterator it = topo_order.rbegin();
+        auto it = topo_order.rbegin();
         size_type n = 0;
         for(; it != topo_order.rend(); ++it,++n ) {
             topo_number[ *it ] = n;
@@ -72,7 +72,7 @@ transitive_reduction(const Graph& g, GraphTR& tr,
     std::vector< std::vector< bool > > edge_in_closure(num_vertices(g),
                                             std::vector<bool>( num_vertices(g), false));
     {
-        typename std::vector<Vertex>::reverse_iterator it = topo_order.rbegin();
+        auto it = topo_order.rbegin();
             for( ; it != topo_order.rend(); ++it ) {
             g_to_tr_map[*it] = add_vertex(tr);
         }

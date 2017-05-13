@@ -78,7 +78,7 @@ namespace boost {
         return *this;
       }
       inline self operator++(int) {
-        self tmp = *this;
+        auto tmp = *this;
         ++(*this);
         return tmp;
       }

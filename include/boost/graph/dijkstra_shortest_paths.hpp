@@ -299,8 +299,7 @@ namespace boost {
     typedef
       detail::default_color_map_generator<Graph, IndexMap>
       ColorMapHelper;
-    typedef typename ColorMapHelper::type ColorMap;
-    ColorMap color =
+    auto color =
       ColorMapHelper::build(g, index_map);
     dijkstra_shortest_paths_no_init( g, s_begin, s_end, predecessor, distance, weight,
       index_map, compare, combine, zero, vis,
@@ -369,7 +368,7 @@ namespace boost {
         detail::vertex_property_map_generator<Graph, IndexMap, std::size_t>
         IndexInHeapMapHelper;
       typedef typename IndexInHeapMapHelper::type IndexInHeapMap;
-      IndexInHeapMap index_in_heap =
+      auto index_in_heap =
         IndexInHeapMapHelper::build(g, index_map, index_in_heap_map_holder);
       typedef d_ary_heap_indirect<Vertex, 4, IndexInHeapMap, DistanceMap, Compare>
         MutableQueue;
@@ -554,7 +553,7 @@ namespace boost {
       dummy_property_map p_map;
 
       typedef typename property_traits<DistanceMap>::value_type D;
-      D inf = choose_param(get_param(params, distance_inf_t()),
+      auto inf = choose_param(get_param(params, distance_inf_t()),
                            (std::numeric_limits<D>::max)());
 
       dijkstra_shortest_paths

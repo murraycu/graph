@@ -716,7 +716,7 @@ BOOST_BGL_DECLARE_NAMED_PARAMS
     template <typename G>
     typename boost::graph_traits<G>::vertex_descriptor
     get_default_starting_vertex(const G& g) {
-      std::pair<typename boost::graph_traits<G>::vertex_iterator, typename boost::graph_traits<G>::vertex_iterator> iters = vertices(g);
+      auto iters = vertices(g);
       return (iters.first == iters.second) ? boost::graph_traits<G>::null_vertex() : *iters.first;
     }
 

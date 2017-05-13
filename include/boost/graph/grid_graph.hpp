@@ -375,7 +375,7 @@ namespace boost {
      std::size_t dimension_index,
      vertices_size_type distance = 1) const {
 
-      vertices_size_type new_position =
+      auto new_position =
         vertex[dimension_index] + distance;
 
       if (wrapped(dimension_index)) {
@@ -474,7 +474,7 @@ namespace boost {
 
       // Edge indices are sorted into bins by dimension
       std::size_t dimension_index = 0;
-      edges_size_type dimension_edges = num_edges(0);
+      auto dimension_edges = num_edges(0);
 
       while (edge_index >= dimension_edges) {
         edge_index -= dimension_edges;
@@ -500,7 +500,7 @@ namespace boost {
         // Each bin consists of two parts: the "forward" looking edges
         // and the "backward" looking edges for the dimension.
 
-        edges_size_type vertex_offset = edge_index % num_edges(dimension_index);
+        auto vertex_offset = edge_index % num_edges(dimension_index);
 
         // Consider vertex_offset an index into the graph's vertex
         // space but with the dimension [dimension_index] reduced in
@@ -538,8 +538,8 @@ namespace boost {
     
     // Returns the index for [edge] (See also edge_at)
     edges_size_type index_of(edge_descriptor edge) const {
-      vertex_descriptor source_vertex = source(edge, *this);
-      vertex_descriptor target_vertex = target(edge, *this);
+      auto source_vertex = source(edge, *this);
+      auto target_vertex = target(edge, *this);
 
       BOOST_ASSERT (source_vertex != target_vertex);
 
@@ -565,8 +565,8 @@ namespace boost {
       }
 
       // Get the position of both vertices in the differing dimension.
-      vertices_size_type source_position = source_vertex[different_dimension_index];
-      vertices_size_type target_position = target_vertex[different_dimension_index];
+      auto source_position = source_vertex[different_dimension_index];
+      auto target_position = target_vertex[different_dimension_index];
 
       // Determine if edge is forward or backward
       bool is_forward = true;
@@ -698,7 +698,7 @@ namespace boost {
     (vertex_descriptor vertex,
      edges_size_type in_edge_index) const {
 
-      edge_descriptor out_edge = out_edge_at(vertex, in_edge_index);
+      auto out_edge = out_edge_at(vertex, in_edge_index);
       return (std::make_pair(target(out_edge, *this), source(out_edge, *this)));
 
     }
@@ -898,7 +898,7 @@ namespace boost {
           typename type::vertex_descriptor destination_vertex,
           const type& graph) {
 
-      std::pair<typename type::edge_descriptor, bool> edge_exists =
+       auto edge_exists =
         std::make_pair(std::make_pair(source_vertex, destination_vertex), false);
 
       for (std::size_t dimension_index = 0;

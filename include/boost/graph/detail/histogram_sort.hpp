@@ -31,7 +31,7 @@ reserve_count_for_single_pass_helper(InputIterator first, InputIterator last,
                                      std::random_access_iterator_tag)
 {
   using std::distance;
-  typename std::iterator_traits<InputIterator>::difference_type n =
+  auto n =
     distance(first, last);
   return (size_t)n;
 }
@@ -94,12 +94,12 @@ histogram_sort(KeyIterator key_begin, KeyIterator key_end,
   // location to insert out edges for vertex v.
   std::vector<EdgeIndex>
     current_insert_positions(rowstart, rowstart + numkeys);
-  Value1InputIter v1i = values1_begin;
+  auto v1i = values1_begin;
   for (auto i = key_begin; i != key_end; ++i, ++v1i) {
     if (key_filter(*i)) {
-      NumKeys source = key_transform(*i);
+      auto source = key_transform(*i);
       BOOST_ASSERT (source < numkeys);
-      EdgeIndex insert_pos = current_insert_positions[source];
+      auto insert_pos = current_insert_positions[source];
       ++current_insert_positions[source];
       values1_out[insert_pos] = *v1i;
     }
@@ -131,13 +131,13 @@ histogram_sort(KeyIterator key_begin, KeyIterator key_end,
   // location to insert out edges for vertex v.
   std::vector<EdgeIndex>
     current_insert_positions(rowstart, rowstart + numkeys);
-  Value1InputIter v1i = values1_begin;
-  Value2InputIter v2i = values2_begin;
+  auto v1i = values1_begin;
+  auto v2i = values2_begin;
   for (auto i = key_begin; i != key_end; ++i, ++v1i, ++v2i) {
     if (key_filter(*i)) {
-      NumKeys source = key_transform(*i);
+      auto source = key_transform(*i);
       BOOST_ASSERT (source < numkeys);
-      EdgeIndex insert_pos = current_insert_positions[source];
+      auto insert_pos = current_insert_positions[source];
       ++current_insert_positions[source];
       values1_out[insert_pos] = *v1i;
       values2_out[insert_pos] = *v2i;
@@ -166,7 +166,7 @@ histogram_sort_inplace(KeyIterator key_begin,
     // While edge i is not in the right bucket:
     while (!(i >= rowstart[key_transform(key_begin[i])] && i < insert_positions[key_transform(key_begin[i])])) {
       // Add a slot in the right bucket
-      size_t target_pos = insert_positions[key_transform(key_begin[i])]++;
+      auto target_pos = insert_positions[key_transform(key_begin[i])]++;
       BOOST_ASSERT (target_pos < rowstart[key_transform(key_begin[i]) + 1]);
       if (target_pos == i) continue;
       // Swap this edge into place
@@ -200,7 +200,7 @@ histogram_sort_inplace(KeyIterator key_begin,
     // While edge i is not in the right bucket:
     while (!(i >= rowstart[key_transform(key_begin[i])] && i < insert_positions[key_transform(key_begin[i])])) {
       // Add a slot in the right bucket
-      size_t target_pos = insert_positions[key_transform(key_begin[i])]++;
+      auto target_pos = insert_positions[key_transform(key_begin[i])]++;
       BOOST_ASSERT (target_pos < rowstart[key_transform(key_begin[i]) + 1]);
       if (target_pos == i) continue;
       // Swap this edge into place
@@ -223,7 +223,7 @@ void split_into_separate_coords(InputIterator begin, InputIterator end,
   firsts.reserve(reserve_size);
   seconds.reserve(reserve_size);
   for (; begin != end; ++begin) {
-    std::pair<VerticesSize, VerticesSize> edge = *begin;
+    auto edge = *begin;
     firsts.push_back(edge.first);
     seconds.push_back(edge.second);
   }
@@ -238,7 +238,7 @@ void split_into_separate_coords_filtered
   firsts.clear();
   seconds.clear();
   for (; begin != end; ++begin) {
-    std::pair<VerticesSize, VerticesSize> edge = *begin;
+    auto edge = *begin;
     if (filter(edge.first)) {
       firsts.push_back(edge.first);
       seconds.push_back(edge.second);
@@ -259,7 +259,7 @@ void split_into_separate_coords_filtered
   seconds.clear();
   props_out.clear();
   for (; begin != end; ++begin) {
-    std::pair<VerticesSize, VerticesSize> edge = *begin;
+     auto edge = *begin;
     if (filter(edge.first)) {
       firsts.push_back(edge.first);
       seconds.push_back(edge.second);

@@ -51,7 +51,7 @@ namespace boost {
       typedef typename property_traits<ResCapMap>::value_type FlowValue;
 
       // find minimum residual capacity along the augmenting path
-      FlowValue delta = (std::numeric_limits<FlowValue>::max)();
+      auto delta = (std::numeric_limits<FlowValue>::max)();
       e = get(p, sink);
       do {
         BOOST_USING_STD_MIN();
@@ -151,8 +151,7 @@ namespace boost {
        const bgl_named_params<P, T, R>& params,
        param_not_found)
       {
-        typedef typename graph_traits<Graph>::vertices_size_type size_type;
-        size_type n = is_default_param(get_param(params, vertex_color)) ?
+        auto n = is_default_param(get_param(params, vertex_color)) ?
           num_vertices(g) : 1;
         std::vector<default_color_type> color_vec(n);
         return edmonds_karp_max_flow
@@ -200,8 +199,7 @@ namespace boost {
        param_not_found)
       {
         typedef typename graph_traits<Graph>::edge_descriptor edge_descriptor;
-        typedef typename graph_traits<Graph>::vertices_size_type size_type;
-        size_type n = is_default_param(get_param(params, vertex_predecessor)) ?
+        auto n = is_default_param(get_param(params, vertex_predecessor)) ?
           num_vertices(g) : 1;
         std::vector<edge_descriptor> pred_vec(n);
         

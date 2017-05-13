@@ -62,7 +62,7 @@ namespace boost {
       template < typename Edge, typename Graph >
       void examine_edge(Edge e, const Graph & g)
       {
-        weight_type w = get(m_weightMap, e);
+        auto w = get(m_weightMap, e);
 
         // if the target of e is already marked then decrease cutweight
         // otherwise, increase it
@@ -129,14 +129,13 @@ namespace boost {
     template <class UndirectedGraph, class WeightMap, class ParityMap, class VertexAssignmentMap, class KeyedUpdatablePriorityQueue, class IndexMap>
     typename boost::property_traits<WeightMap>::value_type
     stoer_wagner_min_cut(const UndirectedGraph& g, WeightMap weights, ParityMap parities, VertexAssignmentMap assignments, KeyedUpdatablePriorityQueue& pq, IndexMap index_map) {
-      typedef typename boost::graph_traits<UndirectedGraph>::vertex_descriptor vertex_descriptor;
       typedef typename boost::property_traits<WeightMap>::value_type weight_type;
 
       typename graph_traits<UndirectedGraph>::vertex_iterator u_iter, u_end;
 
-      weight_type bestW = (std::numeric_limits<weight_type>::max)();
-      weight_type bestThisTime = (std::numeric_limits<weight_type>::max)();
-      vertex_descriptor bestStart = boost::graph_traits<UndirectedGraph>::null_vertex();
+      auto bestW = (std::numeric_limits<weight_type>::max)();
+      auto bestThisTime = (std::numeric_limits<weight_type>::max)();
+      auto bestStart = boost::graph_traits<UndirectedGraph>::null_vertex();
 
       detail::mas_min_cut_visitor<ParityMap, WeightMap, IndexMap>
         vis(g, parities, bestThisTime, weights, index_map);
@@ -177,7 +176,6 @@ namespace boost {
       BOOST_CONCEPT_ASSERT((boost::IncidenceGraphConcept<UndirectedGraph>));
       BOOST_CONCEPT_ASSERT((boost::VertexListGraphConcept<UndirectedGraph>));
       typedef typename boost::graph_traits<UndirectedGraph>::vertex_descriptor vertex_descriptor;
-      typedef typename boost::graph_traits<UndirectedGraph>::vertices_size_type vertices_size_type;
       typedef typename boost::graph_traits<UndirectedGraph>::edge_descriptor edge_descriptor;
       BOOST_CONCEPT_ASSERT((boost::Convertible<typename boost::graph_traits<UndirectedGraph>::directed_category, boost::undirected_tag>));
       BOOST_CONCEPT_ASSERT((boost::ReadablePropertyMapConcept<WeightMap, edge_descriptor>));
@@ -188,7 +186,7 @@ namespace boost {
       BOOST_CONCEPT_ASSERT((boost::Convertible<vertex_descriptor, typename boost::property_traits<VertexAssignmentMap>::value_type>));
       BOOST_CONCEPT_ASSERT((boost::KeyedUpdatableQueueConcept<KeyedUpdatablePriorityQueue>));
 
-      vertices_size_type n = num_vertices(g);
+      auto n = num_vertices(g);
       if (n < 2)
         throw boost::bad_graph("the input graph must have at least two vertices.");
       else if (!pq.empty())
@@ -213,7 +211,7 @@ namespace graph {
 
         gen_type gen(choose_param(get_param(arg_pack, boost::distance_zero_t()), weight_type(0)));
 
-        typename boost::result_of<gen_type(const UndirectedGraph&, const ArgPack&)>::type pq = gen(g, arg_pack);
+        auto pq = gen(g, arg_pack);
 
         return boost::stoer_wagner_min_cut(g,
           weights,

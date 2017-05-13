@@ -146,14 +146,14 @@ namespace boost {
             {
                 // remove v from the Q, and then decrease the core numbers
                 // of its successors
-                vertex v = Q.top();
+                auto v = Q.top();
                 vis.examine_vertex(v,g);
                 Q.pop();
                 v_cn = get(c,v);
                 typename graph_traits<Graph>::out_edge_iterator oi,oi_end;
                 for (std::tie(oi,oi_end) = out_edges(v,g); oi!=oi_end; ++oi) {
                     vis.examine_edge(*oi,g);
-                    vertex u = target(*oi,g);
+                    auto u = target(*oi,g);
                     // if c[u] > c[v], then u is still in the graph,
                     if (get(c,u) > v_cn) {
                         // remove the edge
@@ -222,8 +222,8 @@ namespace boost {
             // this loop sets bin[d] to the starting position of vertices
             // with degree d in the vert array for the bucket sort
             size_type cur_pos = 0;
-            for (degree_type cur_deg = 0; cur_deg < max_deg+2; ++cur_deg) {
-                degree_type tmp = bin[cur_deg];
+            for (auto cur_deg = 0; cur_deg < max_deg+2; ++cur_deg) {
+                auto tmp = bin[cur_deg];
                 bin[cur_deg] = cur_pos;
                 cur_pos += tmp;
             }
@@ -245,21 +245,21 @@ namespace boost {
                 boost::make_reverse_iterator(bin.end()-1));
             // now simulate removing the vertices
             for (size_type i=0; i < num_vertices(g); ++i) {
-                vertex v = vert[i];
+                auto v = vert[i];
                 vis.examine_vertex(v,g);
                 v_cn = get(c,v);
                 typename graph_traits<Graph>::out_edge_iterator oi,oi_end;
                 for (std::tie(oi,oi_end) = out_edges(v,g); oi!=oi_end; ++oi) {
                     vis.examine_edge(*oi,g);
-                    vertex u = target(*oi,g);
+                    auto u = target(*oi,g);
                     // if c[u] > c[v], then u is still in the graph,
                     if (get(c,u) > v_cn) {
-                        degree_type deg_u = get(c,u);
-                        degree_type pos_u = get(pos,u);
+                        auto deg_u = get(c,u);
+                        auto pos_u = get(pos,u);
                         // w is the first vertex with the same degree as u
                         // (this is the resort operation!)
-                        degree_type pos_w = bin[deg_u];
-                        vertex w = vert[pos_w];
+                        auto pos_w = bin[deg_u];
+                        auto w = vert[pos_w];
                         if (u!=v) {
                             // swap u and w
                             put(pos,u,pos_w);

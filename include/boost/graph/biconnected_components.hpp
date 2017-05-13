@@ -78,8 +78,8 @@ namespace boost
       template <typename Edge, typename Graph>
       void tree_edge(const Edge& e, Graph& g)
       {
-        typename boost::graph_traits<Graph>::vertex_descriptor src = source(e, g);
-        typename boost::graph_traits<Graph>::vertex_descriptor tgt = target(e, g);
+        auto src = source(e, g);
+        auto tgt = target(e, g);
 
         S.push(e);
         put(pred, tgt, src);
@@ -94,8 +94,8 @@ namespace boost
       {
         BOOST_USING_STD_MIN();
 
-        typename boost::graph_traits<Graph>::vertex_descriptor src = source(e, g);
-        typename boost::graph_traits<Graph>::vertex_descriptor tgt = target(e, g);
+        auto src = source(e, g);
+        auto tgt = target(e, g);
         if ( tgt != get(pred, src) ) {
           S.push(e);
           put(lowpt, src,
@@ -115,7 +115,7 @@ namespace boost
       void finish_vertex(const Vertex& u, Graph& g)
       {
         BOOST_USING_STD_MIN();
-        Vertex parent = get(pred, u);
+        auto parent = get(pred, u);
         if (parent == u) { // Root of tree is special
           is_articulation_point[get(index_map, u)] = (children_of_root > 1);
         } else {
@@ -223,7 +223,7 @@ namespace boost
   {
     typedef typename graph_traits<Graph>::vertex_descriptor vertex_t;
     std::vector<vertex_t> pred(num_vertices(g));
-    vertex_t vert = graph_traits<Graph>::null_vertex();
+    auto vert = graph_traits<Graph>::null_vertex();
 
         return biconnected_components_impl
                 (g, comp, out, index_map, dtm, lowpt, 

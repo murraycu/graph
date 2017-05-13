@@ -40,7 +40,7 @@ namespace boost
     vertex_to_v_size_map_t component(component_vector.begin(), vm);
     std::vector<vertex_t> vertices_by_component(num_vertices(g));
 
-    v_size_t num_components = connected_components(g, component);
+    auto num_components = connected_components(g, component);
 
     if (num_components < 2)
       return;
@@ -57,8 +57,8 @@ namespace boost
 
     typedef typename std::vector<vertex_t>::iterator vec_of_vertices_itr_t;
 
-    vec_of_vertices_itr_t ci_end = vertices_by_component.end();
-    vec_of_vertices_itr_t ci_prev = vertices_by_component.begin();
+    auto ci_end = vertices_by_component.end();
+    auto ci_prev = vertices_by_component.begin();
     if (ci_prev == ci_end)
       return;
 

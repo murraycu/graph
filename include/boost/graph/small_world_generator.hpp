@@ -58,8 +58,8 @@ namespace boost {
       double x = rand01();
       *gen = rand01.base(); // GRRRR
       if (x < prob) {
-        vertices_size_type lower = (source + n - k/2) % n;
-        vertices_size_type upper = (source + k/2) % n;
+        auto lower = (source + n - k/2) % n;
+        auto upper = (source + k/2) % n;
         do {
           current.second = rand_vertex_gen(*gen);
         } while ((current.second >= lower && current.second <= upper)

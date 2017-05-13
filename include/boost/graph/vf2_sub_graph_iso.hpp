@@ -144,7 +144,7 @@ namespace boost {
         }
 
         BGL_FORALL_INEDGES_T(v_this, e, graph_this_, GraphThis) {
-          vertex_this_type w = source(e, graph_this_);
+          auto w = source(e, graph_this_);
           if (!get(in_, w)) {
             put(in_, w, core_count_);
             ++term_in_count_;
@@ -154,7 +154,7 @@ namespace boost {
         }
         
         BGL_FORALL_OUTEDGES_T(v_this, e, graph_this_, GraphThis) {
-          vertex_this_type w = target(e, graph_this_);
+          auto w = target(e, graph_this_);
           if (!get(out_, w)) {
             put(out_, w, core_count_);
             ++term_out_count_;
@@ -178,7 +178,7 @@ namespace boost {
         }
 
         BGL_FORALL_INEDGES_T(v_this, e, graph_this_, GraphThis) {
-          vertex_this_type w = source(e, graph_this_);
+          auto w = source(e, graph_this_);
           if (get(in_, w) == core_count_) {
             put(in_, w, 0);
             --term_in_count_;
@@ -195,7 +195,7 @@ namespace boost {
         }
 
         BGL_FORALL_OUTEDGES_T(v_this, e, graph_this_, GraphThis) {
-          vertex_this_type w = target(e, graph_this_);
+          auto w = target(e, graph_this_);
           if (get(out_, w) == core_count_) {
             put(out_, w, 0);
             --term_out_count_;
@@ -453,7 +453,7 @@ namespace boost {
       
       // Remove vertex pair from state
       void pop(const vertex1_type& v, const vertex2_type&) {
-        vertex2_type w = state1_.core(v);
+        auto w = state1_.core(v);
         state1_.pop(v, w);
         state2_.pop(w, v);
       }
@@ -464,16 +464,16 @@ namespace boost {
         if (!vertex_comp_(v_new, w_new)) return false;
         
         // graph1
-        graph1_size_type term_in1_count = 0, term_out1_count = 0, rest1_count = 0;
+        auto term_in1_count = 0, term_out1_count = 0, rest1_count = 0;
         
         {
           equivalent_edge_exists<Graph2> edge2_exists;
           
           BGL_FORALL_INEDGES_T(v_new, e1, graph1_, Graph1) {
-            vertex1_type v = source(e1, graph1_);
+            auto v = source(e1, graph1_);
             
             if (state1_.in_core(v) || (v == v_new)) {
-              vertex2_type w = w_new;
+              auto w = w_new;
               if (v != v_new)
                 w = state1_.core(v);
               if (!edge2_exists(w, w_new,
@@ -496,9 +496,9 @@ namespace boost {
           equivalent_edge_exists<Graph2> edge2_exists;
           
           BGL_FORALL_OUTEDGES_T(v_new, e1, graph1_, Graph1) {
-            vertex1_type v = target(e1, graph1_);
+            auto v = target(e1, graph1_);
             if (state1_.in_core(v) || (v == v_new)) {
-              vertex2_type w = w_new;
+              auto w = w_new;
               if (v != v_new)
                 w = state1_.core(v);
               
@@ -519,16 +519,16 @@ namespace boost {
         }
         
         // graph2
-        graph2_size_type term_out2_count = 0, term_in2_count = 0, rest2_count = 0;
+        auto term_out2_count = 0, term_in2_count = 0, rest2_count = 0;
         
         {
           equivalent_edge_exists<Graph1> edge1_exists;
           
           BGL_FORALL_INEDGES_T(w_new, e2, graph2_, Graph2) {
-            vertex2_type w = source(e2, graph2_);
+            auto w = source(e2, graph2_);
             if (state2_.in_core(w) || (w == w_new)) {
               if (problem_selection != subgraph_mono) {
-                vertex1_type v = v_new;
+                auto v = v_new;
                 if (w != w_new)
                   v = state2_.core(w);
               
@@ -552,10 +552,10 @@ namespace boost {
           equivalent_edge_exists<Graph1> edge1_exists;
           
           BGL_FORALL_OUTEDGES_T(w_new, e2, graph2_, Graph2) {
-            vertex2_type w = target(e2, graph2_);
+            auto w = target(e2, graph2_);
             if (state2_.in_core(w) || (w == w_new)) {
               if (problem_selection != subgraph_mono) {
-                vertex1_type v = v_new;
+                auto v = v_new;
                 if (w != w_new)
                   v = state2_.core(w);
               
@@ -626,11 +626,8 @@ namespace boost {
  
       // Returns true if a state is valid
       bool valid() const {
-        boost::tuple<graph1_size_type, graph1_size_type, graph1_size_type> term1;
-        boost::tuple<graph2_size_type, graph2_size_type, graph2_size_type> term2;
-        
-        term1 = state1_.term_set();
-        term2 = state2_.term_set();
+        auto term1 = state1_.term_set();
+        auto term2 = state2_.term_set();
         
         return comp_term_sets(boost::get<0>(term1), boost::get<0>(term2),
                               boost::mpl::int_<problem_selection>()) &&
@@ -727,7 +724,7 @@ namespace boost {
       if (k.empty()) 
         return found_match;    
       
-      const match_continuation_type kk = k.back();
+      const auto kk = k.back();
       graph1_verts_iter = kk.graph1_verts_iter;
       graph2_verts_iter = kk.graph2_verts_iter;
       k.pop_back();
@@ -789,9 +786,7 @@ namespace boost {
       typedef iterator_property_map<typename std::vector<size_type>::iterator,
                                     IndexMap, size_type, size_type&> frequency_map_type;
                 
-      frequency_map_type freq = make_iterator_property_map(freq_vec.begin(), index_map);
-
-      typedef typename VertexOrder::iterator order_iterator;
+      auto freq = make_iterator_property_map(freq_vec.begin(), index_map);
 
       for (auto order_iter = order.begin(); order_iter != order.end(); ) {
         size_type count = 0;
@@ -876,8 +871,8 @@ namespace boost {
       if (num_vertices(graph_small) > num_vertices(graph_large))
         return false;
 
-      typename graph_traits<GraphSmall>::edges_size_type num_edges_small = num_edges(graph_small);
-      typename graph_traits<GraphLarge>::edges_size_type num_edges_large = num_edges(graph_large);
+      auto num_edges_small = num_edges(graph_small);
+      auto num_edges_large = num_edges(graph_large);
 
       // Double the number of edges for undirected graphs: each edge counts as
       // in-edge and out-edge
@@ -1109,8 +1104,8 @@ namespace boost {
     if (num_vertices(graph1) != num_vertices(graph2))
       return false;
 
-    typename graph_traits<Graph1>::edges_size_type num_edges1 = num_edges(graph1);
-    typename graph_traits<Graph2>::edges_size_type num_edges2 = num_edges(graph2);
+    auto num_edges1 = num_edges(graph1);
+    auto num_edges2 = num_edges(graph2);
 
     // Double the number of edges for undirected graphs: each edge counts as
     // in-edge and out-edge

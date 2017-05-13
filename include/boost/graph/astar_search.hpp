@@ -317,9 +317,9 @@ namespace boost {
       Q.pop();
       vis.examine_vertex(v, g);
       BGL_FORALL_OUTEDGES_T(v, e, g, VertexListGraph) {
-        Vertex w = target(e, g);
+        auto w = target(e, g);
         vis.examine_edge(e, g);
-        Distance e_weight = get(weight, e);
+        auto e_weight = get(weight, e);
         if (compare(e_weight, zero))
           BOOST_THROW_EXCEPTION(negative_edge());
         bool decreased =
@@ -328,7 +328,7 @@ namespace boost {
         combine(get(distance, v), e_weight);
         if (decreased) {
           vis.edge_relaxed(e, g);
-          Distance w_rank = combine(get(distance, w), h(w));
+          auto w_rank = combine(get(distance, w), h(w));
           put(cost, w, w_rank);
           vis.discover_vertex(w, g);
           Q.push(std::make_pair(w_rank, w));

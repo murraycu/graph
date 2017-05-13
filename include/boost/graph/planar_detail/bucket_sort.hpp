@@ -89,7 +89,7 @@ namespace boost
     if (!range)
       {
         rank_comparison<ItemToRankMap> cmp(rank);
-        ForwardIterator max_by_rank = std::max_element(begin, end, cmp);
+        auto max_by_rank = std::max_element(begin, end, cmp);
         if (max_by_rank == end)
           return;
         range = get(rank, *max_by_rank) + 1;
@@ -97,18 +97,18 @@ namespace boost
 
     vector_of_vectors_t temp_values(range);
 
-    for(ForwardIterator itr = begin; itr != end; ++itr)
+    for(auto itr = begin; itr != end; ++itr)
       {
         temp_values[get(rank, *itr)].push_back(*itr);
       }
 
-    ForwardIterator orig_seq_itr = begin;
-    typename vector_of_vectors_t::iterator itr_end = temp_values.end();
+    auto orig_seq_itr = begin;
+    auto itr_end = temp_values.end();
     for (auto itr = temp_values.begin(); 
         itr != itr_end; ++itr
         )
       {
-        typename vector_of_values_t::iterator jtr_end = itr->end();
+        auto jtr_end = itr->end();
         for (auto jtr = itr->begin(); 
             jtr != jtr_end; ++jtr
             )

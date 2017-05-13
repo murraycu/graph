@@ -41,15 +41,15 @@ st_connected(const Graph& g,
   Q.push(t);
 
   while (!Q.empty()) {
-    Vertex u = Q.top(); Q.pop();
-    Color u_color = get(color, u);
+    auto u = Q.top(); Q.pop();
+    auto u_color = get(color, u);
 
     BGL_FORALL_OUTEDGES_T(u, e, g, Graph) {
-      Vertex v = target(e, g);
-      Color v_color = get(color, v);
+      auto v = target(e, g);
+      auto v_color = get(color, v);
       if (v_color == ColorTraits::white()) {
         // We have not seen "v" before; mark it with the same color as u
-        Color u_color = get(color, u);
+        auto u_color = get(color, u);
         put(color, v, u_color);
         
         // Push it on the queue

@@ -152,7 +152,7 @@ namespace boost
           {
 
             vertex_t v(*vi);
-            std::set<vertex_t> e_visited = get(visited, e);
+            auto e_visited = get(visited, e);
             typename std::set<vertex_t>::iterator e_visited_found 
               = e_visited.find(v);
             

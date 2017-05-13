@@ -33,7 +33,7 @@ namespace boost {
                       Radius radius)
   {
     BOOST_STATIC_ASSERT (property_traits<PositionMap>::value_type::dimensions >= 2);
-    const double pi = boost::math::constants::pi<double>();
+    const auto pi = boost::math::constants::pi<double>();
 
 #ifndef BOOST_NO_STDC_NAMESPACE
     using std::sin;
@@ -43,7 +43,7 @@ namespace boost {
     typedef typename graph_traits<VertexListGraph>::vertices_size_type 
       vertices_size_type;
 
-    vertices_size_type n = num_vertices(g);
+    auto n = num_vertices(g);
     
     vertices_size_type i = 0;
     double two_pi_over_n = 2. * pi / n;

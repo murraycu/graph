@@ -163,7 +163,7 @@ namespace boost {
     std::pair<component_iterator, component_iterator>
     operator[](IndexType component_index) const {
 
-      IndexType first_index = (*m_components)[component_index];
+      auto first_index = (*m_components)[component_index];
 
       return (std::make_pair
               (component_iterator(m_index_list->begin(), first_index),
@@ -176,16 +176,15 @@ namespace boost {
     void build_index_lists(ParentIterator parent_start,
                            const ElementIndexMap& index_map) {
 
-      typedef typename std::iterator_traits<ParentIterator>::value_type Element;
-      typename IndexContainer::iterator index_list =
+      auto index_list =
         m_index_list->begin();
 
       // First pass - find root elements, construct index list
       for (IndexType element_index = 0; element_index < m_num_elements;
            ++element_index) {
 
-        Element parent_element = parent_start[element_index];
-        IndexType parent_index = get(index_map, parent_element);
+        auto parent_element = parent_start[element_index];
+        auto parent_index = get(index_map, parent_element);
 
         if (element_index != parent_index) {
           index_list[element_index] = parent_index;
@@ -202,8 +201,8 @@ namespace boost {
       for (IndexType element_index = 0; element_index < m_num_elements;
            ++element_index) {
 
-        Element parent_element = parent_start[element_index];
-        IndexType parent_index = get(index_map, parent_element);
+        auto parent_element = parent_start[element_index];
+        auto parent_index = get(index_map, parent_element);
 
         if (element_index != parent_index) {
 

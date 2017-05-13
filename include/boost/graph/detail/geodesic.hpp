@@ -64,10 +64,10 @@ namespace detail {
         // infinity. Note that this /will/ include the a non-zero
         // distance-to-self in the combined values. However, this is usually
         // zero, so it shouldn't be too problematic.
-        Distance ret = init;
+        auto ret = init;
         VertexIterator i, end;
         for(std::tie(i, end) = vertices(g); i != end; ++i) {
-            Vertex v = *i;
+            auto v = *i;
             if(get(dist, v) != DistanceNumbers::infinity()) {
                 ret = combine(ret, get(dist, v));
             }

@@ -227,8 +227,8 @@ namespace boost {
             G2_verts = vertices(G2);
             while (G2_verts.first != G2_verts.second) {
               {
-                vertex2_t u = *G2_verts.first;
-                vertex1_t kp1 = dfs_vertices[dfs_num_k + 1];
+                auto u = *G2_verts.first;
+                auto kp1 = dfs_vertices[dfs_num_k + 1];
                 if (invariant1(kp1) == invariant2(u) && in_S[u] == false) {
                   {
                     f[kp1] = u;
@@ -252,12 +252,12 @@ G2_loop_k:    ++G2_verts.first;
           }
           else if (dfs_num[j] > dfs_num_k) {
             {
-              vertex1_t vk = dfs_vertices[dfs_num_k];
+              auto vk = dfs_vertices[dfs_num_k];
               num_edges_on_k -= 
                 count_if(adjacent_vertices(f[vk], G2), make_indirect_pmap(in_S));
                   
               for (int jj = 0; jj < dfs_num_k; ++jj) {
-                vertex1_t j = dfs_vertices[jj];
+                auto j = dfs_vertices[jj];
                 num_edges_on_k -= count(adjacent_vertices(f[j], G2), f[vk]);
               }
             }
@@ -267,7 +267,7 @@ G2_loop_k:    ++G2_verts.first;
             fi_adj = adjacent_vertices(f[i], G2);
             while (fi_adj.first != fi_adj.second) {
               {
-                vertex2_t v = *fi_adj.first;
+                auto v = *fi_adj.first;
                 if (invariant2(v) == invariant1(j) && in_S[v] == false) {
                   f[j] = v;
                   in_S[v] = true;
@@ -308,7 +308,7 @@ fi_adj_loop_k:++fi_adj.first;
 
           return_point_false:
           if (k.empty()) return false;
-          const match_continuation& this_k = k.back();
+          const auto& this_k = k.back();
           switch (this_k.position) {
             case match_continuation::pos_G2_vertex_loop: {G2_verts = this_k.G2_verts; iter = this_k.iter; dfs_num_k = this_k.dfs_num_k; k.pop_back(); in_S[*G2_verts.first] = false; i = source(*iter, G1); j = target(*iter, G1); goto G2_loop_k;}
             case match_continuation::pos_fi_adj_loop: {fi_adj = this_k.fi_adj; iter = this_k.iter; dfs_num_k = this_k.dfs_num_k; k.pop_back(); in_S[*fi_adj.first] = false; i = source(*iter, G1); j = target(*iter, G1); goto fi_adj_loop_k;}
@@ -488,7 +488,7 @@ fi_adj_loop_k:++fi_adj.first;
       typedef shared_array_property_map<degree_size_type, Index> prop_map_type;
       typedef degree_vertex_invariant<prop_map_type, G> result_type;
       result_type operator()() const {
-        prop_map_type pm = make_shared_array_property_map(num_vertices(g), degree_size_type(), index);
+        auto pm = make_shared_array_property_map(num_vertices(g), degree_size_type(), index);
         compute_in_degree(g, pm);
         return result_type(pm, g);
       }
@@ -506,10 +506,10 @@ fi_adj_loop_k:++fi_adj.first;
           using namespace boost::graph::keywords;
           typedef typename boost::detail::override_const_property_result<ArgPack, tag::vertex_index1_map, boost::vertex_index_t, Graph1>::type index1_map_type;
           typedef typename boost::detail::override_const_property_result<ArgPack, tag::vertex_index2_map, boost::vertex_index_t, Graph2>::type index2_map_type;
-          index1_map_type index1_map = boost::detail::override_const_property(arg_pack, _vertex_index1_map, g1, boost::vertex_index);
-          index2_map_type index2_map = boost::detail::override_const_property(arg_pack, _vertex_index2_map, g2, boost::vertex_index);
+          auto index1_map = boost::detail::override_const_property(arg_pack, _vertex_index1_map, g1, boost::vertex_index);
+          auto index2_map = boost::detail::override_const_property(arg_pack, _vertex_index2_map, g2, boost::vertex_index);
           typedef typename graph_traits<Graph2>::vertex_descriptor vertex2_t;
-          typename std::vector<vertex2_t>::size_type n = (typename std::vector<vertex2_t>::size_type)num_vertices(g1);
+          auto n = (typename std::vector<vertex2_t>::size_type)num_vertices(g1);
           std::vector<vertex2_t> f(n);
           typename boost::parameter::lazy_binding<
                      ArgPack,

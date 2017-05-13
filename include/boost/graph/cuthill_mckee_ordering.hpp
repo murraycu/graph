@@ -97,7 +97,7 @@ namespace boost {
 
 
     while( !vertex_queue.empty() ) {
-      Vertex s = vertex_queue.front();
+      auto s = vertex_queue.front();
       vertex_queue.pop_front();
       
       //call BFS with visitor

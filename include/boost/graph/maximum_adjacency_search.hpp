@@ -128,7 +128,7 @@ namespace boost {
        put(assignments, v, v);
      }
 
-      typename KeyedUpdatablePriorityQueue::key_map keys = pq.keys();
+      auto keys = pq.keys();
 
       // set number of visited neighbors for all vertices to 0
       BGL_FORALL_VERTICES_T(v, g, Graph) {
@@ -148,14 +148,14 @@ namespace boost {
       //vertex_descriptor s, t;
       weight_type w;
       while (!pq.empty()) { // while PQ \neq {} do
-        const vertex_descriptor u = pq.top(); // u = extractmax(PQ)
+        const auto u = pq.top(); // u = extractmax(PQ)
         w = get(keys, u);                        vis.start_vertex(u, g);
         pq.pop();                  //            vis.start_vertex(u, g);
 
         BGL_FORALL_OUTEDGES_T(u, e, g, Graph) { // foreach (u, v) \in E do
                                                  vis.examine_edge(e, g);
 
-          const vertex_descriptor v = get(assignments, target(e, g));
+          const auto v = get(assignments, target(e, g));
 
           if (pq.contains(v)) { // if v \in PQ then
             put(keys, v, get(keys, v) + get(weights, e)); // increasekey(PQ, v, wA(v) + w(u, v))
@@ -165,13 +165,13 @@ namespace boost {
 
         typename std::set<vertex_descriptor>::const_iterator assignedVertexIt, assignedVertexEnd = assignedVertices.end();
         for (assignedVertexIt = assignedVertices.begin(); assignedVertexIt != assignedVertexEnd; ++assignedVertexIt) {
-          const vertex_descriptor uPrime = *assignedVertexIt;
+          const auto uPrime = *assignedVertexIt;
 
           if (get(assignments, uPrime) == u) {
             BGL_FORALL_OUTEDGES_T(uPrime, e, g, Graph) { // foreach (u, v) \in E do
                                                  vis.examine_edge(e, g);
 
-              const vertex_descriptor v = get(assignments, target(e, g));
+              const auto v = get(assignments, target(e, g));
 
               if (pq.contains(v)) { // if v \in PQ then
                 put(keys, v, get(keys, v) + get(weights, e)); // increasekey(PQ, v, wA(v) + w(u, v))
@@ -191,7 +191,6 @@ maximum_adjacency_search(const Graph& g, WeightMap weights, MASVisitor vis, cons
     BOOST_CONCEPT_ASSERT((boost::IncidenceGraphConcept<Graph>));
     BOOST_CONCEPT_ASSERT((boost::VertexListGraphConcept<Graph>));
     typedef typename boost::graph_traits<Graph>::vertex_descriptor vertex_descriptor;
-    typedef typename boost::graph_traits<Graph>::vertices_size_type vertices_size_type;
     typedef typename boost::graph_traits<Graph>::edge_descriptor edge_descriptor;
     BOOST_CONCEPT_ASSERT((boost::Convertible<typename boost::graph_traits<Graph>::directed_category, boost::undirected_tag>));
     BOOST_CONCEPT_ASSERT((boost::ReadablePropertyMapConcept<WeightMap, edge_descriptor>));
@@ -201,7 +200,7 @@ maximum_adjacency_search(const Graph& g, WeightMap weights, MASVisitor vis, cons
     BOOST_CONCEPT_ASSERT((boost::Convertible<vertex_descriptor, typename boost::property_traits<VertexAssignmentMap>::value_type>));
     BOOST_CONCEPT_ASSERT((boost::KeyedUpdatableQueueConcept<KeyedUpdatablePriorityQueue>));
 
-    vertices_size_type n = num_vertices(g);
+    auto n = num_vertices(g);
     if (n < 2)
       throw boost::bad_graph("the input graph must have at least two vertices.");
     else if (!pq.empty())
@@ -264,7 +263,7 @@ maximum_adjacency_search(const Graph& g, WeightMap weights, MASVisitor vis, cons
 
           default_pq_gen_type pq_gen(choose_param(get_param(params, boost::distance_zero_t()), weight_type(0)));
 
-          typename boost::result_of<default_pq_gen_type(const Graph&, const ArgPack&)>::type pq = pq_gen(g, params);
+          auto pq = pq_gen(g, params);
 
           boost::maximum_adjacency_search
                (g,

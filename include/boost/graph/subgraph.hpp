@@ -145,7 +145,7 @@ public:
         std::tie(i,i_end) = x.children();
         for(; i != i_end; ++i)
         {         
-         subgraph<Graph> child = this->create_subgraph();
+         auto child = this->create_subgraph();
          child = *i;
          vertex_iterator vi,vi_end;   
          std::tie(vi,vi_end) = vertices(*i);
@@ -211,7 +211,7 @@ public:
     std::pair<vertex_descriptor, bool>
     find_vertex(vertex_descriptor u_global) const {
         if (is_root()) return std::make_pair(u_global, true);
-        typename LocalVertexMap::const_iterator i = m_local_vertex.find(u_global);
+        auto i = m_local_vertex.find(u_global);
         bool valid = i != m_local_vertex.end();
         return std::make_pair((valid ? (*i).second : null_vertex()), valid);
     }
@@ -221,7 +221,7 @@ public:
     std::pair<edge_descriptor, bool>
     find_edge(edge_descriptor e_global) const {
         if (is_root()) return std::make_pair(e_global, true);
-        typename LocalEdgeMap::const_iterator i =
+        auto i =
           m_local_edge.find(get(get(edge_index, root().m_graph), e_global));
         bool valid = i != m_local_edge.end();
         return std::make_pair((valid ? (*i).second : edge_descriptor()), valid);
@@ -379,7 +379,7 @@ add_vertex(typename subgraph<G>::vertex_descriptor u_global,
     g.m_global_vertex.push_back(u_global);
     g.m_local_vertex[u_global] = u_local;
 
-    subgraph<G>& r = g.root();
+    auto& r = g.root();
 
     // remember edge global and local maps
     {
@@ -648,7 +648,7 @@ namespace detail {
     void children_remove_edge(Edge e_global, Children& c)
     {
         for (auto i = c.begin(); i != c.end(); ++i) {
-            std::pair<typename subgraph<G>::edge_descriptor, bool> found =
+             auto found =
               (*i)->find_edge(e_global);
             if (!found.second) {
               continue;
@@ -678,12 +678,12 @@ template <typename G>
 void
 remove_edge(typename subgraph<G>::edge_descriptor e, subgraph<G>& g)
 {
-    typename subgraph<G>::edge_descriptor e_global = g.local_to_global(e);
+    auto e_global = g.local_to_global(e);
 #ifndef NDEBUG
-    std::pair<typename subgraph<G>::edge_descriptor, bool> fe = g.find_edge(e_global);
+     auto fe = g.find_edge(e_global);
     BOOST_ASSERT(fe.second && fe.first == e);
 #endif //NDEBUG
-    subgraph<G> &root = g.root(); // chase to root
+    auto& root = g.root(); // chase to root
     detail::children_remove_edge<G>(e_global, root.m_children);
     remove_edge(e_global, root.m_graph); // kick edge from root
 }
@@ -694,7 +694,6 @@ void
 remove_edge_if(Predicate p, subgraph<G>& g) {
   while (true) {
     bool any_removed = false;
-    typedef typename subgraph<G>::edge_iterator ei_type;
     for (auto ep = edges(g);
          ep.first != ep.second; ++ep.first) {
       if (p(*ep.first)) {
@@ -711,8 +710,7 @@ template <typename G>
 void
 clear_vertex(typename subgraph<G>::vertex_descriptor v, subgraph<G>& g) {
   while (true) {
-    typedef typename subgraph<G>::out_edge_iterator oei_type;
-    std::pair<oei_type, oei_type> p = out_edges(v, g);
+     auto p = out_edges(v, g);
     if (p.first == p.second) break;
     remove_edge(*p.first, g);
   }
@@ -795,7 +793,7 @@ public:
     { }
 
     reference operator[](key_type e) const {
-        PropertyMap pmap = get(m_tag, m_g->root().m_graph);
+        auto pmap = get(m_tag, m_g->root().m_graph);
         return m_g->is_root()
             ? pmap[e]
             : pmap[m_g->local_to_global(e)];
@@ -838,7 +836,7 @@ public:
 
     reference operator[](key_type e) const {
         // Get property map on the underlying graph.
-        PropertyMap pmap = get(m_tag, m_g->m_graph);
+        auto pmap = get(m_tag, m_g->m_graph);
         return pmap[e];
     }
 

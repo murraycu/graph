@@ -324,7 +324,7 @@ namespace boost {
     }
 
     while ( !Q.empty() ) {
-      Vertex u = Q.top();
+      auto u = Q.top();
       Q.pop();
       if  (get(color, u) == Color::white()) {
         depth_first_visit(G_T, u, vis, color);
