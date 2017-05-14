@@ -10,10 +10,10 @@
 
 #include <vector>
 #include <list>
+#include <tuple>
 #include <boost/next_prior.hpp>
 #include <boost/config.hpp>    //for std::min macros
 #include <boost/shared_ptr.hpp>
-#include <boost/tuple/tuple.hpp>
 #include <boost/property_map/property_map.hpp>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/depth_first_search.hpp>
@@ -157,7 +157,7 @@ namespace boost
     typedef std::list< face_handle_t > face_handle_list_t;
     typedef boost::shared_ptr< face_handle_list_t > face_handle_list_ptr_t;
     typedef boost::shared_ptr< vertex_list_t > vertex_list_ptr_t;
-    typedef boost::tuple<vertex_t, bool, bool> merge_stack_frame_t;
+    typedef std::tuple<vertex_t, bool, bool> merge_stack_frame_t;
     typedef std::vector<merge_stack_frame_t> merge_stack_t;
 
     template <typename T>
@@ -685,7 +685,7 @@ namespace boost
                           auto second
                             = face_handles[first_tail].second_vertex();
                           std::tie(first_side_vertex, first_tail)
-                            = make_tuple(first_tail,
+                            = std::make_tuple(first_tail,
                                          first == first_side_vertex ?
                                          second : first
                                          );
@@ -697,7 +697,7 @@ namespace boost
                           auto second
                             = face_handles[second_tail].second_vertex();
                           std::tie(second_side_vertex, second_tail)
-                            = make_tuple(second_tail,
+                            = std::make_tuple(second_tail,
                                          first == second_side_vertex ?
                                          second : first);
                         }
@@ -764,7 +764,7 @@ namespace boost
                 }
               else
                 {
-                  merge_stack.push_back(make_tuple
+                  merge_stack.push_back(std::make_tuple
                      (chosen, chose_first_upper_path, chose_first_lower_path)
                                         );
                   curr_face_handle = *pertinent_roots[chosen]->begin();

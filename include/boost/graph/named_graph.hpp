@@ -22,7 +22,6 @@
 #include <boost/pending/property.hpp> // for boost::lookup_one_property
 #include <boost/pending/container_traits.hpp>
 #include <boost/throw_exception.hpp>
-#include <boost/tuple/tuple.hpp> // for boost::make_tuple
 #include <boost/type_traits/is_same.hpp>
 #include <boost/type_traits/is_base_of.hpp>
 #include <boost/type_traits/remove_cv.hpp>
@@ -31,6 +30,7 @@
 #include <functional> // for std::equal_to
 #include <stdexcept> // for std::runtime_error
 #include <utility> // for std::pair
+#include <tuple>
 
 namespace boost { namespace graph {
 
@@ -291,8 +291,8 @@ BGL_NAMED_GRAPH::named_graph(const extract_name_type& extract,
                              const vertex_constructor_type& vertex_constructor)
   : named_vertices(
       typename named_vertices_type::ctor_args_list(
-        boost::make_tuple(
-          boost::make_tuple(
+        std::make_tuple(
+          std::make_tuple(
             0, // initial number of buckets
             extract_name_from_vertex(derived(), extract),
             boost::hash<vertex_name_type>(),

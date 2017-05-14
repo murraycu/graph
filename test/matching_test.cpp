@@ -298,7 +298,8 @@ void matching_test(std::size_t num_v, const std::string& graph_name)
       vertex_descriptor_t v = random_vertex(j,rand_num);
       if (u != v)
         {
-          boost::tie(boost::tuples::ignore, success) = add_edge(u, v, j);
+          typename graph_traits<Graph>::edge_descriptor ignored;
+          std::tie(ignored, success) = add_edge(u, v, j);
           if (success)
             num_edges++;
         }

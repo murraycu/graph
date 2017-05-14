@@ -9,12 +9,12 @@
 #define __MAKE_MAXIMAL_PLANAR_HPP__
 
 #include <boost/config.hpp>
-#include <boost/tuple/tuple.hpp>   //for tie
 #include <boost/graph/biconnected_components.hpp>
 #include <boost/property_map/property_map.hpp>
 #include <vector>
 #include <iterator>
 #include <algorithm>
+#include <tuple>
 
 #include <boost/graph/planar_face_traversal.hpp>
 #include <boost/graph/planar_detail/add_edge_visitors.hpp>

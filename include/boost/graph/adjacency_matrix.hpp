@@ -14,6 +14,7 @@
 #include <boost/config.hpp>
 #include <vector>
 #include <memory>
+#include <tuple>
 #include <boost/assert.hpp>
 #include <boost/limits.hpp>
 #include <boost/iterator.hpp>
@@ -28,7 +29,6 @@
 #include <boost/iterator/filter_iterator.hpp>
 #include <boost/range/irange.hpp>
 #include <boost/graph/properties.hpp>
-#include <boost/tuple/tuple.hpp>
 #include <boost/static_assert.hpp>
 #include <boost/type_traits.hpp>
 #include <boost/property_map/property_map.hpp>

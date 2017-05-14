@@ -44,9 +44,9 @@
 #include <boost/graph/iteration_macros.hpp>
 #include <boost/graph/named_function_params.hpp>
 #include <boost/graph/visitors.hpp>
-#include <boost/tuple/tuple.hpp>
 
 #include <set>
+#include <tuple>
 
 namespace boost {
   template <class Visitor, class Graph>

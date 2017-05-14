@@ -22,6 +22,7 @@
 #include <iterator>
 #include <vector>
 #include <utility>
+#include <tuple>
 
 #include <boost/assert.hpp>
 #include <boost/concept/assert.hpp>
@@ -33,7 +34,6 @@
 #include <boost/type_traits/has_less.hpp>
 #include <boost/mpl/int.hpp>
 #include <boost/range/algorithm/sort.hpp>
-#include <boost/tuple/tuple.hpp>
 #include <boost/utility/enable_if.hpp>
 
 #ifndef BOOST_GRAPH_ITERATION_MACROS_HPP
@@ -274,9 +274,9 @@ namespace boost {
       }            
 
       // Returns the terminal set counts
-      boost::tuple<size_type, size_type, size_type>
+      std::tuple<size_type, size_type, size_type>
       term_set() const {
-        return boost::make_tuple(term_in_count_, term_out_count_, 
+        return std::make_tuple(term_in_count_, term_out_count_, 
                                  term_both_count_);
       }
       
@@ -628,12 +628,12 @@ namespace boost {
       bool valid() const {
         auto term1 = state1_.term_set();
         auto term2 = state2_.term_set();
-        
-        return comp_term_sets(boost::get<0>(term1), boost::get<0>(term2),
+ 
+        return comp_term_sets(std::get<0>(term1), std::get<0>(term2),
                               boost::mpl::int_<problem_selection>()) &&
-               comp_term_sets(boost::get<1>(term1), boost::get<1>(term2),
+               comp_term_sets(std::get<1>(term1), std::get<1>(term2),
                               boost::mpl::int_<problem_selection>()) &&
-               comp_term_sets(boost::get<2>(term1), boost::get<2>(term2),
+               comp_term_sets(std::get<2>(term1), std::get<2>(term2),
                               boost::mpl::int_<problem_selection>()); 
       }
       

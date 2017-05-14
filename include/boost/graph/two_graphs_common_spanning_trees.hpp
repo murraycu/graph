@@ -629,11 +629,11 @@ two_graphs_common_spanning_trees
     vG_bimap.insert(bimap_value(i, vG_map[i]));
 
   edge_iterator current, last;
-  boost::tuples::tie(current, last) = edges(iG);
+  std::tie(current, last) = edges(iG);
   for(; current != last; ++current)
     if(iG_bimap.right.find(*current) == iG_bimap.right.end())
       return;
-  boost::tuples::tie(current, last) = edges(vG);
+  std::tie(current, last) = edges(vG);
   for(; current != last; ++current)
     if(vG_bimap.right.find(*current) == vG_bimap.right.end())
       return;
@@ -743,10 +743,10 @@ two_graphs_common_spanning_trees
     associative_property_map< std::map<edge_descriptor, bool> > diG(iG_deleted);
     associative_property_map< std::map<edge_descriptor, bool> > dvG(vG_deleted);
 
-    boost::tuples::tie(current, last) = edges(iG);
+    std::tie(current, last) = edges(iG);
     for(; current != last; ++current)
       put(diG, *current, false);
-    boost::tuples::tie(current, last) = edges(vG);
+    std::tie(current, last) = edges(vG);
     for(; current != last; ++current)
       put(dvG, *current, false);
 
@@ -845,11 +845,11 @@ two_graphs_common_spanning_trees
   std::vector<edge_descriptor> iGO, vGO;
   edge_iterator curr, last;
 
-  boost::tuples::tie(curr, last) = edges(iG);
+  std::tie(curr, last) = edges(iG);
   for(; curr != last; ++curr)
     iGO.push_back(*curr);
 
-  boost::tuples::tie(curr, last) = edges(vG);
+  std::tie(curr, last) = edges(vG);
   for(; curr != last; ++curr)
     vGO.push_back(*curr);
 

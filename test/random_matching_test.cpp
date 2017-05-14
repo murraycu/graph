@@ -60,7 +60,10 @@ int main(int argc, char** argv)
       if (u != v)
         {
           if (!edge(u,v,g).second)
-            boost::tie(boost::tuples::ignore, success) = add_edge(u, v, g);
+            {
+              typename graph_traits<undirected_graph>::edge_descriptor ignored;
+              boost::tie(ignored, success) = add_edge(u, v, g);
+            }
           else
             success = false;
 

@@ -10,7 +10,6 @@
 
 #include <boost/config.hpp>
 #include <boost/next_prior.hpp>
-#include <boost/tuple/tuple.hpp>
 #include <boost/tuple/tuple_comparison.hpp>
 #include <boost/property_map/property_map.hpp>
 #include <boost/graph/properties.hpp>
@@ -20,6 +19,7 @@
 #include <vector>
 #include <set>
 #include <map>
+#include <tuple>
 
 
 
@@ -111,7 +111,7 @@ namespace boost
 
     typedef std::size_t x_coord_t;
     typedef std::size_t y_coord_t;
-    typedef boost::tuple<edge_t, x_coord_t, y_coord_t> edge_event_t;
+    typedef std::tuple<edge_t, x_coord_t, y_coord_t> edge_event_t;
     typedef typename std::vector< edge_event_t > edge_event_queue_t;
 
     typedef tuple<y_coord_t, y_coord_t, x_coord_t, x_coord_t> active_map_key_t;
@@ -130,13 +130,13 @@ namespace boost
         vertex_t s(source(e,g));
         vertex_t t(target(e,g));
         edge_event_queue.push_back
-          (make_tuple(e, 
+          (std::make_tuple(e, 
                       static_cast<std::size_t>(drawing[s].x),
                       static_cast<std::size_t>(drawing[s].y)
                       )
            );
         edge_event_queue.push_back
-          (make_tuple(e,
+          (std::make_tuple(e,
                       static_cast<std::size_t>(drawing[t].x),
                       static_cast<std::size_t>(drawing[t].y)
                       )

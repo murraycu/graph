@@ -6,7 +6,7 @@
 #ifndef BOOST_TREE_STRUCTURE_HPP
 #define BOOST_TREE_STRUCTURE_HPP
 
-#include <boost/tuple/tuple.hpp> //For std::tie()
+#include <tuple>
 
 namespace boost {
 

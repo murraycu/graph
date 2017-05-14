@@ -15,9 +15,9 @@
 #include <map>
 #include <iostream>
 #include <fstream>
+#include <tuple>
 #include <stdio.h> // for FILE
 #include <boost/property_map/property_map.hpp>
-#include <boost/tuple/tuple.hpp>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/properties.hpp>
 #include <boost/graph/subgraph.hpp>
@@ -820,13 +820,13 @@ class mutate_graph_impl<compressed_sparse_row_graph<Directed, VertexProperty, Ed
     BGL_FORALL_EDGES_T(e, temp, TempCSRGraph) {
       edge_permutation_from_sorting[temp[e]] = e;
     }
-    typedef boost::tuple<id_t, bgl_vertex_t, id_t> v_prop;
+    typedef std::tuple<id_t, bgl_vertex_t, id_t> v_prop;
     BOOST_FOREACH(const v_prop& t, vertex_props) {
-      put(boost::get<0>(t), dp_, boost::get<1>(t), boost::get<2>(t));
+      put(std::get<0>(t), dp_, std::get<1>(t), std::get<2>(t));
     }
-    typedef boost::tuple<id_t, bgl_edge_t, id_t> e_prop;
+    typedef std::tuple<id_t, bgl_edge_t, id_t> e_prop;
     BOOST_FOREACH(const e_prop& t, edge_props) {
-      put(boost::get<0>(t), dp_, edge_permutation_from_sorting[boost::get<1>(t)], boost::get<2>(t));
+      put(std::get<0>(t), dp_, edge_permutation_from_sorting[std::get<1>(t)], std::get<2>(t));
     }
   }
 
@@ -847,7 +847,7 @@ class mutate_graph_impl<compressed_sparse_row_graph<Directed, VertexProperty, Ed
     bgl_nodes.insert(std::make_pair(node, v));
 
     // node_id_prop_ allows the caller to see the real id names for nodes.
-    vertex_props.push_back(boost::make_tuple(node_id_prop_, v, node));
+    vertex_props.push_back(std::make_tuple(node_id_prop_, v, node));
   }
 
   void
@@ -861,13 +861,13 @@ class mutate_graph_impl<compressed_sparse_row_graph<Directed, VertexProperty, Ed
   void
   set_node_property(const id_t& key, const node_t& node, const id_t& value)
   {
-    vertex_props.push_back(boost::make_tuple(key, bgl_nodes[node], value));
+    vertex_props.push_back(std::make_tuple(key, bgl_nodes[node], value));
   }
 
   void
   set_edge_property(const id_t& key, const edge_t& edge, const id_t& value)
   {
-    edge_props.push_back(boost::make_tuple(key, bgl_edges[edge], value));
+    edge_props.push_back(std::make_tuple(key, bgl_edges[edge], value));
   }
 
   void
@@ -883,8 +883,8 @@ class mutate_graph_impl<compressed_sparse_row_graph<Directed, VertexProperty, Ed
   dynamic_properties& dp_;
   bgl_vertex_t vertex_count;
   std::string node_id_prop_;
-  std::vector<boost::tuple<id_t, bgl_vertex_t, id_t> > vertex_props;
-  std::vector<boost::tuple<id_t, bgl_edge_t, id_t> > edge_props;
+  std::vector<std::tuple<id_t, bgl_vertex_t, id_t> > vertex_props;
+  std::vector<std::tuple<id_t, bgl_edge_t, id_t> > edge_props;
   std::vector<std::pair<bgl_vertex_t, bgl_vertex_t> > edges_to_add;
   std::map<node_t, bgl_vertex_t> bgl_nodes;
   std::map<edge_t, bgl_edge_t> bgl_edges;

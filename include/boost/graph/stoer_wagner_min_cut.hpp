@@ -9,6 +9,7 @@
 #include <boost/assert.hpp>
 #include <set>
 #include <vector>
+#include <tuple>
 #include <boost/concept_check.hpp>
 #include <boost/concept/assert.hpp>
 #include <boost/graph/adjacency_list.hpp>
@@ -20,7 +21,6 @@
 #include <boost/graph/one_bit_color_map.hpp>
 #include <boost/graph/detail/d_ary_heap.hpp>
 #include <boost/property_map/property_map.hpp>
-#include <boost/tuple/tuple.hpp>
 #include <boost/utility/result_of.hpp>
 #include <boost/graph/iteration_macros.hpp>
 

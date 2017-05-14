@@ -11,8 +11,8 @@
 #define BOOST_GRAPH_SEQUENTIAL_VERTEX_COLORING_HPP
 
 #include <vector>
+#include <tuple>
 #include <boost/graph/graph_traits.hpp>
-#include <boost/tuple/tuple.hpp>
 #include <boost/property_map/property_map.hpp>
 #include <boost/limits.hpp>
 

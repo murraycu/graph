@@ -14,9 +14,9 @@
 #include <stdlib.h>
 #include <iostream>
 #include <algorithm>
+#include <tuple>
 #include <assert.h>
 #include <boost/config.hpp>
-#include <boost/tuple/tuple.hpp>
 
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/properties.hpp>

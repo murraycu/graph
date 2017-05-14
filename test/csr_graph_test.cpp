@@ -153,13 +153,13 @@ void assert_bidir_equal_in_both_dirs(const G& g) {
   for (Vertex i = 0; i < g.m_forward.m_rowstart.size() - 1; ++i) {
     for (EdgeIndex j = g.m_forward.m_rowstart[i];
          j < g.m_forward.m_rowstart[i + 1]; ++j) {
-      edges_forward.push_back(boost::make_tuple(j, i, g.m_forward.m_column[j]));
+      edges_forward.push_back(std::make_tuple(j, i, g.m_forward.m_column[j]));
     }
   }
   for (Vertex i = 0; i < g.m_backward.m_rowstart.size() - 1; ++i) {
     for (EdgeIndex j = g.m_backward.m_rowstart[i];
          j < g.m_backward.m_rowstart[i + 1]; ++j) {
-      edges_backward.push_back(boost::make_tuple(g.m_backward.m_edge_properties[j], g.m_backward.m_column[j], i));
+      edges_backward.push_back(std::make_tuple(g.m_backward.m_edge_properties[j], g.m_backward.m_column[j], i));
     }
   }
   std::sort(edges_forward.begin(), edges_forward.end());

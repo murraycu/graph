@@ -23,6 +23,7 @@
 #include <climits>
 #include <boost/assert.hpp>
 #include <iterator>
+#include <tuple>
 #if 0
 #include <iostream> // For some debugging code below
 #endif
@@ -36,7 +37,6 @@
 #include <boost/iterator/reverse_iterator.hpp>
 #include <boost/iterator/zip_iterator.hpp>
 #include <boost/iterator/transform_iterator.hpp>
-#include <boost/tuple/tuple.hpp>
 #include <boost/property_map/property_map.hpp>
 #include <boost/integer.hpp>
 #include <boost/iterator/iterator_facade.hpp>

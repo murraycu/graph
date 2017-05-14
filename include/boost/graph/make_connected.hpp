@@ -10,10 +10,10 @@
 
 #include <boost/config.hpp>
 #include <boost/next_prior.hpp>
-#include <boost/tuple/tuple.hpp>   //for tie
 #include <boost/graph/connected_components.hpp>
 #include <boost/property_map/property_map.hpp>
 #include <vector>
+#include <tuple>
 
 #include <boost/graph/planar_detail/add_edge_visitors.hpp>
 #include <boost/graph/planar_detail/bucket_sort.hpp>

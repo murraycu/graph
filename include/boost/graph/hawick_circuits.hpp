@@ -8,6 +8,7 @@
 #define BOOST_GRAPH_HAWICK_CIRCUITS_HPP
 
 #include <algorithm>
+#include <tuple>
 #include <boost/assert.hpp>
 #include <boost/foreach.hpp>
 #include <boost/graph/graph_traits.hpp>
@@ -18,7 +19,6 @@
 #include <boost/range/begin.hpp>
 #include <boost/range/end.hpp>
 #include <boost/range/iterator.hpp>
-#include <boost/tuple/tuple.hpp> // for boost::tie
 #include <boost/type_traits/remove_reference.hpp>
 #include <boost/utility/result_of.hpp>
 #include <set>

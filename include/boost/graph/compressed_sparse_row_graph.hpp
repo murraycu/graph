@@ -19,6 +19,7 @@
 #include <climits>
 #include <boost/assert.hpp>
 #include <iterator>
+#include <tuple>
 #if 0
 #include <iostream> // For some debugging code below
 #endif
@@ -32,7 +33,6 @@
 #include <boost/iterator/reverse_iterator.hpp>
 #include <boost/iterator/zip_iterator.hpp>
 #include <boost/iterator/transform_iterator.hpp>
-#include <boost/tuple/tuple.hpp>
 #include <boost/property_map/property_map.hpp>
 #include <boost/integer.hpp>
 #include <boost/iterator/iterator_facade.hpp>
@@ -671,12 +671,12 @@ class compressed_sparse_row_graph<directedS, VertexProperty, EdgeProperty, Graph
     typedef typename boost::graph_traits<Graph>::vertex_descriptor vertex_t;
     typedef std::pair<vertex_t, vertex_t> vertex_pair;
     typedef std::vector<
-              boost::tuple<vertex_pair,
+              std::tuple<vertex_pair,
                            edge_bundled> >
       edge_vector_t;
     edge_vector_t new_edges
-      (boost::make_zip_iterator(boost::make_tuple(first, ep_iter)),
-       boost::make_zip_iterator(boost::make_tuple(last, ep_iter_end)));
+      (boost::make_zip_iterator(std::make_tuple(first, ep_iter)),
+       boost::make_zip_iterator(std::make_tuple(last, ep_iter_end)));
     if (new_edges.empty()) return;
     std::sort(new_edges.begin(), new_edges.end(),
               boost::detail::compare_first<

@@ -11,12 +11,12 @@
 
 #include <stack>
 #include <vector>
+#include <tuple>
 #include <boost/graph/overloading.hpp>
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 #include <boost/graph/breadth_first_search.hpp>
 #include <boost/graph/relax.hpp>
 #include <boost/graph/graph_traits.hpp>
-#include <boost/tuple/tuple.hpp>
 #include <boost/type_traits/is_convertible.hpp>
 #include <boost/type_traits/is_same.hpp>
 #include <boost/mpl/if.hpp>
