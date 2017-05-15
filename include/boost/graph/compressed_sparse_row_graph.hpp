@@ -1332,19 +1332,19 @@ struct property_map<BOOST_CSR_GRAPH_TYPE, Tag, typename disable_if<detail::is_di
                ::type> {};
 
 template <BOOST_CSR_GRAPH_TEMPLATE_PARMS, typename Tag>
-typename property_map<BOOST_CSR_GRAPH_TYPE, Tag>::type
+decltype(auto)
 get(Tag tag, BOOST_CSR_GRAPH_TYPE& g) {
   return typename property_map<BOOST_CSR_GRAPH_TYPE, Tag>::type(tag, get(typename property_map<BOOST_CSR_GRAPH_TYPE, Tag>::all_tag(), g));
 }
 
 template <BOOST_CSR_GRAPH_TEMPLATE_PARMS, typename Tag>
-typename property_map<BOOST_CSR_GRAPH_TYPE, Tag>::const_type
+decltype(auto)
 get(Tag tag, const BOOST_CSR_GRAPH_TYPE& g) {
   return typename property_map<BOOST_CSR_GRAPH_TYPE, Tag>::const_type(tag, get(typename property_map<BOOST_CSR_GRAPH_TYPE, Tag>::all_tag(), g));
 }
 
 template <BOOST_CSR_GRAPH_TEMPLATE_PARMS, typename Tag>
-typename property_traits<typename property_map<BOOST_CSR_GRAPH_TYPE, Tag>::type>::reference
+decltype(auto)
 get(Tag tag, BOOST_CSR_GRAPH_TYPE& g, typename property_map<BOOST_CSR_GRAPH_TYPE, Tag>::key_type k) {
   typedef typename property_map<BOOST_CSR_GRAPH_TYPE, Tag>::all_tag all_tag;
   typedef typename property_map<BOOST_CSR_GRAPH_TYPE, all_tag>::type outer_pm;
@@ -1352,7 +1352,7 @@ get(Tag tag, BOOST_CSR_GRAPH_TYPE& g, typename property_map<BOOST_CSR_GRAPH_TYPE
 }
 
 template <BOOST_CSR_GRAPH_TEMPLATE_PARMS, typename Tag>
-typename property_traits<typename property_map<BOOST_CSR_GRAPH_TYPE, Tag>::const_type>::reference
+decltype(auto)
 get(Tag tag, const BOOST_CSR_GRAPH_TYPE& g, typename property_map<BOOST_CSR_GRAPH_TYPE, Tag>::key_type k) {
   typedef typename property_map<BOOST_CSR_GRAPH_TYPE, Tag>::all_tag all_tag;
   typedef typename property_map<BOOST_CSR_GRAPH_TYPE, all_tag>::const_type outer_pm;

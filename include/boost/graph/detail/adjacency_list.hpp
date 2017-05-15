@@ -375,7 +375,7 @@ namespace boost {
   } // namespace detail
 
   template <class Tag, class Vertex, class Property>
-  const typename property_value<Property,Tag>::type&
+  decltype(auto)
   get(Tag property_tag,
       const detail::stored_edge_property<Vertex, Property>& e)
   {
@@ -383,7 +383,7 @@ namespace boost {
   }
 
   template <class Tag, class Vertex, class Iter, class Property>
-  const typename property_value<Property,Tag>::type&
+  decltype(auto)
   get(Tag property_tag,
       const detail::stored_edge_iter<Vertex, Iter, Property>& e)
   {
@@ -391,7 +391,7 @@ namespace boost {
   }
 
   template <class Tag, class Vertex, class EdgeVec, class Property>
-  const typename property_value<Property,Tag>::type&
+  decltype(auto)
   get(Tag property_tag,
       const detail::stored_ra_edge_iter<Vertex, EdgeVec, Property>& e)
   {

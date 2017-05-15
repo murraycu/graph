@@ -1107,28 +1107,28 @@ namespace boost {
 
   template <typename D, typename VP, typename EP, typename GP, typename A,
             typename Tag>
-  typename property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::type
+  decltype(auto)
   get(Tag tag, adjacency_matrix<D, VP, EP, GP, A>& g) {
     return property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::get_nonconst(g, tag);
   }
 
   template <typename D, typename VP, typename EP, typename GP, typename A,
             typename Tag>
-  typename property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::const_type
+  decltype(auto)
   get(Tag tag, const adjacency_matrix<D, VP, EP, GP, A>& g) {
     return property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::get_const(g, tag);
   }
 
   template <typename D, typename VP, typename EP, typename GP, typename A,
             typename Tag>
-  typename property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::single_nonconst_type
+  decltype(auto)
   get(Tag tag, adjacency_matrix<D, VP, EP, GP, A>& g, typename property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::arg_type a) {
     return property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::get_nonconst_one(g, tag, a);
   }
 
   template <typename D, typename VP, typename EP, typename GP, typename A,
             typename Tag>
-  typename property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::single_const_type
+  decltype(auto)
   get(Tag tag, const adjacency_matrix<D, VP, EP, GP, A>& g, typename property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::arg_type a) {
     return property_map<adjacency_matrix<D, VP, EP, GP, A>, Tag>::get_const_one(g, tag, a);
   }
