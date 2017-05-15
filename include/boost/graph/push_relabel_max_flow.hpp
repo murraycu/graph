@@ -138,20 +138,18 @@ namespace boost {
           gap_count(0), gap_node_count(0),
           work_since_last_update(0)
       {
-        vertex_iterator u_iter, u_end;
         // Don't count the reverse edges
         auto m = num_edges(g) / 2;
         nm = alpha() * n + m;
 
         // Initialize flow to zero which means initializing
         // the residual capacity to equal the capacity.
-        out_edge_iterator ei, e_end;
-        for (std::tie(u_iter, u_end) = vertices(g); u_iter != u_end; ++u_iter)
-          for (std::tie(ei, e_end) = out_edges(*u_iter, g); ei != e_end; ++ei) {
+        for (auto [u_iter, u_end] = vertices(g); u_iter != u_end; ++u_iter)
+          for (auto [ei, e_end] = out_edges(*u_iter, g); ei != e_end; ++ei) {
             put(residual_capacity, *ei, get(capacity, *ei));
           }
 
-        for (std::tie(u_iter, u_end) = vertices(g); u_iter != u_end; ++u_iter) {
+        for (auto [u_iter, u_end] = vertices(g); u_iter != u_end; ++u_iter) {
           auto u = *u_iter;
           put(excess_flow, u, 0);
           current[u] = out_edges(u, g);
@@ -160,8 +158,7 @@ namespace boost {
         bool overflow_detected = false;
         FlowValue test_excess = 0;
 
-        out_edge_iterator a_iter, a_end;
-        for (std::tie(a_iter, a_end) = out_edges(src, g); a_iter != a_end; ++a_iter)
+        for (auto [a_iter, a_end] = out_edges(src, g); a_iter != a_end; ++a_iter)
           if (target(*a_iter, g) != src)
             test_excess += get(residual_capacity, *a_iter);
         if (test_excess > (std::numeric_limits<FlowValue>::max)())
@@ -171,7 +168,7 @@ namespace boost {
           put(excess_flow, src, (std::numeric_limits<FlowValue>::max)());
         else {
           put(excess_flow, src, 0);
-          for (std::tie(a_iter, a_end) = out_edges(src, g); 
+          for (auto [a_iter, a_end] = out_edges(src, g); 
                a_iter != a_end; ++a_iter) {
             auto a = *a_iter;
             auto tgt = target(a, g);
@@ -189,7 +186,7 @@ namespace boost {
         max_active = 0;
         min_active = n;
 
-        for (std::tie(u_iter, u_end) = vertices(g); u_iter != u_end; ++u_iter) {
+        for (auto [u_iter, u_end] = vertices(g); u_iter != u_end; ++u_iter) {
           auto u = *u_iter;
           if (u == sink) {
             put(distance, u, 0);
@@ -239,8 +236,7 @@ namespace boost {
           Q.pop();
           auto d_v = get(distance, u) + 1;
 
-          out_edge_iterator ai, a_end;
-          for (std::tie(ai, a_end) = out_edges(u, g); ai != a_end; ++ai) {
+          for (auto [ai, a_end] = out_edges(u, g); ai != a_end; ++ai) {
             auto a = *ai;
             auto v = target(a, g);
             if (get(color, v) == ColorTraits::white()
@@ -344,8 +340,8 @@ namespace boost {
 
         // Examine the residual out-edges of vertex i, choosing the
         // edge whose target vertex has the minimal distance.
-        out_edge_iterator ai, a_end, min_edge_iter;
-        for (std::tie(ai, a_end) = out_edges(u, g); ai != a_end; ++ai) {
+        out_edge_iterator min_edge_iter;
+        for (auto [ai, a_end] = out_edges(u, g); ai != a_end; ++ai) {
           ++work_since_last_update;
           auto a = *ai;
           auto v = target(a, g);
@@ -441,20 +437,20 @@ namespace boost {
         bool bos_null = true;
 
         // handle self-loops
-        for (std::tie(u_iter, u_end) = vertices(g); u_iter != u_end; ++u_iter)
-          for (std::tie(ai, a_end) = out_edges(*u_iter, g); ai != a_end; ++ai)
+        for (auto [u_iter, u_end] = vertices(g); u_iter != u_end; ++u_iter)
+          for (auto [ai, a_end] = out_edges(*u_iter, g); ai != a_end; ++ai)
             if (target(*ai, g) == *u_iter)
               put(residual_capacity, *ai, get(capacity, *ai));
 
         // initialize
-        for (std::tie(u_iter, u_end) = vertices(g); u_iter != u_end; ++u_iter) {
+        for (auto [u_iter, u_end] = vertices(g); u_iter != u_end; ++u_iter) {
           u = *u_iter;
           put(color, u, ColorTraits::white());
           parent[get(index, u)] = u;
           current[u] = out_edges(u, g);
         }
         // eliminate flow cycles and topologically order the vertices
-        for (std::tie(u_iter, u_end) = vertices(g); u_iter != u_end; ++u_iter) {
+        for (auto [u_iter, u_end] = vertices(g); u_iter != u_end; ++u_iter) {
           u = *u_iter;
           if (get(color, u) == ColorTraits::white() 
               && get(excess_flow, u) > 0
@@ -541,7 +537,7 @@ namespace boost {
         // note that the sink is not on the stack
         if (! bos_null) {
           for (u = tos; u != bos; u = topo_next[get(index, u)]) {
-            std::tie(ai, a_end) = out_edges(u, g);
+            auto [ai, a_end] = out_edges(u, g);
             while (get(excess_flow, u) > 0 && ai != a_end) {
               if (get(capacity, *ai) == 0 && is_residual_edge(*ai))
                 push_flow(*ai);
@@ -550,7 +546,7 @@ namespace boost {
           }
           // do the bottom
           u = bos;
-          std::tie(ai, a_end) = out_edges(u, g);
+          auto [ai, a_end] = out_edges(u, g);
           while (get(excess_flow, u) > 0 && ai != a_end) {
             if (get(capacity, *ai) == 0 && is_residual_edge(*ai))
               push_flow(*ai);
@@ -567,8 +563,8 @@ namespace boost {
         out_edge_iterator ai, a_end;
 
         // check edge flow values
-        for (std::tie(u_iter, u_end) = vertices(g); u_iter != u_end; ++u_iter) {
-          for (std::tie(ai, a_end) = out_edges(*u_iter, g); ai != a_end; ++ai) {
+        for (auto [u_iter, u_end] = vertices(g); u_iter != u_end; ++u_iter) {
+          for (auto [ai, a_end] = out_edges(*u_iter, g); ai != a_end; ++ai) {
             auto a = *ai;
             if (get(capacity, a) > 0)
               if ((get(residual_capacity, a) + get(residual_capacity, get(reverse_edge, a))
@@ -581,13 +577,13 @@ namespace boost {
         
         // check conservation
         FlowValue sum;  
-        for (std::tie(u_iter, u_end) = vertices(g); u_iter != u_end; ++u_iter) {
+        for (auto [u_iter, u_end] = vertices(g); u_iter != u_end; ++u_iter) {
           auto u = *u_iter;
           if (u != src && u != sink) {
             if (get(excess_flow, u) != 0)
               return false;
             sum = 0;
-            for (std::tie(ai, a_end) = out_edges(u, g); ai != a_end; ++ai) 
+            for (auto [ai, a_end] = out_edges(u, g); ai != a_end; ++ai) 
               if (get(capacity, *ai) > 0)
                 sum -= get(capacity, *ai) - get(residual_capacity, *ai);
               else
@@ -618,10 +614,8 @@ namespace boost {
 
       void print_flow_values(std::ostream& os) const {
         os << "flow values" << std::endl;
-        vertex_iterator u_iter, u_end;
-        out_edge_iterator ei, e_end;
-        for (std::tie(u_iter, u_end) = vertices(g); u_iter != u_end; ++u_iter)
-          for (std::tie(ei, e_end) = out_edges(*u_iter, g); ei != e_end; ++ei)
+        for (auto [u_iter, u_end] = vertices(g); u_iter != u_end; ++u_iter)
+          for (auto [ei, e_end] = out_edges(*u_iter, g); ei != e_end; ++ei)
             if (get(capacity, *ei) > 0)
               os << *u_iter << " " << target(*ei, g) << " " 
                  << (get(capacity, *ei) - get(residual_capacity, *ei)) << std::endl;

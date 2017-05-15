@@ -60,8 +60,7 @@ namespace boost {
                                 std::numeric_limits<size_type>::max BOOST_PREVENT_MACRO_SUBSTITUTION());
     
     //Initialize colors 
-    typename GraphTraits::vertex_iterator v, vend;
-    for (std::tie(v, vend) = vertices(G); v != vend; ++v)
+    for (auto [v, vend] = vertices(G); v != vend; ++v)
       put(color, *v, V-1);
     
     //Determine the color for every vertex one by one

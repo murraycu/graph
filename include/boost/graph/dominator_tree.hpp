@@ -120,8 +120,7 @@ namespace boost {
         //   the semidominator of n.
 
         // For each predecessor of n
-        typename graph_traits<Graph>::in_edge_iterator inItr, inEnd;
-        for (std::tie(inItr, inEnd) = in_edges(n, g); inItr != inEnd; ++inItr)
+        for (auto [inItr, inEnd] = in_edges(n, g); inItr != inEnd; ++inItr)
           {
             const auto v = source(*inItr, g);
             // To deal with unreachable nodes
@@ -393,8 +392,7 @@ namespace boost {
     const auto numOfVertices = num_vertices(g);
     if (numOfVertices == 0) return;
 
-    vertexItr vi, viend;
-    std::tie(vi, viend) = vertices(g);
+    auto [vi, viend] = vertices(g);
     const std::set<Vertex> N(vi, viend);
 
     bool change = true;
@@ -407,14 +405,13 @@ namespace boost {
     while (change)
       {
         change = false;
-        for (std::tie(vi, viend) = vertices(g); vi != viend; ++vi)
+        for (auto [vi, viend] = vertices(g); vi != viend; ++vi)
           {
             if (*vi == entry) continue;
 
             std::set<Vertex> T(N);
 
-            typename graph_traits<Graph>::in_edge_iterator inItr, inEnd;
-            for (std::tie(inItr, inEnd) = in_edges(*vi, g); inItr != inEnd; ++inItr)
+            for (auto [inItr, inEnd] = in_edges(*vi, g); inItr != inEnd; ++inItr)
               {
                 const auto p = source(*inItr, g);
 
@@ -432,16 +429,16 @@ namespace boost {
                 change = true;
                 get(domMap, *vi).swap(T);
               }
-          } // end of for (std::tie(vi, viend) = vertices(g)
+          } // end of for (auto [vi, viend] = vertices(g)
       } // end of while(change)
 
     // 2. Build dominator tree
-    for (std::tie(vi, viend) = vertices(g); vi != viend; ++vi)
+    for (auto [vi, viend] = vertices(g); vi != viend; ++vi)
       get(domMap, *vi).erase(*vi);
 
     Graph domTree(numOfVertices);
 
-    for (std::tie(vi, viend) = vertices(g); vi != viend; ++vi)
+    for (auto [vi, viend] = vertices(g); vi != viend; ++vi)
       {
         if (*vi == entry) continue;
 
@@ -460,7 +457,7 @@ namespace boost {
           }
       }
 
-    for (std::tie(vi, viend) = vertices(g); vi != viend; ++vi)
+    for (auto [vi, viend] = vertices(g); vi != viend; ++vi)
       {
         if (*vi != entry && get(domMap, *vi).size() == 1)
           {

@@ -461,8 +461,7 @@ namespace boost {
   {
     typedef typename property_traits<ColorMap>::value_type ColorValue;
     typedef color_traits<ColorValue> Color;
-    typename graph_traits<VertexListGraph>::vertex_iterator ui, ui_end;
-    for (std::tie(ui, ui_end) = vertices(g); ui != ui_end; ++ui) {
+    for (auto [ui, ui_end] = vertices(g); ui != ui_end; ++ui) {
       vis.initialize_vertex(*ui, g);
       put(distance, *ui, inf);
       put(predecessor, *ui, *ui);

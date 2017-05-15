@@ -142,7 +142,6 @@ all_mean_geodesics(const Graph& g,
 {
     BOOST_CONCEPT_ASSERT(( VertexListGraphConcept<Graph> ));
     typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
-    typedef typename graph_traits<Graph>::vertex_iterator VertexIterator;
     BOOST_CONCEPT_ASSERT(( ReadablePropertyMapConcept<DistanceMatrixMap,Vertex> ));
     BOOST_CONCEPT_ASSERT(( DistanceMeasureConcept<Measure,Graph> ));
     typedef typename Measure::result_type Result;
@@ -155,8 +154,7 @@ all_mean_geodesics(const Graph& g,
 
     auto inf = numeric_values<Result>::infinity();
     auto sum = numeric_values<Result>::zero();
-    VertexIterator i, end;
-    for(std::tie(i, end) = vertices(g); i != end; ++i) {
+    for(auto [i, end] = vertices(g); i != end; ++i) {
         auto dm = get(dist, *i);
         auto r = mean_geodesic(g, dm, measure);
         put(geo, *i, r);

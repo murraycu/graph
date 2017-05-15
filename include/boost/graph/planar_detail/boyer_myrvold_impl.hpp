@@ -909,8 +909,7 @@ namespace boost
       // these represent articulation points, we can obtain a
       // planar embedding no matter what order we embed them in.
 
-      vertex_iterator_t xi, xi_end;
-      for(std::tie(xi,xi_end) = vertices(g); xi != xi_end; ++xi)
+      for(auto [xi, xi_end] = vertices(g); xi != xi_end; ++xi)
         {
           if (!separated_dfs_child_list[*xi]->empty())
             {
@@ -1174,7 +1173,7 @@ namespace boost
       // Clear the short-circuit edges - these are needed for the planar
       // testing/embedding algorithm to run in linear time, but they'll
       // complicate the kuratowski subgraph isolation
-      for(std::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
+      for(auto [vi,vi_end] = vertices(g); vi != vi_end; ++vi)
         {
           face_handles[*vi].reset_vertex_cache();
           dfs_child_handles[*vi].reset_vertex_cache();
@@ -1324,7 +1323,7 @@ namespace boost
 
       //Find external path to x and to y
 
-      for(std::tie(ei, ei_end) = edges(g); ei != ei_end; ++ei)
+      for(auto [ei, ei_end] = edges(g); ei != ei_end; ++ei)
         {
           edge_t e(*ei);
           goal_edge[e]
@@ -1348,7 +1347,7 @@ namespace boost
         }
 
 
-      for(std::tie(ei, ei_end) = edges(g); ei != ei_end; ++ei)
+      for(auto [ei, ei_end] = edges(g); ei != ei_end; ++ei)
         {
           edge_t e(*ei);
           goal_edge[e]
@@ -1396,7 +1395,7 @@ namespace boost
         {
           chosen_case = detail::BM_CASE_B;
 
-          for(std::tie(ei, ei_end) = edges(g); ei != ei_end; ++ei)
+          for(auto [ei, ei_end] = edges(g); ei != ei_end; ++ei)
             {
               edge_t e(*ei);
               goal_edge[e] = false;
@@ -1414,7 +1413,7 @@ namespace boost
                                 );
 
 
-          for(std::tie(ei, ei_end) = edges(g); ei != ei_end; ++ei)
+          for(auto [ei, ei_end] = edges(g); ei != ei_end; ++ei)
             {
               forbidden_edge[*ei] = outer_face_edge[*ei];
             }
@@ -1683,7 +1682,7 @@ namespace boost
 
           //Finding z and w.
 
-          for(std::tie(ei, ei_end) = edges(g); ei != ei_end; ++ei)
+          for(auto [ei, ei_end] = edges(g); ei != ei_end; ++ei)
             {
               edge_t e(*ei);
               goal_edge[e] = !outer_face_edge[e] &&
@@ -1701,14 +1700,14 @@ namespace boost
           if (chosen_case == detail::BM_CASE_E)
             {
 
-              for(std::tie(ei, ei_end) = edges(g); ei != ei_end; ++ei)
+              for(auto [ei, ei_end] = edges(g); ei != ei_end; ++ei)
                 {
                   forbidden_edge[*ei] = outer_face_edge[*ei];
                   goal_edge[*ei] = !outer_face_edge[*ei] &&
                     (source(*ei,g) == w || target(*ei,g) == w);
                 }
 
-              for(std::tie(oei, oei_end) = out_edges(w,g); oei != oei_end; ++oei)
+              for(auto [oei, oei_end] = out_edges(w,g); oei != oei_end; ++oei)
                 {
                   if (!outer_face_edge[*oei])
                     goal_edge[*oei] = true;
@@ -1895,7 +1894,7 @@ namespace boost
         }
 
 
-      for(std::tie(ei, ei_end) = edges(g); ei != ei_end; ++ei)
+      for(auto [ei, ei_end] = edges(g); ei != ei_end; ++ei)
         if (is_in_subgraph[*ei])
           *o_itr = *ei;
 

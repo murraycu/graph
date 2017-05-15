@@ -141,7 +141,7 @@ namespace boost {
         vis(g, parities, bestThisTime, weights, index_map);
 
       // for each node in the graph,
-      for (std::tie(u_iter, u_end) = vertices(g); u_iter != u_end; ++u_iter) {
+      for (auto [u_iter, u_end] = vertices(g); u_iter != u_end; ++u_iter) {
         // run the MAS and find the min cut
         vis.clear();
         boost::maximum_adjacency_search(g,

@@ -161,7 +161,7 @@ gursoy_atun_step
     = graph_traits<VertexListAndIncidenceGraph>::null_vertex();
   double min_distance = 0.0;
   bool min_distance_unset = true;
-  for (std::tie(i, iend) = vertices(graph); i != iend; ++i) {
+  for (auto [i, iend] = vertices(graph); i != iend; ++i) {
     double this_distance = space.distance(get(position, *i), input_vector);
     put(distance_from_input, *i, this_distance);
     if (min_distance_unset || this_distance < min_distance) {
@@ -250,10 +250,7 @@ void gursoy_atun_layout(const VertexListAndIncidenceGraph& graph,
                         VertexIndexMap vertex_index_map,
                         EdgeWeightMap weight)
 {
-  typedef typename graph_traits<VertexListAndIncidenceGraph>::vertex_iterator
-    vertex_iterator;
-  vertex_iterator i, iend;
-  for (std::tie(i, iend) = vertices(graph); i != iend; ++i) {
+  for (auto [i, iend] = vertices(graph); i != iend; ++i) {
     put(position, *i, space.random_point());
   }
   gursoy_atun_refine(graph, space,

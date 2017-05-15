@@ -24,8 +24,7 @@ namespace boost {
     using std::abs;
     typedef typename graph_traits<Graph>::vertices_size_type vertices_size_type;
     vertices_size_type b = 0;
-    typename graph_traits<Graph>::out_edge_iterator e, end;
-    for (std::tie(e, end) = out_edges(i, g); e != end; ++e) {
+    for (auto [e, end] = out_edges(i, g); e != end; ++e) {
       int f_i = get(index, i);
       int f_j = get(index, target(*e, g));
       b = max BOOST_PREVENT_MACRO_SUBSTITUTION (b, vertices_size_type(abs(f_i - f_j)));
@@ -49,8 +48,7 @@ namespace boost {
     using std::abs;
     typedef typename graph_traits<Graph>::vertices_size_type vertices_size_type;
     vertices_size_type b = 0;
-    typename graph_traits<Graph>::edge_iterator i, end;
-    for (std::tie(i, end) = edges(g); i != end; ++i) {
+    for (auto [i, end] = edges(g); i != end; ++i) {
       int f_i = get(index, source(*i, g));
       int f_j = get(index, target(*i, g));
       b = max BOOST_PREVENT_MACRO_SUBSTITUTION (b, vertices_size_type(abs(f_i - f_j)));
@@ -71,8 +69,7 @@ namespace boost {
   {
     typedef typename graph_traits<Graph>::vertices_size_type size_type;
     size_type sum = 0;
-    typename graph_traits<Graph>::edge_iterator i, end;
-    for (std::tie(i, end) = edges(g); i != end; ++i) {
+    for (auto [i, end] = edges(g); i != end; ++i) {
       auto f_u = get(index_map, source(*i, g));
       auto f_v = get(index_map, target(*i, g));
       using namespace std; // to call abs() unqualified

@@ -273,7 +273,6 @@ bron_kerbosch_all_cliques(const Graph& g, Visitor vis, std::size_t min)
     BOOST_CONCEPT_ASSERT(( VertexListGraphConcept<Graph> ));
     BOOST_CONCEPT_ASSERT(( AdjacencyMatrixConcept<Graph> )); // Structural requirement only
     typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
-    typedef typename graph_traits<Graph>::vertex_iterator VertexIterator;
     typedef std::vector<Vertex> VertexSet;
     typedef std::deque<Vertex> Clique;
     BOOST_CONCEPT_ASSERT(( CliqueVisitorConcept<Visitor,Clique,Graph> ));
@@ -281,8 +280,7 @@ bron_kerbosch_all_cliques(const Graph& g, Visitor vis, std::size_t min)
     // NOTE: We're using a deque to implement the clique, because it provides
     // constant inserts and removals at the end and also a constant size.
 
-    VertexIterator i, end;
-    std::tie(i, end) = vertices(g);
+    auto [i, end] = vertices(g);
     VertexSet cands(i, end);    // start with all vertices as candidates
     VertexSet nots;             // start with no vertices visited
 

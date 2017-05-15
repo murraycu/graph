@@ -55,7 +55,6 @@ namespace boost {
       property< vertex_distance_t, DT>,
       property< edge_weight_t, DT, 
       property< edge_weight2_t, DT > > > Graph2;
-    typedef graph_traits<Graph2> Traits2;
 
     Graph2 g2(num_vertices(g1) + 1);
     typename property_map<Graph2, edge_weight_t>::type 
@@ -73,32 +72,28 @@ namespace boost {
       verts1(num_vertices(g1) + 1);
     auto s = *vertices(g2).first;
     {
-      typename Traits1::vertex_iterator v, v_end;
       int i = 1;
-      for (std::tie(v, v_end) = vertices(g1); v != v_end; ++v, ++i) {
-        typename Traits2::edge_descriptor e; bool z;
-        std::tie(e, z) = add_edge(s, get(id1, *v) + 1, g2);
+      for (auto [v, v_end] = vertices(g1); v != v_end; ++v, ++i) {
+        auto [e, z] = add_edge(s, get(id1, *v) + 1, g2);
         put(w, e, zero);
         verts1[i] = *v;
       }
-      typename Traits1::edge_iterator e, e_end;
-      for (std::tie(e, e_end) = edges(g1); e != e_end; ++e) {
-        typename Traits2::edge_descriptor e2; bool z;
-        std::tie(e2, z) = add_edge(get(id1, source(*e, g1)) + 1, 
+
+      for (auto [e, e_end] = edges(g1); e != e_end; ++e) {
+        auto [e2, z] = add_edge(get(id1, source(*e, g1)) + 1, 
                                      get(id1, target(*e, g1)) + 1, g2);
         put(w, e2, get(w1, *e));
         if (is_undirected) {
-          std::tie(e2, z) = add_edge(get(id1, target(*e, g1)) + 1, 
+          auto [e2, z] = add_edge(get(id1, target(*e, g1)) + 1, 
                                        get(id1, source(*e, g1)) + 1, g2);
           put(w, e2, get(w1, *e));
         }
       }
     }
-    typename Traits2::vertex_iterator v, v_end, u, u_end;
-    typename Traits2::edge_iterator e, e_end;
+
     shared_array_property_map<DT,VertexID2> h(num_vertices(g2), id2);
 
-    for (std::tie(v, v_end) = vertices(g2); v != v_end; ++v)
+    for (auto [v, v_end] = vertices(g2); v != v_end; ++v)
       put(d, *v, inf);
 
     put(d, s, zero);
@@ -107,19 +102,19 @@ namespace boost {
     dummy_property_map pred; bellman_visitor<> bvis;
     if (bellman_ford_shortest_paths
         (g2, num_vertices(g2), w, pred, d, combine, compare, bvis)) {
-      for (std::tie(v, v_end) = vertices(g2); v != v_end; ++v)
+      for (auto [v, v_end] = vertices(g2); v != v_end; ++v)
         put(h, *v, get(d, *v));
       // Reweight the edges to remove negatives
-      for (std::tie(e, e_end) = edges(g2); e != e_end; ++e) {
+      for (auto [e, e_end] = edges(g2); e != e_end; ++e) {
         auto a = source(*e, g2),
           b = target(*e, g2);
         put(w_hat, *e, combine((get(h, a) - get(h, b)), get(w, *e)));
       }
-      for (std::tie(u, u_end) = vertices(g2); u != u_end; ++u) {
+      for (auto [u, u_end] = vertices(g2); u != u_end; ++u) {
         dijkstra_visitor<> dvis;
         dijkstra_shortest_paths
           (g2, *u, pred, d, w_hat, id2, compare, combine, inf, zero,dvis);
-        for (std::tie(v, v_end) = vertices(g2); v != v_end; ++v) {
+        for (auto [v, v_end] = vertices(g2); v != v_end; ++v) {
           if (*u != s && *v != s) {
             D[get(id2, *u)-1][get(id2, *v)-1] = combine((get(h, *v) - get(h, *u)), get(d, *v));
           }

@@ -123,8 +123,7 @@ namespace boost
     edge_event_queue_t edge_event_queue;
     active_map_t active_edges;
 
-    edge_iterator_t ei, ei_end;
-    for(std::tie(ei,ei_end) = edges(g); ei != ei_end; ++ei)
+    for(auto [ei,ei_end] = edges(g); ei != ei_end; ++ei)
       {
         edge_t e(*ei);
         vertex_t s(source(e,g));

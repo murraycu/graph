@@ -111,10 +111,9 @@ namespace boost {
       BOOST_CONCEPT_ASSERT(( ColorValueConcept<EColorValue> ));
       typedef color_traits<ColorValue> Color;
       typedef color_traits<EColorValue> EColor;
-      typename graph_traits<IncidenceGraph>::out_edge_iterator ei, ei_end;
 
       put(vertex_color, u, Color::gray());   vis.discover_vertex(u, g);
-      for (std::tie(ei, ei_end) = out_edges(u, g); ei != ei_end; ++ei) {
+      for (auto [ei, ei_end] = out_edges(u, g); ei != ei_end; ++ei) {
         auto v = target(*ei, g);           vis.examine_edge(*ei, g);
         auto v_color = get(vertex_color, v);
         auto uv_color = get(edge_color, *ei);
@@ -146,19 +145,18 @@ namespace boost {
     typedef typename property_traits<VertexColorMap>::value_type ColorValue;
     typedef color_traits<ColorValue> Color;
 
-    typename graph_traits<Graph>::vertex_iterator ui, ui_end;
-    for (std::tie(ui, ui_end) = vertices(g); ui != ui_end; ++ui) {
+    for (auto [ui, ui_end] = vertices(g); ui != ui_end; ++ui) {
       put(vertex_color, *ui, Color::white());   vis.initialize_vertex(*ui, g);
     }
-    typename graph_traits<Graph>::edge_iterator ei, ei_end;
-    for (std::tie(ei, ei_end) = edges(g); ei != ei_end; ++ei)
+
+    for (auto [ei, ei_end] = edges(g); ei != ei_end; ++ei)
       put(edge_color, *ei, Color::white());
 
     if (start_vertex != *vertices(g).first){ vis.start_vertex(start_vertex, g);
       detail::undir_dfv_impl(g, start_vertex, vis, vertex_color, edge_color);
     }
 
-    for (std::tie(ui, ui_end) = vertices(g); ui != ui_end; ++ui) {
+    for (auto [ui, ui_end] = vertices(g); ui != ui_end; ++ui) {
       auto u_color = get(vertex_color, *ui);
       if (u_color == Color::white()) {       vis.start_vertex(*ui, g);
         detail::undir_dfv_impl(g, *ui, vis, vertex_color, edge_color);

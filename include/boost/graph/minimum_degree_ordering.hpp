@@ -308,15 +308,14 @@ namespace boost {
         marker(n_, vertex_index_map),
         work_space(n_)
       {
-        typename graph_traits<Graph>::vertex_iterator v, vend;
         size_type vid = 0;
-        for (std::tie(v, vend) = vertices(G); v != vend; ++v, ++vid)
+        for (auto [v, vend] = vertices(G); v != vend; ++v, ++vid)
           index_vertex_vec[vid] = *v;
         index_vertex_map = IndexVertexMap(&index_vertex_vec[0]);
 
         // Initialize degreelists.  Degreelists organizes the nodes
         // according to their degree.
-        for (std::tie(v, vend) = vertices(G); v != vend; ++v) {
+        for (auto [v, vend] = vertices(G); v != vend; ++v) {
           put(degree, *v, out_degree(*v, G));
           degreelists.push(*v);
         }
@@ -408,8 +407,7 @@ namespace boost {
           // element absorb
           auto e_id = element_neighbor.top();
           auto element = get(index_vertex_map, e_id);
-          adj_iter i, i_end;
-          for (std::tie(i, i_end) = adjacent_vertices(element, G); i != i_end; ++i){
+          for (auto [i, i_end] = adjacent_vertices(element, G); i != i_end; ++i){
             auto i_node = *i;
             if (!marker.is_tagged(i_node) && !numbering.is_numbered(i_node)) {
               marker.mark_tagged(i_node);
@@ -418,8 +416,7 @@ namespace boost {
           }
           element_neighbor.pop();
         }
-        adj_iter v, ve;
-        for (std::tie(v, ve) = adjacent_vertices(node, G); v != ve; ++v) {
+        for (auto [v, ve] = adjacent_vertices(node, G); v != ve; ++v) {
           auto v_node = *v;
           if (!degree_lists_marker.need_update(v_node) 
               && !degree_lists_marker.outmatched_or_done(v_node)) {
@@ -535,16 +532,14 @@ namespace boost {
             }
             marker.increment_tag();
             deg = deg0;
-            adj_iter i, ie;
-            for (std::tie(i, ie) = adjacent_vertices(u_node, G); i != ie; ++i) {
+            for (auto [i, ie] = adjacent_vertices(u_node, G); i != ie; ++i) {
               auto i_node = *i;
               if (marker.is_tagged(i_node)) 
                 continue;
               marker.mark_tagged(i_node);
 
               if (numbering.is_numbered(i_node)) {
-                adj_iter j, je;
-                for (std::tie(j, je) = adjacent_vertices(i_node, G); j != je; ++j) {
+                for (auto [j, je] = adjacent_vertices(i_node, G); j != je; ++j) {
                   const auto j_node = *j;
                   if (marker.is_not_tagged(j_node)) {
                     marker.mark_tagged(j_node);

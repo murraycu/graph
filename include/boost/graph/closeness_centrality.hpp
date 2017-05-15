@@ -124,8 +124,7 @@ all_closeness_centralities(const Graph& g,
     BOOST_CONCEPT_ASSERT(( ReadablePropertyMapConcept<DistanceMap,Vertex> ));
     BOOST_CONCEPT_ASSERT(( WritablePropertyMapConcept<CentralityMap,Vertex> ));
 
-    typename graph_traits<Graph>::vertex_iterator i, end;
-    for(std::tie(i, end) = vertices(g); i != end; ++i) {
+    for(auto [i, end] = vertices(g); i != end; ++i) {
         auto dm = get(dist, *i);
         auto c = closeness_centrality(g, dm, measure);
         put(cent, *i, c);

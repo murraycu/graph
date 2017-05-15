@@ -103,11 +103,9 @@ namespace boost {
     BOOST_CONCEPT_ASSERT(( ReadWritePropertyMapConcept<DistanceMap, Vertex> ));
     BOOST_CONCEPT_ASSERT(( ReadablePropertyMapConcept<WeightMap, Edge> ));
 
-    typename GTraits::edge_iterator i, end;
-
     for (Size k = 0; k < N; ++k) {
       bool at_least_one_edge_relaxed = false;
-      for (std::tie(i, end) = edges(g); i != end; ++i) {
+      for (auto [i, end] = edges(g); i != end; ++i) {
         v.examine_edge(*i, g);
         if (relax(*i, g, weight, pred, distance, combine, compare)) {
           at_least_one_edge_relaxed = true;
@@ -119,7 +117,7 @@ namespace boost {
         break;
     }
 
-    for (std::tie(i, end) = edges(g); i != end; ++i)
+    for (auto [i, end] = edges(g); i != end; ++i)
       if (compare(combine(get(distance, source(*i, g)), get(weight, *i)),
                   get(distance, target(*i,g))))
       {
@@ -146,8 +144,7 @@ namespace boost {
       typedef typename property_traits<DistanceMap>::value_type D;
       bellman_visitor<> null_vis;
       typedef typename property_traits<WeightMap>::value_type weight_type;
-      typename graph_traits<VertexAndEdgeListGraph>::vertex_iterator v, v_end;
-      for (std::tie(v, v_end) = vertices(g); v != v_end; ++v) {
+      for (auto [v, v_end] = vertices(g); v != v_end; ++v) {
         put(distance, *v, (std::numeric_limits<weight_type>::max)());
         put(pred, *v, *v);
       }

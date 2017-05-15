@@ -37,8 +37,7 @@ namespace boost {
       std::vector<cg_vertex> adj;
       for (size_type i = 0; i < components[si].size(); ++i) {
         auto u = components[s][i];
-        typename graph_traits<Graph>::adjacency_iterator v, v_end;
-        for (std::tie(v, v_end) = adjacent_vertices(u, g); v != v_end; ++v) {
+        for (auto [v, v_end] = adjacent_vertices(u, g); v != v_end; ++v) {
           auto t = to_cg_vertex[component_number[*v]];
           if (s != t) // Avoid loops in the condensation graph
             adj.push_back(t);
@@ -48,9 +47,7 @@ namespace boost {
       if (! adj.empty()) {
         size_type i = 0;
         cg_vertex t = adj[i];
-        typename graph_traits<CondensationGraph>::edge_descriptor e;
-        bool inserted;
-        std::tie(e, inserted) = add_edge(s, t, cg);
+        auto [e, inserted] = add_edge(s, t, cg);
         put(edge_mult_map, e, 1);
         ++i;
         while (i < adj.size()) {
@@ -58,7 +55,7 @@ namespace boost {
             put(edge_mult_map, e, get(edge_mult_map, e) + 1);
           else {
             t = adj[i];
-            std::tie(e, inserted) = add_edge(s, t, cg);
+            auto [e, inserted] = add_edge(s, t, cg);
             put(edge_mult_map, e, 1);
           }
           ++i;

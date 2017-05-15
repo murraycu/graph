@@ -46,7 +46,6 @@ int read_dimacs_max_flow_internal(Graph& g,
   const int P_FIELDS = 3;       /* no of fields in problem line */
 
   typedef typename graph_traits<Graph>::vertex_descriptor vertex_descriptor;
-  typedef typename graph_traits<Graph>::edge_descriptor edge_descriptor;
 
   std::vector<vertex_descriptor> verts;
 
@@ -231,10 +230,8 @@ int read_dimacs_max_flow_internal(Graph& g,
         { err_no = EN17; goto error; }
 
       {
-        edge_descriptor e1, e2;
-        bool in1, in2;
-        std::tie(e1, in1) = add_edge(verts[tail], verts[head], g);
-        std::tie(e2, in2) = add_edge(verts[head], verts[tail], g);
+        auto [e1, in1] = add_edge(verts[tail], verts[head], g);
+        auto [e2, in2] = add_edge(verts[head], verts[tail], g);
         if (!in1 || !in2) {
           std::cerr << "unable to add edge (" << head << "," << tail << ")"
                     << std::endl;

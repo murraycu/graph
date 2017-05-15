@@ -408,8 +408,7 @@ namespace boost
         if (vertex_state[v] == graph::detail::V_ODD)
         {
           bridge[v] = the_bridge;
-          out_edge_iterator_t oei, oei_end;
-          for(std::tie(oei, oei_end) = out_edges(v,g); oei != oei_end; ++oei)
+          for(auto [oei, oei_end] = out_edges(v,g); oei != oei_end; ++oei)
           {
             if (target(*oei,g) != v)
             {
@@ -533,9 +532,8 @@ namespace boost
       vertex_iterator_t vi, vi_end;
       for(std::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi)
         put(mate, *vi, graph_traits<Graph>::null_vertex());
-            
-      edge_iterator_t ei, ei_end;
-      for( std::tie(ei, ei_end) = edges(g); ei != ei_end; ++ei)
+
+      for( auto [ei, ei_end] = edges(g); ei != ei_end; ++ei)
       {
         auto e = *ei;
         auto u = source(e,g);
@@ -608,12 +606,10 @@ namespace boost
         directed_edges_vector_t;
       
       directed_edges_vector_t edge_list;
-      vertex_iterator_t vi, vi_end;
-      for(std::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
+      for(auto [vi, vi_end] = vertices(g); vi != vi_end; ++vi)
         put(mate, *vi, graph_traits<Graph>::null_vertex());
 
-      edge_iterator_t ei, ei_end;
-      for(std::tie(ei, ei_end) = edges(g); ei != ei_end; ++ei)
+      for(auto [ei, ei_end] = edges(g); ei != ei_end; ++ei)
       {
         auto e = *ei;
         auto u = source(e,g);

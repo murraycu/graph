@@ -66,9 +66,8 @@ namespace boost {
     typedef std::size_t size_type;
 
     const auto num = num_vertices(G);
-    
-    typename GraphTraits::vertex_iterator v, vend;
-    for (std::tie(v, vend) = vertices(G); v != vend; ++v) {
+
+    for (auto [v, vend] = vertices(G); v != vend; ++v) {
       put(marker, *v, num);
       put(degree, *v, out_degree(*v, G));
       degree_buckets.push(*v);

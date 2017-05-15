@@ -54,7 +54,6 @@ namespace detail {
     {
         BOOST_CONCEPT_ASSERT(( VertexListGraphConcept<Graph> ));
         typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
-        typedef typename graph_traits<Graph>::vertex_iterator VertexIterator;
         BOOST_CONCEPT_ASSERT(( ReadablePropertyMapConcept<DistanceMap,Vertex> ));
         BOOST_CONCEPT_ASSERT(( NumericValueConcept<Distance> ));
         typedef numeric_values<Distance> DistanceNumbers;
@@ -65,8 +64,7 @@ namespace detail {
         // distance-to-self in the combined values. However, this is usually
         // zero, so it shouldn't be too problematic.
         auto ret = init;
-        VertexIterator i, end;
-        for(std::tie(i, end) = vertices(g); i != end; ++i) {
+        for(auto [i, end] = vertices(g); i != end; ++i) {
             auto v = *i;
             if(get(dist, v) != DistanceNumbers::infinity()) {
                 ret = combine(ret, get(dist, v));

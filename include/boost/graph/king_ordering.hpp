@@ -56,7 +56,7 @@ namespace boost {
         for( ; rbegin != rend; rend--){
           percolate_down<Vertex>(i);
           w = (*Qptr)[index_begin+i];
-          for (std::tie(ei, ei_end) = out_edges(w, g); ei != ei_end; ++ei) {
+          for (auto [ei, ei_end] = out_edges(w, g); ei != ei_end; ++ei) {
             v = target(*ei, g);
             put(degree, v, get(degree, v) - 1);
     
@@ -202,12 +202,11 @@ namespace boost {
       vertices_size_type;
     std::vector<ds_type> pseudo_degree_vec(num_vertices(g));
     PseudoDegreeMap pseudo_degree(pseudo_degree_vec.begin(), index_map);
-    
-    typename graph_traits<Graph>::vertex_iterator ui, ui_end;    
+
     queue Q;
     // Copy degree to pseudo_degree
     // initialize the color map
-    for (std::tie(ui, ui_end) = vertices(g); ui != ui_end; ++ui){
+    for (auto [ui, ui_end] = vertices(g); ui != ui_end; ++ui){
       put(pseudo_degree, *ui, get(degree, *ui));
       put(color, *ui, Color::white());
     }

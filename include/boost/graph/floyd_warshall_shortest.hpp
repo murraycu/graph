@@ -54,14 +54,10 @@ namespace boost
       const BinaryFunction &combine, const Infinity& inf, 
       const Zero& zero)
     {
-      typename graph_traits<VertexListGraph>::vertex_iterator 
-        i, lasti, j, lastj, k, lastk;
-    
-      
-      for (std::tie(k, lastk) = vertices(g); k != lastk; k++)
-        for (std::tie(i, lasti) = vertices(g); i != lasti; i++)
+      for (auto [k, lastk] = vertices(g); k != lastk; k++)
+        for (auto [i, lasti] = vertices(g); i != lasti; i++)
           if(d[*i][*k] != inf)
-            for (std::tie(j, lastj) = vertices(g); j != lastj; j++)
+            for (auto [j, lastj] = vertices(g); j != lastj; j++)
               if(d[*k][*j] != inf)
                 d[*i][*j] = 
                   detail::min_with_compare(d[*i][*j], 
@@ -69,7 +65,7 @@ namespace boost
                                            compare);
       
       
-      for (std::tie(i, lasti) = vertices(g); i != lasti; i++)
+      for (auto [i, lasti] = vertices(g); i != lasti; i++)
         if (compare(d[*i][*i], zero))
           return false;
       return true;
@@ -105,22 +101,17 @@ namespace boost
     BOOST_CONCEPT_ASSERT(( VertexListGraphConcept<VertexAndEdgeListGraph> ));
     BOOST_CONCEPT_ASSERT(( EdgeListGraphConcept<VertexAndEdgeListGraph> ));
     BOOST_CONCEPT_ASSERT(( IncidenceGraphConcept<VertexAndEdgeListGraph> ));
-  
-    typename graph_traits<VertexAndEdgeListGraph>::vertex_iterator 
-      firstv, lastv, firstv2, lastv2;
-    typename graph_traits<VertexAndEdgeListGraph>::edge_iterator first, last;
-  
-    
-    for(std::tie(firstv, lastv) = vertices(g); firstv != lastv; firstv++)
-      for(std::tie(firstv2, lastv2) = vertices(g); firstv2 != lastv2; firstv2++)
+
+    for(auto [firstv, lastv] = vertices(g); firstv != lastv; firstv++)
+      for(auto [firstv2, lastv2] = vertices(g); firstv2 != lastv2; firstv2++)
         d[*firstv][*firstv2] = inf;
     
     
-    for(std::tie(firstv, lastv) = vertices(g); firstv != lastv; firstv++)
+    for(auto [firstv, lastv] = vertices(g); firstv != lastv; firstv++)
       d[*firstv][*firstv] = zero;
     
     
-    for(std::tie(first, last) = edges(g); first != last; first++)
+    for(auto [first, last] = edges(g); first != last; first++)
     {
       if (d[source(*first, g)][target(*first, g)] != inf) {
         d[source(*first, g)][target(*first, g)] = 
@@ -137,7 +128,7 @@ namespace boost
       undirected_tag>::value;
     if (is_undirected)
     {
-      for(std::tie(first, last) = edges(g); first != last; first++)
+      for(auto [first, last] = edges(g); first != last; first++)
       {
         if (d[target(*first, g)][source(*first, g)] != inf)
           d[target(*first, g)][source(*first, g)] = 

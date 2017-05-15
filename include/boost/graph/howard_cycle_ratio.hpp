@@ -188,9 +188,9 @@ namespace boost {
         float_t cz = (std::numeric_limits<float_t>::max)(); //Closest to zero value
         float_t s = 0;
         const float_t eps_ = std::numeric_limits<float_t>::epsilon();
-        for (std::tie(vi, vie) = vertices(m_g); vi != vie; ++vi)
+        for (auto [vi, vie] = vertices(m_g); vi != vie; ++vi)
           {
-            for (std::tie(oei, oeie) = out_edges(*vi, m_g); oei != oeie; ++oei)
+            for (auto [oei, oeie] = out_edges(*vi, m_g); oei != oeie; ++oei)
               {
                 s += std::abs(m_ew1m[*oei]);
                 float_t a = std::abs(m_ew2m[*oei]);
@@ -210,11 +210,9 @@ namespace boost {
       void construct_policy_graph()
       {
         m_sink = graph_traits<Graph>().null_vertex();
-        typename  graph_traits<Graph>::vertex_iterator  vi, vie;
-        typename  graph_traits<Graph>::out_edge_iterator  oei, oeie;
-        for ( std::tie(vi, vie) = vertices(m_g); vi != vie; ++vi )
+        for ( auto [vi, vie] = vertices(m_g); vi != vie; ++vi )
           {
-            std::tie(oei, oeie) = out_edges(*vi, m_g);
+            auto [oei, oeie] = out_edges(*vi, m_g);
             auto mei =
               std::max_element(oei, oeie,
                                boost::bind(m_cmp,
@@ -331,8 +329,7 @@ namespace boost {
       {
         std::fill(m_col_bfs.begin(), m_col_bfs.end(), my_white);
         auto vcm_ = color_map_t(m_col_bfs.begin(), m_vim);
-        typename graph_traits<Graph>::vertex_iterator uv_itr, vie;
-        std::tie(uv_itr, vie) = vertices(m_g);
+        auto [uv_itr, vie] = vertices(m_g);
         auto mcr = m_bound;
         while ( (uv_itr = std::find_if(uv_itr, vie,
                                        boost::bind(std::equal_to<my_color_type>(),
@@ -371,14 +368,12 @@ namespace boost {
       bool try_improve_policy(float_t cr)
       {
         bool improved = false;
-        typename  graph_traits<Graph>::vertex_iterator  vi, vie;
-        typename  graph_traits<Graph>::out_edge_iterator  oei, oeie;
         const float_t eps_ =  FloatTraits::epsilon();
-        for (std::tie(vi, vie) = vertices(m_g); vi != vie; ++vi)
+        for (auto [vi, vie] = vertices(m_g); vi != vie; ++vi)
           {
             if (!m_badv[*vi])
               {
-                for (std::tie(oei, oeie) = out_edges(*vi, m_g); oei != oeie; ++oei)
+                for (auto [oei, oeie] = out_edges(*vi, m_g); oei != oeie; ++oei)
                   {
                     auto t = target(*oei, m_g);
                     //Current distance from *vi to some vertex

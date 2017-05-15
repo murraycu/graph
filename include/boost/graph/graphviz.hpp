@@ -269,8 +269,8 @@ namespace boost {
       vpw(out, *i); //print vertex attributes
       out << ";" << std::endl;
     }
-    typename graph_traits<Graph>::edge_iterator ei, edge_end;
-    for(std::tie(ei, edge_end) = edges(g); ei != edge_end; ++ei) {
+
+    for(auto [ei, edge_end] = edges(g); ei != edge_end; ++ei) {
       out << escape_dot_string(get(vertex_id, source(*ei, g))) << Traits::delimiter() << escape_dot_string(get(vertex_id, target(*ei, g))) << " ";
       epw(out, *ei); //print edge attributes
       out << ";" << std::endl;
@@ -367,7 +367,7 @@ namespace boost {
         }
       }
 
-      for (std::tie(ei, edge_end) = edges(g); ei != edge_end; ++ei) {
+      for (auto [ei, edge_end] = edges(g); ei != edge_end; ++ei) {
         auto u = g.local_to_global(source(*ei,g)),
           v = g.local_to_global(target(*ei, g));
         int pos = get(get(edge_index, g.root()), g.local_to_global(*ei));

@@ -118,14 +118,12 @@ class bk_max_flow {
       m_time(1),
       m_last_grow_vertex(graph_traits<Graph>::null_vertex()){
         // initialize the color-map with gray-values
-        vertex_iterator vi, v_end;
-        for(std::tie(vi, v_end) = vertices(m_g); vi != v_end; ++vi){
+        for(auto [vi, v_end] = vertices(m_g); vi != v_end; ++vi){
           set_tree(*vi, tColorTraits::gray());
         }
         // Initialize flow to zero which means initializing
         // the residual capacity equal to the capacity
-        edge_iterator ei, e_end;
-        for(std::tie(ei, e_end) = edges(m_g); ei != e_end; ++ei) {
+        for(auto [ei, e_end] = edges(m_g); ei != e_end; ++ei) {
           put(m_res_cap_map, *ei, get(m_cap_map, *ei));
           BOOST_ASSERT(get(m_rev_edge_map, get(m_rev_edge_map, *ei)) == *ei); //check if the reverse edge map is build up properly
         }
@@ -141,9 +139,7 @@ class bk_max_flow {
         augment_direct_paths();
         //start the main-loop
         while(true){
-          bool path_found;
-          edge_descriptor connecting_edge;
-          std::tie(connecting_edge, path_found) = grow(); //find a path from source to sink
+          auto [connecting_edge, path_found] = grow(); //find a path from source to sink
           if(!path_found){
             //we're finished, no more paths were found
             break;
@@ -164,8 +160,7 @@ class bk_max_flow {
         // graphcuts for segmentation, as most of the nodes have source/sink
         // connects but shouldn't have an impact on other maxflow problems
         // (this is done in grow() anyway)
-        out_edge_iterator ei, e_end;
-        for(std::tie(ei, e_end) = out_edges(m_source, m_g); ei != e_end; ++ei){
+        for(auto [ei, e_end] = out_edges(m_source, m_g); ei != e_end; ++ei){
           auto from_source = *ei;
           auto current_node = target(from_source, m_g);
           if(current_node == m_sink){
@@ -174,9 +169,8 @@ class bk_max_flow {
             m_flow += cap;
             continue;
           }
-          edge_descriptor to_sink;
-          bool is_there;
-          std::tie(to_sink, is_there) = lookup_edge(current_node, m_sink, m_g);
+
+          auto [to_sink, is_there] = lookup_edge(current_node, m_sink, m_g);
           if(is_there){
             auto cap_from_source = get(m_res_cap_map, from_source);
             auto cap_to_sink = get(m_res_cap_map, to_sink);
@@ -216,7 +210,7 @@ class bk_max_flow {
             add_active_node(current_node);
           }
         }
-        for(std::tie(ei, e_end) = out_edges(m_sink, m_g); ei != e_end; ++ei){
+        for(auto [ei, e_end] = out_edges(m_sink, m_g); ei != e_end; ++ei){
           auto to_sink = get(m_rev_edge_map, *ei);
           auto current_node = source(to_sink, m_g);
           if(get(m_res_cap_map, to_sink)){
@@ -249,7 +243,7 @@ class bk_max_flow {
             out_edge_iterator ei, e_end;
             if(current_node != m_last_grow_vertex){
               m_last_grow_vertex = current_node;
-              std::tie(m_last_grow_edge_it, m_last_grow_edge_end) = out_edges(current_node, m_g);
+              auto [m_last_grow_edge_it, m_last_grow_edge_end] = out_edges(current_node, m_g);
             }
             for(; m_last_grow_edge_it != m_last_grow_edge_end; ++m_last_grow_edge_it) {
               auto out_edge = *m_last_grow_edge_it;
@@ -283,7 +277,7 @@ class bk_max_flow {
             out_edge_iterator ei, e_end;
             if(current_node != m_last_grow_vertex){
               m_last_grow_vertex = current_node;
-              std::tie(m_last_grow_edge_it, m_last_grow_edge_end) = out_edges(current_node, m_g);
+              auto [m_last_grow_edge_it, m_last_grow_edge_end] = out_edges(current_node, m_g);
             }
             for(; m_last_grow_edge_it != m_last_grow_edge_end; ++m_last_grow_edge_it){
               auto in_edge = get(m_rev_edge_map, *m_last_grow_edge_it);
@@ -419,8 +413,7 @@ class bk_max_flow {
             //we're in the source-tree
             auto min_distance = (std::numeric_limits<tDistanceVal>::max)();
             edge_descriptor new_parent_edge;
-            out_edge_iterator ei, e_end;
-            for(std::tie(ei, e_end) = out_edges(current_node, m_g); ei != e_end; ++ei){
+            for(auto [ei, e_end] = out_edges(current_node, m_g); ei != e_end; ++ei){
               const auto in_edge = get(m_rev_edge_map, *ei);
               BOOST_ASSERT(target(in_edge, m_g) == current_node); //we should be the target of this edge
               if(get(m_res_cap_map, in_edge) > 0){
@@ -439,7 +432,7 @@ class bk_max_flow {
               put(m_time_map, current_node, m_time);
             } else{
               put(m_time_map, current_node, 0);
-              for(std::tie(ei, e_end) = out_edges(current_node, m_g); ei != e_end; ++ei){
+              for(auto [ei, e_end] = out_edges(current_node, m_g); ei != e_end; ++ei){
                 auto in_edge = get(m_rev_edge_map, *ei);
                 auto other_node = source(in_edge, m_g);
                 if(get_tree(other_node) == tColorTraits::black() && other_node != m_source){
@@ -460,10 +453,9 @@ class bk_max_flow {
           else{
             //now we should be in the sink-tree, check that...
             BOOST_ASSERT(get_tree(current_node) == tColorTraits::white());
-            out_edge_iterator ei, e_end;
             edge_descriptor new_parent_edge;
             auto min_distance = (std::numeric_limits<tDistanceVal>::max)();
-            for(std::tie(ei, e_end) = out_edges(current_node, m_g); ei != e_end; ++ei){
+            for(auto [ei, e_end] = out_edges(current_node, m_g); ei != e_end; ++ei){
               const auto out_edge = *ei;
               if(get(m_res_cap_map, out_edge) > 0){
                 const auto other_node = target(out_edge, m_g);
@@ -480,7 +472,7 @@ class bk_max_flow {
               put(m_time_map, current_node, m_time);
             } else{
               put(m_time_map, current_node, 0);
-              for(std::tie(ei, e_end) = out_edges(current_node, m_g); ei != e_end; ++ei){
+              for(auto [ei, e_end] = out_edges(current_node, m_g); ei != e_end; ++ei){
                 const auto out_edge = *ei;
                 const auto other_node = target(out_edge, m_g);
                 if(get_tree(other_node) == tColorTraits::white() && other_node != m_sink){

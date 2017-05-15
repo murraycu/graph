@@ -196,8 +196,7 @@ public:
     {
         // find all edges, (u, v)
         std::vector<edge_descriptor> edges;
-        out_edge_iterator i, i_end;
-        for(std::tie(i, i_end) = boost::out_edges(u, m_graph); i != i_end; ++i) {
+        for(auto [i, i_end] = boost::out_edges(u, m_graph); i != i_end; ++i) {
             if(boost::target(*i, m_graph) == v) {
                 edges.push_back(*i);
             }
@@ -225,8 +224,7 @@ public:
     void
     renumber_vertex_indices()
     {
-        vertex_iterator i, end;
-        std::tie(i, end) = vertices(m_graph);
+        auto [i, end] = vertices(m_graph);
         m_max_vertex_index = renumber_vertex_indices(i, end, 0);
     }
 
@@ -248,8 +246,7 @@ public:
     void
     renumber_edge_indices()
     {
-        edge_iterator i, end;
-        std::tie(i, end) = edges(m_graph);
+        auto [i, end] = edges(m_graph);
         m_max_edge_index = renumber_edge_indices(i, end, 0);
     }
 

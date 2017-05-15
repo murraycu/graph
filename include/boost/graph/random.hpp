@@ -124,7 +124,6 @@ namespace boost {
      bool self_edges = false)
   {
     typedef graph_traits<MutableGraph> Traits;
-    typedef typename Traits::edge_descriptor edge_t;
     typedef typename Traits::vertices_size_type v_size_t;
     typedef typename Traits::edges_size_type e_size_t;
     typedef typename Traits::vertex_descriptor vertex_descriptor;
@@ -156,8 +155,7 @@ namespace boost {
         do {
           b = random_vertex(g, gen);
         } while (self_edges == false && a == b);
-        edge_t e; bool inserted;
-        std::tie(e, inserted) = add_edge(a, b, g);
+        auto [e, inserted] = add_edge(a, b, g);
         if (inserted) {
           ++j;
         } else {
@@ -197,7 +195,6 @@ namespace boost {
     typedef typename Traits::vertices_size_type v_size_t;
     typedef typename Traits::edges_size_type e_size_t;
     typedef typename Traits::vertex_descriptor vertex_t;
-    typedef typename Traits::edge_descriptor edge_t;
 
     for (v_size_t i = 0; i < V; ++i)
       *vertex_out++ = add_vertex(g);
@@ -209,8 +206,7 @@ namespace boost {
       do {
         b = random_vertex(g, gen);
       } while (self_edges == false && a == b);
-      edge_t e; bool inserted;
-      std::tie(e, inserted) = add_edge(a, b, g);
+      auto [e, inserted] = add_edge(a, b, g);
       if (inserted) {
         *edge_out++ = std::make_pair(source(e, g), target(e, g));
         ++j;
@@ -230,8 +226,7 @@ namespace boost {
                             Property, vertex_property_tag)
     {
       typename property_map<G, Property>::type pm = get(Property(), g);
-      typename graph_traits<G>::vertex_iterator vi, ve;
-      for (std::tie(vi, ve) = vertices(g); vi != ve; ++vi) {
+      for (auto [vi, ve] = vertices(g); vi != ve; ++vi) {
         pm[*vi] = rg();
       }
     }
@@ -241,8 +236,7 @@ namespace boost {
                             Property, edge_property_tag)
     {
       typename property_map<G, Property>::type pm = get(Property(), g);
-      typename graph_traits<G>::edge_iterator ei, ee;
-      for (std::tie(ei, ee) = edges(g); ei != ee; ++ei) {
+      for (auto [ei, ee] = edges(g); ei != ee; ++ei) {
         pm[*ei] = rg();
       }
     }

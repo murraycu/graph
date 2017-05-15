@@ -632,8 +632,7 @@ namespace boost {
     {
       typedef typename Config::graph_type graph_type;
       auto& g = static_cast<graph_type&>(g_);
-      typename Config::out_edge_iterator first, last;
-      std::tie(first, last) = out_edges(u, g);
+      auto [first, last] = out_edges(u, g);
       typedef typename Config::edge_parallel_category edge_parallel_category;
       detail::remove_directed_edge_if_dispatch
         (first, last, g.out_edge_list(u), pred, edge_parallel_category());
@@ -646,8 +645,7 @@ namespace boost {
       typedef typename Config::graph_type graph_type;
       auto& g = static_cast<graph_type&>(g_);
 
-      typename Config::vertex_iterator vi, vi_end;
-      for (std::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
+      for (auto [vi, vi_end] = vertices(g); vi != vi_end; ++vi)
         remove_out_edge_if(*vi, pred, g);
     }
 
@@ -668,8 +666,7 @@ namespace boost {
       typedef typename Config::graph_type graph_type;
       typedef typename Config::edge_parallel_category Cat;
       auto& g = static_cast<graph_type&>(g_);
-      typename Config::vertex_iterator vi, viend;
-      for (std::tie(vi, viend) = vertices(g); vi != viend; ++vi)
+      for (auto [vi, viend] = vertices(g); vi != viend; ++vi)
         detail::erase_from_incidence_list(g.out_edge_list(*vi), u, Cat());
       g.out_edge_list(u).clear();
       // clear() should be a req of Sequence and AssociativeContainer,
@@ -696,8 +693,7 @@ namespace boost {
       typedef typename Config::graph_type graph_type;
       const auto& g = static_cast<const graph_type&>(g_);
       auto num_e = 0;
-      typename Config::vertex_iterator vi, vi_end;
-      for (std::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
+      for (auto [vi, vi_end] = vertices(g); vi != vi_end; ++vi)
         num_e += out_degree(*vi, g);
       return num_e;
     }
@@ -714,9 +710,7 @@ namespace boost {
       typedef typename Config::graph_type graph_type;
       typedef typename Config::StoredEdge StoredEdge;
       auto& g = static_cast<graph_type&>(g_);
-      typename Config::OutEdgeList::iterator i;
-      bool inserted;
-      std::tie(i, inserted) = boost::graph_detail::push(g.out_edge_list(u),
+      auto [i, inserted] = boost::graph_detail::push(g.out_edge_list(u),
                                             StoredEdge(v, p));
       return std::make_pair(edge_descriptor(u, v, &(*i).get_property()),
                             inserted);
@@ -963,8 +957,7 @@ namespace boost {
       typedef typename Config::graph_type graph_type;
       typedef typename Config::OutEdgeList::value_type::property_type PropT;
       auto& g = static_cast<graph_type&>(g_);
-      typename Config::out_edge_iterator first, last;
-      std::tie(first, last) = out_edges(u, g);
+      auto [first, last] = out_edges(u, g);
       typedef typename Config::edge_parallel_category Cat;
       detail::undirected_remove_out_edge_if_dispatch<PropT>
         (g, first, last, g.out_edge_list(u), pred, Cat());
@@ -990,9 +983,8 @@ namespace boost {
 
       typedef typename Config::graph_type graph_type;
       auto& g = static_cast<graph_type&>(g_);
-      typename Config::edge_iterator ei, ei_end, next;
-      std::tie(ei, ei_end) = edges(g);
-      for (next = ei; ei != ei_end; ei = next) {
+      auto [ei, ei_end] = edges(g);
+      for (auto next = ei; ei != ei_end; ei = next) {
         ++next;
         if (pred(*ei))
           remove_edge(*ei, g);
@@ -1033,8 +1025,7 @@ namespace boost {
       typedef typename Config::graph_type graph_type;
       auto& g = static_cast<graph_type&>(g_);
       while (true) {
-        typename Config::out_edge_iterator ei, ei_end;
-        std::tie(ei, ei_end) = out_edges(u, g);
+        auto [ei, ei_end] = out_edges(u, g);
         if (ei == ei_end) break;
         remove_edge(*ei, g);
       }
@@ -1053,12 +1044,10 @@ namespace boost {
       typedef typename Config::graph_type graph_type;
       auto& g = static_cast<graph_type&>(g_);
 
-      bool inserted;
       typename Config::EdgeContainer::value_type e(u, v, p);
       auto p_iter = graph_detail::push(g.m_edges, e).first;
 
-      typename Config::OutEdgeList::iterator i;
-      std::tie(i, inserted) = boost::graph_detail::push(g.out_edge_list(u),
+      auto [i, inserted] = boost::graph_detail::push(g.out_edge_list(u),
                                     StoredEdge(v, p_iter, &g.m_edges));
       if (inserted) {
         boost::graph_detail::push(g.out_edge_list(v), StoredEdge(u, p_iter, &g.m_edges));
@@ -1155,9 +1144,8 @@ namespace boost {
 
       typedef typename Config::graph_type graph_type;
       auto& g = static_cast<graph_type&>(g_);
-      typename Config::edge_iterator ei, ei_end, next;
-      std::tie(ei, ei_end) = edges(g);
-      for (next = ei; ei != ei_end; ei = next) {
+      auto [ei, ei_end] = edges(g);
+      for (auto next = ei; ei != ei_end; ei = next) {
         ++next;
         if (pred(*ei))
           remove_edge(*ei, g);
@@ -1316,8 +1304,7 @@ namespace boost {
 
       // First remove the edges from the targets' in-edge lists and
       // from the graph's edge set list.
-      typename Config::out_edge_iterator out_i, out_end;
-      for (std::tie(out_i, out_end) = out_edges(u, g); out_i != out_end; ++out_i)
+      for (auto [out_i, out_end] = out_edges(u, g); out_i != out_end; ++out_i)
         if (pred(*out_i)) {
           detail::remove_directed_edge_dispatch
             (*out_i, in_edge_list(g, target(*out_i, g)),
@@ -1328,8 +1315,7 @@ namespace boost {
         }
 
       // Now remove the edges from this out-edge list.
-      typename Config::out_edge_iterator first, last;
-      std::tie(first, last) = out_edges(u, g);
+      auto [first, last] = out_edges(u, g);
       typedef typename Config::edge_parallel_category Cat;
       detail::remove_directed_edge_if_dispatch
         (first, last, g.out_edge_list(u), pred, Cat());
@@ -1357,8 +1343,7 @@ namespace boost {
 
       // First remove the edges from the sources' out-edge lists and
       // from the graph's edge set list.
-      typename Config::in_edge_iterator in_i, in_end;
-      for (std::tie(in_i, in_end) = in_edges(v, g); in_i != in_end; ++in_i)
+      for (auto [in_i, in_end] = in_edges(v, g); in_i != in_end; ++in_i)
         if (pred(*in_i)) {
           auto u = source(*in_i, g);
           detail::remove_directed_edge_dispatch
@@ -1368,8 +1353,7 @@ namespace boost {
           garbage.push_back((*in_i.base()).get_iter());
         }
       // Now remove the edges from this in-edge list.
-      typename Config::in_edge_iterator first, last;
-      std::tie(first, last) = in_edges(v, g);
+      auto [first, last] = in_edges(v, g);
       typedef typename Config::edge_parallel_category Cat;
       detail::remove_directed_edge_if_dispatch
         (first, last, in_edge_list(g, v), pred, Cat());
@@ -1478,11 +1462,9 @@ namespace boost {
       auto& g = static_cast<graph_type&>(g_);
       typedef typename Config::edge_descriptor edge_descriptor;
       typedef typename Config::StoredEdge StoredEdge;
-      bool inserted;
       typename Config::EdgeContainer::value_type e(u, v, p);
       auto p_iter = graph_detail::push(g.m_edges, e).first;
-      typename Config::OutEdgeList::iterator i;
-      std::tie(i, inserted) = boost::graph_detail::push(g.out_edge_list(u),
+      auto [i, inserted] = boost::graph_detail::push(g.out_edge_list(u),
                                         StoredEdge(v, p_iter, &g.m_edges));
       if (inserted) {
         boost::graph_detail::push(in_edge_list(g, v), StoredEdge(u, p_iter, &g.m_edges));
@@ -1559,8 +1541,7 @@ namespace boost {
       const auto& cg = static_cast<const AdjList&>(g_);
       auto& g = const_cast<AdjList&>(cg);
       typedef typename Config::adjacency_iterator adjacency_iterator;
-      typename Config::out_edge_iterator first, last;
-      std::tie(first, last) = out_edges(u, g);
+      auto [first, last] = out_edges(u, g);
       return std::make_pair(adjacency_iterator(first, &g),
                             adjacency_iterator(last, &g));
     }
@@ -1574,8 +1555,7 @@ namespace boost {
       const auto& cg = static_cast<const AdjList&>(g_);
       auto& g = const_cast<AdjList&>(cg);
       typedef typename Config::inv_adjacency_iterator inv_adjacency_iterator;
-      typename Config::in_edge_iterator first, last;
-      std::tie(first, last) = in_edges(u, g);
+      auto [first, last] = in_edges(u, g);
       return std::make_pair(inv_adjacency_iterator(first, &g),
                             inv_adjacency_iterator(last, &g));
     }
@@ -1651,9 +1631,8 @@ namespace boost {
       auto& g = const_cast<Graph&>(cg);
       typedef typename Config::out_edge_iterator out_edge_iterator;
       auto& el = g.out_edge_list(u);
-      typename Config::OutEdgeList::iterator first, last;
       typename Config::EdgeContainer fake_edge_container;
-      std::tie(first, last) = graph_detail::
+      auto [first, last] = graph_detail::
         equal_range(el, StoredEdge(v));
       return std::make_pair(out_edge_iterator(first, u),
                             out_edge_iterator(last, u));
@@ -1873,20 +1852,16 @@ namespace boost {
 
         // Copy the stored vertex objects by adding each vertex
         // and copying its property object.
-        vertex_iterator vi, vi_end;
-        for (std::tie(vi, vi_end) = vertices(x); vi != vi_end; ++vi) {
+        for (auto [vi, vi_end] = vertices(x); vi != vi_end; ++vi) {
           auto v = (stored_vertex*)add_vertex(*this);
           v->m_property = ((stored_vertex*)*vi)->m_property;
           vertex_map[(stored_vertex*)*vi] = v;
         }
         // Copy the edges by adding each edge and copying its
         // property object.
-        edge_iterator ei, ei_end;
-        for (std::tie(ei, ei_end) = edges(x); ei != ei_end; ++ei) {
-          edge_descriptor e;
-          bool inserted;
+        for (auto [ei, ei_end] = edges(x); ei != ei_end; ++ei) {
           auto s = source(*ei,x), t = target(*ei,x);
-          std::tie(e, inserted) = add_edge(vertex_map[(stored_vertex*)s],
+          auto [e, inserted] = add_edge(vertex_map[(stored_vertex*)s],
                                              vertex_map[(stored_vertex*)t], *this);
           *((edge_property_type*)e.m_eproperty)
             = *((edge_property_type*)(*ei).m_eproperty);
@@ -1906,9 +1881,7 @@ namespace boost {
       auto& g = static_cast<Derived&>(g_);
       typedef typename Config::stored_vertex stored_vertex;
       auto v = new stored_vertex;
-      typename Config::StoredVertexList::iterator pos;
-      bool inserted;
-      std::tie(pos,inserted) = boost::graph_detail::push(g.m_vertices, v);
+      auto [pos, inserted] = boost::graph_detail::push(g.m_vertices, v);
       v->m_position = pos;
       g.added_vertex(v);
       return v;
@@ -1927,9 +1900,7 @@ namespace boost {
 
       typedef typename Config::stored_vertex stored_vertex;
       auto v = new stored_vertex(p);
-      typename Config::StoredVertexList::iterator pos;
-      bool inserted;
-      std::tie(pos,inserted) = boost::graph_detail::push(g.m_vertices, v);
+      auto [pos,inserted] = boost::graph_detail::push(g.m_vertices, v);
       v->m_position = pos;
       g.added_vertex(v);
       return v;
@@ -2150,11 +2121,8 @@ namespace boost {
         }
         // Copy the edges by adding each edge and copying its
         // property object.
-        edge_iterator ei, ei_end;
-        for (std::tie(ei, ei_end) = edges(x); ei != ei_end; ++ei) {
-          edge_descriptor e;
-          bool inserted;
-          std::tie(e, inserted) = add_edge(source(*ei,x), target(*ei,x) , *this);
+        for (auto [ei, ei_end] = edges(x); ei != ei_end; ++ei) {
+          auto [e, inserted] = add_edge(source(*ei,x), target(*ei,x) , *this);
           *((edge_property_type*)e.m_eproperty)
             = *((edge_property_type*)(*ei).m_eproperty);
         }

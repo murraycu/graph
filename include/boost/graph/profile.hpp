@@ -22,8 +22,7 @@ namespace boost {
   profile(const Graph& g, VertexIndexMap index)
   {
     typename graph_traits<Graph>::vertices_size_type b = 0;
-    typename graph_traits<Graph>::vertex_iterator i, end;
-    for (std::tie(i, end) = vertices(g); i != end; ++i){
+    for (auto [i, end] = vertices(g); i != end; ++i){
       b += ith_bandwidth(*i, g, index) + 1;
     }
     

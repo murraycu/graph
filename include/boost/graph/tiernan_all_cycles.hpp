@@ -183,7 +183,6 @@ namespace detail
     {
         BOOST_CONCEPT_ASSERT(( IncidenceGraphConcept<Graph> ));
         typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
-        typedef typename graph_traits<Graph>::out_edge_iterator OutIterator;
 
         // iterate over the out-edges of the back, looking for the
         // front of the path. also, we can't travel along the same
@@ -192,8 +191,7 @@ namespace detail
         Vertex
             u = p.back(),
             v = p.front();
-        OutIterator i, end;
-        for(std::tie(i, end) = out_edges(u, g); i != end; ++i) {
+        for(auto [i, end] = out_edges(u, g); i != end; ++i) {
             if((target(*i, g) == v)) {
                 return true;
             }
@@ -210,15 +208,13 @@ namespace detail
                 ClosedMatrix& closed)
     {
         BOOST_CONCEPT_ASSERT(( IncidenceGraphConcept<Graph> ));
-        typedef typename graph_traits<Graph>::out_edge_iterator OutIterator;
 
         // get the current vertex
         auto u = p.back();
         auto ret = graph_traits<Graph>::null_vertex();
 
         // AdjacencyIterator i, end;
-        OutIterator i, end;
-        for(std::tie(i, end) = out_edges(u, g); i != end; ++i) {
+        for(auto [i, end] = out_edges(u, g); i != end; ++i) {
             auto v = target(*i, g);
 
             // if we can actually extend along this edge,
@@ -319,10 +315,8 @@ tiernan_all_cycles(const Graph& g,
                     std::size_t maxlen)
 {
     BOOST_CONCEPT_ASSERT(( VertexListGraphConcept<Graph> ));
-    typedef typename graph_traits<Graph>::vertex_iterator VertexIterator;
 
-    VertexIterator i, end;
-    for(std::tie(i, end) = vertices(g); i != end; ++i) {
+    for(auto [i, end] = vertices(g); i != end; ++i) {
         detail::all_cycles_from_vertex(g, *i, vis, minlen, maxlen);
     }
 }

@@ -282,9 +282,7 @@ namespace boost
                 // will be linear in the degree of previous_ or v. A better
                 // solution would be to visit edges of the graph, but that
                 // would require revisiting the core algorithm.
-                Edge e;
-                bool found;
-                std::tie(e, found) = lookup_edge(previous_, v, g);
+                auto [e, found] = lookup_edge(previous_, v, g);
                 if(!found) {
                     BOOST_THROW_EXCEPTION(not_complete());
                 }

@@ -277,16 +277,9 @@ namespace boost {
       typedef typename graph_traits<GraphFirst>::vertices_size_type VertexSizeFirst;
 
       // Get iterators for vertices from both graphs
-      typename graph_traits<GraphFirst>::vertex_iterator
-        vertex1_iter, vertex1_end;
-  
-      typename graph_traits<GraphSecond>::vertex_iterator
-        vertex2_begin, vertex2_end, vertex2_iter;
-  
-      std::tie(vertex1_iter, vertex1_end) = vertices(graph1);
-      std::tie(vertex2_begin, vertex2_end) = vertices(graph2);
-      vertex2_iter = vertex2_begin;
-  
+      auto [vertex1_iter, vertex1_end] = vertices(graph1);
+      auto [vertex2_begin, vertex2_end] = vertices(graph2);
+
       // Iterate until all vertices have been visited
       BGL_FORALL_VERTICES_T(new_vertex1, graph1, GraphFirst) {
 

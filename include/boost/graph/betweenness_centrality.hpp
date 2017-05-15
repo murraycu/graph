@@ -294,7 +294,6 @@ namespace detail { namespace graph {
                                       VertexIndexMap vertex_index,
                                       ShortestPaths shortest_paths)
   {
-    typedef typename graph_traits<Graph>::vertex_iterator vertex_iterator;
     typedef typename graph_traits<Graph>::vertex_descriptor vertex_descriptor;
 
     // Initialize centrality
@@ -302,11 +301,9 @@ namespace detail { namespace graph {
     init_centrality_map(edges(g), edge_centrality_map);
 
     std::stack<vertex_descriptor> ordered_vertices;
-    vertex_iterator s, s_end;
-    for (std::tie(s, s_end) = vertices(g); s != s_end; ++s) {
+    for (auto [s, s_end] = vertices(g); s != s_end; ++s) {
       // Initialize for this iteration
-      vertex_iterator w, w_end;
-      for (std::tie(w, w_end) = vertices(g); w != w_end; ++w) {
+      for (auto [w, w_end] = vertices(g); w != w_end; ++w) {
         incoming[*w].clear();
         put(path_count, *w, 0);
         put(dependency, *w, 0);
@@ -568,13 +565,11 @@ template<typename Graph, typename CentralityMap>
 void 
 relative_betweenness_centrality(const Graph& g, CentralityMap centrality)
 {
-  typedef typename graph_traits<Graph>::vertex_iterator vertex_iterator;
   typedef typename property_traits<CentralityMap>::value_type centrality_type;
 
   auto n = num_vertices(g);
   auto factor = centrality_type(2)/centrality_type(n*n - 3*n + 2);
-  vertex_iterator v, v_end;
-  for (std::tie(v, v_end) = vertices(g); v != v_end; ++v) {
+  for (auto [v, v_end] = vertices(g); v != v_end; ++v) {
     put(centrality, *v, factor * get(centrality, *v));
   }
 }
@@ -587,21 +582,19 @@ central_point_dominance(const Graph& g, CentralityMap centrality
 {
   using std::max;
 
-  typedef typename graph_traits<Graph>::vertex_iterator vertex_iterator;
   typedef typename property_traits<CentralityMap>::value_type centrality_type;
 
   auto n = num_vertices(g);
 
   // Find max centrality
   centrality_type max_centrality(0);
-  vertex_iterator v, v_end;
-  for (std::tie(v, v_end) = vertices(g); v != v_end; ++v) {
+  for (auto [v, v_end] = vertices(g); v != v_end; ++v) {
     max_centrality = (max)(max_centrality, get(centrality, *v));
   }
 
   // Compute central point dominance
   centrality_type sum(0);
-  for (std::tie(v, v_end) = vertices(g); v != v_end; ++v) {
+  for (auto [v, v_end] = vertices(g); v != v_end; ++v) {
     sum += (max_centrality - get(centrality, *v));
   }
   return sum/(n-1);

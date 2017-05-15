@@ -76,9 +76,7 @@ struct all_force_pairs
   template<typename Graph, typename ApplyForce >
   void operator()(const Graph& g, ApplyForce apply_force)
   {
-    typedef typename graph_traits<Graph>::vertex_iterator vertex_iterator;
-    vertex_iterator v, end;
-    for (std::tie(v, end) = vertices(g); v != end; ++v) {
+    for (auto [v, end] = vertices(g); v != end; ++v) {
       auto u = v;
       for (++u; u != end; ++u) {
         apply_force(*u, *v);
@@ -107,7 +105,6 @@ struct grid_force_pairs
   template<typename Graph, typename ApplyForce >
   void operator()(const Graph& g, ApplyForce apply_force)
   {
-    typedef typename graph_traits<Graph>::vertex_iterator vertex_iterator;
     typedef typename graph_traits<Graph>::vertex_descriptor vertex_descriptor;
     typedef std::list<vertex_descriptor> bucket_t;
     typedef std::vector<bucket_t> buckets_t;
@@ -115,8 +112,7 @@ struct grid_force_pairs
     auto columns = std::size_t(topology.extent()[0] / two_k + 1.);
     auto rows = std::size_t(topology.extent()[1] / two_k + 1.);
     buckets_t buckets(rows * columns);
-    vertex_iterator v, v_end;
-    for (std::tie(v, v_end) = vertices(g); v != v_end; ++v) {
+    for (auto [v, v_end] = vertices(g); v != v_end; ++v) {
       auto column =
         std::size_t((get(position, *v)[0] + topology.extent()[0] / 2) / two_k);
       std::size_t row    =
@@ -130,7 +126,6 @@ struct grid_force_pairs
     for (std::size_t row = 0; row < rows; ++row)
       for (std::size_t column = 0; column < columns; ++column) {
         auto& bucket = buckets[row * columns + column];
-        typedef typename bucket_t::iterator bucket_iterator;
         for (auto u = bucket.begin(); u != bucket.end(); ++u) {
           // Repulse vertices in this bucket
           auto v = u;
@@ -180,9 +175,6 @@ scale_graph(const Graph& g, PositionMap position, const Topology& topology,
             typename Topology::point_type upper_left, typename Topology::point_type lower_right)
 {
   if (num_vertices(g) == 0) return;
-
-  typedef typename Topology::point_type Point;
-  typedef typename Topology::point_difference_type point_difference_type;
 
   // Find min/max ranges
   auto min_point = get(position, *vertices(g).first), max_point = min_point;
@@ -282,10 +274,6 @@ fruchterman_reingold_force_directed_layout
   Cooling         cool,
   DisplacementMap displacement)
 {
-  typedef typename graph_traits<Graph>::vertex_iterator   vertex_iterator;
-  typedef typename graph_traits<Graph>::vertex_descriptor vertex_descriptor;
-  typedef typename graph_traits<Graph>::edge_iterator     edge_iterator;
-
   double volume = topology.volume(topology.extent());
 
   // assume positions are initialized randomly
@@ -297,14 +285,12 @@ fruchterman_reingold_force_directed_layout
 
   do {
     // Calculate repulsive forces
-    vertex_iterator v, v_end;
-    for (std::tie(v, v_end) = vertices(g); v != v_end; ++v)
+    for (auto [v, v_end] = vertices(g); v != v_end; ++v)
       put(displacement, *v, typename Topology::point_difference_type());
     force_pairs(g, apply_force);
 
     // Calculate attractive forces
-    edge_iterator e, e_end;
-    for (std::tie(e, e_end) = edges(g); e != e_end; ++e) {
+    for (auto [e, e_end] = edges(g); e != e_end; ++e) {
       auto v = source(*e, g);
       auto u = target(*e, g);
 

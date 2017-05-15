@@ -289,7 +289,6 @@ void call_hawick_circuits(Graph const& graph,
     typedef graph_traits<Graph> Traits;
     typedef typename Traits::vertex_descriptor Vertex;
     typedef typename Traits::vertices_size_type VerticesSize;
-    typedef typename Traits::vertex_iterator VertexIterator;
 
     typedef std::vector<Vertex> Stack;
     typedef std::vector<std::vector<Vertex> > ClosedMatrix;
@@ -303,8 +302,7 @@ void call_hawick_circuits(Graph const& graph,
     Stack stack; stack.reserve(n_vertices);
     ClosedMatrix closed(n_vertices);
 
-    VertexIterator start, last;
-    for (std::tie(start, last) = vertices(graph); start != last; ++start) {
+    for (auto [start, last] = vertices(graph); start != last; ++start) {
         // Note1: The sub algorithm may NOT be reused once it has been called.
 
         // Note2: We reuse the Stack and the ClosedMatrix (after clearing them)

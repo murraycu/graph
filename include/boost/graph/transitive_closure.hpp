@@ -71,10 +71,7 @@ namespace boost
     if (num_vertices(g) == 0)
       return;
     typedef typename graph_traits < Graph >::vertex_descriptor vertex;
-    typedef typename graph_traits < Graph >::vertex_iterator vertex_iterator;
     typedef typename property_traits < VertexIndexMap >::value_type size_type;
-    typedef typename graph_traits <
-      Graph >::adjacency_iterator adjacency_iterator;
 
     BOOST_CONCEPT_ASSERT(( VertexListGraphConcept < Graph > ));
     BOOST_CONCEPT_ASSERT(( AdjacencyGraphConcept < Graph > ));
@@ -100,8 +97,7 @@ namespace boost
       std::vector < cg_vertex > adj;
       for (size_type i = 0; i < components[s].size(); ++i) {
         auto u = components[s][i];
-        adjacency_iterator v, v_end;
-        for (std::tie(v, v_end) = adjacent_vertices(u, g); v != v_end; ++v) {
+        for (auto [v, v_end] = adjacent_vertices(u, g); v != v_end; ++v) {
           auto t = component_number[*v];
           if (s != t)           // Avoid loops in the condensation graph
             adj.push_back(t);
@@ -207,8 +203,7 @@ namespace boost
 
     // Add vertices to the transitive closure graph
     {
-      vertex_iterator i, i_end;
-      for (std::tie(i, i_end) = vertices(g); i != i_end; ++i)
+      for (auto [i, i_end] = vertices(g); i != i_end; ++i)
         g_to_tc_map[*i] = add_vertex(tc);
     }
     // Add edges between all the vertices in two adjacent SCCs
@@ -236,11 +231,9 @@ namespace boost
     // Find loopbacks in the original graph.
     // Need to add it to transitive closure.
     {
-      vertex_iterator i, i_end;
-      for (std::tie(i, i_end) = vertices(g); i != i_end; ++i)
+      for (auto [i, i_end] = vertices(g); i != i_end; ++i)
         {
-          adjacency_iterator ab, ae;
-          for (std::tie(ab, ae) = adjacent_vertices(*i, g); ab != ae; ++ab)
+          for (auto [ab, ae] = adjacent_vertices(*i, g); ab != ae; ++ab)
             {
               if (*ab == *i)
                 if (components[component_number[*i]].size() == 1)
@@ -303,8 +296,6 @@ namespace boost
 
   template < typename G > void warshall_transitive_closure(G & g)
   {
-    typedef typename graph_traits < G >::vertex_iterator vertex_iterator;
-
     BOOST_CONCEPT_ASSERT(( AdjacencyMatrixConcept < G > ));
     BOOST_CONCEPT_ASSERT(( EdgeMutableGraphConcept < G > ));
 
@@ -314,11 +305,10 @@ namespace boost
     //    if A[i,k]
     //      for j
     //        A[i,j] = A[i,j] | A[k,j]
-    vertex_iterator ki, ke, ii, ie, ji, je;
-    for (std::tie(ki, ke) = vertices(g); ki != ke; ++ki)
-      for (std::tie(ii, ie) = vertices(g); ii != ie; ++ii)
+    for (auto [ki, ke] = vertices(g); ki != ke; ++ki)
+      for (auto [ii, ie] = vertices(g); ii != ie; ++ii)
         if (edge(*ii, *ki, g).second)
-          for (std::tie(ji, je) = vertices(g); ji != je; ++ji)
+          for (auto [ji, je] = vertices(g); ji != je; ++ji)
             if (!edge(*ii, *ji, g).second && edge(*ki, *ji, g).second) {
               add_edge(*ii, *ji, g);
             }
@@ -343,11 +333,11 @@ namespace boost
     //        for j = 1 to n
     //          A[i,j] = A[i,j] | A[k,j]
 
-    vertex_iterator ic, ie, jc, je, kc, ke;
+    vertex_iterator ic, ie;
     for (std::tie(ic, ie) = vertices(g), ++ic; ic != ie; ++ic)
-      for (std::tie(kc, ke) = vertices(g); *kc != *ic; ++kc)
+      for (auto [kc, ke] = vertices(g); *kc != *ic; ++kc)
         if (edge(*ic, *kc, g).second)
-          for (std::tie(jc, je) = vertices(g); jc != je; ++jc)
+          for (auto [jc, je] = vertices(g); jc != je; ++jc)
             if (!edge(*ic, *jc, g).second && edge(*kc, *jc, g).second) {
               add_edge(*ic, *jc, g);
             }
@@ -357,13 +347,15 @@ namespace boost
     //        for j = 1 to n
     //          A[i,j] = A[i,j] | A[k,j]
 
-    for (std::tie(ic, ie) = vertices(g), --ie; ic != ie; ++ic)
+    for (std::tie(ic, ie) = vertices(g), --ie; ic != ie; ++ic) {
+      vertex_iterator kc, ke;
       for (kc = ic, ke = ie, ++kc; kc != ke; ++kc)
         if (edge(*ic, *kc, g).second)
-          for (std::tie(jc, je) = vertices(g); jc != je; ++jc)
+          for (auto [jc, je] = vertices(g); jc != je; ++jc)
             if (!edge(*ic, *jc, g).second && edge(*kc, *jc, g).second) {
               add_edge(*ic, *jc, g);
             }
+    }
   }
 
 

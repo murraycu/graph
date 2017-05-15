@@ -311,9 +311,7 @@ namespace boost {
     vis.discover_vertex(s, g);
     Q.push(std::make_pair(get(cost, s), s));
     while (!Q.empty()) {
-      Vertex v;
-      Distance v_rank;
-      std::tie(v_rank, v) = Q.top();
+      auto [v_rank, v] = Q.top();
       Q.pop();
       vis.examine_vertex(v, g);
       BGL_FORALL_OUTEDGES_T(v, e, g, VertexListGraph) {
@@ -362,8 +360,7 @@ namespace boost {
 
     typedef typename property_traits<ColorMap>::value_type ColorValue;
     typedef color_traits<ColorValue> Color;
-    typename graph_traits<VertexListGraph>::vertex_iterator ui, ui_end;
-    for (std::tie(ui, ui_end) = vertices(g); ui != ui_end; ++ui) {
+    for (auto [ui, ui_end] = vertices(g); ui != ui_end; ++ui) {
       put(color, *ui, Color::white());
       put(distance, *ui, inf);
       put(cost, *ui, inf);
@@ -397,8 +394,7 @@ namespace boost {
      CostInf inf, CostZero zero)
   {
 
-    typename graph_traits<VertexListGraph>::vertex_iterator ui, ui_end;
-    for (std::tie(ui, ui_end) = vertices(g); ui != ui_end; ++ui) {
+    for (auto [ui, ui_end] = vertices(g); ui != ui_end; ++ui) {
       put(distance, *ui, inf);
       put(cost, *ui, inf);
       put(predecessor, *ui, *ui);

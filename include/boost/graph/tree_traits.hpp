@@ -22,8 +22,7 @@ namespace boost {
                      Tree& t, TreeVisitor visitor)
   {
     visitor.preorder(v, t);
-    typename tree_traits<Tree>::children_iterator i, end;
-    std::tie(i, end) = children(v, t);
+    auto [i, end] = children(v, t);
     if (i != end) {
       traverse_tree(*i++, t, visitor);
       visitor.inorder(v, t);

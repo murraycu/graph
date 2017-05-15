@@ -89,9 +89,7 @@ namespace boost {
   template <class VertexListGraph, class DisjointSets> 
   void initialize_incremental_components(VertexListGraph& G, DisjointSets& ds)
   {
-    typename graph_traits<VertexListGraph>
-      ::vertex_iterator v, vend;
-    for (std::tie(v, vend) = vertices(G); v != vend; ++v)
+    for (auto [v, vend] = vertices(G); v != vend; ++v)
       ds.make_set(*v);
   }
 

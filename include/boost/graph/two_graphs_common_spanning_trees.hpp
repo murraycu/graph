@@ -589,7 +589,6 @@ two_graphs_common_spanning_trees
   typedef typename GraphTraits::edge_descriptor edge_descriptor;
 
   typedef typename GraphTraits::edges_size_type edges_size_type;
-  typedef typename GraphTraits::edge_iterator edge_iterator;
 
   typedef typename Seq::value_type seq_value_type;
   typedef typename Seq::size_type seq_size_type;
@@ -628,8 +627,8 @@ two_graphs_common_spanning_trees
   for(order_size_type i = 0; i < vG_map.size(); ++i)
     vG_bimap.insert(bimap_value(i, vG_map[i]));
 
-  edge_iterator current, last;
-  std::tie(current, last) = edges(iG);
+
+  auto [current, last] = edges(iG);
   for(; current != last; ++current)
     if(iG_bimap.right.find(*current) == iG_bimap.right.end())
       return;
@@ -743,7 +742,7 @@ two_graphs_common_spanning_trees
     associative_property_map< std::map<edge_descriptor, bool> > diG(iG_deleted);
     associative_property_map< std::map<edge_descriptor, bool> > dvG(vG_deleted);
 
-    std::tie(current, last) = edges(iG);
+    auto [current, last] = edges(iG);
     for(; current != last; ++current)
       put(diG, *current, false);
     std::tie(current, last) = edges(vG);
@@ -840,12 +839,10 @@ two_graphs_common_spanning_trees
   typedef graph_traits<Graph> GraphTraits;
 
   typedef typename GraphTraits::edge_descriptor edge_descriptor;
-  typedef typename GraphTraits::edge_iterator edge_iterator;
 
   std::vector<edge_descriptor> iGO, vGO;
-  edge_iterator curr, last;
 
-  std::tie(curr, last) = edges(iG);
+  auto [curr, last] = edges(iG);
   for(; curr != last; ++curr)
     iGO.push_back(*curr);
 

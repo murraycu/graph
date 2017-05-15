@@ -151,8 +151,7 @@ namespace boost {
         Q.pop(); // pop before push to avoid problem if Q is priority_queue.
         vis.examine_vertex(u, g);
 
-        typename GTraits::out_edge_iterator ei, ei_end;
-        for (std::tie(ei, ei_end) = out_edges(u, g); ei != ei_end; ++ei) {
+        for (auto [ei, ei_end] = out_edges(u, g); ei != ei_end; ++ei) {
           auto e = *ei;
           vis.examine_out_edge(e, g);
           auto v = target(e, g);
@@ -171,8 +170,7 @@ namespace boost {
           }
         } // for out-edges
 
-        typename GTraits::in_edge_iterator in_ei, in_ei_end;
-        for (std::tie(in_ei, in_ei_end) = in_edges(u, g); 
+        for (auto [in_ei, in_ei_end] = in_edges(u, g); 
              in_ei != in_ei_end; ++in_ei) {
           auto e = *in_ei;
           vis.examine_in_edge(e, g);
@@ -215,8 +213,7 @@ namespace boost {
       // Initialization
       typedef typename property_traits<ColorMap>::value_type ColorValue;
       typedef color_traits<ColorValue> Color;
-      typename boost::graph_traits<VertexListGraph>::vertex_iterator i, i_end;
-      for (std::tie(i, i_end) = vertices(g); i != i_end; ++i) {
+      for (auto [i, i_end] = vertices(g); i != i_end; ++i) {
         put(color, *i, Color::white());
         vis.initialize_vertex(*i, g);
       }

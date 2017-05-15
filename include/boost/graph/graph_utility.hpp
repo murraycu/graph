@@ -200,8 +200,7 @@ namespace boost {
   template <class EdgeListGraph, class Name>
   void print_edges(const EdgeListGraph& G, Name name, std::ostream& os = std::cout)
   {
-    typename graph_traits<EdgeListGraph>::edge_iterator ei, ei_end;
-    for (std::tie(ei, ei_end) = edges(G); ei != ei_end; ++ei)
+    for (auto [ei, ei_end] = edges(G); ei != ei_end; ++ei)
       os << "(" << get(name, source(*ei, G))
                 << "," << get(name, target(*ei, G)) << ") ";
     os << '\n';
@@ -210,8 +209,7 @@ namespace boost {
   template <class EdgeListGraph, class VertexName, class EdgeName>
   void print_edges2(const EdgeListGraph& G, VertexName vname, EdgeName ename, std::ostream& os = std::cout)
   {
-    typename graph_traits<EdgeListGraph>::edge_iterator ei, ei_end;
-    for (std::tie(ei, ei_end) = edges(G); ei != ei_end; ++ei)
+    for (auto [ei, ei_end] = edges(G); ei != ei_end; ++ei)
       os << get(ename, *ei) << "(" << get(vname, source(*ei, G))
                 << "," << get(vname, target(*ei, G)) << ") ";
     os << '\n';
@@ -229,24 +227,18 @@ namespace boost {
   template <class Graph, class Vertex>
   bool is_adj_dispatch(Graph& g, Vertex a, Vertex b, bidirectional_tag)
   {
-    typename graph_traits<Graph>::adjacency_iterator vi, viend, 
-      adj_found;
-    std::tie(vi, viend) = adjacent_vertices(a, g);
-    adj_found = std::find(vi, viend, b);
+    auto [vi, viend] = adjacent_vertices(a, g);
+    auto adj_found = std::find(vi, viend, b);
     if (adj_found == viend)
       return false;  
 
-    typename graph_traits<Graph>::out_edge_iterator oi, oiend, 
-      out_found;
-    std::tie(oi, oiend) = out_edges(a, g);
-    out_found = std::find_if(oi, oiend, incident_to(b, g));
+    auto [oi, oiend] = out_edges(a, g);
+    auto out_found = std::find_if(oi, oiend, incident_to(b, g));
     if (out_found == oiend)
       return false;
 
-    typename graph_traits<Graph>::in_edge_iterator ii, iiend, 
-      in_found;
-    std::tie(ii, iiend) = in_edges(b, g);
-    in_found = std::find_if(ii, iiend, incident_from(a, g));
+    auto [ii, iiend] = in_edges(b, g);
+    auto in_found = std::find_if(ii, iiend, incident_from(a, g));
     if (in_found == iiend)
       return false;
 
@@ -255,17 +247,14 @@ namespace boost {
   template <class Graph, class Vertex>
   bool is_adj_dispatch(Graph& g, Vertex a, Vertex b, directed_tag)
   {
-    typename graph_traits<Graph>::adjacency_iterator vi, viend, found;
-    std::tie(vi, viend) = adjacent_vertices(a, g);
-    found = std::find(vi, viend, b);
+    auto [vi, viend] = adjacent_vertices(a, g);
+    auto found = std::find(vi, viend, b);
     if ( found == viend )
       return false;
 
-    typename graph_traits<Graph>::out_edge_iterator oi, oiend, 
-      out_found;
-    std::tie(oi, oiend) = out_edges(a, g);
+    auto [oi, oiend] = out_edges(a, g);
 
-    out_found = std::find_if(oi, oiend, incident_to(b, g));
+    auto out_found = std::find_if(oi, oiend, incident_to(b, g));
     if (out_found == oiend)
       return false;
     return true;
@@ -285,18 +274,16 @@ namespace boost {
   template <class Graph, class Edge>
   bool in_edge_set(Graph& g, Edge e)
   {
-    typename Graph::edge_iterator ei, ei_end, found;
-    std::tie(ei, ei_end) = edges(g);
-    found = std::find(ei, ei_end, e);
+    auto [ei, ei_end] = edges(g);
+    auto found = std::find(ei, ei_end, e);
     return found != ei_end;
   }
 
   template <class Graph, class Vertex>
   bool in_vertex_set(Graph& g, Vertex v)
   {
-    typename Graph::vertex_iterator vi, vi_end, found;
-    std::tie(vi, vi_end) = vertices(g);
-    found = std::find(vi, vi_end, v);
+    auto [vi, vi_end] = vertices(g);
+    auto found = std::find(vi, vi_end, v);
     return found != vi_end;
   }
 
@@ -346,12 +333,10 @@ namespace boost {
   {
     typedef typename property_traits<VertexColorMap>::value_type ColorValue;
     typedef color_traits<ColorValue> Color;
-    typename graph_traits<VertexListGraph>::vertex_iterator 
-      ui, ui_end, vi, vi_end, ci, ci_end;
-    for (std::tie(ui, ui_end) = vertices(g); ui != ui_end; ++ui)
-      for (std::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
+    for (auto [ui, ui_end] = vertices(g); ui != ui_end; ++ui)
+      for (auto [vi, vi_end] = vertices(g); vi != vi_end; ++vi)
         if (*ui != *vi) {
-          for (std::tie(ci, ci_end) = vertices(g); ci != ci_end; ++ci) 
+          for (auto [ci, ci_end] = vertices(g); ci != ci_end; ++ci) 
             put(color, *ci, Color::white());
           if (! is_reachable(*ui, *vi, g, color))
             return false;

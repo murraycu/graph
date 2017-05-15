@@ -90,8 +90,7 @@ transitive_reduction(const Graph& g, GraphTR& tr,
         //ascending topological order. I didn't know a better way, how to
         //do that. So what I'm doint is, collection the successors of *it here
         {
-            typename Graph::out_edge_iterator oi,oi_end;
-            for( std::tie(oi, oi_end) = out_edges( *it, g ); oi != oi_end; ++oi ) {
+            for( auto [oi, oi_end] = out_edges( *it, g ); oi != oi_end; ++oi ) {
                 neighbors.push_back( target( *oi, g ) );
             }
         }

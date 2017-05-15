@@ -216,8 +216,7 @@ namespace boost {
   inline boost::graph_traits<sgb_graph_ptr>::degree_size_type
   out_degree(Vertex* u, sgb_const_graph_ptr g)
   {
-    boost::graph_traits<sgb_graph_ptr>::out_edge_iterator i, i_end;
-    std::tie(i, i_end) = out_edges(u, g);
+    auto [i, i_end] = out_edges(u, g);
     return std::distance(i, i_end);
   }
 

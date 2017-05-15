@@ -97,11 +97,9 @@ all_degree_centralities(const Graph& g, CentralityMap cent, Measure measure)
 {
     BOOST_CONCEPT_ASSERT(( VertexListGraphConcept<Graph> ));
     typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
-    typedef typename graph_traits<Graph>::vertex_iterator VertexIterator;
     BOOST_CONCEPT_ASSERT(( WritablePropertyMapConcept<CentralityMap,Vertex> ));
 
-    VertexIterator i, end;
-    for(std::tie(i, end) = vertices(g); i != end; ++i) {
+    for(auto [i, end] = vertices(g); i != end; ++i) {
         auto c = degree_centrality(g, *i, measure);
         put(cent, *i, c);
     }

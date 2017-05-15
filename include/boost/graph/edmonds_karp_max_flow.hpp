@@ -89,11 +89,9 @@ namespace boost {
     typedef typename graph_traits<Graph>::vertex_descriptor vertex_t;
     typedef typename property_traits<ColorMap>::value_type ColorValue;
     typedef color_traits<ColorValue> Color;
-    
-    typename graph_traits<Graph>::vertex_iterator u_iter, u_end;
-    typename graph_traits<Graph>::out_edge_iterator ei, e_end;
-    for (std::tie(u_iter, u_end) = vertices(g); u_iter != u_end; ++u_iter)
-      for (std::tie(ei, e_end) = out_edges(*u_iter, g); ei != e_end; ++ei)
+
+    for (auto [u_iter, u_end] = vertices(g); u_iter != u_end; ++u_iter)
+      for (auto [ei, e_end] = out_edges(*u_iter, g); ei != e_end; ++ei)
         put(res, *ei, get(cap, *ei));
     
     put(color, sink, Color::gray());
@@ -106,9 +104,9 @@ namespace boost {
       if (get(color, sink) != Color::white())
         detail::augment(g, src, sink, pred, res, rev);
     } // while
-    
+ 
     typename property_traits<CapacityEdgeMap>::value_type flow = 0;
-    for (std::tie(ei, e_end) = out_edges(src, g); ei != e_end; ++ei)
+    for (auto [ei, e_end] = out_edges(src, g); ei != e_end; ++ei)
       flow += (get(cap, *ei) - get(res, *ei));
     return flow;
   } // edmonds_karp_max_flow()

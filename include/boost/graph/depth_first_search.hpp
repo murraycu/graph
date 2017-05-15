@@ -124,7 +124,6 @@ namespace boost {
       typedef std::pair<Vertex, std::pair<boost::optional<Edge>, std::pair<Iter, Iter> > > VertexInfo;
 
       boost::optional<Edge> src_e;
-      Iter ei, ei_end;
       std::vector<VertexInfo> stack;
 
       // Possible optimization for vector
@@ -132,7 +131,7 @@ namespace boost {
 
       put(color, u, Color::gray());
       vis.discover_vertex(u, g);
-      std::tie(ei, ei_end) = out_edges(u, g);
+      auto [ei, ei_end] = out_edges(u, g);
       if (func(u, g)) {
           // If this vertex terminates the search, we push empty range
           stack.push_back(std::make_pair(u, std::make_pair(boost::optional<Edge>(), std::make_pair(ei_end, ei_end))));
@@ -143,7 +142,7 @@ namespace boost {
         auto& back = stack.back();
         u = back.first;
         src_e = back.second.first;
-        std::tie(ei, ei_end) = back.second.second;
+        auto [ei, ei_end] = back.second.second;
         stack.pop_back();
 	// finish_edge has to be called here, not after the
 	// loop. Think of the pop as the return from a recursive call.
@@ -161,7 +160,7 @@ namespace boost {
             u = v;
             put(color, u, Color::gray());
             vis.discover_vertex(u, g);
-            std::tie(ei, ei_end) = out_edges(u, g);
+            auto [ei, ei_end] = out_edges(u, g);
             if (func(u, g)) {
                 ei = ei_end;
             }
@@ -202,7 +201,7 @@ namespace boost {
       put(color, u, Color::gray());          vis.discover_vertex(u, g);
 
       if (!func(u, g))
-        for (std::tie(ei, ei_end) = out_edges(u, g); ei != ei_end; ++ei) {
+        for (auto [ei, ei_end] = out_edges(u, g); ei != ei_end; ++ei) {
           auto v = target(*ei, g);           vis.examine_edge(*ei, g);
           auto v_color = get(color, v);
           if (v_color == Color::white()) {     vis.tree_edge(*ei, g);
@@ -228,8 +227,7 @@ namespace boost {
     typedef typename property_traits<ColorMap>::value_type ColorValue;
     typedef color_traits<ColorValue> Color;
 
-    typename graph_traits<VertexListGraph>::vertex_iterator ui, ui_end;
-    for (std::tie(ui, ui_end) = vertices(g); ui != ui_end; ++ui) {
+    for (auto [ui, ui_end] = vertices(g); ui != ui_end; ++ui) {
       auto u = implicit_cast<Vertex>(*ui);
       put(color, u, Color::white()); vis.initialize_vertex(u, g);
     }
@@ -239,7 +237,7 @@ namespace boost {
                                      detail::nontruth2());
     }
 
-    for (std::tie(ui, ui_end) = vertices(g); ui != ui_end; ++ui) {
+    for (auto [ui, ui_end] = vertices(g); ui != ui_end; ++ui) {
       auto u = implicit_cast<Vertex>(*ui);
       ColorValue u_color = get(color, u);
       if (u_color == Color::white()) {       vis.start_vertex(u, g);

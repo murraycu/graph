@@ -33,8 +33,7 @@ namespace boost {
       typedef typename Traits::degree_size_type size_type;
       auto delta = (std::numeric_limits<size_type>::max)();
 
-      typename Traits::vertex_iterator i, iend;
-      for (std::tie(i, iend) = vertices(g); i != iend; ++i)
+      for (auto [i, iend] = vertices(g); i != iend; ++i)
         if (degree(*i, g) < delta) {
           delta = degree(*i, g);
           p = *i;
@@ -47,8 +46,7 @@ namespace boost {
                    typename graph_traits<Graph>::vertex_descriptor u,
                    OutputIterator result)
     {
-      typename graph_traits<Graph>::adjacency_iterator ai, aend;
-      for (std::tie(ai, aend) = adjacent_vertices(u, g); ai != aend; ++ai)
+      for (auto [ai, aend] = adjacent_vertices(u, g); ai != aend; ++ai)
         *result++ = *ai;
     }
 
@@ -71,9 +69,6 @@ namespace boost {
     //-------------------------------------------------------------------------
     // Type Definitions
     typedef graph_traits<VertexListGraph> Traits;
-    typedef typename Traits::vertex_iterator vertex_iterator;
-    typedef typename Traits::edge_iterator edge_iterator;
-    typedef typename Traits::out_edge_iterator out_edge_iterator;
     typedef typename Traits::vertex_descriptor vertex_descriptor;
     typedef typename Traits::degree_size_type degree_size_type;
     typedef color_traits<default_color_type> Color;
@@ -89,12 +84,7 @@ namespace boost {
 
     //-------------------------------------------------------------------------
     // Variable Declarations
-    vertex_descriptor u, v, p, k;
-    edge_descriptor e1, e2;
-    bool inserted;
-    vertex_iterator vi, vi_end;
-    edge_iterator ei, ei_end;
-    degree_size_type delta, alpha_star, alpha_S_k;
+    degree_size_type alpha_star, alpha_S_k;
     std::set<vertex_descriptor> S, neighbor_S;
     std::vector<vertex_descriptor> S_star, non_neighbor_S;
     std::vector<default_color_type> color(num_vertices(g));
@@ -111,11 +101,12 @@ namespace boost {
     typename property_map<FlowGraph, edge_reverse_t>::type
       rev_edge = get(edge_reverse, flow_g);
 
-    for (std::tie(ei, ei_end) = edges(g); ei != ei_end; ++ei) {
-      u = source(*ei, g), v = target(*ei, g);
-      std::tie(e1, inserted) = add_edge(u, v, flow_g);
+    for (auto [ei, ei_end] = edges(g); ei != ei_end; ++ei) {
+      auto u = source(*ei, g);
+      auto v = target(*ei, g);
+      auto [e1, inserted1] = add_edge(u, v, flow_g);
       cap[e1] = 1;
-      std::tie(e2, inserted) = add_edge(v, u, flow_g);
+      auto [e2, inserted2] = add_edge(v, u, flow_g);
       cap[e2] = 1; // not sure about this
       rev_edge[e1] = e2;
       rev_edge[e2] = e1;
@@ -124,7 +115,7 @@ namespace boost {
     //-------------------------------------------------------------------------
     // The Algorithm
 
-    std::tie(p, delta) = detail::min_degree_vertex(g);
+    auto [p, delta] = detail::min_degree_vertex(g);
     S_star.push_back(p);
     alpha_star = delta;
     S.insert(p);
@@ -132,13 +123,13 @@ namespace boost {
     detail::neighbors(g, S.begin(), S.end(), 
                       std::inserter(neighbor_S, neighbor_S.begin()));
 
-    std::tie(vi, vi_end) = vertices(g);
+    auto [vi, vi_end] = vertices(g);
     std::set_difference(vi, vi_end,
                         neighbor_S.begin(), neighbor_S.end(),
                         std::back_inserter(non_neighbor_S));
 
     while (!non_neighbor_S.empty()) { // at most n - 1 times
-      k = non_neighbor_S.front();
+      auto k = non_neighbor_S.front();
 
       alpha_S_k = edmonds_karp_max_flow
         (flow_g, p, k, cap, res_cap, rev_edge, &color[0], &pred[0]);
@@ -146,7 +137,7 @@ namespace boost {
       if (alpha_S_k < alpha_star) {
         alpha_star = alpha_S_k;
         S_star.clear();
-        for (std::tie(vi, vi_end) = vertices(flow_g); vi != vi_end; ++vi)
+        for (auto [vi, vi_end] = vertices(flow_g); vi != vi_end; ++vi)
           if (color[*vi] != Color::white())
             S_star.push_back(*vi);
       }
@@ -154,7 +145,7 @@ namespace boost {
       neighbor_S.insert(k);
       detail::neighbors(g, k, std::inserter(neighbor_S, neighbor_S.begin()));
       non_neighbor_S.clear();
-      std::tie(vi, vi_end) = vertices(g);
+      auto [vi, vi_end] = vertices(g);
       std::set_difference(vi, vi_end,
                           neighbor_S.begin(), neighbor_S.end(),
                           std::back_inserter(non_neighbor_S));
@@ -168,7 +159,6 @@ namespace boost {
     degree_size_type c = 0;
     for (const auto& s : S_star) {
       for (auto [ei, ei_end] = out_edges(s, g); ei != ei_end; ++ei)
-      for (std::tie(ei, ei_end) = out_edges(*si, g); ei != ei_end; ++ei)
         if (!in_S_star[target(*ei, g)]) {
           *disconnecting_set++ = *ei;
           ++c;

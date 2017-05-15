@@ -42,12 +42,10 @@ namespace boost
     template <typename Graph>
     Graph make_K_3_3()
     {
-      typename graph_traits<Graph>::vertex_iterator 
-        vi, vi_end, bipartition_start, inner_vi;
       Graph K_3_3(6);
-      bipartition_start = next(next(next(vertices(K_3_3).first)));
-      for(std::tie(vi, vi_end) = vertices(K_3_3); vi != bipartition_start; ++vi)
-        for(inner_vi= bipartition_start; inner_vi != vi_end; ++inner_vi)
+      auto bipartition_start = next(next(next(vertices(K_3_3).first)));
+      for(auto [vi, vi_end] = vertices(K_3_3); vi != bipartition_start; ++vi)
+        for(auto inner_vi= bipartition_start; inner_vi != vi_end; ++inner_vi)
           add_edge(*vi, *inner_vi, K_3_3);
       return K_3_3;
     }

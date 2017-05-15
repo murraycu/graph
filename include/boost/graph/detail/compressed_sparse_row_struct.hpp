@@ -311,8 +311,6 @@ namespace detail {
       inherited_edge_properties::resize(numedges);
       EdgeIndex current_edge = 0;
       typedef typename boost::graph_traits<Graph>::vertex_descriptor g_vertex;
-      typedef typename boost::graph_traits<Graph>::out_edge_iterator
-        g_out_edge_iter;
 
       std::vector<g_vertex> ordered_verts_of_g(numverts);
       BGL_FORALL_VERTICES_T(v, g, Graph) {
@@ -321,8 +319,7 @@ namespace detail {
       for (Vertex i = 0; i != numverts; ++i) {
         m_rowstart[i] = current_edge;
         auto v = ordered_verts_of_g[i];
-        g_out_edge_iter ei, ei_end;
-        for (std::tie(ei, ei_end) = out_edges(v, g); ei != ei_end; ++ei) {
+        for (auto [ei, ei_end] = out_edges(v, g); ei != ei_end; ++ei) {
           m_column[current_edge++] = get(vi, target(*ei, g));
         }
       }

@@ -123,9 +123,8 @@ public:
     subgraph(vertices_size_type n, const graph_property_type& p = graph_property_type())
         : m_graph(n, p), m_parent(0), m_edge_counter(0), m_global_vertex(n)
     {
-        typename Graph::vertex_iterator v, v_end;
         vertices_size_type i = 0;
-        for(std::tie(v, v_end) = vertices(m_graph); v != v_end; ++v)
+        for(auto [v, v_end] = vertices(m_graph); v != v_end; ++v)
             m_global_vertex[i++] = *v;
     }
 
@@ -193,9 +192,8 @@ public:
     { return is_root() ? u_local : m_global_vertex[u_local]; }
 
     vertex_descriptor global_to_local(vertex_descriptor u_global) const {
-        vertex_descriptor u_local; bool in_subgraph;
         if (is_root()) return u_global;
-        std::tie(u_local, in_subgraph) = this->find_vertex(u_global);
+        auto [u_local, in_subgraph] = this->find_vertex(u_global);
         BOOST_ASSERT(in_subgraph == true);
         return u_local;
     }
@@ -338,9 +336,7 @@ public: // Probably shouldn't be public....
                                    vertex_descriptor v_local,
                                    edge_descriptor e_global)
     {
-        edge_descriptor e_local;
-        bool inserted;
-        std::tie(e_local, inserted) = add_edge(u_local, v_local, m_graph);
+        auto [e_local, inserted] = add_edge(u_local, v_local, m_graph);
         put(edge_index, m_graph, e_local, m_edge_counter++);
         m_global_edge.push_back(e_global);
         m_local_edge[get(get(edge_index, this->root()), e_global)] = e_local;
@@ -383,8 +379,7 @@ add_vertex(typename subgraph<G>::vertex_descriptor u_global,
 
     // remember edge global and local maps
     {
-        typename subgraph<G>::out_edge_iterator ei, ei_end;
-        for (std::tie(ei, ei_end) = out_edges(u_global, r);
+        for (auto [ei, ei_end] = out_edges(u_global, r);
             ei != ei_end; ++ei) {
             e_global = *ei;
             v_global = target(e_global, r);
@@ -393,15 +388,13 @@ add_vertex(typename subgraph<G>::vertex_descriptor u_global,
         }
     }
     if (is_directed(g)) { // not necessary for undirected graph
-        typename subgraph<G>::vertex_iterator vi, vi_end;
-        typename subgraph<G>::out_edge_iterator ei, ei_end;
-        for(std::tie(vi, vi_end) = vertices(r); vi != vi_end; ++vi) {
+        for(auto [vi, vi_end] = vertices(r); vi != vi_end; ++vi) {
             v_global = *vi;
             if (v_global == u_global)
                 continue; // don't insert self loops twice!
             if (!g.find_vertex(v_global).second)
                 continue; // not a subgraph vertex => try next one
-            for(std::tie(ei, ei_end) = out_edges(*vi, r); ei != ei_end; ++ei) {
+            for(auto [ei, ei_end] = out_edges(*vi, r); ei != ei_end; ++ei) {
                 e_global = *ei;
                 if(target(e_global, r) == u_global) {
                     g.local_add_edge(g.global_to_local(v_global), u_local, e_global);
@@ -533,10 +526,8 @@ namespace detail {
     {
         if(&g != orig ) {
             // add local edge only if u_global and v_global are in subgraph g
-            Vertex u_local, v_local;
-            bool u_in_subgraph, v_in_subgraph;
-            std::tie(u_local, u_in_subgraph) = g.find_vertex(u_global);
-            std::tie(v_local, v_in_subgraph) = g.find_vertex(v_global);
+            auto [u_local, u_in_subgraph] = g.find_vertex(u_global);
+            auto [v_local, v_in_subgraph] = g.find_vertex(v_global);
             if(u_in_subgraph && v_in_subgraph) {
                 g.local_add_edge(u_local, v_local, e_global);
             }
@@ -551,9 +542,7 @@ namespace detail {
                       subgraph<Graph>& g, subgraph<Graph>* orig)
     {
         if(g.is_root()) {
-            typename subgraph<Graph>::edge_descriptor e_global;
-            bool inserted;
-            std::tie(e_global, inserted) = add_edge(u_global, v_global, ep, g.m_graph);
+            auto [e_global, inserted] = add_edge(u_global, v_global, ep, g.m_graph);
             put(edge_index, g.m_graph, e_global, g.m_edge_counter++);
             g.m_global_edge.push_back(e_global);
             children_add_edge(u_global, v_global, e_global, g.m_children, orig);
@@ -580,13 +569,11 @@ add_edge(typename subgraph<G>::vertex_descriptor u,
         // u and v are really global
         return detail::add_edge_recur_up(u, v, ep, g, &g);
     } else {
-        typename subgraph<G>::edge_descriptor e_local, e_global;
-        bool inserted;
-        std::tie(e_global, inserted) =
+        auto [e_global, inserted] =
             detail::add_edge_recur_up(g.local_to_global(u),
                                       g.local_to_global(v),
                                       ep, g, &g);
-        e_local = g.local_add_edge(u, v, e_global);
+        auto e_local = g.local_add_edge(u, v, e_global);
         return std::make_pair(e_local, inserted);
     }
 }

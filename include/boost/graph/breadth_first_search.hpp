@@ -68,7 +68,6 @@ namespace boost {
     BOOST_CONCEPT_ASSERT(( ReadWritePropertyMapConcept<ColorMap, Vertex> ));
     typedef typename property_traits<ColorMap>::value_type ColorValue;
     typedef color_traits<ColorValue> Color;
-    typename GTraits::out_edge_iterator ei, ei_end;
 
     for (; sources_begin != sources_end; ++sources_begin) {
       auto s = *sources_begin;
@@ -77,7 +76,7 @@ namespace boost {
     }
     while (! Q.empty()) {
       auto u = Q.top(); Q.pop();            vis.examine_vertex(u, g);
-      for (std::tie(ei, ei_end) = out_edges(u, g); ei != ei_end; ++ei) {
+      for (auto [ei, ei_end] = out_edges(u, g); ei != ei_end; ++ei) {
         auto v = target(*ei, g);            vis.examine_edge(*ei, g);
         ColorValue v_color = get(color, v);
         if (v_color == Color::white()) {      vis.tree_edge(*ei, g);
@@ -116,8 +115,7 @@ namespace boost {
     // Initialization
     typedef typename property_traits<ColorMap>::value_type ColorValue;
     typedef color_traits<ColorValue> Color;
-    typename boost::graph_traits<VertexListGraph>::vertex_iterator i, i_end;
-    for (std::tie(i, i_end) = vertices(g); i != i_end; ++i) {
+    for (auto [i, i_end] = vertices(g); i != i_end; ++i) {
       vis.initialize_vertex(*i, g);
       put(color, *i, Color::white());
     }

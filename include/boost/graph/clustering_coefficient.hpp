@@ -67,13 +67,11 @@ num_paths_through_vertex(const Graph& g, Vertex v)
 {
     BOOST_CONCEPT_ASSERT(( AdjacencyGraphConcept<Graph> ));
     typedef typename graph_traits<Graph>::directed_category Directed;
-    typedef typename graph_traits<Graph>::adjacency_iterator AdjacencyIterator;
 
     // TODO: There should actually be a set of neighborhood functions
     // for things like this (num_neighbors() would be great).
 
-    AdjacencyIterator i, end;
-    std::tie(i, end) = adjacent_vertices(v, g);
+    auto [i, end] = adjacent_vertices(v, g);
     std::size_t k = std::distance(i, end);
     return detail::possible_edges(g, k, Directed());
 }
@@ -86,15 +84,13 @@ num_triangles_on_vertex(const Graph& g, Vertex v)
     BOOST_CONCEPT_ASSERT(( AdjacencyGraphConcept<Graph> ));
     typedef typename graph_traits<Graph>::degree_size_type Degree;
     typedef typename graph_traits<Graph>::directed_category Directed;
-    typedef typename graph_traits<Graph>::adjacency_iterator AdjacencyIterator;
 
     // TODO: I might be able to reduce the requirement from adjacency graph
     // to incidence graph by using out edges.
 
     Degree count(0);
-    AdjacencyIterator i, j, end;
-    for(std::tie(i, end) = adjacent_vertices(v, g); i != end; ++i) {
-        for(j = boost::next(i); j != end; ++j) {
+    for(auto [i, end] = adjacent_vertices(v, g); i != end; ++i) {
+        for(auto j = boost::next(i); j != end; ++j) {
             count += detail::count_edges(g, *i, *j, Directed());
         }
     }
@@ -122,13 +118,11 @@ all_clustering_coefficients(const Graph& g, ClusteringMap cm)
 {
     BOOST_CONCEPT_ASSERT(( VertexListGraphConcept<Graph> ));
     typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
-    typedef typename graph_traits<Graph>::vertex_iterator VertexIterator;
     BOOST_CONCEPT_ASSERT(( WritablePropertyMapConcept<ClusteringMap,Vertex> ));
     typedef typename property_traits<ClusteringMap>::value_type Coefficient;
 
     Coefficient sum(0);
-    VertexIterator i, end;
-    for(std::tie(i, end) = vertices(g); i != end; ++i) {
+    for(auto [i, end] = vertices(g); i != end; ++i) {
         auto cc = clustering_coefficient<Coefficient>(g, *i);
         put(cm, *i, cc);
         sum += cc;
@@ -142,13 +136,11 @@ mean_clustering_coefficient(const Graph& g, ClusteringMap cm)
 {
     BOOST_CONCEPT_ASSERT(( VertexListGraphConcept<Graph> ));
     typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
-    typedef typename graph_traits<Graph>::vertex_iterator VertexIterator;
     BOOST_CONCEPT_ASSERT(( ReadablePropertyMapConcept<ClusteringMap,Vertex> ));
     typedef typename property_traits<ClusteringMap>::value_type Coefficient;
 
     Coefficient cc(0);
-    VertexIterator i, end;
-    for(std::tie(i, end) = vertices(g); i != end; ++i) {
+    for(auto [i, end] = vertices(g); i != end; ++i) {
         cc += get(cm, *i);
     }
     return cc / Coefficient(num_vertices(g));
