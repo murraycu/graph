@@ -96,11 +96,11 @@ namespace boost {
     public: \
     template <typename BundleTag> \
     static typename lazy_enable_if_c<(base_type::found && (std::is_same<BundleTag, BOOST_JOIN(kind, _bundle_t)>::value)), \
-                                     add_reference<typename base_type::type> >::type \
+                                     std::add_lvalue_reference<typename base_type::type> >::type \
     lookup(property<Tag, T, Base>& p, BundleTag) {return base_type::lookup(p.m_base, BOOST_JOIN(kind, _bundle_t)());} \
     template <typename BundleTag> \
     static typename lazy_enable_if_c<(base_type::found && (std::is_same<BundleTag, BOOST_JOIN(kind, _bundle_t)>::value)), \
-                                     add_reference<const typename base_type::type> >::type \
+                                     std::add_lvalue_reference<const typename base_type::type> >::type \
     lookup(const property<Tag, T, Base>& p, BundleTag) {return base_type::lookup(p.m_base, BOOST_JOIN(kind, _bundle_t)());} \
   }; \
 
@@ -130,13 +130,13 @@ namespace boost {
     public:
     template <typename PL>
     static typename lazy_enable_if<std::is_same<PL, boost::property<Tag, T, Base> >,
-                                   add_reference<typename base_type::type> >::type
+                                   std::add_lvalue_reference<typename base_type::type> >::type
     lookup(PL& prop, const PropName& tag) {
       return base_type::lookup(prop.m_base, tag);
     }
     template <typename PL>
     static typename lazy_enable_if<std::is_same<PL, boost::property<Tag, T, Base> >,
-                                   add_reference<const typename base_type::type> >::type
+                                   std::add_lvalue_reference<const typename base_type::type> >::type
     lookup(const PL& prop, const PropName& tag) {
       return base_type::lookup(prop.m_base, tag);
     }
@@ -163,7 +163,7 @@ namespace boost {
     typedef const typename lookup_one_property_internal<T, Tag>::type type;
     template <typename U>
     static typename lazy_enable_if<std::is_same<T, U>,
-                                   add_reference<const typename lookup_one_property_internal<T, Tag>::type> >::type
+                                   std::add_lvalue_reference<const typename lookup_one_property_internal<T, Tag>::type> >::type
     lookup(const U& p, Tag tag) {
       return lookup_one_property_internal<T, Tag>::lookup(p, tag);
     }
@@ -256,7 +256,7 @@ namespace detail {
       typedef typename std::remove_reference<a1>::type non_ref;
       typedef typename non_ref::next_type nx;
       typedef typename boost::mpl::if_<std::is_const<non_ref>, std::add_const<nx>, nx>::type with_const;
-      typedef typename boost::add_reference<with_const>::type type;
+      typedef typename std::add_lvalue_reference<with_const>::type type;
     };
     template <typename Prop>
     typename Prop::next_type& operator()(Prop& p) const {return p.m_base;}
