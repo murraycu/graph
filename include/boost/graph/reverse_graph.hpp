@@ -368,7 +368,7 @@ namespace detail {
 template <class BidirGraph, class GRef, class Property>
 struct property_map<reverse_graph<BidirGraph, GRef>, Property> {
   typedef std::is_same<typename detail::property_kind_from_graph<BidirGraph, Property>::type, edge_property_tag> is_edge_prop;
-  typedef std::is_const<typename boost::remove_reference<GRef>::type> is_ref_const;
+  typedef std::is_const<typename std::remove_reference<GRef>::type> is_ref_const;
   typedef typename boost::mpl::if_<
                      is_ref_const,
                      typename property_map<BidirGraph, Property>::const_type,
@@ -514,7 +514,7 @@ set_property(const reverse_graph<BidirectionalGraph,GRef>& g, Tag tag,
 template<typename BidirectionalGraph, typename GRef, typename Tag>
 inline
 typename boost::mpl::if_<
-           std::is_const<typename boost::remove_reference<GRef>::type>,
+           std::is_const<typename std::remove_reference<GRef>::type>,
            const typename graph_property<BidirectionalGraph, Tag>::type&,
            typename graph_property<BidirectionalGraph, Tag>::type& >::type
 get_property(const reverse_graph<BidirectionalGraph,GRef>& g, Tag tag)

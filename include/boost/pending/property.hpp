@@ -253,7 +253,7 @@ namespace detail {
     template <typename F>
     struct result {
       typedef typename boost::function_traits<F>::arg1_type a1;
-      typedef typename boost::remove_reference<a1>::type non_ref;
+      typedef typename std::remove_reference<a1>::type non_ref;
       typedef typename non_ref::next_type nx;
       typedef typename boost::mpl::if_<std::is_const<non_ref>, std::add_const<nx>, nx>::type with_const;
       typedef typename boost::add_reference<with_const>::type type;

@@ -695,8 +695,8 @@ BOOST_BGL_DECLARE_NAMED_PARAMS
 
       template <class F>
       struct result {
-        typedef typename std::remove_const<typename remove_reference<typename function_traits<F>::arg1_type>::type>::type graph_type;
-        typedef typename std::remove_const<typename remove_reference<typename function_traits<F>::arg2_type>::type>::type arg_pack_type;
+        typedef typename std::remove_const<typename std::remove_reference<typename function_traits<F>::arg1_type>::type>::type graph_type;
+        typedef typename std::remove_const<typename std::remove_reference<typename function_traits<F>::arg2_type>::type>::type arg_pack_type;
         typedef typename priority_queue_maker<graph_type, arg_pack_type, KeyT, ValueT, PriorityQueueTag, KeyMapTag, IndexInHeapMapTag, Compare>::priority_queue_type type;
       };
 

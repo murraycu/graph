@@ -9,7 +9,7 @@
 #include <boost/property_map/property_map.hpp>
 #include <boost/typeof/typeof.hpp>
 #include <boost/type_traits/add_reference.hpp>
-#include <boost/type_traits/remove_reference.hpp>
+#include <type_traits>
 
 #include <boost/concept/detail/concept_def.hpp>
 namespace boost {

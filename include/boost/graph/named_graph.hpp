@@ -23,7 +23,6 @@
 #include <boost/pending/container_traits.hpp>
 #include <boost/throw_exception.hpp>
 #include <boost/type_traits/remove_cv.hpp>
-#include <boost/type_traits/remove_reference.hpp>
 #include <boost/utility/enable_if.hpp>
 #include <functional> // for std::equal_to
 #include <stdexcept> // for std::runtime_error
@@ -81,7 +80,7 @@ private:
   typedef typename internal_vertex_name<VertexProperty>::type extract_name_type;
 
   typedef typename remove_cv<
-            typename remove_reference<
+            typename std::remove_reference<
               typename extract_name_type::result_type>::type>::type
     vertex_name_type;
 
@@ -106,7 +105,7 @@ private:
   typedef typename internal_vertex_name<VertexProperty>::type extract_name_type;
 
   typedef typename remove_cv<
-            typename remove_reference<
+            typename std::remove_reference<
               typename extract_name_type::result_type>::type>::type
     vertex_name_type;
 
@@ -200,7 +199,7 @@ public:
 
   /// The type used to name vertices in the graph
   typedef typename remove_cv<
-            typename remove_reference<
+            typename std::remove_reference<
               typename extract_name_type::result_type>::type>::type
     vertex_name_type;
 

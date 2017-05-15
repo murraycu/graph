@@ -18,10 +18,10 @@
 #include <boost/range/begin.hpp>
 #include <boost/range/end.hpp>
 #include <boost/range/iterator.hpp>
-#include <boost/type_traits/remove_reference.hpp>
 #include <set>
 #include <utility> // for std::pair
 #include <vector>
+#include <type_traits>
 
 
 namespace boost {
@@ -34,7 +34,7 @@ struct get_all_adjacent_vertices {
     template <typename This, typename Vertex, typename Graph>
     struct result<This(Vertex, Graph)> {
     private:
-        typedef typename remove_reference<Graph>::type RawGraph;
+        typedef typename std::remove_reference<Graph>::type RawGraph;
         typedef graph_traits<RawGraph> Traits;
         typedef typename Traits::adjacency_iterator AdjacencyIterator;
 
@@ -59,7 +59,7 @@ struct get_unique_adjacent_vertices {
 
     template <typename This, typename Vertex, typename Graph>
     struct result<This(Vertex, Graph)> {
-        typedef std::set<typename remove_reference<Vertex>::type> type;
+        typedef std::set<typename std::remove_reference<Vertex>::type> type;
     };
 
     template <typename Vertex, typename Graph>

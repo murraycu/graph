@@ -50,7 +50,7 @@ namespace boost
 
         typedef typename std::remove_const
                 < 
-                    typename remove_reference
+                    typename std::remove_reference
                     < typename parameter::binding
                         < ArgumentPack, tag::graph>::type 
                     >::type 
@@ -60,7 +60,7 @@ namespace boost
           < ArgumentPack, 
             tag::vertex_index_map,
             typename property_map
-              < typename remove_reference<graph_t>::type, 
+              < typename std::remove_reference<graph_t>::type, 
                 vertex_index_t>::const_type
           >::type vertex_index_map_t;
 
@@ -90,7 +90,7 @@ namespace boost
         //Dispatch for no planar embedding, kuratowski subgraph isolation
         typedef typename std::remove_const
                 < 
-                    typename remove_reference
+                    typename std::remove_reference
                     < typename parameter::binding
                         < ArgumentPack, tag::graph>::type 
                     >::type 
@@ -138,7 +138,7 @@ namespace boost
         //Dispatch for planar embedding, no kuratowski subgraph isolation
         typedef typename std::remove_const
                 < 
-                    typename remove_reference
+                    typename std::remove_reference
                     < typename parameter::binding
                         < ArgumentPack, tag::graph>::type 
                     >::type 
@@ -186,7 +186,7 @@ namespace boost
         //Dispatch for planar embedding, kuratowski subgraph isolation
         typedef typename std::remove_const
                 < 
-                    typename remove_reference
+                    typename std::remove_reference
                     < typename parameter::binding
                         < ArgumentPack, tag::graph>::type 
                     >::type 
