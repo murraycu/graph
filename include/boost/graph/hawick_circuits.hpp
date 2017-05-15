@@ -19,7 +19,6 @@
 #include <boost/range/end.hpp>
 #include <boost/range/iterator.hpp>
 #include <boost/type_traits/remove_reference.hpp>
-#include <boost/utility/result_of.hpp>
 #include <set>
 #include <utility> // for std::pair
 #include <vector>
@@ -105,11 +104,6 @@ private:
     typedef typename Traits::edge_descriptor Edge;
     typedef typename Traits::vertices_size_type VerticesSize;
     typedef typename property_traits<VertexIndexMap>::value_type VertexIndex;
-
-    typedef typename result_of<
-                GetAdjacentVertices(Vertex, Graph const&)
-            >::type AdjacentVertices;
-    typedef typename range_iterator<AdjacentVertices const>::type AdjacencyIterator;
 
     // The one_bit_color_map starts all white, i.e. not blocked.
     // Since we make that assumption (I looked at the implementation, but
@@ -214,15 +208,15 @@ private:
         block(v);
 
         // Cache some values that are used more than once in the function.
-        VertexIndex const index_of_start = index_of(start);
-        AdjacentVertices const adj_vertices = GetAdjacentVertices()(v, graph_);
-        AdjacencyIterator const w_end = boost::end(adj_vertices);
+        auto const index_of_start = index_of(start);
+        auto const adj_vertices = GetAdjacentVertices()(v, graph_);
+        auto const w_end = boost::end(adj_vertices);
 
         for (auto w_it = boost::begin(adj_vertices);
              w_it != w_end;
              ++w_it)
         {
-            Vertex const w = *w_it;
+            auto const w = *w_it;
             // Since we're only looking in the subgraph induced by `start`
             // and the vertices with an index higher than `start`, we skip
             // any vertex that does not satisfy that.

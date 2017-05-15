@@ -230,7 +230,7 @@ maximum_adjacency_search(const Graph& g, WeightMap weights, MASVisitor vis, cons
 
           default_pq_gen_type pq_gen(choose_param(get_param(params, boost::distance_zero_t()), weight_type(0)));
 
-          typename boost::result_of<default_pq_gen_type(const Graph&, const ArgPack&)>::type pq = pq_gen(g, params);
+          auto pq = pq_gen(g, params);
 
           boost::maximum_adjacency_search
                (g,
