@@ -845,11 +845,11 @@ namespace boost {
       // Property map requirements
       BOOST_CONCEPT_ASSERT(( ReadablePropertyMapConcept<IndexMapSmall, vertex_small_type> ));
       typedef typename property_traits<IndexMapSmall>::value_type IndexMapSmallValue;
-      BOOST_STATIC_ASSERT(( is_convertible<IndexMapSmallValue, size_type_small>::value ));
+      BOOST_STATIC_ASSERT(( std::is_convertible<IndexMapSmallValue, size_type_small>::value ));
         
       BOOST_CONCEPT_ASSERT(( ReadablePropertyMapConcept<IndexMapLarge, vertex_large_type> ));
       typedef typename property_traits<IndexMapLarge>::value_type IndexMapLargeValue;
-      BOOST_STATIC_ASSERT(( is_convertible<IndexMapLargeValue, size_type_large>::value ));
+      BOOST_STATIC_ASSERT(( std::is_convertible<IndexMapLargeValue, size_type_large>::value ));
 
       // Edge & vertex requirements
       typedef typename graph_traits<GraphSmall>::edge_descriptor edge_small_type;
@@ -1078,11 +1078,11 @@ namespace boost {
     // Property map requirements
     BOOST_CONCEPT_ASSERT(( ReadablePropertyMapConcept<IndexMap1, vertex1_type> ));
     typedef typename property_traits<IndexMap1>::value_type IndexMap1Value;
-    BOOST_STATIC_ASSERT(( is_convertible<IndexMap1Value, size_type1>::value ));
+    BOOST_STATIC_ASSERT(( std::is_convertible<IndexMap1Value, size_type1>::value ));
         
     BOOST_CONCEPT_ASSERT(( ReadablePropertyMapConcept<IndexMap2, vertex2_type> ));
     typedef typename property_traits<IndexMap2>::value_type IndexMap2Value;
-    BOOST_STATIC_ASSERT(( is_convertible<IndexMap2Value, size_type2>::value ));
+    BOOST_STATIC_ASSERT(( std::is_convertible<IndexMap2Value, size_type2>::value ));
 
     // Edge & vertex requirements
     typedef typename graph_traits<Graph1>::edge_descriptor edge1_type;

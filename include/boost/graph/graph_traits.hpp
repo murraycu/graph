@@ -107,7 +107,7 @@ namespace boost {
     namespace graph_detail {
         template <typename Tag>
         struct is_directed_tag
-            : mpl::bool_<is_convertible<Tag, directed_tag>::value>
+            : mpl::bool_<std::is_convertible<Tag, directed_tag>::value>
         { };
     } // namespace graph_detail
 
@@ -180,7 +180,7 @@ namespace boost {
     template <typename Graph>
     struct is_incidence_graph
         : mpl::bool_<
-            is_convertible<
+            std::is_convertible<
                 typename graph_traits<Graph>::traversal_category,
                 incidence_graph_tag
             >::value
@@ -190,7 +190,7 @@ namespace boost {
     template <typename Graph>
     struct is_bidirectional_graph
         : mpl::bool_<
-            is_convertible<
+            std::is_convertible<
                 typename graph_traits<Graph>::traversal_category,
                 bidirectional_graph_tag
             >::value
@@ -200,7 +200,7 @@ namespace boost {
     template <typename Graph>
     struct is_vertex_list_graph
         : mpl::bool_<
-            is_convertible<
+            std::is_convertible<
                 typename graph_traits<Graph>::traversal_category,
                 vertex_list_graph_tag
             >::value
@@ -210,7 +210,7 @@ namespace boost {
     template <typename Graph>
     struct is_edge_list_graph
         : mpl::bool_<
-            is_convertible<
+            std::is_convertible<
                 typename graph_traits<Graph>::traversal_category,
                 edge_list_graph_tag
             >::value
@@ -220,7 +220,7 @@ namespace boost {
     template <typename Graph>
     struct is_adjacency_matrix
         : mpl::bool_<
-            is_convertible<
+            std::is_convertible<
                 typename graph_traits<Graph>::traversal_category,
                 adjacency_matrix_tag
             >::value

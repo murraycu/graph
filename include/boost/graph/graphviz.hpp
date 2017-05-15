@@ -725,7 +725,7 @@ class mutate_graph_impl : public mutate_graph
   bool is_directed() const
   {
     return
-      boost::is_convertible<
+      std::is_convertible<
         typename boost::graph_traits<MutableGraph>::directed_category,
         boost::directed_tag>::value;
   }
@@ -830,7 +830,7 @@ class mutate_graph_impl<compressed_sparse_row_graph<Directed, VertexProperty, Ed
   bool is_directed() const
   {
     return
-      boost::is_convertible<
+      std::is_convertible<
         typename boost::graph_traits<CSRGraph>::directed_category,
         boost::directed_tag>::value;
   }

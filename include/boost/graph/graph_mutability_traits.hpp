@@ -74,7 +74,7 @@ struct graph_mutability_traits {
 template <typename Graph>
 struct graph_has_add_vertex
     : mpl::bool_<
-        is_convertible<
+        std::is_convertible<
             typename graph_mutability_traits<Graph>::category,
             add_vertex_tag
         >::value
@@ -84,7 +84,7 @@ struct graph_has_add_vertex
 template <typename Graph>
 struct graph_has_add_vertex_with_property
     : mpl::bool_<
-        is_convertible<
+        std::is_convertible<
             typename graph_mutability_traits<Graph>::category,
             add_vertex_property_tag
         >::value
@@ -95,7 +95,7 @@ struct graph_has_add_vertex_with_property
 template <typename Graph>
 struct graph_has_remove_vertex
     : mpl::bool_<
-        is_convertible<
+        std::is_convertible<
             typename graph_mutability_traits<Graph>::category,
             remove_vertex_tag
         >::value
@@ -105,7 +105,7 @@ struct graph_has_remove_vertex
 template <typename Graph>
 struct graph_has_add_edge
     : mpl::bool_<
-        is_convertible<
+        std::is_convertible<
             typename graph_mutability_traits<Graph>::category,
             add_edge_tag
         >::value
@@ -115,7 +115,7 @@ struct graph_has_add_edge
 template <typename Graph>
 struct graph_has_add_edge_with_property
     : mpl::bool_<
-        is_convertible<
+        std::is_convertible<
             typename graph_mutability_traits<Graph>::category,
             add_edge_property_tag
         >::value
@@ -126,7 +126,7 @@ struct graph_has_add_edge_with_property
 template <typename Graph>
 struct graph_has_remove_edge
     : mpl::bool_<
-        is_convertible<
+        std::is_convertible<
             typename graph_mutability_traits<Graph>::category,
             remove_edge_tag
         >::value
@@ -187,7 +187,7 @@ struct is_mutable_property_graph
 template <typename Graph>
 struct is_add_only_property_graph
     : mpl::bool_<
-        is_convertible<
+        std::is_convertible<
             typename graph_mutability_traits<Graph>::category,
             add_only_property_graph_tag
         >::value

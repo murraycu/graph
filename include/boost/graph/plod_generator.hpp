@@ -226,14 +226,14 @@ namespace boost {
 
   template<typename RandomGenerator, typename Graph>
   class plod_iterator
-    : public mpl::if_<is_convertible<
+    : public mpl::if_<std::is_convertible<
                         typename graph_traits<Graph>::directed_category,
                         directed_tag>,
                       out_directed_plod_iterator<RandomGenerator>,
                       undirected_plod_iterator<RandomGenerator> >::type
   {
     typedef typename mpl::if_<
-                       is_convertible<
+                       std::is_convertible<
                          typename graph_traits<Graph>::directed_category,
                          directed_tag>,
                         out_directed_plod_iterator<RandomGenerator>,

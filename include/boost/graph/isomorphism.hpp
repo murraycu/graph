@@ -415,15 +415,15 @@ fi_adj_loop_k:++fi_adj.first;
     // Property map requirements
     BOOST_CONCEPT_ASSERT(( ReadWritePropertyMapConcept<IsoMapping, vertex1_t> ));
     typedef typename property_traits<IsoMapping>::value_type IsoMappingValue;
-    BOOST_STATIC_ASSERT((is_convertible<IsoMappingValue, vertex2_t>::value));
+    BOOST_STATIC_ASSERT((std::is_convertible<IsoMappingValue, vertex2_t>::value));
     
     BOOST_CONCEPT_ASSERT(( ReadablePropertyMapConcept<IndexMap1, vertex1_t> ));
     typedef typename property_traits<IndexMap1>::value_type IndexMap1Value;
-    BOOST_STATIC_ASSERT((is_convertible<IndexMap1Value, size_type>::value));
+    BOOST_STATIC_ASSERT((std::is_convertible<IndexMap1Value, size_type>::value));
     
     BOOST_CONCEPT_ASSERT(( ReadablePropertyMapConcept<IndexMap2, vertex2_t> ));
     typedef typename property_traits<IndexMap2>::value_type IndexMap2Value;
-    BOOST_STATIC_ASSERT((is_convertible<IndexMap2Value, size_type>::value));
+    BOOST_STATIC_ASSERT((std::is_convertible<IndexMap2Value, size_type>::value));
     
     if (count_vertices(G1) != count_vertices(G2))
       return false;

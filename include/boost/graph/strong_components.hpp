@@ -225,7 +225,7 @@ namespace boost {
                     BOOST_GRAPH_ENABLE_IF_MODELS_PARM(Graph, vertex_list_graph_tag))
   {
     typedef typename graph_traits<Graph>::directed_category DirCat;
-    BOOST_STATIC_ASSERT((is_convertible<DirCat*, directed_tag*>::value == true));
+    BOOST_STATIC_ASSERT((std::is_convertible<DirCat*, directed_tag*>::value == true));
     return detail::scc_helper1(g, comp, params, 
                                get_param(params, vertex_root_t()));
   }
@@ -236,7 +236,7 @@ namespace boost {
                     BOOST_GRAPH_ENABLE_IF_MODELS_PARM(Graph, vertex_list_graph_tag))
   {
     typedef typename graph_traits<Graph>::directed_category DirCat;
-    BOOST_STATIC_ASSERT((is_convertible<DirCat*, directed_tag*>::value == true));
+    BOOST_STATIC_ASSERT((std::is_convertible<DirCat*, directed_tag*>::value == true));
     bgl_named_params<int, int> params(0);
     return strong_components(g, comp, params);
   }

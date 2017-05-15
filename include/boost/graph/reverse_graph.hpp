@@ -129,7 +129,7 @@ class reverse_graph {
     typedef typename Traits::vertex_iterator vertex_iterator;
 
     // EdgeListGraph requirements
-    enum { is_edge_list = is_convertible<traversal_category,
+    enum { is_edge_list = std::is_convertible<traversal_category,
            edge_list_graph_tag>::value };
     typedef detail::choose_rev_edge_iter<is_edge_list> ChooseEdgeIter;
     typedef typename ChooseEdgeIter::

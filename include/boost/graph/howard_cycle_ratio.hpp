@@ -471,7 +471,7 @@ namespace boost {
  optimum_cycle_ratio(const TG &g, TVIM vim, TEW1 ewm, TEW2 ew2m, EV* pcc)
     {
       typedef typename graph_traits<TG>::directed_category DirCat;
-      BOOST_STATIC_ASSERT((is_convertible<DirCat*, directed_tag*>::value == true));
+      BOOST_STATIC_ASSERT((std::is_convertible<DirCat*, directed_tag*>::value == true));
       BOOST_CONCEPT_ASSERT(( IncidenceGraphConcept<TG> ));
       BOOST_CONCEPT_ASSERT(( VertexListGraphConcept<TG> ));
       typedef typename graph_traits<TG>::vertex_descriptor Vertex;

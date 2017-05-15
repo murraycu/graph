@@ -18,7 +18,6 @@
 #include <boost/graph/breadth_first_search.hpp>
 #include <boost/graph/relax.hpp>
 #include <boost/graph/graph_traits.hpp>
-#include <boost/type_traits/is_convertible.hpp>
 #include <boost/mpl/if.hpp>
 #include <boost/property_map/property_map.hpp>
 #include <boost/graph/named_function_params.hpp>
@@ -341,7 +340,7 @@ namespace detail { namespace graph {
 
     typedef typename graph_traits<Graph>::directed_category directed_category;
     const bool is_undirected = 
-      is_convertible<directed_category*, undirected_tag*>::value;
+      std::is_convertible<directed_category*, undirected_tag*>::value;
     if (is_undirected) {
       divide_centrality_by_two(vertices(g), centrality);
       divide_centrality_by_two(edges(g), edge_centrality_map);

@@ -13,11 +13,11 @@
 #include <boost/graph/topology.hpp>
 #include <boost/graph/iteration_macros.hpp>
 #include <boost/graph/johnson_all_pairs_shortest.hpp>
-#include <boost/type_traits/is_convertible.hpp>
 #include <utility>
 #include <iterator>
 #include <vector>
 #include <iostream>
+#include <type_traits>
 #include <boost/limits.hpp>
 #include <boost/config/no_tr1/cmath.hpp>
 
@@ -510,7 +510,7 @@ namespace boost {
     SpringStrengthMatrix spring_strength,
     PartialDerivativeMap partial_derivatives)
   {
-    BOOST_STATIC_ASSERT((is_convertible<
+    BOOST_STATIC_ASSERT((std::is_convertible<
                            typename graph_traits<Graph>::directed_category*,
                            undirected_tag*
                          >::value));

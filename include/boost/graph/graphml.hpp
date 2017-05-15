@@ -15,7 +15,6 @@
 #include <boost/config.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/any.hpp>
-#include <boost/type_traits/is_convertible.hpp>
 #include <boost/graph/dll_import_export.hpp>
 #include <boost/graph/graphviz.hpp> // for exceptions
 #include <typeinfo>
@@ -27,6 +26,7 @@
 #include <boost/throw_exception.hpp>
 #include <exception>
 #include <sstream>
+#include <type_traits>
 
 namespace boost
 {
@@ -75,7 +75,7 @@ class mutate_graph_impl : public mutate_graph
 
     bool is_directed() const
     {
-        return is_convertible<typename graph_traits<MutableGraph>::directed_category,
+        return std::is_convertible<typename graph_traits<MutableGraph>::directed_category,
                               directed_tag>::value;
     }
 
@@ -246,7 +246,7 @@ write_graphml(std::ostream& out, const Graph& g, VertexIndexMap vertex_index,
 
     BOOST_STATIC_CONSTANT(bool,
                           graph_is_directed =
-                          (is_convertible<directed_category*, directed_tag*>::value));
+                          (std::is_convertible<directed_category*, directed_tag*>::value));
 
     out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
         << "<graphml xmlns=\"http://graphml.graphdrawing.org/xmlns\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd\">\n";

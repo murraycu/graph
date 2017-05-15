@@ -44,7 +44,7 @@
 
 #include <vector>
 #include <algorithm> // For std::sort
-#include <boost/type_traits/is_convertible.hpp>
+#include <type_traits>
 
 #include <boost/graph/iteration_macros.hpp>
 
@@ -218,7 +218,7 @@ boost::add_edge(boost::vertex(1, g1), boost::vertex(2, g1), g1);
                       boost::get(index_map3, target(e, g3))));
    }
    // Normalize the edge pairs for comparison
-   if (boost::is_convertible<typename boost::graph_traits<Graph1>::directed_category*, boost::undirected_tag*>::value || boost::is_convertible<typename boost::graph_traits<Graph2>::directed_category*, boost::undirected_tag*>::value) {
+   if (std::is_convertible<typename boost::graph_traits<Graph1>::directed_category*, boost::undirected_tag*>::value || std::is_convertible<typename boost::graph_traits<Graph2>::directed_category*, boost::undirected_tag*>::value) {
      for (size_t i = 0; i < edge_pairs_g1.size(); ++i) {
        if (edge_pairs_g1[i].first < edge_pairs_g1[i].second) {
          std::swap(edge_pairs_g1[i].first, edge_pairs_g1[i].second);
