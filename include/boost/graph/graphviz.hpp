@@ -32,7 +32,6 @@
 #include <boost/static_assert.hpp>
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/xpressive/xpressive_static.hpp>
-#include <boost/foreach.hpp>
 
 namespace boost {
 
@@ -820,12 +819,10 @@ class mutate_graph_impl<compressed_sparse_row_graph<Directed, VertexProperty, Ed
     BGL_FORALL_EDGES_T(e, temp, TempCSRGraph) {
       edge_permutation_from_sorting[temp[e]] = e;
     }
-    typedef std::tuple<id_t, bgl_vertex_t, id_t> v_prop;
-    BOOST_FOREACH(const v_prop& t, vertex_props) {
+    for (const auto& t : vertex_props) {
       put(std::get<0>(t), dp_, std::get<1>(t), std::get<2>(t));
     }
-    typedef std::tuple<id_t, bgl_edge_t, id_t> e_prop;
-    BOOST_FOREACH(const e_prop& t, edge_props) {
+    for (const auto& t : edge_props) {
       put(std::get<0>(t), dp_, edge_permutation_from_sorting[std::get<1>(t)], std::get<2>(t));
     }
   }

@@ -137,7 +137,7 @@ private:
     // This is only used in the constructor to make sure the optimization of
     // sharing data structures between iterations does not break the code.
     bool all_closed_rows_are_empty() const {
-        BOOST_FOREACH(typename ClosedMatrix::reference row, closed_)
+        for (auto row : closed_)
             if (!row.empty())
                 return false;
         return true;
