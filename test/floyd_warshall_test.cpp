@@ -95,7 +95,7 @@ bool acceptance_test(Graph& g, int vec, int e)
       }
     }
     bool is_undirected =
-      boost::is_same<typename boost::graph_traits<Graph>::directed_category,
+      std::is_same<typename boost::graph_traits<Graph>::directed_category,
       boost::undirected_tag>::value;
     if (is_undirected){
       for(boost::tie(first, last) = boost::edges(g); first != last; first++){
@@ -267,7 +267,7 @@ bool acceptance_test2(Graph& g, int vec, int e)
       }
     }
     bool is_undirected =
-      boost::is_same<typename boost::graph_traits<Graph>::directed_category,
+      std::is_same<typename boost::graph_traits<Graph>::directed_category,
       boost::undirected_tag>::value;
     if (is_undirected){
       for(boost::tie(first, last) = boost::edges(g); first != last; first++){

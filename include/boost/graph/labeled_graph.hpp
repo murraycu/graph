@@ -10,12 +10,12 @@
 #include <boost/config.hpp>
 #include <vector>
 #include <map>
+#include <type_traits>
 
 #include <boost/static_assert.hpp>
 #include <boost/mpl/if.hpp>
 #include <boost/mpl/bool.hpp>
 #include <boost/unordered_map.hpp>
-#include <boost/type_traits/is_same.hpp>
 #include <boost/type_traits/is_unsigned.hpp>
 #include <boost/pending/container_traits.hpp>
 #include <boost/graph/graph_traits.hpp>
@@ -33,7 +33,7 @@ namespace graph_detail {
     /** Returns true if the selector is the default selector. */
     template <typename Selector>
     struct is_default
-        : mpl::bool_<is_same<Selector, defaultS>::value>
+        : mpl::bool_<std::is_same<Selector, defaultS>::value>
     { };
 
     /**

@@ -12,13 +12,13 @@
 #include <stack>
 #include <vector>
 #include <tuple>
+#include <type_traits>
 #include <boost/graph/overloading.hpp>
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 #include <boost/graph/breadth_first_search.hpp>
 #include <boost/graph/relax.hpp>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/type_traits/is_convertible.hpp>
-#include <boost/type_traits/is_same.hpp>
 #include <boost/mpl/if.hpp>
 #include <boost/property_map/property_map.hpp>
 #include <boost/graph/named_function_params.hpp>
@@ -414,7 +414,7 @@ namespace detail { namespace graph {
   {
     typedef typename graph_traits<Graph>::degree_size_type degree_size_type;
     typedef typename graph_traits<Graph>::edge_descriptor edge_descriptor;
-    typedef typename mpl::if_c<(is_same<CentralityMap, 
+    typedef typename mpl::if_c<(std::is_same<CentralityMap, 
                                         dummy_property_map>::value),
                                          EdgeCentralityMap, 
                                CentralityMap>::type a_centrality_map;
@@ -449,7 +449,7 @@ namespace detail { namespace graph {
   {
     typedef typename graph_traits<Graph>::degree_size_type degree_size_type;
     typedef typename graph_traits<Graph>::edge_descriptor edge_descriptor;
-    typedef typename mpl::if_c<(is_same<CentralityMap, 
+    typedef typename mpl::if_c<(std::is_same<CentralityMap, 
                                         dummy_property_map>::value),
                                          EdgeCentralityMap, 
                                CentralityMap>::type a_centrality_map;

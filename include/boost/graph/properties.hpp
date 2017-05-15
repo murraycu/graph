@@ -22,7 +22,6 @@
 
 #include <boost/graph/graph_traits.hpp>
 #include <boost/type_traits.hpp>
-#include <boost/limits.hpp>
 #include <boost/mpl/and.hpp>
 #include <boost/mpl/not.hpp>
 #include <boost/mpl/if.hpp>
@@ -133,13 +132,13 @@ namespace boost {
     template <typename G, typename R, typename T>
     struct property_kind_from_graph<G, R T::*> {
       typedef typename boost::mpl::if_<
-                boost::is_base_of<T, typename vertex_bundle_type<G>::type>,
+                std::is_base_of<T, typename vertex_bundle_type<G>::type>,
                 vertex_property_tag,
                 typename boost::mpl::if_<
-                  boost::is_base_of<T, typename edge_bundle_type<G>::type>,
+                  std::is_base_of<T, typename edge_bundle_type<G>::type>,
                   edge_property_tag,
                   typename boost::mpl::if_<
-                    boost::is_base_of<T, typename graph_bundle_type<G>::type>,
+                    std::is_base_of<T, typename graph_bundle_type<G>::type>,
                     graph_property_tag,
                     void>::type>::type>::type type;
     };
@@ -211,7 +210,7 @@ namespace boost {
   template <class Graph, class Property, class Enable = void>
   struct property_map:
     mpl::if_<
-      is_same<typename detail::property_kind_from_graph<Graph, Property>::type, edge_property_tag>,
+      std::is_same<typename detail::property_kind_from_graph<Graph, Property>::type, edge_property_tag>,
       detail::edge_property_map<Graph, Property>,
       detail::vertex_property_map<Graph, Property> >::type
   {};

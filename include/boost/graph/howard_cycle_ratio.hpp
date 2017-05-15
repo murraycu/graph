@@ -11,9 +11,9 @@
 #include <list>
 #include <algorithm>
 #include <limits>
+#include <type_traits>
 
 #include <boost/bind.hpp>
-#include <boost/type_traits/is_same.hpp>
 #include <boost/type_traits/remove_const.hpp>
 #include <boost/concept_check.hpp>
 #include <boost/pending/queue.hpp>

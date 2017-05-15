@@ -22,8 +22,6 @@
 #include <boost/pending/property.hpp> // for boost::lookup_one_property
 #include <boost/pending/container_traits.hpp>
 #include <boost/throw_exception.hpp>
-#include <boost/type_traits/is_same.hpp>
-#include <boost/type_traits/is_base_of.hpp>
 #include <boost/type_traits/remove_cv.hpp>
 #include <boost/type_traits/remove_reference.hpp>
 #include <boost/utility/enable_if.hpp>
@@ -31,6 +29,7 @@
 #include <stdexcept> // for std::runtime_error
 #include <utility> // for std::pair
 #include <tuple>
+#include <type_traits>
 
 namespace boost { namespace graph {
 
@@ -311,7 +310,7 @@ template<BGL_NAMED_GRAPH_PARAMS>
 template<typename VertexIterStability>
 inline void BGL_NAMED_GRAPH::removing_vertex(Vertex vertex, VertexIterStability)
 {
-  BOOST_STATIC_ASSERT_MSG ((boost::is_base_of<boost::graph_detail::stable_tag, VertexIterStability>::value), "Named graphs cannot use vecS as vertex container and remove vertices; the lack of vertex descriptor stability (which iterator stability is a proxy for) means that the name -> vertex mapping would need to be completely rebuilt after each deletion.  See https://svn.boost.org/trac/boost/ticket/7863 for more information and a test case.");
+  BOOST_STATIC_ASSERT_MSG ((std::is_base_of<boost::graph_detail::stable_tag, VertexIterStability>::value), "Named graphs cannot use vecS as vertex container and remove vertices; the lack of vertex descriptor stability (which iterator stability is a proxy for) means that the name -> vertex mapping would need to be completely rebuilt after each deletion.  See https://svn.boost.org/trac/boost/ticket/7863 for more information and a test case.");
   const auto& vertex_name = extract_name(derived()[vertex]);
   named_vertices.erase(vertex_name);
 }
@@ -366,7 +365,7 @@ find_vertex(typename BGL_NAMED_GRAPH::vertex_name_type const& name,
 ///       from the vertex name to avoid ambiguous overload problems with
 ///       the add_vertex() function that takes a vertex property.
 template<BGL_NAMED_GRAPH_PARAMS>
-    typename disable_if<is_same<
+    typename disable_if<std::is_same<
         typename BGL_NAMED_GRAPH::vertex_name_type,
         VertexProperty
     >,

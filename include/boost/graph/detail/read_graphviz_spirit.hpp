@@ -42,7 +42,6 @@
 #include <boost/spirit/include/phoenix1_binders.hpp>
 #include <boost/ref.hpp>
 #include <boost/function/function2.hpp>
-#include <boost/type_traits/is_same.hpp>
 #include <boost/property_map/dynamic_property_map.hpp>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/detail/workaround.hpp>
@@ -53,6 +52,7 @@
 #include <set>
 #include <utility>
 #include <map>
+#include <type_traits>
 #include <boost/graph/graphviz.hpp>
 #include <boost/throw_exception.hpp>
 

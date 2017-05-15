@@ -7,7 +7,7 @@
 #define BOOST_DETAIL_PROPERTY_HPP
 
 #include <utility> // for std::pair
-#include <boost/type_traits/same_traits.hpp> // for is_same
+#include <type_traits>
 
 namespace boost {
 

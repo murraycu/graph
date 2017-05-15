@@ -11,8 +11,8 @@
 
 #include <boost/graph/planar_detail/boyer_myrvold_impl.hpp>
 #include <boost/parameter.hpp>
-#include <boost/type_traits.hpp>
 #include <boost/mpl/bool.hpp>
+#include <type_traits>
 
 
 namespace boost
@@ -42,8 +42,8 @@ namespace boost
         
       template <typename ArgumentPack>
       bool dispatched_boyer_myrvold(ArgumentPack const& args, 
-                                    mpl::true_, 
-                                    mpl::true_
+                                    std::true_type, 
+                                    std::true_type
                                     )
       {
         //Dispatch for no planar embedding, no kuratowski subgraph isolation
@@ -83,8 +83,8 @@ namespace boost
     
       template <typename ArgumentPack>
       bool dispatched_boyer_myrvold(ArgumentPack const& args, 
-                                    mpl::true_, 
-                                    mpl::false_
+                                    std::true_type, 
+                                    std::false_type
                                     )
       {
         //Dispatch for no planar embedding, kuratowski subgraph isolation
@@ -131,8 +131,8 @@ namespace boost
     
       template <typename ArgumentPack>
       bool dispatched_boyer_myrvold(ArgumentPack const& args, 
-                                    mpl::false_, 
-                                    mpl::true_
+                                    std::false_type, 
+                                    std::true_type
                                     )
       {
         //Dispatch for planar embedding, no kuratowski subgraph isolation
@@ -179,8 +179,8 @@ namespace boost
 
       template <typename ArgumentPack>
       bool dispatched_boyer_myrvold(ArgumentPack const& args, 
-                                    mpl::false_, 
-                                    mpl::false_
+                                    std::false_type,
+                                    std::false_type
                                     )
       {
         //Dispatch for planar embedding, kuratowski subgraph isolation
@@ -252,9 +252,9 @@ namespace boost
       
          return dispatched_boyer_myrvold
            (args, 
-            boost::is_same
+            std::is_same
               <embedding_arg_t, const no_planar_embedding&>(),
-            boost::is_same
+            std::is_same
               <kuratowski_arg_t, const no_kuratowski_subgraph_isolation&>() 
             );
       }

@@ -17,6 +17,7 @@
 #include <vector>
 #include <list>
 #include <set>
+#include <type_traits>
 
 #include <boost/unordered_set.hpp>
 
@@ -31,7 +32,6 @@
 #include <boost/mpl/not.hpp>
 #include <boost/mpl/bool.hpp>
 #include <boost/graph/detail/edge.hpp>
-#include <boost/type_traits/is_same.hpp>
 #include <boost/detail/workaround.hpp>
 #include <boost/graph/properties.hpp>
 #include <boost/graph/named_graph.hpp>

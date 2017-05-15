@@ -123,7 +123,7 @@ namespace boost
         d[source(*first, g)][target(*first, g)] = get(w, *first);
     }
     
-    bool is_undirected = is_same<typename 
+    bool is_undirected = std::is_same<typename 
       graph_traits<VertexAndEdgeListGraph>::directed_category, 
       undirected_tag>::value;
     if (is_undirected)

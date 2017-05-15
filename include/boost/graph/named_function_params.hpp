@@ -12,7 +12,6 @@
 
 #include <functional>
 #include <vector>
-#include <boost/limits.hpp>
 #include <boost/ref.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/parameter/name.hpp>
@@ -267,7 +266,7 @@ BOOST_BGL_DECLARE_NAMED_PARAMS
     template <typename GraphIsConst, typename Graph, typename Param, typename Tag>
     struct choose_impl_result:
       boost::mpl::eval_if<
-        boost::is_same<Param, param_not_found>, 
+        std::is_same<Param, param_not_found>, 
         boost::mpl::eval_if<
           GraphIsConst,
           detail::const_type_as_type<property_map<Graph, Tag> >,
@@ -303,7 +302,7 @@ BOOST_BGL_DECLARE_NAMED_PARAMS
   typename detail::choose_impl_result<boost::mpl::true_, Graph, Param, PropertyTag>::type
   choose_const_pmap(const Param& p, const Graph& g, PropertyTag tag)
   { 
-    return detail::choose_impl_helper<!boost::is_same<Param, param_not_found>::value>
+    return detail::choose_impl_helper<!std::is_same<Param, param_not_found>::value>
              ::f(boost::mpl::true_(), g, p, tag);
   }
 
@@ -311,7 +310,7 @@ BOOST_BGL_DECLARE_NAMED_PARAMS
   typename detail::choose_impl_result<boost::mpl::false_, Graph, Param, PropertyTag>::type
   choose_pmap(const Param& p, Graph& g, PropertyTag tag)
   { 
-    return detail::choose_impl_helper<!boost::is_same<Param, param_not_found>::value>
+    return detail::choose_impl_helper<!std::is_same<Param, param_not_found>::value>
              ::f(boost::mpl::false_(), g, p, tag);
   }
 
@@ -394,7 +393,7 @@ BOOST_BGL_DECLARE_NAMED_PARAMS
     struct bgl_parameter_not_found_type {};
 
     template <typename ArgPack, typename KeywordType>
-    struct parameter_exists : boost::mpl::not_<boost::is_same<typename boost::parameter::binding<ArgPack, KeywordType, bgl_parameter_not_found_type>::type, bgl_parameter_not_found_type> > {};
+    struct parameter_exists : boost::mpl::not_<std::is_same<typename boost::parameter::binding<ArgPack, KeywordType, bgl_parameter_not_found_type>::type, bgl_parameter_not_found_type> > {};
   }
 
 #define BOOST_GRAPH_DECLARE_CONVERTED_PARAMETERS(old_type, old_var) \

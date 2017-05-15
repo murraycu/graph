@@ -15,13 +15,13 @@
 #include <vector>
 #include <queue>
 #include <map>
+#include <type_traits>
 #include <boost/shared_ptr.hpp>
 #include <boost/assert.hpp>
 #include <boost/random/uniform_int.hpp>
 #include <boost/random/uniform_01.hpp>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/type_traits/is_base_and_derived.hpp>
-#include <boost/type_traits/is_same.hpp>
 // #include <boost/test/floating_point_comparison.hpp>
 
 using boost::shared_ptr;
@@ -381,7 +381,7 @@ namespace boost {
 
         // Lowest vertex number always comes first
         // (this means we don't have to worry about i->j and j->i being in the edge list)
-        if (u > v && is_same<directed_category, undirected_tag>::value)
+        if (u > v && std::is_same<directed_category, undirected_tag>::value)
           std::swap(u, v);
 
         if (edge_map.find(std::make_pair(u, v)) == edge_map.end()) {
@@ -511,7 +511,7 @@ namespace boost {
         } else {
           // Lowest vertex number always comes first
           // (this means we don't have to worry about i->j and j->i being in the edge list)
-          if (u > v && is_same<directed_category, undirected_tag>::value)
+          if (u > v && std::is_same<directed_category, undirected_tag>::value)
             std::swap(u, v);
 
           if (edge_map.find(std::make_pair(u, v)) == edge_map.end()) {

@@ -15,8 +15,8 @@
 #include <vector>
 #include <memory>
 #include <tuple>
+#include <type_traits>
 #include <boost/assert.hpp>
-#include <boost/limits.hpp>
 #include <boost/iterator.hpp>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/graph_mutability_traits.hpp>
@@ -30,7 +30,6 @@
 #include <boost/range/irange.hpp>
 #include <boost/graph/properties.hpp>
 #include <boost/static_assert.hpp>
-#include <boost/type_traits.hpp>
 #include <boost/property_map/property_map.hpp>
 #include <boost/property_map/transform_value_property_map.hpp>
 #include <boost/property_map/function_property_map.hpp>
@@ -443,7 +442,7 @@ namespace boost {
     // graph type. Instead, use directedS, which also provides the
     // functionality required for a Bidirectional Graph (in_edges,
     // in_degree, etc.).
-    BOOST_STATIC_ASSERT(!(is_same<Directed, bidirectionalS>::value));
+    BOOST_STATIC_ASSERT(!(std::is_same<Directed, bidirectionalS>::value));
 
     typedef typename mpl::if_<is_directed,
                                     bidirectional_tag, undirected_tag>::type
@@ -482,7 +481,7 @@ namespace boost {
     // graph type. Instead, use directedS, which also provides the
     // functionality required for a Bidirectional Graph (in_edges,
     // in_degree, etc.).
-    BOOST_STATIC_ASSERT(!(is_same<Directed, bidirectionalS>::value));
+    BOOST_STATIC_ASSERT(!(std::is_same<Directed, bidirectionalS>::value));
 
     typedef GraphProperty graph_property_type;
     typedef typename lookup_one_property<GraphProperty, graph_bundle_t>::type graph_bundled;

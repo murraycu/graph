@@ -49,7 +49,7 @@ namespace boost {
       typename Traits1::vertices_size_type, DT> ));
 
     typedef typename Traits1::directed_category DirCat;
-    bool is_undirected = is_same<DirCat, undirected_tag>::value;
+    bool is_undirected = std::is_same<DirCat, undirected_tag>::value;
 
     typedef adjacency_list<vecS, vecS, directedS, 
       property< vertex_distance_t, DT>,

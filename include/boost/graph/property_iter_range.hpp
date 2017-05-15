@@ -34,7 +34,7 @@ namespace boost {
     typedef typename property_map<Graph, PropertyTag>::const_type 
       const_map_type;
     typedef typename property_kind<PropertyTag>::type Kind;
-    typedef typename mpl::if_c<is_same<Kind, vertex_property_tag>::value,
+    typedef typename mpl::if_c<std::is_same<Kind, vertex_property_tag>::value,
        typename graph_traits<Graph>::vertex_iterator,
        typename graph_traits<Graph>::edge_iterator>::type iter;
   public:

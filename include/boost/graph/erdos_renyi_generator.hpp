@@ -13,12 +13,11 @@
 #include <boost/assert.hpp>
 #include <iterator>
 #include <utility>
+#include <type_traits>
 #include <boost/shared_ptr.hpp>
 #include <boost/random/uniform_int.hpp>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/random/geometric_distribution.hpp>
-#include <boost/type_traits/is_base_of.hpp>
-#include <boost/type_traits/is_same.hpp>
 #include <boost/config/no_tr1/cmath.hpp>
 #include <boost/iterator/iterator_facade.hpp>
 
@@ -41,7 +40,7 @@ namespace boost {
 
     BOOST_STATIC_CONSTANT
       (bool,
-       is_undirected = (is_base_of<undirected_tag, directed_category>::value));
+       is_undirected = (std::is_base_of<undirected_tag, directed_category>::value));
 
   public:
     erdos_renyi_iterator() : gen(), n(0), edges(0), allow_self_loops(false) {}
@@ -107,7 +106,7 @@ namespace boost {
 
     BOOST_STATIC_CONSTANT
       (bool,
-       is_undirected = (is_base_of<undirected_tag, directed_category>::value));
+       is_undirected = (std::is_base_of<undirected_tag, directed_category>::value));
 
   public:
     sorted_erdos_renyi_iterator()

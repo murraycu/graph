@@ -9,7 +9,6 @@
 // Electron. Lett., 28 April 1983, Volume 19, Issue 9, p.346-347
 
 
-#include <boost/type_traits.hpp>
 #include <boost/concept/requires.hpp>
 #include <boost/assign/std/vector.hpp>
 #include <boost/graph/adjacency_list.hpp>
@@ -17,6 +16,7 @@
 #include <boost/test/minimal.hpp>
 #include <boost/graph/two_graphs_common_spanning_trees.hpp>
 #include <vector>
+#include <type_traits>
 
 using namespace boost::assign;
 
@@ -66,8 +66,8 @@ public:
   typedef typename Coll::value_type coll_value_type;
   typedef typename Seq::value_type seq_value_type;
 
-  BOOST_STATIC_ASSERT((boost::is_same<coll_value_type, Seq>::value));
-  BOOST_STATIC_ASSERT((boost::is_same<seq_value_type, bool>::value));
+  BOOST_STATIC_ASSERT((std::is_same<coll_value_type, Seq>::value));
+  BOOST_STATIC_ASSERT((std::is_same<seq_value_type, bool>::value));
 
   void operator()(Coll& coll, Seq& seq)
   {

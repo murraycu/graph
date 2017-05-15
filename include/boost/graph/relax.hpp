@@ -10,7 +10,6 @@
 #define BOOST_GRAPH_RELAX_HPP
 
 #include <functional>
-#include <boost/limits.hpp> // for numeric limits
 #include <boost/graph/graph_traits.hpp>
 #include <boost/property_map/property_map.hpp>
 
@@ -44,7 +43,7 @@ namespace boost {
                const BinaryFunction& combine, const BinaryPredicate& compare)
     {
       typedef typename graph_traits<Graph>::directed_category DirCat;
-      bool is_undirected = is_same<DirCat, undirected_tag>::value;
+      bool is_undirected = std::is_same<DirCat, undirected_tag>::value;
       auto u = source(e, g), v = target(e, g);
       typedef typename property_traits<DistanceMap>::value_type D;
       const D d_u = get(d, u);

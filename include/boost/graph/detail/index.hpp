@@ -62,7 +62,7 @@ namespace boost
         struct choose_indexer
         {
             typedef typename mpl::if_<
-                    is_same<Key, typename graph_traits<Graph>::vertex_descriptor>,
+                    std::is_same<Key, typename graph_traits<Graph>::vertex_descriptor>,
                     vertex_indexer<Graph>,
                     edge_indexer<Graph>
                 >::type indexer_type;
