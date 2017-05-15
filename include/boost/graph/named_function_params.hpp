@@ -14,7 +14,6 @@
 #include <vector>
 #include <boost/limits.hpp>
 #include <boost/ref.hpp>
-#include <boost/utility/result_of.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/parameter/name.hpp>
 #include <boost/parameter/binding.hpp>
@@ -497,7 +496,7 @@ BOOST_BGL_DECLARE_NAMED_PARAMS
 #define BOOST_GRAPH_MAKE_FORWARDING_FUNCTION(name, nfixed, nnamed_max) \
   /* Entry point for conversion from BGL-style named parameters */ \
   template <BOOST_PP_ENUM_PARAMS(nfixed, typename Param) BOOST_PP_COMMA_IF(nfixed) typename ArgPack> \
-  typename boost::result_of< \
+  typename std::result_of< \
              detail::BOOST_PP_CAT(name, _impl)<BOOST_PP_ENUM_PARAMS(nfixed, Param)>(BOOST_PP_ENUM_PARAMS(nfixed, Param) BOOST_PP_COMMA_IF(nfixed) const ArgPack&) \
            >::type \
   BOOST_PP_CAT(name, _with_named_params)(BOOST_PP_ENUM_BINARY_PARAMS(nfixed, const Param, & param) BOOST_PP_COMMA_IF(nfixed) const ArgPack& arg_pack) { \
@@ -511,7 +510,7 @@ BOOST_BGL_DECLARE_NAMED_PARAMS
 
 #define BOOST_GRAPH_MAKE_FORWARDING_FUNCTION_ONEX(z, nnamed, name, nfixed) \
   template <BOOST_PP_ENUM_PARAMS(nfixed, typename Param) BOOST_PP_ENUM_TRAILING_PARAMS(nnamed, typename Keyword) BOOST_PP_ENUM_TRAILING_PARAMS(nnamed, typename Arg)> \
-  typename boost::result_of< \
+  typename std::result_of< \
              detail::BOOST_PP_CAT(name, _impl)<BOOST_PP_ENUM_PARAMS(nfixed, Param)> \
                (BOOST_PP_ENUM_PARAMS(nfixed, Param) BOOST_PP_COMMA_IF(nfixed) \
                 const typename boost::detail::make_arg_pack_type<void(BOOST_PP_ENUM_PARAMS(nnamed, Keyword) BOOST_PP_COMMA_IF(nnamed) BOOST_PP_ENUM_PARAMS(nnamed, Arg))>::type&) \
@@ -525,7 +524,7 @@ BOOST_BGL_DECLARE_NAMED_PARAMS
 
 #define BOOST_GRAPH_MAKE_OLD_STYLE_PARAMETER_FUNCTION(name, nfixed) \
   template <BOOST_PP_ENUM_PARAMS(nfixed, typename Param) BOOST_PP_COMMA_IF(nfixed) class P, class T, class R> \
-  typename boost::result_of< \
+  typename std::result_of< \
     ::boost::graph::detail::BOOST_PP_CAT(name, _impl) BOOST_PP_EXPR_IF(nfixed, <) BOOST_PP_ENUM_PARAMS(nfixed, Param) BOOST_PP_EXPR_IF(nfixed, >) \
       (BOOST_PP_ENUM_PARAMS(nfixed, Param) BOOST_PP_COMMA_IF(nfixed) \
        const typename boost::detail::convert_bgl_params_to_boost_parameter<boost::bgl_named_params<P, T, R> >::type &) \
@@ -537,7 +536,7 @@ BOOST_BGL_DECLARE_NAMED_PARAMS
   } \
   \
   BOOST_PP_EXPR_IF(nfixed, template <) BOOST_PP_ENUM_PARAMS(nfixed, typename Param) BOOST_PP_EXPR_IF(nfixed, >) \
-  BOOST_PP_EXPR_IF(nfixed, typename) boost::result_of< \
+  BOOST_PP_EXPR_IF(nfixed, typename) std::result_of< \
     ::boost::graph::detail::BOOST_PP_CAT(name, _impl) BOOST_PP_EXPR_IF(nfixed, <) BOOST_PP_ENUM_PARAMS(nfixed, Param) BOOST_PP_EXPR_IF(nfixed, >) \
       (BOOST_PP_ENUM_PARAMS(nfixed, Param) BOOST_PP_COMMA_IF(nfixed) const boost::parameter::aux::empty_arg_list &) \
     >::type \
