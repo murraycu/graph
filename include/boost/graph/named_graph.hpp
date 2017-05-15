@@ -78,7 +78,7 @@ struct vertex_from_name
 private:
   typedef typename internal_vertex_name<VertexProperty>::type extract_name_type;
 
-  typedef typename remove_cv<
+  typedef typename std::remove_cv<
             typename std::remove_reference<
               typename extract_name_type::result_type>::type>::type
     vertex_name_type;
@@ -103,7 +103,7 @@ struct cannot_add_vertex
 private:
   typedef typename internal_vertex_name<VertexProperty>::type extract_name_type;
 
-  typedef typename remove_cv<
+  typedef typename std::remove_cv<
             typename std::remove_reference<
               typename extract_name_type::result_type>::type>::type
     vertex_name_type;
@@ -197,7 +197,7 @@ public:
     vertex_constructor_type;
 
   /// The type used to name vertices in the graph
-  typedef typename remove_cv<
+  typedef typename std::remove_cv<
             typename std::remove_reference<
               typename extract_name_type::result_type>::type>::type
     vertex_name_type;
