@@ -10,7 +10,6 @@
 #include <algorithm>
 #include <tuple>
 #include <boost/assert.hpp>
-#include <boost/foreach.hpp>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/one_bit_color_map.hpp>
 #include <boost/graph/properties.hpp>
@@ -128,9 +127,12 @@ private:
     // This is used by the constructor to secure the assumption
     // documented above.
     bool blocked_map_starts_all_unblocked() const {
-        BOOST_FOREACH(Vertex v, vertices(graph_))
+        for(auto [i, end] = vertices(graph_); i != end; ++i) {
+            auto v = *i;
             if (is_blocked(v))
                 return false;
+        }
+
         return true;
     }
 
