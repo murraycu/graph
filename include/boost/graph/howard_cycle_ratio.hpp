@@ -14,7 +14,6 @@
 #include <type_traits>
 
 #include <boost/bind.hpp>
-#include <boost/type_traits/remove_const.hpp>
 #include <boost/concept_check.hpp>
 #include <boost/pending/queue.hpp>
 #include <boost/property_map/property_map.hpp>
@@ -571,7 +570,7 @@ maximum_cycle_mean(const Graph &g, VertexIndexMap vim,
                    std::vector<typename graph_traits<Graph>::edge_descriptor>* pcc = 0,
                    FloatTraits ft = FloatTraits())
 {
-    typedef typename remove_const<
+    typedef typename std::remove_const<
         typename property_traits<EdgeWeightMap>::value_type
     >::type Weight;
     typename std::vector<Weight> ed_w2(boost::num_edges(g), 1);
@@ -605,7 +604,7 @@ minimum_cycle_mean(const Graph &g, VertexIndexMap vim,
                    std::vector<typename graph_traits<Graph>::edge_descriptor>* pcc = 0,
                    FloatTraits ft = FloatTraits())
 {
-    typedef typename remove_const<
+    typedef typename std::remove_const<
         typename property_traits<EdgeWeightMap>::value_type
     >::type Weight;
     typename std::vector<Weight> ed_w2(boost::num_edges(g), 1);

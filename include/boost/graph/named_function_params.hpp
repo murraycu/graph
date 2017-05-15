@@ -278,13 +278,13 @@ BOOST_BGL_DECLARE_NAMED_PARAMS
 
     template <> struct choose_impl_helper<false> {
       template <typename Param, typename Graph, typename PropertyTag>
-      static typename property_map<typename boost::remove_const<Graph>::type, PropertyTag>::const_type
+      static typename property_map<typename std::remove_const<Graph>::type, PropertyTag>::const_type
       f(boost::mpl::true_, const Graph& g, const Param&, PropertyTag tag) {
         return get(tag, g);
       }
 
       template <typename Param, typename Graph, typename PropertyTag>
-      static typename property_map<typename boost::remove_const<Graph>::type, PropertyTag>::type
+      static typename property_map<typename std::remove_const<Graph>::type, PropertyTag>::type
       f(boost::mpl::false_, Graph& g, const Param&, PropertyTag tag) {
         return get(tag, g);
       }
@@ -404,7 +404,7 @@ BOOST_BGL_DECLARE_NAMED_PARAMS
 
     template <typename ArgType, typename Prop, typename Graph, bool Exists>
     struct override_const_property_t {
-      typedef typename boost::remove_const<ArgType>::type result_type;
+      typedef typename std::remove_const<ArgType>::type result_type;
       result_type operator()(const Graph&, const ArgType& a) const {return a;}
     };
 
@@ -558,7 +558,7 @@ BOOST_BGL_DECLARE_NAMED_PARAMS
 
     template <typename Graph, typename ArgPack, typename Value, typename PM>
     struct map_maker_helper<false, Graph, ArgPack, Value, PM> {
-      typedef typename boost::remove_const<
+      typedef typename std::remove_const<
         typename override_const_property_t<
           typename boost::parameter::value_type<
             ArgPack, boost::graph::keywords::tag::vertex_index_map, int>::type,
@@ -592,7 +592,7 @@ BOOST_BGL_DECLARE_NAMED_PARAMS
           (parameter_exists<ArgPack, MapTag>
            ::value));
       typedef map_maker_helper<has_map, Graph, ArgPack, ValueType,
-                               typename boost::remove_const<
+                               typename std::remove_const<
                                  typename boost::parameter::value_type<
                                             ArgPack,
                                             MapTag,
@@ -677,7 +677,7 @@ BOOST_BGL_DECLARE_NAMED_PARAMS
         param_value_type_wrapper;
       typedef typename param_value_type_wrapper::type
         param_value_type;
-      typedef typename boost::remove_const<param_value_type>::type param_value_type_no_const;
+      typedef typename std::remove_const<param_value_type>::type param_value_type_no_const;
       typedef priority_queue_maker_helper<g_hasQ, Graph, ArgPack, KeyT, ValueT, KeyMapTag, IndexInHeapMapTag, Compare,
                                           param_value_type_no_const> helper;
       typedef typename helper::priority_queue_type priority_queue_type;
@@ -695,8 +695,8 @@ BOOST_BGL_DECLARE_NAMED_PARAMS
 
       template <class F>
       struct result {
-        typedef typename remove_const<typename remove_reference<typename function_traits<F>::arg1_type>::type>::type graph_type;
-        typedef typename remove_const<typename remove_reference<typename function_traits<F>::arg2_type>::type>::type arg_pack_type;
+        typedef typename std::remove_const<typename remove_reference<typename function_traits<F>::arg1_type>::type>::type graph_type;
+        typedef typename std::remove_const<typename remove_reference<typename function_traits<F>::arg2_type>::type>::type arg_pack_type;
         typedef typename priority_queue_maker<graph_type, arg_pack_type, KeyT, ValueT, PriorityQueueTag, KeyMapTag, IndexInHeapMapTag, Compare>::priority_queue_type type;
       };
 

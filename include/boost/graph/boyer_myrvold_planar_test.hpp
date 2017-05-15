@@ -48,7 +48,7 @@ namespace boost
       {
         //Dispatch for no planar embedding, no kuratowski subgraph isolation
 
-        typedef typename remove_const
+        typedef typename std::remove_const
                 < 
                     typename remove_reference
                     < typename parameter::binding
@@ -88,7 +88,7 @@ namespace boost
                                     )
       {
         //Dispatch for no planar embedding, kuratowski subgraph isolation
-        typedef typename remove_const
+        typedef typename std::remove_const
                 < 
                     typename remove_reference
                     < typename parameter::binding
@@ -136,7 +136,7 @@ namespace boost
                                     )
       {
         //Dispatch for planar embedding, no kuratowski subgraph isolation
-        typedef typename remove_const
+        typedef typename std::remove_const
                 < 
                     typename remove_reference
                     < typename parameter::binding
@@ -184,7 +184,7 @@ namespace boost
                                     )
       {
         //Dispatch for planar embedding, kuratowski subgraph isolation
-        typedef typename remove_const
+        typedef typename std::remove_const
                 < 
                     typename remove_reference
                     < typename parameter::binding
