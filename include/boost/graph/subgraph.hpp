@@ -764,7 +764,7 @@ class subgraph_global_property_map
 {
     typedef property_traits<PropertyMap> Traits;
 public:
-    typedef typename mpl::if_<is_const<typename remove_pointer<GraphPtr>::type>,
+    typedef typename mpl::if_<std::is_const<typename remove_pointer<GraphPtr>::type>,
                               readable_property_map_tag,
                               typename Traits::category>::type
       category;
@@ -803,7 +803,7 @@ class subgraph_local_property_map
 {
     typedef property_traits<PropertyMap> Traits;
 public:
-    typedef typename mpl::if_<is_const<typename remove_pointer<GraphPtr>::type>,
+    typedef typename mpl::if_<std::is_const<typename remove_pointer<GraphPtr>::type>,
                               readable_property_map_tag,
                               typename Traits::category>::type
       category;
