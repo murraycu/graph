@@ -18,7 +18,6 @@
 #include <boost/mpl/if.hpp>
 #include <boost/mpl/eval_if.hpp>
 #include <boost/mpl/bool.hpp>
-#include <boost/mpl/not.hpp>
 #include <boost/mpl/has_xxx.hpp>
 #include <boost/mpl/void.hpp>
 #include <boost/mpl/identity.hpp>
@@ -120,7 +119,7 @@ namespace boost {
 
     template <typename Graph>
     struct is_undirected_graph
-        : mpl::not_< is_directed_graph<Graph> >
+        : std::negation< is_directed_graph<Graph> >
     { };
     //@}
 
@@ -236,14 +235,14 @@ namespace boost {
     //@{
     template <typename Graph>
     struct is_directed_unidirectional_graph
-        : mpl::and_<
-            is_directed_graph<Graph>, mpl::not_< is_bidirectional_graph<Graph> >
+        : std::conjunction<
+            is_directed_graph<Graph>, std::negation< is_bidirectional_graph<Graph> >
         >
     { };
 
     template <typename Graph>
     struct is_directed_bidirectional_graph
-        : mpl::and_<
+        : std::conjunction<
             is_directed_graph<Graph>, is_bidirectional_graph<Graph>
         >
     { };
@@ -330,7 +329,7 @@ namespace boost {
     //@{
     template<typename Graph>
     struct has_graph_property
-      : mpl::not_<
+      : std::negation<
         typename detail::is_no_property<
           typename graph_property_type<Graph>::type
         >::type
@@ -339,35 +338,35 @@ namespace boost {
 
     template<typename Graph>
     struct has_bundled_graph_property
-      : mpl::not_<
+      : std::negation<
         graph_detail::is_no_bundle<typename graph_bundle_type<Graph>::type>
       >
     { };
 
     template <typename Graph>
     struct has_vertex_property
-        : mpl::not_<
+        : std::negation<
             typename detail::is_no_property<typename vertex_property_type<Graph>::type>
         >::type
     { };
 
     template <typename Graph>
     struct has_bundled_vertex_property
-        : mpl::not_<
+        : std::negation<
             graph_detail::is_no_bundle<typename vertex_bundle_type<Graph>::type>
         >
     { };
 
     template <typename Graph>
     struct has_edge_property
-        : mpl::not_<
+        : std::negation<
             typename detail::is_no_property<typename edge_property_type<Graph>::type>
         >::type
     { };
 
     template <typename Graph>
     struct has_bundled_edge_property
-        : mpl::not_<
+        : std::negation<
             graph_detail::is_no_bundle<typename edge_bundle_type<Graph>::type>
         >
     { };

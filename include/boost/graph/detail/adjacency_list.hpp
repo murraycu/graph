@@ -26,8 +26,6 @@
 #include <boost/iterator/iterator_adaptor.hpp>
 
 #include <boost/mpl/if.hpp>
-#include <boost/mpl/not.hpp>
-#include <boost/mpl/and.hpp>
 #include <boost/graph/graph_concepts.hpp>
 #include <boost/pending/container_traits.hpp>
 #include <boost/graph/detail/adj_list_edge_iterator.hpp>
@@ -2269,8 +2267,8 @@ namespace boost {
         typedef typename container_gen<EdgeListS,
           list_edge<vertex_descriptor, EdgeProperty> >::type EdgeContainer;
 
-        typedef typename mpl::and_<DirectedT,
-             typename mpl::not_<BidirectionalT>::type >::type on_edge_storage;
+        typedef typename std::conjunction<DirectedT,
+             typename std::negation<BidirectionalT>::type >::type on_edge_storage;
 
         typedef typename mpl::if_<on_edge_storage,
           std::size_t, typename EdgeContainer::size_type

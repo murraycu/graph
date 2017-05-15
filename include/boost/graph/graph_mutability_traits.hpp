@@ -9,7 +9,6 @@
 
 #include <boost/config.hpp>
 #include <boost/mpl/if.hpp>
-#include <boost/mpl/and.hpp>
 #include <boost/mpl/bool.hpp>
 #include <type_traits>
 
@@ -136,7 +135,7 @@ struct graph_has_remove_edge
 
 template <typename Graph>
 struct is_mutable_vertex_graph
-    : mpl::and_<
+    : std::conjunction<
         graph_has_add_vertex<Graph>,
         graph_has_remove_vertex<Graph>
     >
@@ -144,7 +143,7 @@ struct is_mutable_vertex_graph
 
 template <typename Graph>
 struct is_mutable_vertex_property_graph
-    : mpl::and_<
+    : std::conjunction<
         graph_has_add_vertex_with_property<Graph>,
         graph_has_remove_vertex<Graph>
     >
@@ -153,7 +152,7 @@ struct is_mutable_vertex_property_graph
 
 template <typename Graph>
 struct is_mutable_edge_graph
-    : mpl::and_<
+    : std::conjunction<
         graph_has_add_edge<Graph>,
         graph_has_remove_edge<Graph>
     >
@@ -161,7 +160,7 @@ struct is_mutable_edge_graph
 
 template <typename Graph>
 struct is_mutable_edge_property_graph
-    : mpl::and_<
+    : std::conjunction<
         graph_has_add_edge_with_property<Graph>,
         graph_has_remove_edge<Graph>
     >
@@ -170,7 +169,7 @@ struct is_mutable_edge_property_graph
 
 template <typename Graph>
 struct is_mutable_graph
-    : mpl::and_<
+    : std::conjunction<
         is_mutable_vertex_graph<Graph>,
         is_mutable_edge_graph<Graph>
     >
@@ -178,7 +177,7 @@ struct is_mutable_graph
 
 template <typename Graph>
 struct is_mutable_property_graph
-    : mpl::and_<
+    : std::conjunction<
         is_mutable_vertex_property_graph<Graph>,
         is_mutable_edge_property_graph<Graph>
     >

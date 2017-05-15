@@ -121,7 +121,7 @@ struct graph_has_remove_edge_by_label
 
 template <typename Graph>
 struct is_labeled_mutable_vertex_graph
-    : mpl::and_<
+    : std::conjunction<
         graph_has_add_vertex_by_label<Graph>,
         graph_has_remove_vertex_by_label<Graph>
     >
@@ -129,7 +129,7 @@ struct is_labeled_mutable_vertex_graph
 
 template <typename Graph>
 struct is_labeled_mutable_vertex_property_graph
-    : mpl::and_<
+    : std::conjunction<
         graph_has_add_vertex_by_label<Graph>,
         graph_has_remove_vertex_by_label<Graph>
     >
@@ -137,7 +137,7 @@ struct is_labeled_mutable_vertex_property_graph
 
 template <typename Graph>
 struct is_labeled_mutable_edge_graph
-    : mpl::and_<
+    : std::conjunction<
         graph_has_add_edge_by_label<Graph>,
         graph_has_remove_edge_by_label<Graph>
     >
@@ -145,7 +145,7 @@ struct is_labeled_mutable_edge_graph
 
 template <typename Graph>
 struct is_labeled_mutable_edge_property_graph
-    : mpl::and_<
+    : std::conjunction<
         graph_has_add_edge_by_label<Graph>,
         graph_has_remove_edge_by_label<Graph>
     >
@@ -153,7 +153,7 @@ struct is_labeled_mutable_edge_property_graph
 
 template <typename Graph>
 struct is_labeled_mutable_graph
-    : mpl::and_<
+    : std::conjunction<
         is_labeled_mutable_vertex_graph<Graph>,
         is_labeled_mutable_edge_graph<Graph>
     >
@@ -161,7 +161,7 @@ struct is_labeled_mutable_graph
 
 template <typename Graph>
 struct is_labeled_mutable_property_graph
-    : mpl::and_<
+    : std::conjunction<
         is_labeled_mutable_vertex_property_graph<Graph>,
         is_labeled_mutable_edge_property_graph<Graph>
     >

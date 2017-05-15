@@ -17,7 +17,6 @@
 #include <boost/parameter/name.hpp>
 #include <boost/parameter/binding.hpp>
 #include <boost/type_traits.hpp>
-#include <boost/mpl/not.hpp>
 #include <boost/graph/properties.hpp>
 #include <boost/graph/detail/d_ary_heap.hpp>
 #include <boost/property_map/property_map.hpp>
@@ -393,7 +392,7 @@ BOOST_BGL_DECLARE_NAMED_PARAMS
     struct bgl_parameter_not_found_type {};
 
     template <typename ArgPack, typename KeywordType>
-    struct parameter_exists : boost::mpl::not_<std::is_same<typename boost::parameter::binding<ArgPack, KeywordType, bgl_parameter_not_found_type>::type, bgl_parameter_not_found_type> > {};
+    struct parameter_exists : std::negation<std::is_same<typename boost::parameter::binding<ArgPack, KeywordType, bgl_parameter_not_found_type>::type, bgl_parameter_not_found_type> > {};
   }
 
 #define BOOST_GRAPH_DECLARE_CONVERTED_PARAMETERS(old_type, old_var) \

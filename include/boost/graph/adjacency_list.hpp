@@ -28,8 +28,6 @@
 #include <boost/graph/graph_selectors.hpp>
 #include <boost/property_map/property_map.hpp>
 #include <boost/mpl/if.hpp>
-#include <boost/mpl/and.hpp>
-#include <boost/mpl/not.hpp>
 #include <boost/mpl/bool.hpp>
 #include <boost/graph/detail/edge.hpp>
 #include <boost/detail/workaround.hpp>
@@ -209,8 +207,8 @@ namespace boost {
     typedef typename container_gen<EdgeListS, dummy>::type EdgeContainer;
     typedef typename DirectedS::is_bidir_t BidirectionalT;
     typedef typename DirectedS::is_directed_t DirectedT;
-    typedef typename mpl::and_<DirectedT,
-      typename mpl::not_<BidirectionalT>::type >::type on_edge_storage;
+    typedef typename std::conjunction<DirectedT,
+      typename std::negation<BidirectionalT>::type >::type on_edge_storage;
   public:
     typedef typename mpl::if_<on_edge_storage,
        std::size_t, typename EdgeContainer::size_type
