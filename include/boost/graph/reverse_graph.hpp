@@ -461,11 +461,18 @@ struct property_map<reverse_graph<Graph, GRef>, edge_underlying_t> {
   typedef detail::underlying_edge_desc_map_type<ed> const_type;
 };
 
-template <typename T> struct is_reverse_graph: std::false_type {};
-template <typename G, typename R> struct is_reverse_graph<reverse_graph<G, R> >: std::true_type {};
+template <typename T>
+struct is_reverse_graph {
+  static constexpr bool value = false;
+};
+
+template <typename G, typename R>
+struct is_reverse_graph<reverse_graph<G, R> > {
+  static constexpr bool value = true;
+};
 
 template <class G>
-typename enable_if<is_reverse_graph<G>,
+typename std::enable_if<is_reverse_graph<G>::value,
   detail::underlying_edge_desc_map_type<typename graph_traits<typename G::base_type>::edge_descriptor> >::type
 get(edge_underlying_t,
     G&)
@@ -474,7 +481,7 @@ get(edge_underlying_t,
 }
 
 template <class G>
-typename enable_if<is_reverse_graph<G>, typename graph_traits<typename G::base_type>::edge_descriptor>::type
+typename std::enable_if<is_reverse_graph<G>::value, typename graph_traits<typename G::base_type>::edge_descriptor>::type
 get(edge_underlying_t,
     G&,
     const typename graph_traits<G>::edge_descriptor& k)
@@ -483,7 +490,7 @@ get(edge_underlying_t,
 }
 
 template <class G>
-typename enable_if<is_reverse_graph<G>, detail::underlying_edge_desc_map_type<typename graph_traits<typename G::base_type>::edge_descriptor> >::type
+typename std::enable_if<is_reverse_graph<G>::value, detail::underlying_edge_desc_map_type<typename graph_traits<typename G::base_type>::edge_descriptor> >::type
 get(edge_underlying_t,
     const G&)
 {
@@ -491,7 +498,7 @@ get(edge_underlying_t,
 }
 
 template <class G>
-typename enable_if<is_reverse_graph<G>, typename graph_traits<typename G::base_type>::edge_descriptor>::type
+typename std::enable_if<is_reverse_graph<G>::value, typename graph_traits<typename G::base_type>::edge_descriptor>::type
 get(edge_underlying_t,
     const G&,
     const typename graph_traits<G>::edge_descriptor& k)
