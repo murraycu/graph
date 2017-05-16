@@ -17,7 +17,7 @@
   (for directed graphs only. use normal BFS for undirected graphs)
 */
 #include <boost/config.hpp>
-#include <boost/ref.hpp>
+#include <functional>
 #include <vector>
 #include <boost/pending/queue.hpp>
 #include <boost/graph/graph_traits.hpp>
@@ -219,7 +219,7 @@ namespace boost {
       }
       neighbor_bfs_impl
         (g, s, 
-         choose_param(get_param(params, buffer_param_t()), boost::ref(Q)).get(),
+         choose_param(get_param(params, buffer_param_t()), std::ref(Q)).get(),
          vis, color);
     }
 
@@ -305,7 +305,7 @@ namespace boost {
 
     detail::neighbor_bfs_impl
       (g, s,
-       choose_param(get_param(params, buffer_param_t()), boost::ref(Q)).get(),
+       choose_param(get_param(params, buffer_param_t()), std::ref(Q)).get(),
        choose_param(get_param(params, graph_visitor),
                     make_neighbor_bfs_visitor(null_visitor())),
        choose_pmap(get_param(params, vertex_color), g, vertex_color)

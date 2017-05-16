@@ -255,7 +255,7 @@ namespace boost {
       queue_t Q;
       breadth_first_search
         (g, s,
-         choose_param(get_param(params, buffer_param_t()), boost::ref(Q)).get(),
+         choose_param(get_param(params, buffer_param_t()), std::ref(Q)).get(),
          vis, color);
     }
 
@@ -366,7 +366,7 @@ namespace boost {
 
     breadth_first_visit
       (ng, s,
-       choose_param(get_param(params, buffer_param_t()), boost::ref(Q)).get(),
+       choose_param(get_param(params, buffer_param_t()), std::ref(Q)).get(),
        choose_param(get_param(params, graph_visitor),
                     make_bfs_visitor(null_visitor())),
        choose_pmap(get_param(params, vertex_color), ng, vertex_color)
@@ -386,7 +386,7 @@ namespace boost {
           boost::breadth_first_search(g,
                                       &sources[0],
                                       &sources[1], 
-                                      boost::unwrap_ref(arg_pack[_buffer | boost::ref(Q)]),
+                                      arg_pack[_buffer | std::ref(Q)].get(),
                                       arg_pack[_visitor | make_bfs_visitor(null_visitor())],
                                       boost::detail::make_color_map_from_arg_pack(g, arg_pack));
         }

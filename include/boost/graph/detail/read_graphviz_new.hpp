@@ -28,11 +28,11 @@
 #ifndef BOOST_READ_GRAPHVIZ_NEW_HPP
 #define BOOST_READ_GRAPHVIZ_NEW_HPP
 
-#include <boost/ref.hpp>
 #include <boost/property_map/dynamic_property_map.hpp>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/detail/workaround.hpp>
 #include <algorithm>
+#include <functional>
 #include <string>
 #include <vector>
 #include <set>

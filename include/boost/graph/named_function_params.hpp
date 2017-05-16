@@ -12,7 +12,6 @@
 
 #include <functional>
 #include <vector>
-#include <boost/ref.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/parameter/name.hpp>
 #include <boost/parameter/binding.hpp>
@@ -124,10 +123,10 @@ namespace boost {
 
 #define BOOST_BGL_ONE_PARAM_REF(name, key) \
     template <typename PType> \
-    bgl_named_params<boost::reference_wrapper<PType>, BOOST_PP_CAT(key, _t), self> \
+    bgl_named_params<std::reference_wrapper<PType>, BOOST_PP_CAT(key, _t), self> \
     name(PType& p) const { \
-      typedef bgl_named_params<boost::reference_wrapper<PType>, BOOST_PP_CAT(key, _t), self> Params; \
-      return Params(boost::ref(p), *this); \
+      typedef bgl_named_params<std::reference_wrapper<PType>, BOOST_PP_CAT(key, _t), self> Params; \
+      return Params(std::ref(p), *this); \
     } \
 
 #define BOOST_BGL_ONE_PARAM_CREF(name, key) \
@@ -151,10 +150,10 @@ BOOST_BGL_DECLARE_NAMED_PARAMS
 
 #define BOOST_BGL_ONE_PARAM_REF(name, key) \
     template <typename PType> \
-    bgl_named_params<boost::reference_wrapper<PType>, BOOST_PP_CAT(key, _t)> \
+    bgl_named_params<std::reference_wrapper<PType>, BOOST_PP_CAT(key, _t)> \
     name(PType& p) { \
-      typedef bgl_named_params<boost::reference_wrapper<PType>, BOOST_PP_CAT(key, _t)> Params; \
-      return Params(boost::ref(p)); \
+      typedef bgl_named_params<std::reference_wrapper<PType>, BOOST_PP_CAT(key, _t)> Params; \
+      return Params(std::ref(p)); \
     } \
 
 #define BOOST_BGL_ONE_PARAM_CREF(name, key) \
@@ -667,7 +666,7 @@ BOOST_BGL_DECLARE_NAMED_PARAMS
         g_hasQ =
           (parameter_exists<ArgPack, PriorityQueueTag>
            ::value));
-      typedef boost::reference_wrapper<int> int_refw;
+      typedef std::reference_wrapper<int> int_refw;
       typedef typename boost::parameter::value_type<
                          ArgPack,
                          PriorityQueueTag,

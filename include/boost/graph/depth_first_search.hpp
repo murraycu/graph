@@ -19,13 +19,13 @@
 #include <boost/graph/properties.hpp>
 #include <boost/graph/visitors.hpp>
 #include <boost/graph/named_function_params.hpp>
-#include <boost/ref.hpp>
 #include <boost/implicit_cast.hpp>
 #include <boost/optional.hpp>
 #include <boost/parameter.hpp>
 #include <boost/concept/assert.hpp>
 #include <boost/tti/has_member_function.hpp>
 
+#include <functional>
 #include <vector>
 #include <utility>
 

@@ -40,13 +40,13 @@
 #include <boost/spirit/include/classic_closure.hpp>
 #include <boost/spirit/include/phoenix1.hpp>
 #include <boost/spirit/include/phoenix1_binders.hpp>
-#include <boost/ref.hpp>
 #include <boost/function/function2.hpp>
 #include <boost/property_map/dynamic_property_map.hpp>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/detail/workaround.hpp>
 #include <algorithm>
 #include <exception> // for std::exception
+#include <functional>
 #include <string>
 #include <vector>
 #include <set>
@@ -205,7 +205,7 @@ struct dot_grammar : public boost::spirit::classic::grammar<dot_grammar> {
           ;
 
       // edge_head is set depending on the graph type (directed/undirected)
-      edgeop = ch_p('-') >> ch_p(boost::ref(edge_head));
+      edgeop = ch_p('-') >> ch_p(std::ref(edge_head));
 
       edgeRHS
           =  +(    edgeop[(data_stmt.sources = data_stmt.dests),
