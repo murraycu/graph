@@ -16,6 +16,7 @@
 #define BOOST_GRAPH_DIJKSTRA_HPP
 
 #include <functional>
+#include <type_traits>
 #include <boost/limits.hpp>
 #include <boost/graph/named_function_params.hpp>
 #include <boost/graph/breadth_first_search.hpp>
@@ -29,7 +30,6 @@
 #include <boost/graph/two_bit_color_map.hpp>
 #include <boost/property_map/property_map.hpp>
 #include <boost/property_map/vector_property_map.hpp>
-#include <boost/type_traits.hpp>
 #include <boost/concept/assert.hpp>
 
 #ifdef BOOST_GRAPH_DIJKSTRA_TESTING
@@ -235,7 +235,7 @@ namespace boost {
 
     template <class Graph, class IndexMap, class Value>
     struct vertex_property_map_generator {
-      typedef boost::is_base_and_derived<
+      typedef std::is_base_of<
                 boost::vertex_list_graph_tag,
                 typename boost::graph_traits<Graph>::traversal_category>
               known_num_vertices;
@@ -270,7 +270,7 @@ namespace boost {
 
     template <class Graph, class IndexMap>
     struct default_color_map_generator {
-      typedef boost::is_base_and_derived<
+      typedef std::is_base_of<
                 boost::vertex_list_graph_tag,
                 typename boost::graph_traits<Graph>::traversal_category>
               known_num_vertices;

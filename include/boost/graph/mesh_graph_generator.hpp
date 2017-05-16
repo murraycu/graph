@@ -14,7 +14,6 @@
 #include <type_traits>
 #include <boost/assert.hpp>
 #include <boost/graph/graph_traits.hpp>
-#include <boost/type_traits/is_base_and_derived.hpp>
 
 namespace boost {
 
@@ -27,7 +26,7 @@ namespace boost {
 
     BOOST_STATIC_CONSTANT
       (bool,
-       is_undirected = (is_base_and_derived<undirected_tag,
+       is_undirected = (std::is_base_of<undirected_tag,
                                             directed_category>::value
                         || std::is_same<undirected_tag, directed_category>::value));
 

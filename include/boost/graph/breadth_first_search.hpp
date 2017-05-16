@@ -16,6 +16,7 @@
 */
 #include <boost/config.hpp>
 #include <vector>
+#include <type_traits>
 #include <boost/pending/queue.hpp>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/graph_concepts.hpp>
@@ -289,7 +290,7 @@ namespace boost {
            choose_param(get_param(params, graph_visitor),
                         make_bfs_visitor(null_visitor())),
            params,
-           boost::is_base_and_derived<
+           typename std::is_base_of<
              distributed_graph_tag,
              typename graph_traits<VertexListGraph>::traversal_category>::type());
       }
@@ -315,7 +316,7 @@ namespace boost {
            choose_param(get_param(params, graph_visitor),
                         make_bfs_visitor(null_vis)),
            params,
-           typename boost::is_base_and_derived<
+           typename std::is_base_of<
              distributed_graph_tag,
              typename graph_traits<VertexListGraph>::traversal_category>::type());
       }

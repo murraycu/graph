@@ -14,7 +14,6 @@
 #ifndef BOOST_GRAPH_OVERLOADING_HPP
 #define BOOST_GRAPH_OVERLOADING_HPP
 
-#include <boost/type_traits/is_base_and_derived.hpp>
 #include <type_traits>
 
 namespace boost {  namespace graph { namespace detail {
@@ -26,7 +25,7 @@ struct no_parameter {};
 #ifndef BOOST_NO_SFINAE
 
 #define BOOST_GRAPH_ENABLE_IF_MODELS(Graph, Tag, Type)               \
-  typename enable_if_c<(is_base_and_derived<                         \
+  typename enable_if_c<(std::is_base_of<                         \
                           Tag,                                       \
                           typename graph_traits<Graph>::traversal_category>::value), \
                        Type>::type
