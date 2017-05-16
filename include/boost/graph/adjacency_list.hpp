@@ -151,12 +151,10 @@ namespace boost {
   namespace detail {
     template <class Directed> struct is_random_access {
       static constexpr bool value = false;
-      typedef std::false_type type;
     };
     template <>
     struct is_random_access<vecS> {
       static constexpr bool value = true;
-      typedef std::true_type type;
     };
 
   } // namespace detail
@@ -177,8 +175,7 @@ namespace boost {
             class EdgeListS = listS>
   struct adjacency_list_traits
   {
-    typedef typename detail::is_random_access<VertexListS>::type
-      is_rand_access;
+    static constexpr bool is_rand_access = detail::is_random_access<VertexListS>::value;
     typedef typename DirectedS::is_bidir_t is_bidir;
     typedef typename DirectedS::is_directed_t is_directed;
 
@@ -194,7 +191,7 @@ namespace boost {
 
     typedef std::size_t vertices_size_type;
     typedef void* vertex_ptr;
-    typedef typename std::conditional<is_rand_access::value,
+    typedef typename std::conditional<is_rand_access,
       vertices_size_type, vertex_ptr>::type vertex_descriptor;
     typedef detail::edge_desc_impl<directed_category, vertex_descriptor>
       edge_descriptor;

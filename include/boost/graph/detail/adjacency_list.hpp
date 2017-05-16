@@ -2223,8 +2223,7 @@ namespace boost {
               class GraphProperty, class EdgeListS>
     struct adj_list_gen
     {
-      typedef typename detail::is_random_access<VertexListS>::type
-        is_rand_access;
+      static constexpr bool is_rand_access = detail::is_random_access<VertexListS>::value;
       typedef typename has_property<EdgeProperty>::type has_edge_property;
       typedef typename DirectedS::is_directed_t DirectedT;
       typedef typename DirectedS::is_bidir_t BidirectionalT;
@@ -2257,7 +2256,7 @@ namespace boost {
         typedef typename container_gen<VertexListS,
           vertex_ptr>::type SeqVertexList;
         typedef boost::integer_range<vertex_descriptor> RandVertexList;
-        typedef typename std::conditional<is_rand_access::value,
+        typedef typename std::conditional<is_rand_access,
           RandVertexList, SeqVertexList>::type VertexList;
 
         typedef typename VertexList::iterator vertex_iterator;
@@ -2276,11 +2275,11 @@ namespace boost {
 
         typedef typename EdgeContainer::iterator EdgeIter;
 
-        typedef typename detail::is_random_access<EdgeListS>::type is_edge_ra;
+        static constexpr bool is_edge_ra = detail::is_random_access<EdgeListS>::value;
 
         typedef typename std::conditional<on_edge_storage::value,
           stored_edge_property<vertex_descriptor, EdgeProperty>,
-          typename std::conditional<is_edge_ra::value,
+          typename std::conditional<is_edge_ra,
             stored_ra_edge_iter<vertex_descriptor, EdgeContainer, EdgeProperty>,
             stored_edge_iter<vertex_descriptor, EdgeIter, EdgeProperty>
           >::type
@@ -2365,7 +2364,7 @@ namespace boost {
           InEdgeList m_in_edges;
           VertexProperty m_property;
         };
-        typedef typename std::conditional<is_rand_access::value,
+        typedef typename std::conditional<is_rand_access,
           typename std::conditional<BidirectionalT::value,
             bidir_rand_stored_vertex, rand_stored_vertex>::type,
           typename std::conditional<BidirectionalT::value,
@@ -2378,7 +2377,7 @@ namespace boost {
 
         typedef typename container_gen<VertexListS, stored_vertex>::type
           RandStoredVertexList;
-        typedef typename std::conditional<is_rand_access::value,
+        typedef typename std::conditional<is_rand_access,
           RandStoredVertexList, SeqStoredVertexList>::type StoredVertexList;
       }; // end of config
 
@@ -2391,7 +2390,7 @@ namespace boost {
         >::type
       >::type DirectedHelper;
 
-      typedef typename std::conditional<is_rand_access::value,
+      typedef typename std::conditional<is_rand_access,
         vec_adj_list_impl<Graph, config, DirectedHelper>,
         adj_list_impl<Graph, config, DirectedHelper>
       >::type type;
