@@ -162,13 +162,12 @@ namespace boost {
     //-------------------------------------------------------------------------
     // Compute edges of the cut [S*, ~S*]
     std::vector<bool> in_S_star(num_vertices(g), false);
-    typename std::vector<vertex_descriptor>::iterator si;
-    for (si = S_star.begin(); si != S_star.end(); ++si)
-      in_S_star[*si] = true;
+    for (const auto& s : S_star)
+      in_S_star[s] = true;
 
     degree_size_type c = 0;
-    for (si = S_star.begin(); si != S_star.end(); ++si) {
-      out_edge_iterator ei, ei_end;
+    for (const auto& s : S_star) {
+      for (auto [ei, ei_end] = out_edges(s, g); ei != ei_end; ++ei)
       for (std::tie(ei, ei_end) = out_edges(*si, g); ei != ei_end; ++ei)
         if (!in_S_star[target(*ei, g)]) {
           *disconnecting_set++ = *ei;

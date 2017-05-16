@@ -914,15 +914,11 @@ namespace boost
         {
           if (!separated_dfs_child_list[*xi]->empty())
             {
-              typename vertex_list_t::iterator yi, yi_end;
-              yi_end = separated_dfs_child_list[*xi]->end();
-              for(yi = separated_dfs_child_list[*xi]->begin();
-                  yi != yi_end; ++yi
-                  )
+              for(const auto& y : *(separated_dfs_child_list[*xi]))
                 {
-                  dfs_child_handles[*yi].flip();
+                  dfs_child_handles[y].flip();
                   face_handles[*xi].glue_first_to_second
-                    (dfs_child_handles[*yi]);
+                    (dfs_child_handles[y]);
                 }
             }
         }
@@ -934,12 +930,8 @@ namespace boost
       // traverse the DFS tree by DFS number and perform the actual
       // flipping as needed
 
-      auto vi_end = vertices_by_dfs_num.end();
-      for(auto vi = vertices_by_dfs_num.begin();
-          vi != vi_end; ++vi
-          )
+      for(const auto& v : vertices_by_dfs_num)
         {
-          vertex_t v(*vi);
           bool v_flipped = flipped[v];
           bool p_flipped = flipped[dfs_parent[v]];
           if (v_flipped && !p_flipped)
@@ -963,10 +955,8 @@ namespace boost
       // invalidate the embedding, but they would complicate the traversal
       // if they were added during the walkup/walkdown.
 
-      auto ei_end = self_loops.end();
-      for(auto ei = self_loops.begin(); ei != ei_end; ++ei)
+      for(const auto& e : self_loops)
         {
-          edge_t e(*ei);
           face_handles[source(e,g)].push_second(e,g);
         }
 
@@ -1180,7 +1170,6 @@ namespace boost
       vertex_iterator_t vi, vi_end;
       edge_iterator_t ei, ei_end;
       out_edge_iterator_t oei, oei_end;
-      typename std::vector<edge_t>::iterator xi, xi_end;
 
       // Clear the short-circuit edges - these are needed for the planar
       // testing/embedding algorithm to run in linear time, but they'll
@@ -1205,11 +1194,9 @@ namespace boost
       std::vector<bool> is_embedded_vector(num_edges(g), false);
       edge_to_bool_map_t is_embedded(is_embedded_vector.begin(), em);
 
-      auto embedded_end = embedded_edges.end();
-      for(auto embedded_itr = embedded_edges.begin();
-          embedded_itr != embedded_end; ++embedded_itr
-          )
-        is_embedded[*embedded_itr] = true;
+
+      for(const auto& embedded : embedded_edges)
+        is_embedded[embedded] = true;
 
       // upper_face_vertex is true for x,y, and all vertices above x and y in
       // the bicomp
@@ -1249,11 +1236,11 @@ namespace boost
         x_upper_itr(x, face_handles, first_side());
       typename face_vertex_iterator<>::type
         x_lower_itr(x, face_handles, second_side());
-      typename face_vertex_iterator<>::type face_itr, face_end;
+      typename face_vertex_iterator<>::type face_end;
 
       // Don't know which path from x is the upper or lower path -
       // we'll find out here
-      for(face_itr = x_upper_itr; face_itr != face_end; ++face_itr)
+      for(auto face_itr = x_upper_itr; face_itr != face_end; ++face_itr)
         {
           if (*face_itr == y)
             {
@@ -1266,7 +1253,7 @@ namespace boost
 
       auto current_vertex = x;
       vertex_t previous_vertex;
-      for(face_itr = x_upper_itr; face_itr != face_end; ++face_itr)
+      for(auto face_itr = x_upper_itr; face_itr != face_end; ++face_itr)
         {
           previous_vertex = current_vertex;
           current_vertex = *face_itr;
@@ -1276,26 +1263,22 @@ namespace boost
       v_dfchild_handle
         = dfs_child_handles[canonical_dfs_child[previous_vertex]];
 
+      typename face_vertex_iterator<>::type face_itr;
       for(face_itr = x_lower_itr; *face_itr != y; ++face_itr)
         {
           vertex_t current_vertex(*face_itr);
           lower_face_vertex[current_vertex] = true;
 
-          typename face_handle_list_t::iterator roots_itr, roots_end;
-
           if (w == graph_traits<Graph>::null_vertex()) //haven't found a w yet
             {
-              roots_end = pertinent_roots[current_vertex]->end();
-              for(roots_itr = pertinent_roots[current_vertex]->begin();
-                  roots_itr != roots_end; ++roots_itr
-                  )
+              for(const auto& root : *(pertinent_roots[current_vertex]))
                 {
-                  if (low_point[canonical_dfs_child[roots_itr->first_vertex()]]
+                  if (low_point[canonical_dfs_child[root.first_vertex()]]
                       < dfs_number[v]
                       )
                     {
                       w = current_vertex;
-                      w_handle = *roots_itr;
+                      w_handle = root;
                       break;
                     }
                 }
@@ -1764,25 +1747,20 @@ namespace boost
 
       //Update is_in_subgraph with the paths we just found
 
-      xi_end = x_external_path.end();
-      for(xi = x_external_path.begin(); xi != xi_end; ++xi)
-        is_in_subgraph[*xi] = true;
+      for(const auto& x : x_external_path)
+        is_in_subgraph[x] = true;
 
-      xi_end = y_external_path.end();
-      for(xi = y_external_path.begin(); xi != xi_end; ++xi)
-        is_in_subgraph[*xi] = true;
+      for(const auto& y : y_external_path)
+        is_in_subgraph[y] = true;
 
-      xi_end = z_v_path.end();
-      for(xi = z_v_path.begin(); xi != xi_end; ++xi)
-        is_in_subgraph[*xi] = true;
+      for(const auto& z_v : z_v_path)
+        is_in_subgraph[z_v] = true;
 
-      xi_end = case_d_edges.end();
-      for(xi = case_d_edges.begin(); xi != xi_end; ++xi)
-        is_in_subgraph[*xi] = true;
+      for(const auto& c : case_d_edges)
+        is_in_subgraph[c] = true;
 
-      xi_end = w_path.end();
-      for(xi = w_path.begin(); xi != xi_end; ++xi)
-        is_in_subgraph[*xi] = true;
+      for(const auto& w : w_path)
+        is_in_subgraph[w] = true;
 
       child = bicomp_root;
       parent = dfs_parent[child];

@@ -174,16 +174,14 @@ namespace boost
             prev_vertex = curr_vertex;
           }
 
-        typename vertex_vector_t::iterator vi, vi_end;
-        vi_end = installed_neighbors.end();
-        for(vi = installed_neighbors.begin(); vi != vi_end; ++vi)
+        for(const auto vn : installed_neighbors)
           {
-            if (right[*vi] == graph_traits<Graph>::null_vertex() || 
-                seen[right[*vi]] != timestamp
+            if (right[vn] == graph_traits<Graph>::null_vertex() || 
+                seen[right[vn]] != timestamp
                 )
-              rightmost = *vi;
-            if (seen_as_right[*vi] != timestamp)
-              leftmost = *vi;
+              rightmost = vn;
+            if (seen_as_right[vn] != timestamp)
+              leftmost = vn;
           }
 
         ++timestamp;

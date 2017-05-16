@@ -203,10 +203,8 @@ public:
             }
         }
         // remove all edges, (u, v)
-        typename std::vector<edge_descriptor>::iterator
-        j = edges.begin(), j_end = edges.end();
-        for( ; j != j_end; ++j) {
-            remove_edge(*j);
+        for(const auto& e : edges) {
+            remove_edge(e);
         }
     }
 

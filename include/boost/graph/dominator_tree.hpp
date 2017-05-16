@@ -155,12 +155,8 @@ namespace boost {
         //
         //  idom(n) = semi(n) if semi(y)=semi(n) or
         //            idom(y) if semi(y) != semi(n)
-        typename std::deque<Vertex>::iterator buckItr;
-        for (buckItr = get(bucketMap_, p).begin();
-             buckItr != get(bucketMap_, p).end();
-             ++buckItr)
+        for (const auto& v : get(bucketMap_, p))
           {
-            const Vertex v(*buckItr);
             const Vertex y(ancestor_with_lowest_semi_(v, dfnumMap));
             if (get(semiMap_, y) == get(semiMap_, v))
               put(domTreePredMap_, v, p);
@@ -451,16 +447,14 @@ namespace boost {
 
         // We have to iterate through copied dominator set
         const std::set<Vertex> tempSet(get(domMap, *vi));
-        typename std::set<Vertex>::const_iterator s;
-        for (s = tempSet.begin(); s != tempSet.end(); ++s)
+        for (auto s : tempSet)
           {
-            typename std::set<Vertex>::iterator t;
-            for (t = get(domMap, *vi).begin(); t != get(domMap, *vi).end(); )
+            for (auto t = get(domMap, *vi).begin(); t != get(domMap, *vi).end(); )
               {
         auto old_t = t;
         ++t; // Done early because t may become invalid
-                if (*old_t == *s) continue;
-                if (get(domMap, *s).find(*old_t) != get(domMap, *s).end())
+                if (*old_t == s) continue;
+                if (get(domMap, s).find(*old_t) != get(domMap, s).end())
                   get(domMap, *vi).erase(old_t);
               }
           }

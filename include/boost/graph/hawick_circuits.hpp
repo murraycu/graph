@@ -313,9 +313,8 @@ void call_hawick_circuits(Graph const& graph,
                               stack, closed, n_vertices);
         sub_algo(*start);
         stack.clear();
-        typename ClosedMatrix::iterator row, last_row = closed.end();
-        for (row = closed.begin(); row != last_row; ++row)
-            row->clear();
+        for (auto& row : closed)
+            row.clear();
     }
 }
 
