@@ -11,7 +11,6 @@
 #include <vector>
 #include <list>
 #include <tuple>
-#include <boost/next_prior.hpp>
 #include <boost/config.hpp>    //for std::min macros
 #include <boost/shared_ptr.hpp>
 #include <boost/property_map/property_map.hpp>
@@ -1004,7 +1003,7 @@ namespace boost
       garbage.splice(garbage.end(),
                      *separated_dfs_child_list[dfs_parent[v]],
                      to_delete,
-                     boost::next(to_delete)
+                     std::next(to_delete)
                      );
     }
 
@@ -1560,7 +1559,7 @@ namespace boost
                   if (w == graph_traits<Graph>::null_vertex() &&
                       externally_active(current_vertex,v) &&
                       outer_face_edge[e] &&
-                      outer_face_edge[*boost::next(old_face_itr)] &&
+                      outer_face_edge[*std::next(old_face_itr)] &&
                       !seen_x_or_y
                       )
                     {

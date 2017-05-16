@@ -826,7 +826,7 @@ namespace boost {
             // of loop edges. This solution is based on the observation that
             // the incidence edges of a vertex with a loop are adjacent in the
             // out edge list. This *may* actually hold for multisets also.
-            bool skip = (boost::next(i) != end && i->get_iter() == boost::next(i)->get_iter());
+            bool skip = (std::next(i) != end && i->get_iter() == std::next(i)->get_iter());
             g.m_edges.erase((*i).get_iter());
             if (skip) ++i;
           }

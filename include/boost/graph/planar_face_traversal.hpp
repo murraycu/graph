@@ -12,7 +12,6 @@
 #include <vector>
 #include <set>
 #include <map>
-#include <boost/next_prior.hpp>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/properties.hpp>
 
@@ -110,7 +109,7 @@ namespace boost
           {
             edge_t e(*pi);
             std::map<vertex_t, edge_t> m = get(next_edge, e);
-            m[v] = boost::next(pi) == pi_end ? *pi_begin : *boost::next(pi);
+            m[v] = std::next(pi) == pi_end ? *pi_begin : *std::next(pi);
             put(next_edge, e, m);
           } 
       }

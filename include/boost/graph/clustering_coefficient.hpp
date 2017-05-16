@@ -7,7 +7,6 @@
 #ifndef BOOST_GRAPH_CLUSTERING_COEFFICIENT_HPP
 #define BOOST_GRAPH_CLUSTERING_COEFFICIENT_HPP
 
-#include <boost/next_prior.hpp>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/graph_concepts.hpp>
 #include <boost/graph/lookup_edge.hpp>
@@ -90,7 +89,7 @@ num_triangles_on_vertex(const Graph& g, Vertex v)
 
     Degree count(0);
     for(auto [i, end] = adjacent_vertices(v, g); i != end; ++i) {
-        for(auto j = boost::next(i); j != end; ++j) {
+        for(auto j = std::next(i); j != end; ++j) {
             count += detail::count_edges(g, *i, *j, Directed());
         }
     }

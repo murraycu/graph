@@ -7,7 +7,6 @@
 #ifndef BOOST_GRAPH_ECCENTRICITY_HPP
 #define BOOST_GRAPH_ECCENTRICITY_HPP
 
-#include <boost/next_prior.hpp>
 #include <boost/config.hpp>
 #include <boost/graph/detail/geodesic.hpp>
 #include <boost/concept/assert.hpp>
@@ -82,7 +81,7 @@ radius_and_diameter(const Graph& g, EccentricityMap ecc)
     auto [i, end] = vertices(g);
     auto radius = get(ecc, *i);
     auto diameter = get(ecc, *i);
-    for(i = boost::next(i); i != end; ++i) {
+    for(i = std::next(i); i != end; ++i) {
         auto cur = get(ecc, *i);
         radius = min BOOST_PREVENT_MACRO_SUBSTITUTION (radius, cur);
         diameter = max BOOST_PREVENT_MACRO_SUBSTITUTION (diameter, cur);

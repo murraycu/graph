@@ -9,7 +9,6 @@
 #define __IS_STRAIGHT_LINE_DRAWING_HPP__
 
 #include <boost/config.hpp>
-#include <boost/next_prior.hpp>
 #include <boost/tuple/tuple_comparison.hpp>
 #include <boost/property_map/property_map.hpp>
 #include <boost/graph/properties.hpp>
@@ -181,7 +180,7 @@ namespace boost
               before = active_edges.end();
             else
               before = prior(a_itr);
-            after = boost::next(a_itr);
+            after = std::next(a_itr);
 
             if (before != active_edges.end())
               {

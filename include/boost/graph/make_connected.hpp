@@ -9,7 +9,6 @@
 #define __MAKE_CONNECTED_HPP__
 
 #include <boost/config.hpp>
-#include <boost/next_prior.hpp>
 #include <boost/graph/connected_components.hpp>
 #include <boost/property_map/property_map.hpp>
 #include <vector>
@@ -62,7 +61,7 @@ namespace boost
     if (ci_prev == ci_end)
       return;
 
-    for(vec_of_vertices_itr_t ci = boost::next(ci_prev); 
+    for(vec_of_vertices_itr_t ci = std::next(ci_prev); 
         ci != ci_end;  ci_prev = ci, ++ci
         )
       {
