@@ -62,62 +62,50 @@ struct labeled_add_only_property_graph_tag
 
 template <typename Graph>
 struct graph_has_add_vertex_by_label
-    : mpl::bool_<
-        std::is_convertible<
-            typename graph_mutability_traits<Graph>::category,
-            labeled_add_vertex_tag
-        >::value
-    >
+    : std::is_convertible<
+          typename graph_mutability_traits<Graph>::category,
+          labeled_add_vertex_tag
+      >::type
 { };
 
 template <typename Graph>
 struct graph_has_add_vertex_by_label_with_property
-    : mpl::bool_<
-        std::is_convertible<
-            typename graph_mutability_traits<Graph>::category,
-            labeled_add_vertex_property_tag
-        >::value
-    >
+    : std::is_convertible<
+          typename graph_mutability_traits<Graph>::category,
+          labeled_add_vertex_property_tag
+      >::type
 { };
 
 template <typename Graph>
 struct graph_has_remove_vertex_by_label
-    : mpl::bool_<
-        std::is_convertible<
-            typename graph_mutability_traits<Graph>::category,
-            labeled_remove_vertex_tag
-        >::value
-    >
+    : std::is_convertible<
+          typename graph_mutability_traits<Graph>::category,
+          labeled_remove_vertex_tag
+      >::type
 { };
 
 template <typename Graph>
 struct graph_has_add_edge_by_label
-    : mpl::bool_<
-        std::is_convertible<
-            typename graph_mutability_traits<Graph>::category,
-            labeled_add_edge_tag
-        >::value
-    >
+    : std::is_convertible<
+          typename graph_mutability_traits<Graph>::category,
+          labeled_add_edge_tag
+      >::type
 { };
 
 template <typename Graph>
 struct graph_has_add_edge_by_label_with_property
-    : mpl::bool_<
-        std::is_convertible<
-            typename graph_mutability_traits<Graph>::category,
-            labeled_add_edge_property_tag
-        >::value
-    >
+    : std::is_convertible<
+          typename graph_mutability_traits<Graph>::category,
+          labeled_add_edge_property_tag
+      >::type
 { };
 
 template <typename Graph>
 struct graph_has_remove_edge_by_label
-    : mpl::bool_<
-        std::is_convertible<
-            typename graph_mutability_traits<Graph>::category,
-            labeled_remove_edge_tag
-        >::value
-    >
+    : std::is_convertible<
+          typename graph_mutability_traits<Graph>::category,
+          labeled_remove_edge_tag
+      >::type
 { };
 
 template <typename Graph>
@@ -170,22 +158,18 @@ struct is_labeled_mutable_property_graph
 
 template <typename Graph>
 struct is_labeled_add_only_property_graph
-    : mpl::bool_<
-        std::is_convertible<
-            typename graph_mutability_traits<Graph>::category,
-            labeled_add_only_property_graph_tag
-        >::value
-    >
+    : std::is_convertible<
+          typename graph_mutability_traits<Graph>::category,
+           labeled_add_only_property_graph_tag
+      >::type
 { };
 
 template <typename Graph>
 struct is_labeled_graph
-    : mpl::bool_<
-        std::is_convertible<
-            typename graph_mutability_traits<Graph>::category,
-            label_vertex_tag
-        >::value
-    >
+    : std::is_convertible<
+          typename graph_mutability_traits<Graph>::category,
+          label_vertex_tag
+      >::type
 { };
 
 template <typename> struct graph_mutability_traits;

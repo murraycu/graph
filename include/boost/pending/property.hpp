@@ -6,7 +6,6 @@
 #ifndef BOOST_PROPERTY_HPP
 #define BOOST_PROPERTY_HPP
 
-#include <boost/mpl/bool.hpp>
 #include <boost/mpl/if.hpp>
 #include <boost/mpl/has_xxx.hpp>
 #include <boost/utility/enable_if.hpp>
@@ -176,9 +175,9 @@ namespace boost {
   // switch BGL back to using class types for properties at some point.
 
   template <class P>
-  struct has_property : boost::mpl::true_ {};
+  struct has_property : std::true_type {};
   template <>
-  struct has_property<no_property> : boost::mpl::false_ {};
+  struct has_property<no_property> : std::false_type {};
 
 } // namespace boost
 
@@ -206,7 +205,7 @@ namespace boost {
      /** This trait returns true if T is no_property. */
     template <typename T>
     struct is_no_property
-        : mpl::bool_<std::is_same<T, no_property>::value>
+        : std::is_same<T, no_property>::type
     { };
 
     template <typename PList, typename Tag>

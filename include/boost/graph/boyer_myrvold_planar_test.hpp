@@ -11,7 +11,6 @@
 
 #include <boost/graph/planar_detail/boyer_myrvold_impl.hpp>
 #include <boost/parameter.hpp>
-#include <boost/mpl/bool.hpp>
 #include <type_traits>
 
 

@@ -10,7 +10,7 @@
 #ifndef BOOST_GRAPH_SELECTORS_HPP
 #define BOOST_GRAPH_SELECTORS_HPP
 
-#include <boost/mpl/bool.hpp>
+#include <type_traits>
 
 namespace boost {
 
@@ -19,18 +19,18 @@ namespace boost {
   // and adjacency_matrix.
 
   struct directedS { enum { is_directed = true, is_bidir = false }; 
-    typedef mpl::true_ is_directed_t; 
-    typedef mpl::false_ is_bidir_t;
+    typedef std::true_type is_directed_t; 
+    typedef std::false_type is_bidir_t;
   };
   struct undirectedS { 
     enum { is_directed = false, is_bidir = false }; 
-    typedef mpl::false_ is_directed_t;
-    typedef mpl::false_ is_bidir_t;
+    typedef std::false_type is_directed_t;
+    typedef std::false_type is_bidir_t;
   };
   struct bidirectionalS { 
     enum { is_directed = true, is_bidir = true };
-    typedef mpl::true_ is_directed_t;
-    typedef mpl::true_ is_bidir_t;
+    typedef std::true_type is_directed_t;
+    typedef std::true_type is_bidir_t;
   };
 
 } // namespace boost

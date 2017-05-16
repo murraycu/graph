@@ -462,8 +462,8 @@ struct property_map<reverse_graph<Graph, GRef>, edge_underlying_t> {
   typedef detail::underlying_edge_desc_map_type<ed> const_type;
 };
 
-template <typename T> struct is_reverse_graph: boost::mpl::false_ {};
-template <typename G, typename R> struct is_reverse_graph<reverse_graph<G, R> >: boost::mpl::true_ {};
+template <typename T> struct is_reverse_graph: std::false_type {};
+template <typename G, typename R> struct is_reverse_graph<reverse_graph<G, R> >: std::true_type {};
 
 template <class G>
 typename enable_if<is_reverse_graph<G>,

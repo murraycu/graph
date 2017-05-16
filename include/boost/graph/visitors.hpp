@@ -16,7 +16,6 @@
 #include <iosfwd>
 #include <type_traits>
 #include <boost/config.hpp>
-#include <boost/mpl/bool.hpp>
 #include <boost/property_map/property_map.hpp>
 #include <boost/graph/graph_traits.hpp>
 

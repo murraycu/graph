@@ -14,7 +14,6 @@
 #include <iterator>
 #include <type_traits>
 #include <boost/config.hpp>
-#include <boost/mpl/bool.hpp>
 #include <boost/range/irange.hpp>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/properties.hpp>
@@ -242,11 +241,11 @@ namespace boost {
   template <class Cat>
   struct is_random {
     enum { RET = false };
-    typedef mpl::false_ type;
+    typedef std::false_type type;
   };
   template <>
   struct is_random<std::random_access_iterator_tag> {
-    enum { RET = true }; typedef mpl::true_ type;
+    enum { RET = true }; typedef std::true_type type;
   };
 
   // The edge_list class conditionally inherits from one of the

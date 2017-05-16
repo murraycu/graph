@@ -27,7 +27,6 @@
 #include <boost/graph/graph_mutability_traits.hpp>
 #include <boost/graph/graph_selectors.hpp>
 #include <boost/property_map/property_map.hpp>
-#include <boost/mpl/bool.hpp>
 #include <boost/graph/detail/edge.hpp>
 #include <boost/detail/workaround.hpp>
 #include <boost/graph/properties.hpp>
@@ -152,17 +151,17 @@ namespace boost {
   namespace detail {
     template <class Directed> struct is_random_access {
       enum { value = false};
-      typedef mpl::false_ type;
+      typedef std::false_type type;
     };
     template <>
     struct is_random_access<vecS> {
       enum { value = true };
-      typedef mpl::true_ type;
+      typedef std::true_type type;
     };
 
   } // namespace detail
 
-  template <typename Selector> struct is_distributed_selector: mpl::false_ {};
+  template <typename Selector> struct is_distributed_selector: std::false_type {};
 
 
   //===========================================================================

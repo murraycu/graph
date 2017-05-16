@@ -24,7 +24,7 @@ void build_graph(Graph& g, Add, Label)
 
 // This matches MutableGraph, so just add some vertices.
 template <typename Graph>
-void build_graph(Graph& g, boost::mpl::true_, boost::mpl::false_) {
+void build_graph(Graph& g, std::true_type, std::false_type) {
     using namespace boost;
     BOOST_CONCEPT_ASSERT((VertexListGraphConcept<Graph>));
     BOOST_CONCEPT_ASSERT((VertexMutableGraphConcept<Graph>));
@@ -38,7 +38,7 @@ void build_graph(Graph& g, boost::mpl::true_, boost::mpl::false_) {
 
 // This will match labeled graphs.
 template <typename Graph>
-void build_graph(Graph& g, boost::mpl::false_, boost::mpl::true_) {
+void build_graph(Graph& g, std::false_type, std::true_type) {
     using namespace boost;
     BOOST_CONCEPT_ASSERT((VertexListGraphConcept<Graph>));
     // BOOST_CONCEPT_ASSERT((VertexMutableGraphConcept<Graph>));
@@ -63,7 +63,7 @@ void build_property_graph(Graph const& g, Add, Label)
 { }
 
 template <typename Graph>
-void build_property_graph(Graph const&, boost::mpl::true_, boost::mpl::false_) {
+void build_property_graph(Graph const&, std::true_type, std::false_type) {
     using namespace boost;
     BOOST_CONCEPT_ASSERT((VertexMutablePropertyGraphConcept<Graph>));
     typedef typename vertex_property_type<Graph>::type VertexProp;
@@ -87,7 +87,7 @@ void build_property_graph(Graph const&, boost::mpl::true_, boost::mpl::false_) {
  */
 //@{
 template <typename Graph, typename VertexSet>
-void connect_graph(Graph& g, VertexSet const& verts, boost::mpl::false_) {
+void connect_graph(Graph& g, VertexSet const& verts, std::false_type) {
     using namespace boost;
     BOOST_CONCEPT_ASSERT((AdjacencyMatrixConcept<Graph>));
     BOOST_CONCEPT_ASSERT((EdgeMutableGraphConcept<Graph>));
@@ -105,7 +105,7 @@ void connect_graph(Graph& g, VertexSet const& verts, boost::mpl::false_) {
 }
 
 template <typename Graph, typename VertexSet>
-void connect_graph(Graph& g, VertexSet const& verts, boost::mpl::true_) {
+void connect_graph(Graph& g, VertexSet const& verts, std::true_type) {
     using namespace boost;
     BOOST_CONCEPT_ASSERT((AdjacencyMatrixConcept<Graph>));
     // BOOST_CONCEPT_ASSERT((EdgeMutableGraphConcept<Graph>));

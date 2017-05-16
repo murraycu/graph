@@ -16,7 +16,6 @@
 #include <tuple>
 #include <type_traits>
 #include <boost/mpl/eval_if.hpp>
-#include <boost/mpl/bool.hpp>
 #include <boost/mpl/has_xxx.hpp>
 #include <boost/mpl/void.hpp>
 #include <boost/mpl/identity.hpp>
@@ -105,7 +104,7 @@ namespace boost {
     namespace graph_detail {
         template <typename Tag>
         struct is_directed_tag
-            : mpl::bool_<std::is_convertible<Tag, directed_tag>::value>
+            : std::is_convertible<Tag, directed_tag>::type
         { };
     } // namespace graph_detail
 
@@ -147,12 +146,10 @@ namespace boost {
      */
     template <typename Graph>
     struct is_multigraph
-        : mpl::bool_<
-            std::is_same<
-                typename graph_traits<Graph>::edge_parallel_category,
-                allow_parallel_edge_tag
-            >::value
-        >
+        : std::is_same<
+              typename graph_traits<Graph>::edge_parallel_category,
+              allow_parallel_edge_tag
+          >::type
     { };
     //@}
 
@@ -177,52 +174,42 @@ namespace boost {
     //@{
     template <typename Graph>
     struct is_incidence_graph
-        : mpl::bool_<
-            std::is_convertible<
-                typename graph_traits<Graph>::traversal_category,
-                incidence_graph_tag
-            >::value
-        >
+        : std::is_convertible<
+              typename graph_traits<Graph>::traversal_category,
+              incidence_graph_tag
+          >::type
     { };
 
     template <typename Graph>
     struct is_bidirectional_graph
-        : mpl::bool_<
-            std::is_convertible<
-                typename graph_traits<Graph>::traversal_category,
-                bidirectional_graph_tag
-            >::value
-        >
+        : std::is_convertible<
+              typename graph_traits<Graph>::traversal_category,
+              bidirectional_graph_tag
+            >::type
     { };
 
     template <typename Graph>
     struct is_vertex_list_graph
-        : mpl::bool_<
-            std::is_convertible<
-                typename graph_traits<Graph>::traversal_category,
-                vertex_list_graph_tag
-            >::value
-        >
+        : std::is_convertible<
+              typename graph_traits<Graph>::traversal_category,
+              vertex_list_graph_tag
+          >::type
     { };
 
     template <typename Graph>
     struct is_edge_list_graph
-        : mpl::bool_<
-            std::is_convertible<
+        : std::is_convertible<
                 typename graph_traits<Graph>::traversal_category,
                 edge_list_graph_tag
-            >::value
-        >
+            >::type
     { };
 
     template <typename Graph>
     struct is_adjacency_matrix
-        : mpl::bool_<
-            std::is_convertible<
-                typename graph_traits<Graph>::traversal_category,
-                adjacency_matrix_tag
-            >::value
-        >
+        : std::is_convertible<
+              typename graph_traits<Graph>::traversal_category,
+              adjacency_matrix_tag
+          >::type
     { };
     //@}
 
@@ -316,7 +303,7 @@ namespace boost {
       // A helper metafunction for determining whether or not a type is
       // bundled.
       template <typename T>
-      struct is_no_bundle : mpl::bool_<std::is_same<T, no_property>::value>
+      struct is_no_bundle : std::is_same<T, no_property>::type
       { };
     } // namespace graph_detail
 

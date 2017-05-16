@@ -18,7 +18,6 @@
 #include <boost/graph/dll_import_export.hpp>
 #include <boost/graph/graphviz.hpp> // for exceptions
 #include <typeinfo>
-#include <boost/mpl/bool.hpp>
 #include <boost/mpl/vector.hpp>
 #include <boost/mpl/find.hpp>
 #include <boost/mpl/for_each.hpp>

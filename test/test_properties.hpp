@@ -13,7 +13,7 @@ template<typename T> T const& as_const(T& x) { return x; }
 template<typename T> void ignore(T const&) { }
 
 template<typename Graph>
-void test_graph_bundle(Graph& g, boost::mpl::true_) {
+void test_graph_bundle(Graph& g, std::true_type) {
   using namespace boost;
   std::cout << "...test_graph_bundle\n";
 
@@ -27,7 +27,7 @@ void test_graph_bundle(Graph& g, boost::mpl::true_) {
 }
 
 template<typename Graph>
-void test_graph_bundle(Graph& g, boost::mpl::false_)
+void test_graph_bundle(Graph& g, std::false_type)
 { }
 
 /** @name Test Vertex Bundle
@@ -36,7 +36,7 @@ void test_graph_bundle(Graph& g, boost::mpl::false_)
  */
 //@{
 template <typename Graph, typename VertexSet>
-void test_vertex_bundle(Graph& g, VertexSet const& verts, boost::mpl::true_) {
+void test_vertex_bundle(Graph& g, VertexSet const& verts, std::true_type) {
   using namespace boost;
   BOOST_CONCEPT_ASSERT((GraphConcept<Graph>));
   typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
@@ -62,7 +62,7 @@ void test_vertex_bundle(Graph& g, VertexSet const& verts, boost::mpl::true_) {
 }
 
 template <typename Graph, typename VertexSet>
-void test_vertex_bundle(Graph&, VertexSet const&, boost::mpl::false_)
+void test_vertex_bundle(Graph&, VertexSet const&, std::false_type)
 { }
 //@}
 
@@ -72,7 +72,7 @@ void test_vertex_bundle(Graph&, VertexSet const&, boost::mpl::false_)
  */
 //@{
 template <typename Graph, typename VertexSet>
-void test_edge_bundle(Graph& g, VertexSet const& verts, boost::mpl::true_) {
+void test_edge_bundle(Graph& g, VertexSet const& verts, std::true_type) {
     using namespace boost;
     BOOST_CONCEPT_ASSERT((GraphConcept<Graph>));
     typedef typename boost::graph_traits<Graph>::edge_descriptor Edge;
@@ -100,7 +100,7 @@ void test_edge_bundle(Graph& g, VertexSet const& verts, boost::mpl::true_) {
 }
 
 template <typename Graph, typename VertexSet>
-void test_edge_bundle(Graph&, VertexSet const&, boost::mpl::false_)
+void test_edge_bundle(Graph&, VertexSet const&, std::false_type)
 { }
 //@}
 

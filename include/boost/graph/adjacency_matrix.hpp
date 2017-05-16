@@ -21,7 +21,6 @@
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/graph_mutability_traits.hpp>
 #include <boost/graph/graph_selectors.hpp>
-#include <boost/mpl/bool.hpp>
 #include <boost/graph/adjacency_iterator.hpp>
 #include <boost/graph/detail/edge.hpp>
 #include <boost/iterator/iterator_adaptor.hpp>
@@ -1071,14 +1070,14 @@ namespace boost {
     };
 
     typedef function_property_map<
-              lookup_property_from_edge<boost::mpl::false_>,
+              lookup_property_from_edge<std::false_type>,
               typename graph_traits<adjacency_matrix<D, VP, EP, GP, A> >::edge_descriptor> type;
     typedef function_property_map<
-              lookup_property_from_edge<boost::mpl::true_>,
+              lookup_property_from_edge<std::true_type>,
               typename graph_traits<adjacency_matrix<D, VP, EP, GP, A> >::edge_descriptor> const_type;
     typedef edge_descriptor arg_type;
-    typedef typename lookup_property_from_edge<boost::mpl::false_>::result_type single_nonconst_type;
-    typedef typename lookup_property_from_edge<boost::mpl::true_>::result_type single_const_type;
+    typedef typename lookup_property_from_edge<std::false_type>::result_type single_nonconst_type;
+    typedef typename lookup_property_from_edge<std::true_type>::result_type single_const_type;
 
     static type get_nonconst(adjacency_matrix<D, VP, EP, GP, A>& g, Tag tag) {
       return type(tag);

@@ -245,7 +245,7 @@ namespace boost {
        ColorMap color,
        BFSVisitor vis,
        const bgl_named_params<P, T, R>& params,
-       boost::mpl::false_)
+       std::false_type)
     {
       typedef graph_traits<VertexListGraph> Traits;
       // Buffer default
@@ -267,7 +267,7 @@ namespace boost {
        ColorMap color,
        BFSVisitor vis,
        const bgl_named_params<P, T, R>& params,
-       boost::mpl::true_);
+       std::true_type);
 #endif // BOOST_GRAPH_USE_MPI
 
     //-------------------------------------------------------------------------
@@ -289,10 +289,9 @@ namespace boost {
            choose_param(get_param(params, graph_visitor),
                         make_bfs_visitor(null_visitor())),
            params,
-           boost::mpl::bool_<
-             boost::is_base_and_derived<
-               distributed_graph_tag,
-               typename graph_traits<VertexListGraph>::traversal_category>::value>());
+           boost::is_base_and_derived<
+             distributed_graph_tag,
+             typename graph_traits<VertexListGraph>::traversal_category>::type());
       }
     };
 
@@ -316,10 +315,9 @@ namespace boost {
            choose_param(get_param(params, graph_visitor),
                         make_bfs_visitor(null_vis)),
            params,
-           boost::mpl::bool_<
-             boost::is_base_and_derived<
-               distributed_graph_tag,
-               typename graph_traits<VertexListGraph>::traversal_category>::value>());
+           typename boost::is_base_and_derived<
+             distributed_graph_tag,
+             typename graph_traits<VertexListGraph>::traversal_category>::type());
       }
     };
 

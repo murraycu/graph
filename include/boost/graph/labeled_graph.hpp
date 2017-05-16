@@ -13,7 +13,6 @@
 #include <type_traits>
 
 #include <boost/static_assert.hpp>
-#include <boost/mpl/bool.hpp>
 #include <boost/unordered_map.hpp>
 #include <boost/pending/container_traits.hpp>
 #include <boost/graph/graph_traits.hpp>
@@ -31,7 +30,7 @@ namespace graph_detail {
     /** Returns true if the selector is the default selector. */
     template <typename Selector>
     struct is_default
-        : mpl::bool_<std::is_same<Selector, defaultS>::value>
+        : std::is_same<Selector, defaultS>::type
     { };
 
     /**
