@@ -115,10 +115,10 @@ namespace boost {
     typedef property<Tag, T, Base> prop;
     typedef T type;
     template <typename U>
-    static typename enable_if<std::is_same<prop, U>, T&>::type
+    static typename std::enable_if<std::is_same<prop, U>::value, T&>::type
     lookup(U& prop, const Tag&) {return prop.m_value;}
     template <typename U>
-    static typename enable_if<std::is_same<prop, U>, const T&>::type
+    static typename std::enable_if<std::is_same<prop, U>::value, const T&>::type
     lookup(const U& prop, const Tag&) {return prop.m_value;}
   };
 
@@ -144,7 +144,7 @@ namespace boost {
   // Pointer-to-member access to bundled properties
 #ifndef BOOST_GRAPH_NO_BUNDLED_PROPERTIES
   template <typename T, typename TMaybeBase, typename R>
-  struct lookup_one_property_internal<T, R TMaybeBase::*, typename enable_if<std::is_base_of<TMaybeBase, T> >::type> {
+  struct lookup_one_property_internal<T, R TMaybeBase::*, typename std::enable_if<std::is_base_of<TMaybeBase, T>::value>::type> {
     BOOST_STATIC_CONSTANT(bool, found = true);
     typedef R type;
     static R& lookup(T& x, R TMaybeBase::*ptr) {return x.*ptr;}

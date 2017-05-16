@@ -25,7 +25,7 @@ struct no_parameter {};
 #ifndef BOOST_NO_SFINAE
 
 #define BOOST_GRAPH_ENABLE_IF_MODELS(Graph, Tag, Type)               \
-  typename enable_if_c<(std::is_base_of<                         \
+  typename std::enable_if<(std::is_base_of<                         \
                           Tag,                                       \
                           typename graph_traits<Graph>::traversal_category>::value), \
                        Type>::type
