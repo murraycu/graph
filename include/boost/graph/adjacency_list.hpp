@@ -150,12 +150,12 @@ namespace boost {
 
   namespace detail {
     template <class Directed> struct is_random_access {
-      enum { value = false};
+      static constexpr bool value = false;
       typedef std::false_type type;
     };
     template <>
     struct is_random_access<vecS> {
-      enum { value = true };
+      static constexpr bool value = true;
       typedef std::true_type type;
     };
 

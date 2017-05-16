@@ -18,17 +18,24 @@ namespace boost {
   // Selectors for the Directed template parameter of adjacency_list
   // and adjacency_matrix.
 
-  struct directedS { enum { is_directed = true, is_bidir = false }; 
+  struct directedS {
+    static constexpr bool is_directed = true;
+    static constexpr bool is_bidir = false;
+
     typedef std::true_type is_directed_t; 
     typedef std::false_type is_bidir_t;
   };
   struct undirectedS { 
-    enum { is_directed = false, is_bidir = false }; 
+    static constexpr bool is_directed = false;
+    static constexpr bool is_bidir = false;
+
     typedef std::false_type is_directed_t;
     typedef std::false_type is_bidir_t;
   };
   struct bidirectionalS { 
-    enum { is_directed = true, is_bidir = true };
+    static constexpr bool is_directed = true;
+    static constexpr bool is_bidir = true;
+
     typedef std::true_type is_directed_t;
     typedef std::true_type is_bidir_t;
   };

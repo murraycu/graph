@@ -303,8 +303,8 @@ namespace detail
 
     // Select the minimum allowable length of a cycle based on the directedness
     // of the graph - 2 for directed, 3 for undirected.
-    template <typename D> struct min_cycles { enum { value = 2 }; };
-    template <> struct min_cycles<undirected_tag> { enum { value = 3 }; };
+    template <typename D> struct min_cycles { static constexpr int value = 2; };
+    template <> struct min_cycles<undirected_tag> { static constexpr int value = 3; };
 } /* namespace detail */
 
 template <typename Graph, typename Visitor>
