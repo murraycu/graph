@@ -13,8 +13,6 @@
 #include <boost/random/uniform_int.hpp>
 #include <boost/random/uniform_01.hpp>
 #include <boost/random/uniform_real.hpp>
-#include <boost/type_traits/is_integral.hpp>
-#include <boost/mpl/if.hpp>
 #include <boost/graph/iteration_macros.hpp>
 
 namespace boost {
