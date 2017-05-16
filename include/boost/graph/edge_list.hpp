@@ -12,8 +12,8 @@
 #define BOOST_GRAPH_EDGE_LIST_HPP
 
 #include <iterator>
+#include <type_traits>
 #include <boost/config.hpp>
-#include <boost/mpl/if.hpp>
 #include <boost/mpl/bool.hpp>
 #include <boost/range/irange.hpp>
 #include <boost/graph/graph_traits.hpp>
@@ -263,7 +263,7 @@ namespace boost {
             class Cat>
 #endif
   class edge_list
-    : public mpl::if_< typename is_random<Cat>::type,
+    : public std::conditional<is_random<Cat>::RET,
                     edge_list_impl_ra< edge_list<EdgeIter,T,D,Cat>, EdgeIter,T,D>,
                     edge_list_impl< edge_list<EdgeIter,T,D,Cat>, EdgeIter,T,D>
              >::type

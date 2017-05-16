@@ -21,7 +21,6 @@
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/graph_mutability_traits.hpp>
 #include <boost/graph/graph_selectors.hpp>
-#include <boost/mpl/if.hpp>
 #include <boost/mpl/bool.hpp>
 #include <boost/graph/adjacency_iterator.hpp>
 #include <boost/graph/detail/edge.hpp>
@@ -444,7 +443,7 @@ namespace boost {
     // in_degree, etc.).
     BOOST_STATIC_ASSERT(!(std::is_same<Directed, bidirectionalS>::value));
 
-    typedef typename mpl::if_<is_directed,
+    typedef typename std::conditional<is_directed::value,
                                     bidirectional_tag, undirected_tag>::type
       directed_category;
 
@@ -493,7 +492,7 @@ namespace boost {
     typedef typename lookup_one_property<EdgeProperty, edge_bundle_t>::type edge_bundled;
 
   public: // should be private
-    typedef typename mpl::if_<typename has_property<edge_property_type>::type,
+    typedef typename std::conditional<has_property<edge_property_type>::value,
       std::pair<bool, edge_property_type>, char>::type StoredEdge;
 #if defined(BOOST_NO_STD_ALLOCATOR)
     typedef std::vector<StoredEdge> Matrix;
@@ -526,8 +525,8 @@ namespace boost {
         vertex_descriptor, MatrixIter, size_type, edge_descriptor
     > UnDirOutEdgeIter;
 
-    typedef typename mpl::if_<
-        typename Directed::is_directed_t, DirOutEdgeIter, UnDirOutEdgeIter
+    typedef typename std::conditional<
+        Directed::is_directed, DirOutEdgeIter, UnDirOutEdgeIter
     >::type unfiltered_out_edge_iter;
 
     typedef detail::dir_adj_matrix_in_edge_iter<
@@ -538,8 +537,8 @@ namespace boost {
         vertex_descriptor, MatrixIter, size_type, edge_descriptor
     > UnDirInEdgeIter;
 
-    typedef typename mpl::if_<
-        typename Directed::is_directed_t, DirInEdgeIter, UnDirInEdgeIter
+    typedef typename std::conditional<
+        Directed::is_directed, DirInEdgeIter, UnDirInEdgeIter
     >::type unfiltered_in_edge_iter;
 
     typedef detail::adj_matrix_edge_iter<
@@ -1063,7 +1062,7 @@ namespace boost {
     struct lookup_property_from_edge {
       Tag tag;
       lookup_property_from_edge(Tag tag): tag(tag) {}
-      typedef typename boost::mpl::if_<IsConst, const EP, EP>::type ep_type_nonref;
+      typedef typename std::conditional<IsConst::value, const EP, EP>::type ep_type_nonref;
       typedef ep_type_nonref& ep_type;
       typedef typename lookup_one_property<ep_type_nonref, Tag>::type& result_type;
       result_type operator()(edge_descriptor e) const {

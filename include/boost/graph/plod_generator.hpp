@@ -16,8 +16,8 @@
 #include <boost/graph/graph_traits.hpp>
 #include <vector>
 #include <map>
+#include <type_traits>
 #include <boost/config/no_tr1/cmath.hpp>
-#include <boost/mpl/if.hpp>
 
 namespace boost {
   template<typename RandomGenerator>
@@ -226,16 +226,16 @@ namespace boost {
 
   template<typename RandomGenerator, typename Graph>
   class plod_iterator
-    : public mpl::if_<std::is_convertible<
+    : public std::conditional<std::is_convertible<
                         typename graph_traits<Graph>::directed_category,
-                        directed_tag>,
+                        directed_tag>::value,
                       out_directed_plod_iterator<RandomGenerator>,
                       undirected_plod_iterator<RandomGenerator> >::type
   {
-    typedef typename mpl::if_<
+    typedef typename std::conditional<
                        std::is_convertible<
                          typename graph_traits<Graph>::directed_category,
-                         directed_tag>,
+                         directed_tag>::value,
                         out_directed_plod_iterator<RandomGenerator>,
                         undirected_plod_iterator<RandomGenerator> >::type
       inherited;

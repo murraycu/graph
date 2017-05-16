@@ -16,6 +16,7 @@
 #include <list>
 #include <vector>
 #include <map>
+#include <type_traits>
 #include <boost/assert.hpp>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/graph_mutability_traits.hpp>
@@ -25,7 +26,6 @@
 #include <boost/static_assert.hpp>
 #include <boost/assert.hpp>
 #include <boost/type_traits.hpp>
-#include <boost/mpl/if.hpp>
 #include <boost/mpl/or.hpp>
 
 namespace boost {
@@ -764,7 +764,7 @@ class subgraph_global_property_map
 {
     typedef property_traits<PropertyMap> Traits;
 public:
-    typedef typename mpl::if_<std::is_const<typename std::remove_pointer<GraphPtr>::type>,
+    typedef typename std::conditional<std::is_const<typename std::remove_pointer<GraphPtr>::type>::value,
                               readable_property_map_tag,
                               typename Traits::category>::type
       category;
@@ -803,7 +803,7 @@ class subgraph_local_property_map
 {
     typedef property_traits<PropertyMap> Traits;
 public:
-    typedef typename mpl::if_<std::is_const<typename std::remove_pointer<GraphPtr>::type>,
+    typedef typename std::conditional<std::is_const<typename std::remove_pointer<GraphPtr>::type>::value,
                               readable_property_map_tag,
                               typename Traits::category>::type
       category;

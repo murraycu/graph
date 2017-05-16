@@ -36,7 +36,6 @@
 #include <boost/property_map/property_map.hpp>
 #include <boost/integer.hpp>
 #include <boost/iterator/iterator_facade.hpp>
-#include <boost/mpl/if.hpp>
 #include <boost/utility/enable_if.hpp>
 #include <boost/graph/graph_selectors.hpp>
 #include <boost/graph/detail/is_distributed_selector.hpp>
@@ -751,7 +750,7 @@ class compressed_sparse_row_graph<bidirectionalS, VertexProperty, EdgeProperty, 
   // typedef GraphProperty graph_property_type;
 
   typedef detail::compressed_sparse_row_structure<EdgeProperty, Vertex, EdgeIndex> forward_type;
-  typedef EdgeIndex /* typename boost::mpl::if_c<std::is_same<EdgeProperty, boost::no_property>, boost::no_property, EdgeIndex> */ backward_edge_property;
+  typedef EdgeIndex /* typename std::conditional<std::is_same<EdgeProperty, boost::no_property>, boost::no_property, EdgeIndex> */ backward_edge_property;
   typedef detail::compressed_sparse_row_structure<backward_edge_property, Vertex, EdgeIndex> backward_type;
 
  public:

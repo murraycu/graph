@@ -13,7 +13,6 @@
 #include <type_traits>
 
 #include <boost/static_assert.hpp>
-#include <boost/mpl/if.hpp>
 #include <boost/mpl/bool.hpp>
 #include <boost/unordered_map.hpp>
 #include <boost/pending/container_traits.hpp>
@@ -41,8 +40,8 @@ namespace graph_detail {
      */
     template <typename Label, typename Vertex>
     struct choose_default_map {
-        typedef typename mpl::if_<
-            std::is_unsigned<Label>,
+        typedef typename std::conditional<
+            std::is_unsigned<Label>::value,
             std::vector<Vertex>,
             std::map<Label, Vertex> // TODO: Should use unordered_map?
         >::type type;

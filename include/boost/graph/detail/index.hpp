@@ -8,6 +8,7 @@
 #define BOOST_GRAPH_DETAIL_INDEX_HPP
 
 #include <boost/graph/graph_traits.hpp>
+#include <type_traits>
 
 // The structures in this module are responsible for selecting and defining
 // types for accessing a builting index map. Note that the selection of these
@@ -61,8 +62,8 @@ namespace boost
         template <typename Graph, typename Key>
         struct choose_indexer
         {
-            typedef typename mpl::if_<
-                    std::is_same<Key, typename graph_traits<Graph>::vertex_descriptor>,
+            typedef typename std::conditional<
+                    std::is_same<Key, typename graph_traits<Graph>::vertex_descriptor>::value,
                     vertex_indexer<Graph>,
                     edge_indexer<Graph>
                 >::type indexer_type;

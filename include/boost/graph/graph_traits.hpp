@@ -15,7 +15,6 @@
 #include <utility> /* Primarily for std::pair */
 #include <tuple>
 #include <type_traits>
-#include <boost/mpl/if.hpp>
 #include <boost/mpl/eval_if.hpp>
 #include <boost/mpl/bool.hpp>
 #include <boost/mpl/has_xxx.hpp>
@@ -296,7 +295,7 @@ namespace boost {
         template<typename Graph, typename Descriptor>
         class bundled_result {
             typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
-            typedef typename mpl::if_c<(std::is_same<Descriptor, Vertex>::value),
+            typedef typename std::conditional<(std::is_same<Descriptor, Vertex>::value),
                                         vertex_bundle_type<Graph>,
                                         edge_bundle_type<Graph> >::type bundler;
         public:

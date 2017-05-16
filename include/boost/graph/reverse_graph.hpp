@@ -7,12 +7,12 @@
 # define REVERSE_GRAPH_DWA092300_H_
 
 #include <tuple>
+#include <type_traits>
 
 #include <boost/graph/adjacency_iterator.hpp>
 #include <boost/graph/properties.hpp>
 #include <boost/iterator/transform_iterator.hpp>
 #include <boost/type_traits.hpp>
-#include <boost/mpl/if.hpp>
 
 namespace boost {
 
@@ -369,21 +369,21 @@ template <class BidirGraph, class GRef, class Property>
 struct property_map<reverse_graph<BidirGraph, GRef>, Property> {
   typedef std::is_same<typename detail::property_kind_from_graph<BidirGraph, Property>::type, edge_property_tag> is_edge_prop;
   typedef std::is_const<typename std::remove_reference<GRef>::type> is_ref_const;
-  typedef typename boost::mpl::if_<
-                     is_ref_const,
+  typedef typename std::conditional<
+                     is_ref_const::value,
                      typename property_map<BidirGraph, Property>::const_type,
                      typename property_map<BidirGraph, Property>::type>::type
     orig_type;
   typedef typename property_map<BidirGraph, Property>::const_type orig_const_type;
-  typedef typename boost::mpl::if_<is_edge_prop, detail::reverse_graph_edge_property_map<orig_type>, orig_type>::type type;
-  typedef typename boost::mpl::if_<is_edge_prop, detail::reverse_graph_edge_property_map<orig_const_type>, orig_const_type>::type const_type;
+  typedef typename std::conditional<is_edge_prop::value, detail::reverse_graph_edge_property_map<orig_type>, orig_type>::type type;
+  typedef typename std::conditional<is_edge_prop::value, detail::reverse_graph_edge_property_map<orig_const_type>, orig_const_type>::type const_type;
 };
 
 template <class BidirGraph, class GRef, class Property>
 struct property_map<const reverse_graph<BidirGraph, GRef>, Property> {
   typedef std::is_same<typename detail::property_kind_from_graph<BidirGraph, Property>::type, edge_property_tag> is_edge_prop;
   typedef typename property_map<BidirGraph, Property>::const_type orig_const_type;
-  typedef typename boost::mpl::if_<is_edge_prop, detail::reverse_graph_edge_property_map<orig_const_type>, orig_const_type>::type const_type;
+  typedef typename std::conditional<is_edge_prop::value, detail::reverse_graph_edge_property_map<orig_const_type>, orig_const_type>::type const_type;
   typedef const_type type;
 };
 
@@ -513,8 +513,8 @@ set_property(const reverse_graph<BidirectionalGraph,GRef>& g, Tag tag,
 
 template<typename BidirectionalGraph, typename GRef, typename Tag>
 inline
-typename boost::mpl::if_<
-           std::is_const<typename std::remove_reference<GRef>::type>,
+typename std::conditional<
+           std::is_const<typename std::remove_reference<GRef>::type>::value,
            const typename graph_property<BidirectionalGraph, Tag>::type&,
            typename graph_property<BidirectionalGraph, Tag>::type& >::type
 get_property(const reverse_graph<BidirectionalGraph,GRef>& g, Tag tag)

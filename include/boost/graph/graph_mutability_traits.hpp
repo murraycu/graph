@@ -8,7 +8,6 @@
 #define BOOST_GRAPH_MUTABILITY_TRAITS_HPP
 
 #include <boost/config.hpp>
-#include <boost/mpl/if.hpp>
 #include <boost/mpl/bool.hpp>
 #include <type_traits>
 

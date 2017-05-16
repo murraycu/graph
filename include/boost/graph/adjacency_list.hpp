@@ -27,7 +27,6 @@
 #include <boost/graph/graph_mutability_traits.hpp>
 #include <boost/graph/graph_selectors.hpp>
 #include <boost/property_map/property_map.hpp>
-#include <boost/mpl/if.hpp>
 #include <boost/mpl/bool.hpp>
 #include <boost/graph/detail/edge.hpp>
 #include <boost/detail/workaround.hpp>
@@ -184,9 +183,9 @@ namespace boost {
     typedef typename DirectedS::is_bidir_t is_bidir;
     typedef typename DirectedS::is_directed_t is_directed;
 
-    typedef typename mpl::if_<is_bidir,
+    typedef typename std::conditional<is_bidir::value,
       bidirectional_tag,
-      typename mpl::if_<is_directed,
+      typename std::conditional<is_directed::value,
         directed_tag, undirected_tag
       >::type
     >::type directed_category;
@@ -196,7 +195,7 @@ namespace boost {
 
     typedef std::size_t vertices_size_type;
     typedef void* vertex_ptr;
-    typedef typename mpl::if_<is_rand_access,
+    typedef typename std::conditional<is_rand_access::value,
       vertices_size_type, vertex_ptr>::type vertex_descriptor;
     typedef detail::edge_desc_impl<directed_category, vertex_descriptor>
       edge_descriptor;
@@ -210,7 +209,7 @@ namespace boost {
     typedef typename std::conjunction<DirectedT,
       typename std::negation<BidirectionalT>::type >::type on_edge_storage;
   public:
-    typedef typename mpl::if_<on_edge_storage,
+    typedef typename std::conditional<on_edge_storage::value,
        std::size_t, typename EdgeContainer::size_type
     >::type edges_size_type;
 

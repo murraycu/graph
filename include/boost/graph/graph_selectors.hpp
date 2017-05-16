@@ -28,7 +28,7 @@ namespace boost {
     typedef mpl::false_ is_bidir_t;
   };
   struct bidirectionalS { 
-    enum { is_directed = true, is_bidir = true }; 
+    enum { is_directed = true, is_bidir = true };
     typedef mpl::true_ is_directed_t;
     typedef mpl::true_ is_bidir_t;
   };

@@ -8,6 +8,7 @@
 #define BOOST_GRAPH_LABELED_GRAPH_TRAITS_HPP
 
 #include <boost/graph/graph_mutability_traits.hpp>
+#include <type_traits>
 
 namespace boost {
 
@@ -195,17 +196,17 @@ namespace graph_detail {
     // graph_mutability_traits specialization below.
     template <typename Graph>
     struct determine_mutability {
-        typedef typename mpl::if_<
-            is_add_only_property_graph<Graph>,
+        typedef typename std::conditional<
+            is_add_only_property_graph<Graph>::value,
             labeled_add_only_property_graph_tag,
-            typename mpl::if_<
-                is_mutable_property_graph<Graph>,
+            typename std::conditional<
+                is_mutable_property_graph<Graph>::value,
                 labeled_mutable_property_graph_tag,
-                typename mpl::if_<
-                    is_mutable_graph<Graph>,
+                typename std::conditional<
+                    is_mutable_graph<Graph>::value,
                     labeled_mutable_graph_tag,
-                    typename mpl::if_<
-                        is_mutable_edge_graph<Graph>,
+                    typename std::conditional<
+                        is_mutable_edge_graph<Graph>::value,
                         labeled_graph_tag,
                         typename graph_mutability_traits<Graph>::category
                     >::type
