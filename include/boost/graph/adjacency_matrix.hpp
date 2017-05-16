@@ -434,7 +434,7 @@ namespace boost {
   // Adjacency Matrix Traits
   template <typename Directed = directedS>
   class adjacency_matrix_traits {
-    typedef typename Directed::is_directed_t is_directed;
+    static constexpr bool is_directed = Directed::is_directed;
   public:
     // The bidirectionalS tag is not allowed with the adjacency_matrix
     // graph type. Instead, use directedS, which also provides the
@@ -442,7 +442,7 @@ namespace boost {
     // in_degree, etc.).
     BOOST_STATIC_ASSERT(!(std::is_same<Directed, bidirectionalS>::value));
 
-    typedef typename std::conditional<is_directed::value,
+    typedef typename std::conditional<is_directed,
                                     bidirectional_tag, undirected_tag>::type
       directed_category;
 

@@ -2225,8 +2225,8 @@ namespace boost {
     {
       static constexpr bool is_rand_access = detail::is_random_access<VertexListS>::value;
       typedef typename has_property<EdgeProperty>::type has_edge_property;
-      typedef typename DirectedS::is_directed_t DirectedT;
-      typedef typename DirectedS::is_bidir_t BidirectionalT;
+      static constexpr bool DirectedT = DirectedS::is_directed;
+      static constexpr bool BidirectionalT = DirectedS::is_bidir;
 
       struct config
       {
@@ -2266,10 +2266,9 @@ namespace boost {
         typedef typename container_gen<EdgeListS,
           list_edge<vertex_descriptor, EdgeProperty> >::type EdgeContainer;
 
-        typedef typename std::conjunction<DirectedT,
-             typename std::negation<BidirectionalT>::type >::type on_edge_storage;
+        static constexpr bool on_edge_storage = DirectedT && !BidirectionalT;
 
-        typedef typename std::conditional<on_edge_storage::value,
+        typedef typename std::conditional<on_edge_storage,
           std::size_t, typename EdgeContainer::size_type
         >::type edges_size_type;
 
@@ -2277,7 +2276,7 @@ namespace boost {
 
         static constexpr bool is_edge_ra = detail::is_random_access<EdgeListS>::value;
 
-        typedef typename std::conditional<on_edge_storage::value,
+        typedef typename std::conditional<on_edge_storage,
           stored_edge_property<vertex_descriptor, EdgeProperty>,
           typename std::conditional<is_edge_ra,
             stored_ra_edge_iter<vertex_descriptor, EdgeContainer, EdgeProperty>,
@@ -2330,7 +2329,7 @@ namespace boost {
         typedef adj_list_edge_iterator<vertex_iterator, out_edge_iterator,
            graph_type> DirectedEdgeIter;
 
-        typedef typename std::conditional<on_edge_storage::value,
+        typedef typename std::conditional<on_edge_storage,
           DirectedEdgeIter, UndirectedEdgeIter>::type edge_iterator;
 
         // stored_vertex and StoredVertexList
@@ -2365,9 +2364,9 @@ namespace boost {
           VertexProperty m_property;
         };
         typedef typename std::conditional<is_rand_access,
-          typename std::conditional<BidirectionalT::value,
+          typename std::conditional<BidirectionalT,
             bidir_rand_stored_vertex, rand_stored_vertex>::type,
-          typename std::conditional<BidirectionalT::value,
+          typename std::conditional<BidirectionalT,
             bidir_seq_stored_vertex, seq_stored_vertex>::type
         >::type StoredVertex;
         struct stored_vertex : public StoredVertex {
@@ -2382,9 +2381,9 @@ namespace boost {
       }; // end of config
 
 
-      typedef typename std::conditional<BidirectionalT::value,
+      typedef typename std::conditional<BidirectionalT,
         bidirectional_graph_helper_with_property<config>,
-        typename std::conditional<DirectedT::value,
+        typename std::conditional<DirectedT,
           directed_graph_helper<config>,
           undirected_graph_helper<config>
         >::type

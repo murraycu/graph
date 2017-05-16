@@ -176,12 +176,12 @@ namespace boost {
   struct adjacency_list_traits
   {
     static constexpr bool is_rand_access = detail::is_random_access<VertexListS>::value;
-    typedef typename DirectedS::is_bidir_t is_bidir;
-    typedef typename DirectedS::is_directed_t is_directed;
+    static constexpr bool is_bidir = DirectedS::is_bidir;
+    static constexpr bool is_directed = DirectedS::is_directed;
 
-    typedef typename std::conditional<is_bidir::value,
+    typedef typename std::conditional<is_bidir,
       bidirectional_tag,
-      typename std::conditional<is_directed::value,
+      typename std::conditional<is_directed,
         directed_tag, undirected_tag
       >::type
     >::type directed_category;
@@ -200,12 +200,11 @@ namespace boost {
     // Logic to figure out the edges_size_type
     struct dummy {};
     typedef typename container_gen<EdgeListS, dummy>::type EdgeContainer;
-    typedef typename DirectedS::is_bidir_t BidirectionalT;
-    typedef typename DirectedS::is_directed_t DirectedT;
-    typedef typename std::conjunction<DirectedT,
-      typename std::negation<BidirectionalT>::type >::type on_edge_storage;
+    static constexpr bool BidirectionalT = DirectedS::is_bidir;
+    static constexpr bool DirectedT = DirectedS::is_directed;
+    static constexpr bool on_edge_storage = DirectedT && !BidirectionalT;
   public:
-    typedef typename std::conditional<on_edge_storage::value,
+    typedef typename std::conditional<on_edge_storage,
        std::size_t, typename EdgeContainer::size_type
     >::type edges_size_type;
 

@@ -21,23 +21,16 @@ namespace boost {
   struct directedS {
     static constexpr bool is_directed = true;
     static constexpr bool is_bidir = false;
-
-    typedef std::true_type is_directed_t; 
-    typedef std::false_type is_bidir_t;
   };
+
   struct undirectedS { 
     static constexpr bool is_directed = false;
     static constexpr bool is_bidir = false;
-
-    typedef std::false_type is_directed_t;
-    typedef std::false_type is_bidir_t;
   };
+
   struct bidirectionalS { 
     static constexpr bool is_directed = true;
     static constexpr bool is_bidir = true;
-
-    typedef std::true_type is_directed_t;
-    typedef std::true_type is_bidir_t;
   };
 
 } // namespace boost
