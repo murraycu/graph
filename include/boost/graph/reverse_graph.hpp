@@ -12,7 +12,6 @@
 #include <boost/graph/adjacency_iterator.hpp>
 #include <boost/graph/properties.hpp>
 #include <boost/iterator/transform_iterator.hpp>
-#include <boost/type_traits.hpp>
 
 namespace boost {
 

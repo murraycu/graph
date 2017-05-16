@@ -26,7 +26,6 @@
 #include <boost/random/uniform_int.hpp>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/erdos_renyi_generator.hpp>
-#include <boost/type_traits/is_base_and_derived.hpp>
 #include <boost/detail/lightweight_test.hpp>
 
 using namespace boost;

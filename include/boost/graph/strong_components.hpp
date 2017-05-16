@@ -15,7 +15,6 @@
 #include <stack>
 #include <boost/config.hpp>
 #include <boost/graph/depth_first_search.hpp>
-#include <boost/type_traits/conversion_traits.hpp>
 #include <boost/static_assert.hpp>
 #include <boost/graph/overloading.hpp>
 #include <boost/concept/assert.hpp>

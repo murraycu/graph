@@ -17,7 +17,6 @@
 #include <boost/config.hpp>
 #include <boost/random/uniform_int.hpp>
 #include <boost/graph/graph_traits.hpp>
-#include <boost/type_traits/is_base_and_derived.hpp>
 
 enum Direction {FORWARD = 1, BACKWARD = 2, BOTH = FORWARD | BACKWARD};
 

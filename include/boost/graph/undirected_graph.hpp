@@ -11,7 +11,6 @@
 #include <boost/graph/properties.hpp>
 #include <boost/pending/property.hpp>
 #include <boost/property_map/transform_value_property_map.hpp>
-#include <boost/type_traits.hpp>
 
 namespace boost
 {

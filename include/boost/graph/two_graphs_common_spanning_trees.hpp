@@ -16,7 +16,6 @@
 #include <boost/config.hpp>
 
 #include <boost/bimap.hpp>
-#include <boost/type_traits.hpp>
 #include <boost/concept/requires.hpp>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/undirected_dfs.hpp>

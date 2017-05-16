@@ -28,8 +28,8 @@
 #include <boost/graph/bellman_ford_shortest_paths.hpp>
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 #include <boost/graph/adjacency_list.hpp>
-#include <boost/type_traits/same_traits.hpp>
 #include <boost/concept/assert.hpp>
+#include <type_traits>
 
 namespace boost {
 

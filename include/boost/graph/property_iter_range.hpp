@@ -20,7 +20,7 @@
 
 #include <boost/property_map/property_map_iterator.hpp>
 #include <boost/graph/properties.hpp>
-#include <boost/type_traits/same_traits.hpp>
+#include <type_traits>
 
 namespace boost {
 
