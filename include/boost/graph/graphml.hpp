@@ -243,9 +243,7 @@ write_graphml(std::ostream& out, const Graph& g, VertexIndexMap vertex_index,
 
     using boost::property_tree::xml_parser::encode_char_entities;
 
-    BOOST_STATIC_CONSTANT(bool,
-                          graph_is_directed =
-                          (std::is_convertible<directed_category*, directed_tag*>::value));
+    static constexpr bool graph_is_directed = std::is_convertible<directed_category*, directed_tag*>::value;
 
     out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
         << "<graphml xmlns=\"http://graphml.graphdrawing.org/xmlns\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd\">\n";

@@ -502,12 +502,12 @@ namespace detail { namespace graph {
 
   template <typename T>
   struct is_bgl_named_params {
-    BOOST_STATIC_CONSTANT(bool, value = false);
+    static constexpr bool value = false;
   };
 
   template <typename Param, typename Tag, typename Rest>
   struct is_bgl_named_params<bgl_named_params<Param, Tag, Rest> > {
-    BOOST_STATIC_CONSTANT(bool, value = true);
+    static constexpr bool value = true;
   };
 
 } } // end namespace detail::graph

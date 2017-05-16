@@ -584,11 +584,7 @@ BOOST_BGL_DECLARE_NAMED_PARAMS
 
     template <typename Graph, typename ArgPack, typename MapTag, typename ValueType>
     struct map_maker {
-      BOOST_STATIC_CONSTANT(
-        bool,
-        has_map =
-          (parameter_exists<ArgPack, MapTag>
-           ::value));
+      static constexpr bool has_map = parameter_exists<ArgPack, MapTag>::value;
       typedef map_maker_helper<has_map, Graph, ArgPack, ValueType,
                                typename std::remove_const<
                                  typename boost::parameter::value_type<
@@ -661,11 +657,7 @@ BOOST_BGL_DECLARE_NAMED_PARAMS
 
     template <class Graph, class ArgPack, class KeyT, class ValueT, class PriorityQueueTag, class KeyMapTag, class IndexInHeapMapTag, class Compare>
     struct priority_queue_maker {
-      BOOST_STATIC_CONSTANT(
-        bool,
-        g_hasQ =
-          (parameter_exists<ArgPack, PriorityQueueTag>
-           ::value));
+      static constexpr bool g_hasQ =parameter_exists<ArgPack, PriorityQueueTag>::value;
       typedef std::reference_wrapper<int> int_refw;
       typedef typename boost::parameter::value_type<
                          ArgPack,

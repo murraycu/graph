@@ -47,8 +47,8 @@ struct two_bit_color_map
   IndexMap index;
   shared_array<unsigned char> data;
 
-  BOOST_STATIC_CONSTANT(int, bits_per_char = std::numeric_limits<unsigned char>::digits);
-  BOOST_STATIC_CONSTANT(int, elements_per_char = bits_per_char / 2);
+  static constexpr int bits_per_char = std::numeric_limits<unsigned char>::digits;
+  static constexpr int elements_per_char = bits_per_char / 2;
   typedef typename property_traits<IndexMap>::key_type key_type;
   typedef two_bit_color_type value_type;
   typedef void reference;
@@ -67,7 +67,7 @@ inline two_bit_color_type
 get(const two_bit_color_map<IndexMap>& pm, 
     typename property_traits<IndexMap>::key_type key) 
 {
-  BOOST_STATIC_CONSTANT(int, elements_per_char = two_bit_color_map<IndexMap>::elements_per_char);
+  static constexpr int elements_per_char = two_bit_color_map<IndexMap>::elements_per_char;
   typename property_traits<IndexMap>::value_type i = get(pm.index, key);
   BOOST_ASSERT ((std::size_t)i < pm.n);
   std::size_t byte_num = i / elements_per_char;
@@ -81,7 +81,7 @@ put(const two_bit_color_map<IndexMap>& pm,
     typename property_traits<IndexMap>::key_type key,
     two_bit_color_type value)
 {
-  BOOST_STATIC_CONSTANT(int, elements_per_char = two_bit_color_map<IndexMap>::elements_per_char);
+  static constexpr int elements_per_char = two_bit_color_map<IndexMap>::elements_per_char;
   typename property_traits<IndexMap>::value_type i = get(pm.index, key);
   BOOST_ASSERT ((std::size_t)i < pm.n);
   BOOST_ASSERT (value >= 0 && value < 4);

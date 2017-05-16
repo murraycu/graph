@@ -29,7 +29,7 @@ template<class OEL, class VL, class D, class VP, class EP, class GP, class EL>
 struct tracking_level<boost::adjacency_list<OEL,VL,D,VP,EP,GP,EL> > {
   //typedef mpl::integral_c_tag tag;
   typedef std::integral_constant<int, track_never> type;
-  BOOST_STATIC_CONSTANT(int, value = tracking_level::type::value);
+  static constexpr int value = tracking_level::type::value;
 };
 
 template<class Archive, class OEL, class VL, class D, 

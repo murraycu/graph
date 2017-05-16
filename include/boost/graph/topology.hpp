@@ -16,7 +16,6 @@
 #include <boost/random/linear_congruential.hpp>
 #include <boost/math/constants/constants.hpp> // For root_two
 #include <boost/algorithm/minmax.hpp>
-#include <boost/config.hpp> // For BOOST_STATIC_CONSTANT
 #include <boost/math/special_functions/hypot.hpp>
 
 // Classes and concepts to represent points in a space, with distance and move
@@ -34,7 +33,7 @@ class convex_topology
   public: // For VisualAge C++
   struct point 
   {
-    BOOST_STATIC_CONSTANT(std::size_t, dimensions = Dims);
+    static constexpr std::size_t dimensions = Dims;
     point() { }
     double& operator[](std::size_t i) {return values[i];}
     const double& operator[](std::size_t i) const {return values[i];}
@@ -46,7 +45,7 @@ class convex_topology
   public: // For VisualAge C++
   struct point_difference
   {
-    BOOST_STATIC_CONSTANT(std::size_t, dimensions = Dims);
+    static constexpr std::size_t dimensions = Dims;
     point_difference() {
       for (std::size_t i = 0; i < Dims; ++i) values[i] = 0.;
     }

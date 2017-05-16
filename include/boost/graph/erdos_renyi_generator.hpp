@@ -38,9 +38,7 @@ namespace boost {
     typedef typename graph_traits<Graph>::vertices_size_type vertices_size_type;
     typedef typename graph_traits<Graph>::edges_size_type edges_size_type;
 
-    BOOST_STATIC_CONSTANT
-      (bool,
-       is_undirected = (std::is_base_of<undirected_tag, directed_category>::value));
+    static constexpr bool is_undirected = std::is_base_of<undirected_tag, directed_category>::value;
 
   public:
     erdos_renyi_iterator() : gen(), n(0), edges(0), allow_self_loops(false) {}
@@ -104,9 +102,7 @@ namespace boost {
     typedef typename graph_traits<Graph>::vertices_size_type vertices_size_type;
     typedef typename graph_traits<Graph>::edges_size_type edges_size_type;
 
-    BOOST_STATIC_CONSTANT
-      (bool,
-       is_undirected = (std::is_base_of<undirected_tag, directed_category>::value));
+    static constexpr bool is_undirected = std::is_base_of<undirected_tag, directed_category>::value;
 
   public:
     sorted_erdos_renyi_iterator()

@@ -24,11 +24,9 @@ namespace boost {
     typedef typename graph_traits<Graph>::vertices_size_type 
       vertices_size_type;
 
-    BOOST_STATIC_CONSTANT
-      (bool,
-       is_undirected = (std::is_base_of<undirected_tag,
-                                            directed_category>::value
-                        || std::is_same<undirected_tag, directed_category>::value));
+    static constexpr bool is_undirected =
+      std::is_base_of<undirected_tag,  directed_category>::value
+      || std::is_same<undirected_tag, directed_category>::value;
 
   public:
     typedef std::input_iterator_tag iterator_category;
