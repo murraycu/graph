@@ -103,22 +103,16 @@ namespace boost {
     //@{
     namespace graph_detail {
         template <typename Tag>
-        struct is_directed_tag
-            : std::is_convertible<Tag, directed_tag>::type
-        { };
+        using is_directed_tag = typename std::is_convertible<Tag, directed_tag>::type;
     } // namespace graph_detail
 
     template <typename Graph>
-    struct is_directed_graph
-        : graph_detail::is_directed_tag<
+    using is_directed_graph = graph_detail::is_directed_tag<
             typename graph_traits<Graph>::directed_category
-        >
-    { };
+        >;
 
     template <typename Graph>
-    struct is_undirected_graph
-        : std::negation< is_directed_graph<Graph> >
-    { };
+    using is_undirected_graph = std::negation< is_directed_graph<Graph> >;
     //@}
 
     // edge_parallel_category tags
@@ -145,12 +139,10 @@ namespace boost {
      * or disallowance of loops, this is a moot point.
      */
     template <typename Graph>
-    struct is_multigraph
-        : std::is_same<
+    using is_multigraph = typename std::is_same<
               typename graph_traits<Graph>::edge_parallel_category,
               allow_parallel_edge_tag
-          >::type
-    { };
+          >::type;
     //@}
 
     // traversal_category tags
@@ -173,44 +165,34 @@ namespace boost {
      */
     //@{
     template <typename Graph>
-    struct is_incidence_graph
-        : std::is_convertible<
+    using is_incidence_graph = typename std::is_convertible<
               typename graph_traits<Graph>::traversal_category,
               incidence_graph_tag
-          >::type
-    { };
+          >::type;
 
     template <typename Graph>
-    struct is_bidirectional_graph
-        : std::is_convertible<
+    using is_bidirectional_graph = typename std::is_convertible<
               typename graph_traits<Graph>::traversal_category,
               bidirectional_graph_tag
-            >::type
-    { };
+            >::type;
 
     template <typename Graph>
-    struct is_vertex_list_graph
-        : std::is_convertible<
+    using is_vertex_list_graph = typename std::is_convertible<
               typename graph_traits<Graph>::traversal_category,
               vertex_list_graph_tag
-          >::type
-    { };
+          >::type;
 
     template <typename Graph>
-    struct is_edge_list_graph
-        : std::is_convertible<
+    using is_edge_list_graph = typename std::is_convertible<
                 typename graph_traits<Graph>::traversal_category,
                 edge_list_graph_tag
-            >::type
-    { };
+            >::type;
 
     template <typename Graph>
-    struct is_adjacency_matrix
-        : std::is_convertible<
+    using is_adjacency_matrix = typename std::is_convertible<
               typename graph_traits<Graph>::traversal_category,
               adjacency_matrix_tag
-          >::type
-    { };
+          >::type;
     //@}
 
     /** @name Directed Graph Traits
@@ -220,18 +202,14 @@ namespace boost {
      */
     //@{
     template <typename Graph>
-    struct is_directed_unidirectional_graph
-        : std::conjunction<
+    using is_directed_unidirectional_graph = std::conjunction<
             is_directed_graph<Graph>, std::negation< is_bidirectional_graph<Graph> >
-        >
-    { };
+        >;
 
     template <typename Graph>
-    struct is_directed_bidirectional_graph
-        : std::conjunction<
+    using is_directed_bidirectional_graph = std::conjunction<
             is_directed_graph<Graph>, is_bidirectional_graph<Graph>
-        >
-    { };
+        >;
     //@}
 
     //?? not the right place ?? Lee
@@ -314,48 +292,36 @@ namespace boost {
      */
     //@{
     template<typename Graph>
-    struct has_graph_property
-      : std::negation<
+    using has_graph_property = typename std::negation<
         typename detail::is_no_property<
           typename graph_property_type<Graph>::type
         >::type
-      >::type
-    { };
+      >::type;
 
     template<typename Graph>
-    struct has_bundled_graph_property
-      : std::negation<
+    using has_bundled_graph_property = std::negation<
         graph_detail::is_no_bundle<typename graph_bundle_type<Graph>::type>
-      >
-    { };
+      >;
 
     template <typename Graph>
-    struct has_vertex_property
-        : std::negation<
+    using has_vertex_property = typename std::negation<
             typename detail::is_no_property<typename vertex_property_type<Graph>::type>
-        >::type
-    { };
+        >::type;
 
     template <typename Graph>
-    struct has_bundled_vertex_property
-        : std::negation<
+    using has_bundled_vertex_property = std::negation<
             graph_detail::is_no_bundle<typename vertex_bundle_type<Graph>::type>
-        >
-    { };
+        >;
 
     template <typename Graph>
-    struct has_edge_property
-        : std::negation<
+    using has_edge_property = typename std::negation<
             typename detail::is_no_property<typename edge_property_type<Graph>::type>
-        >::type
-    { };
+        >::type;
 
     template <typename Graph>
-    struct has_bundled_edge_property
-        : std::negation<
+    using has_bundled_edge_property =  std::negation<
             graph_detail::is_no_bundle<typename edge_bundle_type<Graph>::type>
-        >
-    { };
+        >;
     //@}
 
 } // namespace boost
