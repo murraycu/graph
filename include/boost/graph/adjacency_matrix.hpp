@@ -1057,11 +1057,11 @@ namespace boost {
   struct adj_mat_pm_helper<D, VP, EP, GP, A, Tag, edge_property_tag> {
     typedef typename graph_traits<adjacency_matrix<D, VP, EP, GP, A> >::edge_descriptor edge_descriptor;
 
-    template <typename IsConst>
+    template <bool IsConst>
     struct lookup_property_from_edge {
       Tag tag;
       lookup_property_from_edge(Tag tag): tag(tag) {}
-      typedef typename std::conditional<IsConst::value, const EP, EP>::type ep_type_nonref;
+      typedef typename std::conditional<IsConst, const EP, EP>::type ep_type_nonref;
       typedef ep_type_nonref& ep_type;
       typedef typename lookup_one_property<ep_type_nonref, Tag>::type& result_type;
       result_type operator()(edge_descriptor e) const {
@@ -1070,14 +1070,14 @@ namespace boost {
     };
 
     typedef function_property_map<
-              lookup_property_from_edge<std::false_type>,
+              lookup_property_from_edge<false>,
               typename graph_traits<adjacency_matrix<D, VP, EP, GP, A> >::edge_descriptor> type;
     typedef function_property_map<
-              lookup_property_from_edge<std::true_type>,
+              lookup_property_from_edge<true>,
               typename graph_traits<adjacency_matrix<D, VP, EP, GP, A> >::edge_descriptor> const_type;
     typedef edge_descriptor arg_type;
-    typedef typename lookup_property_from_edge<std::false_type>::result_type single_nonconst_type;
-    typedef typename lookup_property_from_edge<std::true_type>::result_type single_const_type;
+    typedef typename lookup_property_from_edge<false>::result_type single_nonconst_type;
+    typedef typename lookup_property_from_edge<true>::result_type single_const_type;
 
     static type get_nonconst(adjacency_matrix<D, VP, EP, GP, A>& g, Tag tag) {
       return type(tag);
