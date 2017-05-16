@@ -34,7 +34,6 @@
 #include <boost/type_traits/has_less.hpp>
 #include <boost/mpl/int.hpp>
 #include <boost/range/algorithm/sort.hpp>
-#include <boost/utility/enable_if.hpp>
 
 #ifndef BOOST_GRAPH_ITERATION_MACROS_HPP
 #define BOOST_ISO_INCLUDED_ITER_MACROS // local macro, see bottom of file

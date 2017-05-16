@@ -225,8 +225,7 @@ namespace detail
 
         // otherwise, iterate over candidates and and test
         // for maxmimal cliquiness.
-        typename Container::iterator i, j;
-        for(i = cands.begin(); i != cands.end(); ) {
+        for(auto i = cands.begin(); i != cands.end(); ) {
             auto candidate = *i;
 
             // add the candidate to the clique (keeping the iterator!)

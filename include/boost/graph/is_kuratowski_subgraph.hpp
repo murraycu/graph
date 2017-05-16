@@ -62,11 +62,8 @@ namespace boost
                          );
       
       // Replace any references to u with references to v
-      typedef typename AdjacencyList::value_type::iterator 
-        adjacency_iterator_t;
-      
       auto u_neighbor_end = neighbors[u].end();
-      for(adjacency_iterator_t u_neighbor_itr = neighbors[u].begin();
+      for(auto u_neighbor_itr = neighbors[u].begin();
           u_neighbor_itr != u_neighbor_end; ++u_neighbor_itr
           )
         {
@@ -269,21 +266,18 @@ namespace boost
     std::map<vertex_t,typename graph_traits<small_graph_t>::vertex_descriptor> 
       contracted_vertex_map;
     
-    typename v_list_t::iterator itr, itr_end;
-    itr_end = main_vertices.end();
-    typename graph_traits<small_graph_t>::vertex_iterator 
-      si = vertices(contracted_graph).first;
+    auto itr_end = main_vertices.end();
+    auto si = vertices(contracted_graph).first;
     
-    for(itr = main_vertices.begin(); itr != itr_end; ++itr, ++si)
+    for(auto itr = main_vertices.begin(); itr != itr_end; ++itr, ++si)
       {
         contracted_vertex_map[*itr] = *si;
       }
 
-    typename v_list_t::iterator jtr, jtr_end;
-    for(itr = main_vertices.begin(); itr != itr_end; ++itr)
+    for(auto itr = main_vertices.begin(); itr != itr_end; ++itr)
       {
-        jtr_end = neighbors[*itr].end();
-        for(jtr = neighbors[*itr].begin(); jtr != jtr_end; ++jtr)
+        auto jtr_end = neighbors[*itr].end();
+        for(auto jtr = neighbors[*itr].begin(); jtr != jtr_end; ++jtr)
           {
             if (get(vm,*itr) < get(vm,*jtr))
               {

@@ -1891,9 +1891,8 @@ namespace boost {
     add_vertex(const typename Config::vertex_property_type& p,
                adj_list_impl<Derived, Config, Base>& g_)
     {
-      typedef typename Config::vertex_descriptor vertex_descriptor;
       auto& g = static_cast<Derived&>(g_);
-      if (optional<vertex_descriptor> v
+      if (auto v
             = g.vertex_by_property(get_property_value(p, vertex_bundle)))
         return *v;
 
@@ -2158,9 +2157,8 @@ namespace boost {
     inline typename Config::vertex_descriptor
     add_vertex(const typename Config::vertex_property_type& p,
                vec_adj_list_impl<Graph, Config, Base>& g_) {
-      typedef typename Config::vertex_descriptor vertex_descriptor;
       auto& g = static_cast<Graph&>(g_);
-      if (optional<vertex_descriptor> v
+      if (auto v
             = g.vertex_by_property(get_property_value(p, vertex_bundle)))
         return *v;
       typedef typename Config::stored_vertex stored_vertex;

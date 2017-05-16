@@ -22,7 +22,6 @@
 #include <boost/pending/property.hpp> // for boost::lookup_one_property
 #include <boost/pending/container_traits.hpp>
 #include <boost/throw_exception.hpp>
-#include <boost/type_traits/remove_cv.hpp>
 #include <boost/utility/enable_if.hpp>
 #include <functional> // for std::equal_to
 #include <stdexcept> // for std::runtime_error
@@ -372,7 +371,7 @@ Vertex>::type
 add_vertex(typename BGL_NAMED_GRAPH::vertex_name_type const& name,
            BGL_NAMED_GRAPH& g)
 {
-  if (optional<Vertex> vertex = find_vertex(name, g))
+  if (auto vertex = find_vertex(name, g))
     /// We found the vertex, so return it
     return *vertex;
   else
