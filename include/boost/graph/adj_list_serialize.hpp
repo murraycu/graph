@@ -27,8 +27,8 @@ namespace serialization {
 // need to do this to enable saving of non-const adjacency lists.
 template<class OEL, class VL, class D, class VP, class EP, class GP, class EL>
 struct tracking_level<boost::adjacency_list<OEL,VL,D,VP,EP,GP,EL> > {
-  typedef mpl::integral_c_tag tag;
-  typedef mpl::int_<track_never> type;
+  //typedef mpl::integral_c_tag tag;
+  typedef std::integral_constant<int, track_never> type;
   BOOST_STATIC_CONSTANT(int, value = tracking_level::type::value);
 };
 
