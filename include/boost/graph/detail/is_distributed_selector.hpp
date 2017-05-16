@@ -20,7 +20,10 @@
 
 namespace boost {
   namespace detail {
-    template <typename> struct is_distributed_selector: std::false_type {};
+    template <typename>
+    struct is_distributed_selector {
+      static constexpr bool value = false;
+    };
   }
 }
 
