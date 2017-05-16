@@ -240,13 +240,11 @@ namespace boost {
   // Some helper classes for determining if the iterators are random access
   template <class Cat>
   struct is_random {
-    static constexpr bool RET = false;
-    typedef std::false_type type;
+    static constexpr bool value = false;
   };
   template <>
   struct is_random<std::random_access_iterator_tag> {
-    static constexpr bool RET = true;
-    typedef std::true_type type;
+    static constexpr bool value = true;
   };
 
   // The edge_list class conditionally inherits from one of the
@@ -263,7 +261,7 @@ namespace boost {
             class Cat>
 #endif
   class edge_list
-    : public std::conditional<is_random<Cat>::RET,
+    : public std::conditional<is_random<Cat>::value,
                     edge_list_impl_ra< edge_list<EdgeIter,T,D,Cat>, EdgeIter,T,D>,
                     edge_list_impl< edge_list<EdgeIter,T,D,Cat>, EdgeIter,T,D>
              >::type
